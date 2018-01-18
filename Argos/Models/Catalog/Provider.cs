@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Argos.Models.BaseTypes;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
-namespace Argos.Models.Entities
+namespace Argos.Models.Catalog
 {
-    [Table("Client", Schema = "Catalog")]
-    public class Client:Person
+    public class Provider:Person
     {
-        public int ClientId { get; set; }
+        public int ProviderId { get; set; }
 
         [Display(Name = "Razón Social")]
         [MaxLength(130)]
         [Index("Unq_BusinessName", IsUnique = true)]
         public string BusinessName { get; set; }
-
     }
 }

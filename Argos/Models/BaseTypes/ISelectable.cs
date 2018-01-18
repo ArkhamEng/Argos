@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Argos.Models.Entities
+namespace Argos.Models.BaseTypes
 {
     public interface ISelectable
     {

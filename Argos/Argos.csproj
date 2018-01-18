@@ -176,15 +176,26 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
-    <Compile Include="Models\Entities\City.cs" />
-    <Compile Include="Models\Entities\Client.cs" />
-    <Compile Include="Models\Entities\ContractType.cs" />
-    <Compile Include="Models\Entities\Employee.cs" />
-    <Compile Include="Models\Entities\Person.cs" />
-    <Compile Include="Models\Entities\ISelectable.cs" />
-    <Compile Include="Models\Entities\State.cs" />
+    <Compile Include="Models\BaseTypes\AuditableEntity.cs" />
+    <Compile Include="Models\BaseTypes\LocalizableEntity.cs" />
+    <Compile Include="Models\Config\Branch.cs" />
+    <Compile Include="Models\Config\City.cs" />
+    <Compile Include="Models\Catalog\Client.cs" />
+    <Compile Include="Models\Operative\AccountCharge.cs" />
+    <Compile Include="Models\Operative\Commissions.cs" />
+    <Compile Include="Models\Operative\Account.cs" />
+    <Compile Include="Models\Config\AccountType.cs" />
+    <Compile Include="Models\Catalog\Employee.cs" />
+    <Compile Include="Models\BaseTypes\Person.cs" />
+    <Compile Include="Models\BaseTypes\ISelectable.cs" />
+    <Compile Include="Models\Config\JobPosition.cs" />
+    <Compile Include="Models\Config\Policy.cs" />
+    <Compile Include="Models\Catalog\Provider.cs" />
+    <Compile Include="Models\Config\State.cs" />
+    <Compile Include="Models\Enums\AccountStatus.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Operative\Sale.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -246,6 +257,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Finances\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

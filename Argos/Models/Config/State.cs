@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Argos.Models.BaseTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Argos.Models.Entities
+namespace Argos.Models.Config
 {
     [Table("State", Schema = "Config")]
     public class State : ISelectable

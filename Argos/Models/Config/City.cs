@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Argos.Models.BaseTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Argos.Models.Entities
+namespace Argos.Models.Config
 {
     [Table("City", Schema = "Config")]
     public class City : ISelectable
@@ -24,8 +25,9 @@ namespace Argos.Models.Entities
         [StringLength(50)]
         public string Name { get; set; }
 
-
+        #region Navigation Properties
         public virtual State State { get; set; }
+        #endregion
 
         [NotMapped]
         public int Id { get { return this.CityId; } }

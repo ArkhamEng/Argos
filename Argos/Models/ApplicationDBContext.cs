@@ -1,10 +1,7 @@
-﻿using Argos.Models.Entities;
+﻿using Argos.Models.Catalog;
+using Argos.Models.Config;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace Argos.Models
 {
@@ -18,7 +15,7 @@ namespace Argos.Models
 
         public DbSet<City> Cities { get; set; }
 
-        public DbSet<ContractType> ContractTypes { get; set; }
+        public DbSet<AccountType> ContractTypes { get; set; }
 
         public ApplicationDbContext()
             : base("SystemDB", throwIfV1Schema: false)
