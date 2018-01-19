@@ -1,6 +1,7 @@
 ﻿using Argos.Models.BaseTypes;
 using Argos.Models.Catalog;
 using Argos.Models.Config;
+using Argos.Models.Finances;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,25 +12,26 @@ namespace Argos.Models.Operative
     [Table("Account", Schema = "Operative")]
     public class Account : AuditableEntity
     {
-        public int AcountId { get; set; }
+        public int AccountId { get; set; }
+
+        public int AccountTypeId { get; set; }
+
+        public int ClientId { get; set; }
+
+        public int? CityId { get; set; }
 
         [Required]
         [MaxLength(10)]
         public string Code { get; set; }
 
-        [Display(Name = "Fecha de Inicio")]
-        public DateTime BeginDate { get; set; }
+        [Display(Name = "Fecha de Contratación")]
+        public DateTime ContractDate { get; set; }
 
-        [Display(Name = "Fecha de Cancelación")]
-        public DateTime EndDate { get; set; }
+    
+        [Display(Name = "Precio")]
+        [DataType(DataType.Currency)]
+        public double Price { get; set; }
 
-        [Display(Name = "Costo de póliza")]
-        public double ContractCost { get; set; }
-
-        [Display(Name = "Costo de póliza")]
-        public double PolicyCost { get; set; }
-
-       
         [Display(Name = "Calle y numero")]
         [MaxLength(80, ErrorMessage = "Solo se permiten 80 caractéres para calle y número")]
         public string Street { get; set; }
@@ -42,30 +44,23 @@ namespace Argos.Models.Operative
         [MaxLength(10, ErrorMessage = "Solo se permiten 10 caractéres para el CP")]
         [DataType(DataType.PostalCode)]
         public string ZipCode { get; set; }
-        
-
-        public int AccountTypeId { get; set; }
-
-        public int? PolicyId { get; set; }
-
-        public int? CityId { get; set; }
-
-        public int ClientId { get; set; }
-
-        public int EmployeeId { get; set; }
 
         #region Navigation Properties
         public City City { get; set; }
 
         public virtual AccountType AccountType { get; set; }
 
-        public virtual Policy Policy { get; set; }
-
         public virtual Client Client { get; set; }
 
-        public virtual Employee Employee { get; set; }
+        public virtual Policy Policy { get; set; }
 
-        public ICollection<Commission> Commissions { get; set; }
+        public ICollection<SaleDetail> SaleDetails { get; set; }
+
+        public ICollection<ScheduleService> ScheduleServices { get; set; }
+
+        public ICollection<SchedulePayment> SchedulePayments { get; set; }
+
+        public ICollection<Claim> Claims { get; set; }
         #endregion
     }
 }

@@ -26,15 +26,14 @@ namespace Argos.Models.Config
         [Display(Name = "Descripción")]
         public string Description { get; set; }
 
-        [Required]
-        [Display(Name = "Periodo mantto")]
-        public int MaintenancePeriod { get; set; }
 
         [Required]
-        [Display(Name = "Tolerancia mantto")]
-        public int MaintenanceTolerance { get; set; }
+        [Display(Name = "Activo")]
+        public bool IsActive { get; set; }
 
         public ICollection<Account> Account { get; set; }
+
+        public ICollection<PolicyType> PolicyTypes { get; set; }
 
         public int Id
         {

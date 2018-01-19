@@ -20,5 +20,6 @@ namespace Argos.Models.BaseTypes
         [Required]
         public string UpdUser { get; set; }
 
+
     }
 }

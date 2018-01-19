@@ -6,11 +6,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Argos.Models.Operative
+namespace Argos.Models.Finances
 {
-    [Table("Commission", Schema = "Operative")]
+    [Table("Commission", Schema = "Finances")]
     public class Commission
     {
+        [ForeignKey("Sale")]
         public int CommissionId { get; set; }
 
         [Display(Name="Porcentaje")]
@@ -24,10 +25,9 @@ namespace Argos.Models.Operative
         [Display(Name ="Fecha de Pago")]
         public DateTime? PaymentDate { get; set; }
 
-        public int AccountId { get; set; }
-
         #region Navigation Properties
-        public virtual Account Account { get; set; }
+        public virtual Sale Sale { get; set; }
+
         #endregion
     }
 }

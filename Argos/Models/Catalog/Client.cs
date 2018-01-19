@@ -1,4 +1,5 @@
 ﻿using Argos.Models.BaseTypes;
+using Argos.Models.Finances;
 using Argos.Models.Operative;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,6 +18,8 @@ namespace Argos.Models.Catalog
         public string BusinessName { get; set; }
 
         public ICollection<Account> Account { get; set; }
+
+        public ICollection<Sale> Sale { get; set; }
 
     }
 }

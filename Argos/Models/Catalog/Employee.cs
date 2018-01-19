@@ -1,6 +1,6 @@
 ﻿using Argos.Models.BaseTypes;
 using Argos.Models.Config;
-using Argos.Models.Operative;
+using Argos.Models.Finances;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,7 +25,7 @@ namespace Argos.Models.Catalog
         #region Navigation Properties
         public virtual JobPosition JobPosition { get; set; }
 
-        public ICollection<Account> Account { get; set; }
+        public ICollection<Sale> Sale { get; set; }
 
         #endregion
     }

@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Argos.Models.Config
 {
-    [Table("Policy", Schema = "Config")]
-    public class Policy:AuditableEntity,ISelectable
+    [Table("PolicyType", Schema = "Config")]
+    public class PolicyType:AuditableEntity,ISelectable
     {
-        public int PolicyId { get; set; }
+        public int PolicyTypeId { get; set; }
 
         [Required]
         [MaxLength(30)]
@@ -26,13 +26,24 @@ namespace Argos.Models.Config
         [Display(Name = "Tolerancia")]
         public int PaymentTolerance { get; set; }
 
+        [Required]
+        [Display(Name = "Periodo mantto")]
+        public int MaintenancePeriod { get; set; }
 
-        public ICollection<Account> Account { get; set; }
+        [Required]
+        [Display(Name = "Tolerancia mantto")]
+        public int MaintenanceTolerance { get; set; }
+
+        [Required]
+        [Display(Name = "Activo")]
+        public bool IsActive { get; set; }
+
+        public AccountType AccountType { get; set; }
 
         [NotMapped]
         public int Id
         {
-            get { return PolicyId; }
+            get { return PolicyTypeId; }
         }
     }
 }
