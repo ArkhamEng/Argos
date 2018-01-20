@@ -7,18 +7,11 @@ namespace Argos.Models.BaseTypes
 {
     public abstract class Person:LocatableEntity
     {
-        [Display(Name = "Clave")]
-        [Required]
-        [MaxLength(10)]
-        [Index("Unq_Code", IsUnique = true)]
-        public string Code { get; set; }
-
         [Display(Name = "Nombre")]
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
 
-      
         //Federal Taxpayer register
         [Display(Name = "R.F.C.")]
         [MaxLength(15)]

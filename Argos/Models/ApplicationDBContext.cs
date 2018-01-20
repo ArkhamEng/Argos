@@ -15,7 +15,7 @@ namespace Argos.Models
 
         public DbSet<City> Cities { get; set; }
 
-        public DbSet<AccountType> ContractTypes { get; set; }
+        public DbSet<ServiceType> ContractTypes { get; set; }
 
         public ApplicationDbContext()
             : base("SystemDB", throwIfV1Schema: false)

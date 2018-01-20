@@ -1,4 +1,5 @@
-﻿using Argos.Models.Operative;
+﻿using Argos.Models.Catalog;
+using Argos.Models.Operative;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,11 +14,9 @@ namespace Argos.Models.Finances
     {
         public int SaleDetailId { get; set; }
 
-        public int? AccountId { get; set; }
+        public int? ServiceId { get; set; }
 
-        public int? ExtensionId { get; set; }
-
-        public int? PolicyId { get; set; }
+        public int? ProductId { get; set; }
 
 
         public double Quantity { get; set; }
@@ -34,11 +33,11 @@ namespace Argos.Models.Finances
 
         public virtual Sale Sale { get; set; }
 
-        public virtual Account Account { get; set; }
+        public virtual Service Service { get; set; }
 
-        public virtual Extension Extension { get; set; }
+        public virtual Product Product { get; set; }
 
-        public virtual Policy Policy { get; set; }
+
         #endregion
     }
 }

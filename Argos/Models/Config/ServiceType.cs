@@ -1,16 +1,15 @@
 ﻿using Argos.Models.BaseTypes;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System;
 using Argos.Models.Operative;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Argos.Models.Config
 {
-    [Table("AccountType", Schema = "Config")]
-    public class AccountType:AuditableEntity,ISelectable
+    [Table("ServiceType", Schema = "Config")]
+    public class ServiceType:AuditableEntity,ISelectable
     {
-        public int AccountTypeId { get; set; }
+        public int ServiceTypeId { get; set; }
 
         [Required]
         [MaxLength(15)]
@@ -31,13 +30,16 @@ namespace Argos.Models.Config
         [Display(Name = "Activo")]
         public bool IsActive { get; set; }
 
-        public ICollection<Account> Account { get; set; }
-
-        public ICollection<PolicyType> PolicyTypes { get; set; }
-
+        [NotMapped]
         public int Id
         {
-           get { return this.AccountTypeId; }
+            get { return this.ServiceTypeId; }
         }
+
+        #region Navigation Properties
+        public ICollection<Service> Service { get; set; }
+
+        #endregion
+
     }
 }

@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Argos.Models.Finances
 {
-
     [Table("Sale", Schema = "Finances")]
     public class Sale:AuditableEntity
     {
@@ -22,6 +21,8 @@ namespace Argos.Models.Finances
 
         public DateTime SaleDate { get; set; }
 
+        [Display(Name = "Total")]
+        [DataType(DataType.Currency)]
         public double TotalAmount { get; set; }
 
         #region Navigation Properties

@@ -8,11 +8,11 @@ using System.Web;
 
 namespace Argos.Models.Operative
 {
-    [Table("Policy", Schema = "Operative")]
-    public class Policy:AuditableEntity
+    [Table("PolicyDetail", Schema = "Operative")]
+    public class PolicyDetail:AuditableEntity
     {
-        [ForeignKey("Account")]
-        public int PolicyId { get; set; }
+        [ForeignKey("Service")]
+        public int PolicyDetailId { get; set; }
 
         [Display(Name ="Precio")]
         [DataType(DataType.Currency)]
@@ -36,9 +36,8 @@ namespace Argos.Models.Operative
 
         #region Navigation Properties
 
-        public virtual  Account Account { get; set; }
+        public virtual  Service Service { get; set; }
 
-        public ICollection<SchedulePayment> SchedulePayments { get; set; }
         #endregion
     }
 }

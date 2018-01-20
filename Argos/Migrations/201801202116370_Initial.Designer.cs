@@ -13,7 +13,7 @@ namespace Argos.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201801190618057_Initial"; }
+            get { return "201801202116370_Initial"; }
         }
         
         string IMigrationMetadata.Source

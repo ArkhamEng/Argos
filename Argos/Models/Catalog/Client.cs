@@ -17,7 +17,7 @@ namespace Argos.Models.Catalog
         [Index("Unq_BusinessName", IsUnique = true)]
         public string BusinessName { get; set; }
 
-        public ICollection<Account> Account { get; set; }
+        public ICollection<Service> Account { get; set; }
 
         public ICollection<Sale> Sale { get; set; }
 

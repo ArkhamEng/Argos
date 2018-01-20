@@ -52,12 +52,26 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -167,64 +181,86 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CatalogsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201801190618057_Initial.cs" />
-    <Compile Include="Migrations\201801190618057_Initial.Designer.cs">
-      <DependentUpon>201801190618057_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801190640235_AddClaims.cs" />
-    <Compile Include="Migrations\201801190640235_AddClaims.Designer.cs">
-      <DependentUpon>201801190640235_AddClaims.cs</DependentUpon>
+    <Compile Include="Migrations\201801202116370_Initial.cs" />
+    <Compile Include="Migrations\201801202116370_Initial.Designer.cs">
+      <DependentUpon>201801202116370_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\BaseTypes\AuditableEntity.cs" />
     <Compile Include="Models\BaseTypes\LocalizableEntity.cs" />
+    <Compile Include="Models\BaseTypes\Status.cs" />
+    <Compile Include="Models\Catalog\Product.cs" />
+    <Compile Include="Models\Catalog\ProductType.cs" />
     <Compile Include="Models\Config\Branch.cs" />
     <Compile Include="Models\Config\City.cs" />
     <Compile Include="Models\Catalog\Client.cs" />
     <Compile Include="Models\Finances\SaleDetail.cs" />
-    <Compile Include="Models\Operative\SchedulePayment.cs" />
     <Compile Include="Models\Finances\Commissions.cs" />
-    <Compile Include="Models\Operative\Account.cs" />
-    <Compile Include="Models\Config\AccountType.cs" />
+    <Compile Include="Models\Finances\SaleStatus.cs" />
+    <Compile Include="Models\Operative\OperationType.cs" />
+    <Compile Include="Models\Operative\Service.cs" />
+    <Compile Include="Models\Config\ServiceType.cs" />
     <Compile Include="Models\Catalog\Employee.cs" />
     <Compile Include="Models\BaseTypes\Person.cs" />
     <Compile Include="Models\BaseTypes\ISelectable.cs" />
     <Compile Include="Models\Config\JobPosition.cs" />
-    <Compile Include="Models\Config\PolicyType.cs" />
     <Compile Include="Models\Catalog\Provider.cs" />
     <Compile Include="Models\Config\State.cs" />
     <Compile Include="Models\Enums\AccountStatus.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Finances\Sale.cs" />
-    <Compile Include="Models\Operative\Claim.cs" />
-    <Compile Include="Models\Operative\Extension.cs" />
-    <Compile Include="Models\Operative\Policy.cs" />
-    <Compile Include="Models\Operative\ScheduleService.cs" />
+    <Compile Include="Models\Operative\Operation.cs" />
+    <Compile Include="Models\Operative\PolicyDetail.cs" />
+    <Compile Include="Models\Operative\ServiceAddress.cs" />
+    <Compile Include="Models\Operative\ServiceAttachment.cs" />
+    <Compile Include="Models\Operative\ServiceStatus.cs" />
+    <Compile Include="Models\Security\EmployeeUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-rtl.css" />
+    <Content Include="Content\bootstrap-rtl.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\sb-admin-rtl.css" />
+    <Content Include="Content\sb-admin.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.minOLD.js" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-3.2.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-3.2.1.js" />
+    <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.2.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -233,6 +269,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -243,7 +280,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Layout_Original.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -267,6 +304,8 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_SideMenu.cshtml" />
+    <Content Include="Views\Shared\_TopMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -277,14 +316,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801190618057_Initial.resx">
-      <DependentUpon>201801190618057_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801190640235_AddClaims.resx">
-      <DependentUpon>201801190640235_AddClaims.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201801202116370_Initial.resx">
+      <DependentUpon>201801202116370_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
