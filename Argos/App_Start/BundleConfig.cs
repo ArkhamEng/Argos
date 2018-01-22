@@ -13,7 +13,8 @@ namespace Argos
                         "~/Scripts/jquery-3.2.1.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                        "~/Scripts/jquery.validate.js",
+                        "~/Scripts/jquery.validate.unobtrusive.min.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -28,6 +29,11 @@ namespace Argos
                       "~/Content/bootstrap.min.css",
                       "~/Content/sb-admin.css",
                       "~/Content/font-awesome.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/custom").Include(
+                       "~/AppScripts/Global.js"));
+
+           
         }
     }
 }

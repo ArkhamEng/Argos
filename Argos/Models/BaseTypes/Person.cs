@@ -19,7 +19,7 @@ namespace Argos.Models.BaseTypes
         public string FTR { get; set; }
 
         [Display(Name = "Teléfono")]
-        [DataType(DataType.PhoneNumber)]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "El formato admitido es (229) 123 45 67")]
         [MaxLength(15)]
         [Index("Unq_Phone", IsUnique = true)]
         public string Phone { get; set; }

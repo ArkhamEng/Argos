@@ -1,0 +1,140 @@
+﻿@model Argos.Models.Catalog.Client
+
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<form id="ClientForm">
+  
+   
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+                <div class="form-group col-md-8">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.FTR, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                        @Html.EditorFor(model => model.FTR, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.FTR, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.BusinessName, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-black-tie"></i></span>
+                        @Html.EditorFor(model => model.BusinessName, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.BusinessName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-md-8">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-at"></i></span>
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.City.StateId, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                        @Html.DropDownList("StateId", (SelectList)ViewBag.States, "", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.City.StateId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.CityId, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                        @Html.DropDownListFor(model => model.CityId, (SelectList)ViewBag.Cities, "", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.City.CityId, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-8">
+                    @Html.LabelFor(model => model.Street, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
+                        @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-md-2">
+                    @Html.LabelFor(model => model.OutNumber, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                        @Html.EditorFor(model => model.OutNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.OutNumber, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-2 ">
+                    @Html.LabelFor(model => model.InNumber, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                        @Html.EditorFor(model => model.InNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.InNumber, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-md-8">
+                    @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                        @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+                        @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m=> m.InsUser)
+    @Html.HiddenFor(m => m.InsDate)
+    @Html.HiddenFor(m => m.UpdUser)
+    @Html.HiddenFor(m => m.UpdDate)
+    @Html.HiddenFor(m => m.ClientId)
+    
+</form>
+
+<script>
+    $(document).ready(function ()
+    {
+        SetCascade("#StateId", "#CityId", '@Url.Action("GetCities","Configuration")');
+
+        var form = $("#ClientForm");
+        form.validate();
+    });
+</script>

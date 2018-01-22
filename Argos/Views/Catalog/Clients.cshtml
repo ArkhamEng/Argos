@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Argos.Models.Catalog.Client>
+
+@{
+    ViewBag.Title = "Clients";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<hr />
+<div class="panel panel-danger">
+    <div class="panel-body">
+        <div class="col-md-11">
+            <div class="input-group ">
+                @Html.TextBox("txtFtr", "", htmlAttributes: new
+           {
+               @class = "form-control",
+               placeholder = "RFC",
+               style = "width:30%"
+           })
+                @Html.TextBox("txtName", "", htmlAttributes: new
+           {
+               @class = "form-control",
+               placeholder = "Clave o nombre del cliente",
+               style = "width:70%"
+           })
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" id="btnSearch" onclick="SearchClients()">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <u>B</u>uscar
+                    </button>
+                    <button type="button" class="btn btn-success" id="btnCreate" onclick="BeginAddClient()">
+                        <span class="glyphicon  glyphicon-file"></span>
+                        <u>N</u>uevo
+                    </button>
+                </span>
+            </div>
+        </div>
+        <br /><br /><br />
+        <div class="col-md-10">
+            <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+                    @Html.DropDownList("ddlStateId", (SelectList)ViewBag.States, "Estado / Entidad", new { @class = "form-control" })
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+                    @Html.DropDownList("ddlCityId", (SelectList)ViewBag.Cities, "Ciudad / Municipio", new { @class = "form-control" })
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" id="btnClear">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                            <u>L</u>impiar
+                        </button>
+                    </span>
+                </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-danger">
+    <div id="divClientList" class="panel-body">
+        @Html.Partial("_ClientList", Model)
+    </div>
+</div>
+
+<script>
+    $(document).ready(function ()
+    {
+        SetCascade('#ddlStateId', '#ddlCityId', '@Url.Action("GetCities","Configuration")')
+    });
+  
+    function BeginAddClient()
+    {
+        ExecuteAjax('@Url.Action("BeginAddClient", "Catalog")', {}, function (response)
+        {
+            ShowModal('<span class="fa fa-user-o"></span>Creación de Cliente', response, SaveClient, CancelSave, true);
+        });
+    }
+
+    function SaveClient()
+    {
+        var form = $("#ClientForm");
+
+        if (!form.valid())
+            return;
+
+        var client = {
+            Name: $("#Name").val(), BusinessName: $("#BusinessName").val(), FTR: $("#FTR").val(), Street: $("#Street").val(),
+            InNumber: $("#InNumber").val(), OutNumber: $("#OutNumber").val(), Location: $("#Location").val(), Email: $("#Email").val(),
+            ZipCode: $("#ZipCode").val(), Phone: $("#Phone").val(), InsUser: $("#InsUser").val(), InsDate: $("#InsDate").val(),
+            UpdDate: $("#UpdDate").val(), UpdUser: $("#UpdUser").val(), ClientId: $("#ClientId").val(), CityId: $("#CityId").val()
+        }
+         
+        ExecuteAjax('@Url.Action("AddClient")', { client: client }, function (response)
+        {
+            ReplaceModal('<span class="fa fa-user-o"></span> Edición de Cliente', response);
+        });
+       
+    }
+    function CancelSave()
+    {
+        console.log("Cancelar Guardar");
+    }
+
+    function SearchClients()
+    {
+        ShowLoading('static');
+
+        var data = {   ftr: $("#txtFtr").val(), name: $("#txtName").val(),
+            stateId: $("#ddlStateId").val(), cityId: $("#ddlCityId").val()
+        };
+
+        ExecuteAjax('@Url.Action("SearchClients")', data, function (response)
+        {
+            $("#divClientList").html(response);
+            HideLoading();
+        });
+    }
+</script>
