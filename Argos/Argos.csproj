@@ -252,6 +252,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\loading.gif" />
+    <Content Include="Images\question.png" />
     <Content Include="Images\sinimagen.jpg" />
     <Content Include="Images\success.png" />
     <Content Include="Images\warning.png" />
@@ -356,6 +357,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\_Loading.cshtml" />
+    <Content Include="Views\Shared\_Confirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

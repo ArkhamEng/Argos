@@ -54,19 +54,19 @@ function Paginate(table, iniRecords,allowSearch)
 //SHOWS MODAL WITH CUSTON FUNCTIONS AND CONTENT
 function ShowModal(header, html, confirmCallBack, cancelCallBack, backdrop)
 {
+    $("#ModalLoading").children().hide();
     $("#SiteModalHeader").html(header);
 
     $("#SiteModalBody").html(html);
 
     $("#SiteModalConfirm").unbind('click').click(function (e)
     {
-        console.log("Confirm Click")
         confirmCallBack();
     });
 
     $("#SiteModalCancel").unbind('click').click(function (e)
     {
-        cancelCallBack();
+        HideModal(true, cancelCallBack);
     });
 
     $("#SiteModal").modal({ backdrop: backdrop });
@@ -80,18 +80,23 @@ function ReplaceModal(header, html)
     $("#SiteModalBody").html(html);  
 }
 
-//HIDE MODAL WITH OPTIONAL CONTENT CLEAN UP
-function HideModal(clearContent)
+
+function HideModal(cleaUp, callback)
 {
-    if(clearContent)
+    $('#SiteModal').off('hidden').on('hidden.bs.modal', function (e)
     {
-        $("#SiteModalHeader").html('');
+        callback();
 
-        $("#SiteModalBody").html('');
-    }
+        if (cleaUp)
+        {
+            $("#SiteModalHeader").html('');
 
+            $("#SiteModalBody").html('');
+        }
+    });
     $("#SiteModal").modal('hide');
 }
+
 
 //DROP DOWN CASCADE
 function SetCascade(ddlParent, ddlChild, url)
@@ -126,11 +131,65 @@ function SetCascade(ddlParent, ddlChild, url)
     });
 }
 
+
+//LOADING CONTROL FUNCTIONS
 function ShowLoading(backdrop)
 {
     $("#Loading").modal({ backdrop: backdrop });
 }
 
-function HideLoading() {
+function HideLoading(callback)
+{
+    $('#Loading').off('hidden').on('hidden.bs.modal', function (e)
+    {
+        callback();
+    });
     $("#Loading").modal('hide');
+}
+
+//Loading In Modal
+
+function ShowModLoading() {
+    $("#ModalContent").children().hide();
+    $("#ModalLoading").children().show();
+}
+
+function HideModLoading() {
+    $("#ModalLoading").children().hide();
+    $("#ModalContent").children().show();
+}
+
+//CONFIRM CONTROL FUNCTIONS
+function ShowConfirm(textHeader, textBody, confirmCallBack, cancelCallBack, backdrop)
+{
+    $("#ConfirmHeader").text(textHeader);
+
+    $("#ConfirmBody").text(textBody);
+
+    $("#btnConfirm").unbind('click').click(function (e)
+    {
+        confirmCallBack();
+    });
+
+    $("#btnCancel").unbind('click').click(function (e)
+    {
+        HideConfirm(true, cancelCallBack);
+    });
+
+    $("#ModalConfirm").modal({ backdrop: backdrop });
+}
+
+function HideConfirm(cleaUp,callback)
+{
+    $('#ModalConfirm').off('hidden').on('hidden.bs.modal', function (e)
+    {
+        callback();
+
+        if (cleaUp) {
+            $("#ConfirmHeader").text('');
+
+            $("#ConfirmBody").html('');
+        }
+    });
+    $("#ModalConfirm").modal('hide');
 }

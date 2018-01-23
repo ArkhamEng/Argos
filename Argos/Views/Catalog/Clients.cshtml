@@ -37,17 +37,17 @@
         <br /><br /><br />
         <div class="col-md-10">
             <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-                    @Html.DropDownList("ddlStateId", (SelectList)ViewBag.States, "Estado / Entidad", new { @class = "form-control" })
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-                    @Html.DropDownList("ddlCityId", (SelectList)ViewBag.Cities, "Ciudad / Municipio", new { @class = "form-control" })
-                    <span class="input-group-btn">
-                        <button class="btn btn-info" type="button" id="btnClear">
-                            <span class="glyphicon glyphicon-refresh"></span>
-                            <u>L</u>impiar
-                        </button>
-                    </span>
-                </div>
+                <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+                @Html.DropDownList("ddlStateId", (SelectList)ViewBag.States, "Estado / Entidad", new { @class = "form-control" })
+                <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+                @Html.DropDownList("ddlCityId", (SelectList)ViewBag.Cities, "Ciudad / Municipio", new { @class = "form-control" })
+                <span class="input-group-btn">
+                    <button class="btn btn-info" type="button" id="btnClear">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                        <u>L</u>impiar
+                    </button>
+                </span>
+            </div>
         </div>
     </div>
 </div>
@@ -59,25 +59,28 @@
 </div>
 
 <script>
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         SetCascade('#ddlStateId', '#ddlCityId', '@Url.Action("GetCities","Configuration")')
     });
-  
-    function BeginAddClient()
-    {
-        ExecuteAjax('@Url.Action("BeginAddClient", "Catalog")', {}, function (response)
-        {
-            ShowModal('<span class="fa fa-user-o"></span>Creación de Cliente', response, SaveClient, CancelSave, true);
+
+    function BeginAddClient() {
+        ShowLoading(true);
+
+        ExecuteAjax('@Url.Action("BeginAddClient", "Catalog")', {}, function (response) {
+            HideLoading(function () {
+                ShowModal('<span class="fa fa-user-o"></span>Creación de Cliente', response, AddClient, function () { }, 'static');
+            });
         });
     }
 
-    function SaveClient()
+    function AddClient()
     {
         var form = $("#ClientForm");
 
         if (!form.valid())
             return;
+
+        ShowModLoading();
 
         var client = {
             Name: $("#Name").val(), BusinessName: $("#BusinessName").val(), FTR: $("#FTR").val(), Street: $("#Street").val(),
@@ -85,30 +88,27 @@
             ZipCode: $("#ZipCode").val(), Phone: $("#Phone").val(), InsUser: $("#InsUser").val(), InsDate: $("#InsDate").val(),
             UpdDate: $("#UpdDate").val(), UpdUser: $("#UpdUser").val(), ClientId: $("#ClientId").val(), CityId: $("#CityId").val()
         }
-         
-        ExecuteAjax('@Url.Action("AddClient")', { client: client }, function (response)
-        {
+
+
+        ExecuteAjax('@Url.Action("AddClient")', { client: client }, function (response) {
             ReplaceModal('<span class="fa fa-user-o"></span> Edición de Cliente', response);
+            HideModLoading();
         });
-       
-    }
-    function CancelSave()
-    {
-        console.log("Cancelar Guardar");
     }
 
-    function SearchClients()
-    {
+    function SearchClients() {
         ShowLoading('static');
 
-        var data = {   ftr: $("#txtFtr").val(), name: $("#txtName").val(),
+        var data = {
+            ftr: $("#txtFtr").val(), name: $("#txtName").val(),
             stateId: $("#ddlStateId").val(), cityId: $("#ddlCityId").val()
         };
 
-        ExecuteAjax('@Url.Action("SearchClients")', data, function (response)
-        {
-            $("#divClientList").html(response);
-            HideLoading();
+        ExecuteAjax('@Url.Action("SearchClients")', data, function (response) {
+            HideLoading(function ()
+            {
+                $("#divClientList").html(response);
+            });
         });
     }
 </script>

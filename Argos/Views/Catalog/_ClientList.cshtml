@@ -38,16 +38,38 @@
                 </td>
 
                 <td class="col-md-1">
-                    @Html.ActionLink("Edit", "Edit", new { id=item.ClientId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.ClientId })
+                    <button class="btn btn-danger" type="button" onclick="BeginDelete('@item.ClientId','@item.Name')">
+                        <span class="fa fa-trash"></span>
+                    </button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 <script>
+    var idClient = 0;
+
     $(document).ready(function()
     {
         Paginate("#TbClientList", 5,false)
     });
+
+    function BeginDelete(id,name)
+    {
+        console.log("Id{0} Name{1}",id,name);
+        idClient = id;
+        var hdr ="Eliminar cliente!";
+        var body = "Esta seguro que deseas eliminar el cliente "+name;
+        ShowConfirm(hdr,body,DeleteClient,OnDeleteCanceled,'static');
+    }
+
+    function DeleteClient()
+    {
+        //algo
+    }
+
+    function OnDeleteCanceled()
+    {
+        console.log("Confirm Cerrado");
+    }
 </script>
