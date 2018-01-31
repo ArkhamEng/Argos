@@ -51,6 +51,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -189,6 +190,7 @@
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -196,10 +198,19 @@
     <Compile Include="Migrations\201801202116370_Initial.Designer.cs">
       <DependentUpon>201801202116370_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801250425333_PersonActive.cs" />
+    <Compile Include="Migrations\201801250425333_PersonActive.Designer.cs">
+      <DependentUpon>201801250425333_PersonActive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801250850007_NssEmployee.cs" />
+    <Compile Include="Migrations\201801250850007_NssEmployee.Designer.cs">
+      <DependentUpon>201801250850007_NssEmployee.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\BaseTypes\AuditableEntity.cs" />
+    <Compile Include="Models\BaseTypes\JResponse.cs" />
     <Compile Include="Models\BaseTypes\LocalizableEntity.cs" />
     <Compile Include="Models\BaseTypes\Status.cs" />
     <Compile Include="Models\Catalog\Product.cs" />
@@ -221,7 +232,7 @@
     <Compile Include="Models\Config\State.cs" />
     <Compile Include="Models\Enums\AccountStatus.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\Finances\Sale.cs" />
     <Compile Include="Models\Operative\Operation.cs" />
     <Compile Include="Models\Operative\PolicyDetail.cs" />
@@ -306,7 +317,7 @@
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_MainLayout.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -317,7 +328,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout_Original.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -327,8 +337,7 @@
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\LoginOld.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
@@ -357,7 +366,15 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\_Loading.cshtml" />
-    <Content Include="Views\Shared\_Confirm.cshtml" />
+    <Content Include="Views\Shared\_Message.cshtml" />
+    <Content Include="Views\Catalog\_EmployeeEdit.cshtml" />
+    <Content Include="Views\Catalog\_EmployeeList.cshtml" />
+    <Content Include="Views\Catalog\Employees.cshtml" />
+    <Content Include="Views\Shared\_RegistUser.cshtml" />
+    <Content Include="Views\Security\Users.cshtml" />
+    <Content Include="Views\Security\_UserList.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -370,6 +387,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201801202116370_Initial.resx">
       <DependentUpon>201801202116370_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801250425333_PersonActive.resx">
+      <DependentUpon>201801250425333_PersonActive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801250850007_NssEmployee.resx">
+      <DependentUpon>201801250850007_NssEmployee.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

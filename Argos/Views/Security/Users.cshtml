@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Argos.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<hr />
+<div class="panel panel-danger">
+    <div class="panel-body">
+        <div class="col-md-11">
+            <div class="input-group ">
+                @Html.TextBox("txtFtr", "", htmlAttributes: new
+           {
+               @class = "form-control",
+               placeholder = "Email",
+               style = "width:60%"
+           })
+                @Html.TextBox("txtName", "", htmlAttributes: new
+           {
+               @class = "form-control",
+               placeholder = "Nombre de Usuario",
+               style = "width:40%"
+           })
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" id="btnSearch" onclick="SearchUsers()">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <u>B</u>uscar
+                    </button>
+                    <button type="button" class="btn btn-success" id="btnCreate" onclick="BeginAddUsers()">
+                        <span class="glyphicon  glyphicon-file"></span>
+                        <u>N</u>uevo
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div id="divUserList" class="panel-body" style="min-height:300px">
+        @Html.Partial("_UserList", Model)
+    </div>
+</div>
+

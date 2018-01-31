@@ -7,6 +7,6 @@ namespace Argos.Support
 {
     public static class Common
     {
-
+        public const string DefaultPassword = "default";
     }
 }

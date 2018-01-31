@@ -1,9 +1,9 @@
-﻿@model Argos.Models.Catalog.Client
+﻿@model Argos.Models.Catalog.Employee
 
 
 @Scripts.Render("~/bundles/jqueryval")
 
-<form id="ClientForm">
+<form id="EmployeeForm">
   
    
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -28,13 +28,31 @@
                     </div>
                     @Html.ValidationMessageFor(model => model.FTR, "", new { @class = "text-danger" })
                 </div>
-                <div class="form-group col-md-12">
-                    @Html.LabelFor(model => model.BusinessName, htmlAttributes: new { @class = "control-label" })
+                <div class="form-group col-md-5">
+                    @Html.LabelFor(model => model.JobPositionId, htmlAttributes: new { @class = "control-label" })
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-black-tie"></i></span>
-                        @Html.EditorFor(model => model.BusinessName, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
+                        @Html.DropDownListFor(model => model.JobPositionId, (SelectList)ViewBag.JobPositions, "", htmlAttributes: new { @class = "form-control" })
                     </div>
-                    @Html.ValidationMessageFor(model => model.BusinessName, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.JobPositionId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.Commission, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-percent"></i></span>
+                        @Html.EditorFor(model => model.Commission, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Commission, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.SSN, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-medkit"></i></span>
+                        @Html.EditorFor(model => model.SSN, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.SSN, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group col-md-8">
@@ -125,7 +143,7 @@
     @Html.HiddenFor(m => m.InsDate)
     @Html.HiddenFor(m => m.UpdUser)
     @Html.HiddenFor(m => m.UpdDate)
-    @Html.HiddenFor(m => m.ClientId)
+    @Html.HiddenFor(m => m.EmployeeId)
     @Html.HiddenFor(m => m.IsActive)
     
 </form>
@@ -135,7 +153,7 @@
     {
         SetCascade("#StateId", "#CityId", '@Url.Action("GetCities","Configuration")');
 
-        var form = $("#ClientForm");
+        var form = $("#EmployeeForm");
         form.validate();
     });
 

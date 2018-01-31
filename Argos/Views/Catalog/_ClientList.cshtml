@@ -20,11 +20,11 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr ondblclick="BeginUpdateClient(@item.ClientId)">
                 <td class="col-md-4">
-                    <span class="fa fa-id-badge control-label"></span>   @Html.DisplayFor(modelItem => item.FTR)<br />
                     <span class="fa fa-user control-label"></span>   @Html.DisplayFor(modelItem => item.Name)<br />
-                    <span class="fa fa-black-tie control-label"></span>   @Html.DisplayFor(modelItem => item.BusinessName)
+                    <span class="fa fa-black-tie control-label"></span>   @Html.DisplayFor(modelItem => item.BusinessName)<br />
+                    <span class="fa fa-id-badge control-label"></span>   @Html.DisplayFor(modelItem => item.FTR)
                 </td>
                 <td class="col-md-4">
                     <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
@@ -59,15 +59,30 @@
         console.log("Id{0} Name{1}",id,name);
         idClient = id;
         var hdr ="Eliminar cliente!";
-        var body = "Esta seguro que deseas eliminar el cliente "+name;
-        ShowConfirm(hdr,body,DeleteClient,OnDeleteCanceled,'static');
+        var body = "Esta seguro que deseas eliminar el cliente " + name;
+        ShowMessage(hdr, body, 'confirm', DeleteClient, OnDeleteCanceled, 'static')
+        
     }
 
     function DeleteClient()
     {
-        //algo
+        console.log("Deleting client");
+        ExecuteAjax('@Url.Action("DeleteClient","Catalog")', { id: idClient }, function (response)
+        {
+            HideLoading(function ()
+            {
+                if (response.Result == 'success')
+                {
+                    ShowMessage(response.Header, response.Body, response.Result, null, SearchClients, 'static');
+                }
+                else {
+                    ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
+                }
+            });
+        });
     }
 
+  
     function OnDeleteCanceled()
     {
         console.log("Confirm Cerrado");

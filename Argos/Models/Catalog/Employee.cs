@@ -19,7 +19,8 @@ namespace Argos.Models.Catalog
         public int JobPositionId { get; set; }
 
         [Display(Name="NSS")]
-        public int SSN { get; set; }
+        [MaxLength(11,ErrorMessage ="El número de seguro social no debe exceder 11 digitos")]
+        public string SSN { get; set; }
 
         [Display(Name ="% Comisión")]
         [Range(0,100,ErrorMessage ="El porcentaje de comisión debe ser un valor entre 0 y 100")]

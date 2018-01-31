@@ -3,11 +3,12 @@ using Argos.Models.Catalog;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 namespace Argos.Models.Config
 {
     [Table("JobPosition", Schema = "Config")]
-    public class JobPosition : AuditableEntity
+    public class JobPosition : AuditableEntity,ISelectable
     {
         public int JobPositionId { get; set; }
 
@@ -19,5 +20,11 @@ namespace Argos.Models.Config
         public string Description { get; set; }
 
         public ICollection<Employee> Employees { get; set; }
+
+        [NotMapped]
+        public int Id
+        {
+            get { return this.JobPositionId; }
+        }
     }
 }

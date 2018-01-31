@@ -1,5 +1,6 @@
 ﻿using Argos.Models.Catalog;
 using Argos.Models.Config;
+using Argos.Models.Security;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 
@@ -9,11 +10,17 @@ namespace Argos.Models
     {
         public DbSet<Client> Clients { get; set; }
 
-        public DbSet<Employee> Employee { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         public DbSet<State> States { get; set; }
 
         public DbSet<City> Cities { get; set; }
+
+        public DbSet<JobPosition> JobPositions { get; set; }
+
+
+
+        public DbSet<EmployeeUser> EmployeeUsers { get; set; }
 
         public DbSet<ServiceType> ContractTypes { get; set; }
 

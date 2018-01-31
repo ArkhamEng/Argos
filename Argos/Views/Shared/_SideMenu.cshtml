@@ -1,6 +1,26 @@
 ﻿   <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
+        <li id="liClients">
+            <a href='@Url.Action("Clients","Catalog")'><i class="fa fa-fw fa-address-book"></i> Clientes</a>
+        </li>
+        <li id="liEmployees">
+            <a href='@Url.Action("Employees","Catalog")'><i class="fa fa-fw  fa-id-card-o"></i> Empleados</a>
+        </li>
+        <li>
+            <a id="aCatalog" href="javascript:;" data-toggle="collapse" data-target="#ulCatalog">
+                <i class="fa fa-fw fa-book"></i> Catálogos
+                <i class="fa fa-fw fa-caret-down"></i>
+            </a>
+            <ul id="ulCatalog" class="collapse">
+                <li>
+                    <a href='@Url.Action("Clients","Catalog")'><i class="fa fa-fw fa-address-book"></i> Clientes</a>
+                </li>
+                <li >
+                    <a href='@Url.Action("Employees","Catalog")'><i class="fa fa-fw  fa-id-card-o"></i> Empleados</a>
+                </li>
+            </ul>
+        </li>
         <li>
             <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
         </li>
@@ -19,18 +39,8 @@
         <li>
             <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
         </li>
+
         <li>
-            <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
-            <ul id="demo" class="collapse">
-                <li>
-                    <a href="#">Dropdown Item</a>
-                </li>
-                <li>
-                    <a href="#">Dropdown Item</a>
-                </li>
-            </ul>
-        </li>
-        <li class="active">
             <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
         </li>
         <li>

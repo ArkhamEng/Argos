@@ -4,38 +4,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Argos.Support;
 
 namespace Argos.Controllers
 {
-    public class ConfigurationController : Controller
+    public class SecurityController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
-        // GET: Configuration
-        public ActionResult Index()
+        ApplicationDbContext db = new ApplicationDbContext();
+        // GET: Security
+        public ActionResult Users()
         {
-            return View();
+            var model = new List<ApplicationUser>();
+            
+            return View(model);
         }
 
-        #region Common Methods
-        [HttpPost]
-        public JsonResult GetCities(int id)
+        // GET: Security/Details/5
+        public ActionResult BeginAddUser(int id)
         {
-            var cities = db.Cities.Where(c => c.StateId == id).ToSelectList();
-
-           return Json(cities);
+            var model         = new ApplicationUser();
+            ViewBag.Employees = db.Employees.Where(e => e.EmployeeUsers == null).ToList();
+            return View(model);
         }
-    
-        #endregion
 
-        // GET: Configuration/Create
+        // GET: Security/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Configuration/Create
+        // POST: Security/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -51,13 +48,13 @@ namespace Argos.Controllers
             }
         }
 
-        // GET: Configuration/Edit/5
+        // GET: Security/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Configuration/Edit/5
+        // POST: Security/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -73,13 +70,13 @@ namespace Argos.Controllers
             }
         }
 
-        // GET: Configuration/Delete/5
+        // GET: Security/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Configuration/Delete/5
+        // POST: Security/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -93,6 +90,15 @@ namespace Argos.Controllers
             {
                 return View();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
