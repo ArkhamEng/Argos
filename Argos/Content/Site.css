@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    -webkit-print-color-adjust: exact;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -20,5 +21,308 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 100%;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+/*****PANEL HEADING OVERRIDE*****/
+.panel-warning > .panel-heading {
+    color: #fff;
+    background-color: #ffbb33;
+    border-color: #ffbb33;
+}
+
+.panel-success > .panel-heading {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+}
+
+.panel-danger > .panel-heading {
+    color: #fff;
+    background-color: #c9302c;
+    border-color: #c9302c;
+}
+
+
+.row-bordered:after {
+    content: "";
+    display: block;
+    border-top: 1px solid #ccc;
+}
+/*************TABLE ELEMENT CENTERED********************/
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+/***************DATA TABLES**********************/
+table.TablePrimary {
+    width: 100%;
+    clear: both;
+}
+
+    table.TablePrimary thead th {
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        border-color: #337ab7;
+    }
+
+.dataTables_length {
+    background-color: #337ab7;
+    color: silver !important;
+    width: 30%;
+    float: left !important;
+    height: 40px !important;
+    padding-top: 8px;
+    padding-left: 16px;
+    display: none;
+}
+
+
+.dataTables_filter {
+    background-color: #337ab7;
+    width: 70%;
+    float: right !important;
+    height: 40px !important;
+    padding-top: 8px;
+    padding-right: 10px;
+    color: silver !important;
+    display: none;
+}
+
+.dataTables_info {
+    padding: 9px 6px 6px 6px;
+    float: left;
+    background-color: #f5f5f5;
+    width: 50%;
+    height: 40px !important;
+}
+
+.dataTables_paginate {
+    float: left;
+    font-weight: 300 !important;
+    background-color: #f5f5f5;
+    width: 50%;
+    height: 40px !important;
+}
+
+html[xmlns] .dataTables_wrapper {
+    display: block;
+}
+
+
+.dataTables_wrapper:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.dataTables_wrapper {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    height: 100%;
+    /*border-color: #337ab7;*/
+}
+
+    .dataTables_wrapper > .TablePrimary thead th {
+        border-color: #337ab7;
+        width: 100%;
+    }
+
+table.TablePrimary tbody th {
+    text-align: left;
+    background: #91c5d4;
+    border-color: #337ab7;
+}
+
+/********************************************************/
+/*********************SIDE BAR***************************/
+/********************************************************/
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 200px;
+    max-width: 200px;
+    min-height: 100vh;
+}
+
+#sidebar.active {
+        margin-left: -200px;
+}
+
+
+a[aria-expanded="false"]::before, a[aria-expanded="true"]::before 
+{
+    content: '\e259';
+    display: block;
+    position: absolute;
+    right: 20px;
+    font-family: 'Glyphicons Halflings';
+    font-size: 0.6em;
+}
+
+a[aria-expanded="true"]::before {
+    content: '\e260';
+}
+
+@media (max-width: 768px) 
+{
+    #sidebar 
+    {
+        margin-left: -200px;
+    }
+
+    #sidebar.active 
+    {
+            margin-left: 0;
+    }
+}
+
+
+
+/********************/
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+}
+
+p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #999;
+}
+
+a, a:hover, a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+#sidebar {
+    /* don't forget to add all the previously mentioned styles here too */
+    background: #424242;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+    #sidebar .sidebar-header {
+        padding: 0px;
+        background: #151515;
+    }
+
+    #sidebar ul.components {
+        padding: 0px 0;
+        border-bottom: 1px solid #47748b;
+    }
+
+    #sidebar ul p {
+        color: #fff;
+        padding: 10px;
+    }
+
+    #sidebar ul li a {
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+    }
+
+        #sidebar ul li a:hover {
+            color: #7386D5;
+            background: #fff;
+        }
+
+    #sidebar ul li.active > a, a[aria-expanded="true"] {
+        color: #fff;
+        background: #6E6E6E;
+    }
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+}
+
+.bgSidebar {
+    background: #151515;
+}
+
+
+/*******PILLS******/
+
+.nav-pills > .active > a, .nav-pills > .active > a:hover {
+    color: #fff;
+    background-color: #c9302c;
+    border-color: #c9302c;
+}
+
+.BkPrint {
+    background-color: #c9302c !important;
+    border-color: #c9302c !important;
+    color: #FFFFFF !important;
+}
+
+.FontNote {
+    font-size: 10px !important;
+}
+
+.FtPrint {
+    background-color: #F5A9BC !important;
+    border-color: #c9302c;
+}
+
+@media print {
+
+
+    .Note table {
+        font-size: 8pt !important;
+        font-family: Tahoma;
+    }
+
+    .Ticket table {
+        font-size: 10pt !important;
+        font-family: Arial;
+    }
+
+
+
+    .BkPrint {
+        color: #FFFFFF !important;
+        -webkit-print-color-adjust: exact;
+    }
 }

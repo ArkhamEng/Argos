@@ -1,7 +1,6 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Catalog;
 using Argos.Models.Config;
-using Argos.Models.Finances;
+using Argos.Models.Sales;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,19 +13,11 @@ namespace Argos.Models.Operative
     {
         public int ServiceId { get; set; }
 
-        [ForeignKey("ParentService")]
-        public int? ParentServiceId { get; set; }
-
-        public int ServiceTypeId { get; set; }
-
+        [Display(Name ="Status")]
         public int ServiceStatusId { get; set; }
 
-        public int ClientId { get; set; }
-
-        [MaxLength(10)]
-        public string Code { get; set; }
-
-        [Display(Name = "Fecha de Contratación")]
+        [Display(Name = "Contratación")]
+        [DataType(DataType.Date)]
         public DateTime HireDate { get; set; }
 
         [Display(Name = "Precio")]
@@ -34,19 +25,9 @@ namespace Argos.Models.Operative
         public double HirePrice { get; set; }
 
         #region Navigation Properties
-        public virtual  ServiceType ServiceType { get; set; }
-
-        public virtual Client Client { get; set; }
-
+       
         public virtual ServiceStatus ServiceStatus { get; set; }
 
-        public virtual Service ParentService { get; set; }
-
-        public virtual ServiceAddress ServiceAddress { get; set; }
-
-        public virtual PolicyDetail PolicyDetail { get; set; }
-
-        public virtual ICollection<Service> ChildServices { get; set; }
 
         public ICollection<SaleDetail> SaleDetails { get; set; }
 

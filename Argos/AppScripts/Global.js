@@ -1,4 +1,48 @@
-﻿
+﻿function SetPointer(element) {
+    $(element).css('cursor', 'pointer');
+}
+
+
+function Compleate(textbox,list,url,onSelected)
+{
+    $(textbox).autocomplete(
+      {
+          source: function (request, response) 
+          {
+              ExecuteAjax(url, { filter: request.term }, function (json) 
+              {
+                  $(list).empty();
+                  for (var i = 0; i < json.length; i++) {
+                      $(list).append($('<option data-id=' + json[i].Id + '></option>').val(json[i].Label).html(json[i].Value));
+                  }
+              });
+          },
+          minLength: 4
+      });
+
+    //this is executed when an option from DataList is selected
+    $(textbox).bind('input', function ()
+    {
+        var val = this.value;
+        if ($(list).find('option').filter(function () {
+            return this.value.toUpperCase() === val.toUpperCase();
+        }).length) {
+            var option = $(list).find('option').filter(function () {
+                return this.value.toUpperCase() === val.toUpperCase();
+            });
+
+
+            var value = option.text();
+            var id = option.data("id");
+          
+            if (onSelected != null)
+            {
+                onSelected(id,value);
+            }
+        }
+    });
+}
+
 //AJAX CALL
 function ExecuteAjax(url, parameters, callback) {
     $.ajax({
@@ -171,12 +215,12 @@ function ShowMessage(textHeader, textBody, type, confirmCallBack, cancelCallBack
     //setting Image and header color
     if (type == 'success')
     {
-        $("#MessageContent").attr("class", 'modal-content panel panel-green');
+        $("#MessageContent").attr("class", 'modal-content panel panel-success');
         $("#MessageImage").attr("src", '../Images/success.png');
     }
     else if (type == 'warning')
     {
-        $("#MessageContent").attr("class", 'modal-content panel panel-yellow');
+        $("#MessageContent").attr("class", 'modal-content panel panel-warning');
         $("#MessageImage").attr("src", '../Images/warning.png');
     }
     else if (type == 'confirm')

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Argos.Models.Operative.ServiceAccount>
+
+
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <table id="tbAccounts" class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ServiceTypeId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Code)
+                    </th>
+                  
+                    <th>
+                        @Html.DisplayNameFor(model => model.ClientId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HireDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HirePrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ServiceStatusId)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServiceType.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Client.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HireDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HirePrice)
+                        </td>
+                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServiceStatus.Name)
+                        </td>
+                        <td>
+                           <button class="btn btn-primary" title="Ver detalle y editar" onclick="SelectAccount(@item.ServiceId)">
+                               <span class="fa fa-edit"></span>
+                           </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function ()
+    {
+        Paginate("#tbAccounts", 8);
+    });
+
+    function SelectAccount(id)
+    {
+        ShowLoading('static');
+        window.location = '@Url.Action("ManageAccount")/' + id;
+    }
+</script>

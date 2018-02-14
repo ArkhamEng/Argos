@@ -9,7 +9,7 @@ namespace Argos
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery.js",
+                        "~/Scripts/_jquery-ui-1.12.1.min.js",
                         "~/Scripts/jquery-3.2.1.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -27,7 +27,7 @@ namespace Argos
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
-                      "~/Content/sb-admin.css",
+                      "~/Content/Site.css",
                       "~/Content/font-awesome.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(

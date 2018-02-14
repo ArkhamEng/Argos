@@ -1,0 +1,87 @@
+﻿@using Argos.Support
+
+<nav id="sidebar">
+    <!-- Sidebar Session Controls-->
+    <div class="sidebar-header" style="text-align:center">
+        <div class="col-md-12">
+            <img id="UserPicture" src="~/Images/sinimagen.jpg" class="img-responsive img-circle col-xs-10 col-xs-offset-1" style="max-height:100px"
+                 onmouseover="SetPointer(this)" title="Cambiar foto de perfil" onclick="ChangePassword()" />
+        </div>
+
+        <div  class="btn btn-file btn-xs btn-primary col-xs-12" onmouseover="SetPointer(this)"
+             onclick="ShowLoading(); window.location = '@Url.Action("ChangePassword","Manage")'">
+             <a id="UserName"></a>
+        </div>
+    </div>
+    <ul class="list-unstyled components">
+
+        <li>
+            <a href="#catalogsSm" data-toggle="collapse" aria-expanded="false">&nbsp;Catálogos<span class="glyphicon glyphicon-book" style="float:left" /></a>
+            <ul class="collapse list-unstyled" id="catalogsSm">
+                <li><a href="/Catalog/Clients" onclick="ShowLoading()">&nbsp;Clientes<span class="fa fa-address-book" style="float:left" /></a></li>
+                <li><a href="/Catalog/Employees" onclick="ShowLoading()">&nbsp;Empleados<span class="fa fa-address-card" style="float:left" /></a></li>
+                <li><a href="/Catalog/Providers/" onclick="ShowLoading()">&nbsp;Proveedores<span class="fa fa-address-book-o" style="float:left" /></a></li>
+                <li><a href="/Catalog/Employees/" onclick="ShowLoading()">&nbsp;Empleados<span class="fa fa-address-card" style="float:left" /></a></li>
+                <li><a href="/Catalog/Products/" onclick="ShowLoading()">&nbsp;Productos<span class="fa fa-cubes" style="float:left" /></a></li> 
+            </ul>
+        </li>
+
+        <li>
+            <a href="#operativeSm" data-toggle="collapse" aria-expanded="false">&nbsp;Operaciones<span class="fa fa-cogs" style="float:left" /></a>
+            <ul class="collapse list-unstyled" id="operativeSm">
+                <li><a href="/Services/Accounts" onclick="ShowLoading()">&nbsp;Cuentas<span class="fa fa-files-o" style="float:left" /></a></li>
+            </ul>
+        </li>
+
+        <li>
+           
+        </li>
+
+        <li>
+            <a href="/Sales/History" onclick="ShowLoading()">
+                &nbsp;Ventas<span class="fa fa-shopping-bag" style="float:left" />
+            </a>
+        </li>
+
+     
+
+        <li><a href="/Purchases/History" onclick="ShowLoading()">&nbsp;Compras<span class="fa fa-shopping-basket" style="float:left" /></a></li>
+
+        <li>
+            <!-- Link with dropdown items -->
+            <a href="#configurationSubMenu" data-toggle="collapse" aria-expanded="false">
+                &nbsp;Configuraciones<span class="fa fa-cogs" style="float:left" />
+            </a>
+            <ul class="collapse list-unstyled" id="configurationSubMenu">
+                <li><a href="/Configuration/" onclick="ShowLoading()">&nbsp;Conf. de aplicación<span class="fa fa-cog" style="float:left" /></a></li>
+
+                <li><a href="/Account/UserList" onclick="ShowLoading()">&nbsp;Cuentas de usuario<span class="fa fa-users" style="float:left" /></a></li>
+            </ul>
+        </li>
+
+        <li><a href="/Home/About" onclick="ShowLoading()">&nbsp;Acerca de<span class="glyphicon glyphicon-question-sign" style="float:left" /></a></li>
+    </ul>
+</nav>
+
+
+<script>
+
+    $(document).ready(function ()
+    {
+        ExecuteAjax('@Url.Action("GetUserData","Account")', {}, function (response)
+        {
+            if(response.Result=='@Common.ResponseSuccess')
+            {
+                console.log(response);
+                $("#UserPicture").attr("src", response.ImagePath);
+                $("#UserName").text(response.Name);
+            }
+        });
+    });
+
+
+    function ChangePassword()
+    {
+        ShowLoading('static');
+    }
+</script>

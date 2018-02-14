@@ -57,8 +57,8 @@ namespace Argos.Controllers
             {
                 client.InsDate = DateTime.Now.ToLocal();
                 client.UpdDate = DateTime.Now.ToLocal();
-                client.UpdUser = "Administrador";
-                client.InsUser = "Administrador";
+                client.UpdUser = User.Identity.Name;
+                client.InsUser = User.Identity.Name;
                 client.IsActive = true;
 
                 db.Clients.Add(client);
@@ -121,7 +121,7 @@ namespace Argos.Controllers
             try
             {
                 client.UpdDate = DateTime.Now.ToLocal();
-                client.UpdUser = "Administrador";
+                client.UpdUser = User.Identity.Name;
 
                 db.Entry(client).State = EntityState.Modified;
                 db.SaveChanges();
@@ -156,7 +156,7 @@ namespace Argos.Controllers
 
                 if(client!=null)
                 {
-                    client.UpdUser = "Administrador";
+                    client.UpdUser = User.Identity.Name;
                     client.UpdDate = DateTime.Now.ToLocal();
                     client.IsActive = false;
 
@@ -192,6 +192,16 @@ namespace Argos.Controllers
                 Id = client.ClientId
             });
         }
+
+        [HttpPost]
+        public ActionResult AutoCompleateClient(string filter)
+        {
+            var clients = db.Clients.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(20).
+                Select(c => new { Label = c.Name, Id = c.ClientId, Value = c.FTR });
+
+            return Json(clients);
+        }
+
         #endregion
 
         #region Employee Methods
@@ -237,8 +247,8 @@ namespace Argos.Controllers
             {
                 employee.InsDate = DateTime.Now.ToLocal();
                 employee.UpdDate = DateTime.Now.ToLocal();
-                employee.UpdUser = "Administrador";
-                employee.InsUser = "Administrador";
+                employee.UpdUser = User.Identity.Name;
+                employee.InsUser = User.Identity.Name;
                 employee.IsActive = true;
 
                 db.Employees.Add(employee);
@@ -306,7 +316,7 @@ namespace Argos.Controllers
             try
             {
                 employee.UpdDate = DateTime.Now.ToLocal();
-                employee.UpdUser = "Administrador";
+                employee.UpdUser = User.Identity.Name;
 
                 db.Entry(employee).State = EntityState.Modified;
                 db.SaveChanges();
@@ -341,7 +351,7 @@ namespace Argos.Controllers
 
                 if (employee != null)
                 {
-                    employee.UpdUser = "Administrador";
+                    employee.UpdUser = User.Identity.Name;
                     employee.UpdDate = DateTime.Now.ToLocal();
                     employee.IsActive = false;
 

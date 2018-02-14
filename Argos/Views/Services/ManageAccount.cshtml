@@ -1,0 +1,112 @@
+﻿@model Argos.Models.Operative.ServiceAccount
+
+@{
+    ViewBag.Title = "Gestion de cuenta";
+    ViewBag.Class = "fa fa-files-o";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.HiddenFor(model => model.ClientId)
+@Html.HiddenFor(model => model.ServiceId)
+
+<hr />
+<div class="col-md-4 small">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <span class="fa fa-file-archive-o"></span> Datos de la cuenta
+            </h4>
+        </div>
+        <div class="panel-body row">
+            <div class="form-group col-md-12">
+                @Html.LabelFor(model => model.ServiceTypeId, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                    @Html.DropDownListFor(m => m.ServiceTypeId, (SelectList)ViewBag.ServiceTypes, "", htmlAttributes: new { @class = "form-control input-sm" })
+                </div>
+                @Html.ValidationMessageFor(model => model.ServiceTypeId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-md-12">
+                @Html.LabelFor(model => model.HirePrice, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                    @Html.EditorFor(model => model.HirePrice, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.HirePrice, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-md-12">
+                @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-12">
+                @Html.LabelFor(model => model.HireDate, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    @Html.EditorFor(model => model.HireDate, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.HireDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <span class="fa fa-user"></span> Datos del cliente
+            </h4>
+        </div>
+        <div class="panel-body row">
+            <div class="form-group col-md-12">
+                @Html.LabelFor(m => m.Client.Name, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    @Html.EditorFor(m => m.Client.Name, new { htmlAttributes = new { @class = "form-control input-sm", list = "NameList" } })
+                    <datalist id="NameList"></datalist>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                @Html.LabelFor(m => m.Client.FTR, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                    @Html.EditorFor(m => m.Client.FTR, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-8">
+    <div id="divAccountAddress">
+        @Html.Partial("_AccountAddress", Model.AccountAddress)
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function ()
+    {
+        Compleate("#Client_Name", "#NameList", '@Url.Action("AutoCompleateClient", "Catalog")', OnClientSelected)
+    });
+
+
+    function OnClientSelected(id,value)
+    {
+        console.log("On ClienteSelected id " + id + " value " + value);
+        $("#Client_FTR").val(value);
+        $("#ClientId").val(id);
+
+        ExecuteAjax('@Url.Action("GetClientAddress","Service")', { clientId:id }, function (response)
+        {
+            $("#divAccountAddress").html(response);
+        });
+    }
+
+</script>

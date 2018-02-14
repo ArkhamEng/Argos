@@ -1,0 +1,147 @@
+﻿@model Argos.ViewModels.Operative.BeginAccountViewModel
+
+
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<form id="frmBeginAccount">
+    <div id="ModalBeginAccount" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content panel-primary">
+                <div class="modal-header panel-heading">
+                    <h4 class="modal-title">
+                        <span class="fa fa-files-o"></span>
+                        Registro de Nueva Cuenta
+                    </h4>
+                </div>
+                <div class="modal-body panel-body">
+                    <div class="col-md-12  form-group">
+                        @Html.LabelFor(model => model.ServiceTypeId, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group" col-md-11>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+                            @Html.DropDownListFor(model => model.ServiceTypeId, Model.ServiceTypes, "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ServiceTypeId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.ClientName, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                            @Html.EditorFor(model => model.ClientName, new { htmlAttributes = new { @class = "form-control", list = "Clients" } })
+                            <datalist id="Clients"></datalist>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ClientName, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.HireDate, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar-check-o"></i></span>
+                            @Html.EditorFor(model => model.HireDate, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.HireDate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div id="divDays" class="form-group col-md-6">
+                        @Html.LabelFor(model => model.HirePrice, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                            @Html.EditorFor(model => model.HirePrice, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.HirePrice, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-12">
+                        <label id="lblMessage" class="control-label"></label>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="btn-group">
+                        <button id="btnAccept" class="btn btn-primary" onclick="AcceptCreate()" type="button">
+                            <span class="fa fa-check"></span>
+                            Aceptar
+                        </button>
+                        <button class="btn btn-danger" onclick="Close()" type="button">
+                            <span class="fa fa-times"></span>
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@Html.HiddenFor(model => model.ClientId)
+
+<script>
+
+    $(document).ready(function ()
+    {
+        var form = $("#frmBeginAccount");
+        form.validate();
+
+        $("#ModalBeginAccount").modal({ backdrop: 'static' });
+
+        Compleate("#ClientName", "#Clients", '@Url.Action("AutoCompleateClient", "Catalog")', OnClientSelected)
+    });
+
+    function OnClientSelected(id, value)
+    {
+        console.log("On ClienteSelected id " + id + " value " + value);
+        $("#Client_FTR").val(value);
+        $("#ClientId").val(id);
+
+        ExecuteAjax('@Url.Action("GetClientAddress","Service")', { clientId: id }, function (response) {
+            $("#divAccountAddress").html(response);
+        });
+    }
+
+    function AcceptCreate()
+    {
+        var form = $("#frmBeginAccount");
+
+        if (!form.valid())
+            return;
+
+        $("#ModalBeginAccount").off("hidden.bs.modal").on("hidden.bs.modal", function ()
+        {
+            $("#ModalBeginAccount").off("hidden.bs.modal");
+
+            ShowLoading('static');
+
+            var account =
+                {
+                    ClientId: $("#ClientId").val(),
+                    HireDate: $("#SaleDate").val(),
+                    ServiceTypeId: $("#ServiceTypeId").val(),
+                    HirePrice: $("#HirePrice").val()
+                };
+
+            ExecuteAjax('@Url.Action("CreateAccount")', { model: account }, function (response)
+            {
+                if (response.Result != "OK")
+                {
+                    HideLoading(function ()
+                    {
+                        ShowMessage(response.Header, response.Message, 'warning',null,null,'static');
+                    });
+                }
+                else
+                    window.location = '@Url.Action("ManageAccount")/' + response.Id;
+            });
+        });
+
+        $("#ModalBeginAccount").modal('hide');
+
+    }
+
+    function Close() {
+        $("#ModalBeginAccount").modal('hide');
+    }
+</script>
+
+

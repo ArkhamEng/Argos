@@ -1,0 +1,86 @@
+﻿@model Argos.ViewModels.Operative.AccountSearchViewModel
+
+@{
+    ViewBag.Title = "Cuentas de Servicios";
+    ViewBag.Class = "fa fa-files-o";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<hr />
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <div class="input-group col-md-10">
+            @Html.TextBox("txtPhone", "", htmlAttributes: new
+       {
+           @class = "form-control",
+           placeholder = "Telefono",
+           style = "width:30%"
+       })
+            @Html.TextBox("txtName", "", htmlAttributes: new
+       {
+           @class = "form-control",
+           placeholder = "Clave o nombre del cliente",
+           style = "width:70%"
+       })
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" id="btnSearch" onclick="SearchAccounts()">
+                    <span class="glyphicon glyphicon-search"></span>
+                    Buscar
+                </button>
+                <button type="button" class="btn btn-success" id="btnCreate" onclick="BeginAccount()">
+                    <span class="glyphicon  glyphicon-file"></span>
+                    Nuevo
+                </button>
+            </span>
+        </div>
+
+        <br />
+        <div class="input-group col-md-8" >
+            <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+            @Html.DropDownList("ddlServiceTypes", Model.ServiceTypes, "Servicio", new { @class = "form-control" })
+            <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+            @Html.DropDownList("ddlServiceStatus", Model.ServiceStatus, "Status", new { @class = "form-control" })
+            <span class="input-group-btn">
+                <button class="btn btn-info" type="button" id="btnClear" onclick="Clear()">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                    Limpiar
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+<div id="divAccountList">
+    @Html.Partial("_AccountList", Model.Accounts)
+</div>
+
+<div id="divBeginCreate">
+
+</div>
+
+<script>
+
+    function SearchAccounts()
+    {
+        var filter = {
+            client: $("#txtName").val(),
+            phone: $("#txtPhone").val(),
+            serviceTypeId: $("#ddlServiceTypes").val(),
+            serviceStatusId: $("#ddlServiceStatus").val()
+        };
+
+        ExecuteAjax('@Url.Action("SearchAccounts")', filter, function (response)
+        {
+            $("#divAccountList").html(response);
+        });
+    }
+
+    function BeginAccount() {
+        ShowLoading('static');
+
+        ExecuteAjax('@Url.Action("BeginAccount")', {}, function (response) {
+            HideLoading(function () {
+                $("#divBeginCreate").html(response);
+            });
+        });
+    }
+
+</script>

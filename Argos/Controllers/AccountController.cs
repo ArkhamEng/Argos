@@ -23,6 +23,21 @@ namespace Argos.Controllers
         {
         }
 
+        [HttpPost]
+        public JsonResult GetUserData()
+        {
+            string userId = User.Identity.GetUserId();
+            var bdUsers = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            var user = bdUsers.Users.Find(userId);
+
+            var path = user.PicturePath ?? "/Images/sinimagen.jpg";
+
+           
+            return Json(new { Result=Common.ResponseSuccess, Name=user.UserName, ImagePath= path });
+        }
+
+
+
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;

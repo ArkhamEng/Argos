@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Argos.Support;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,6 +21,12 @@ namespace Argos.Models.BaseTypes
         [Required]
         public string UpdUser { get; set; }
 
-
+        public AuditableEntity()
+        {
+            this.InsDate = DateTime.Now.ToLocal();
+            this.UpdDate = DateTime.Now.ToLocal();
+            this.UpdUser = HttpContext.Current.User.Identity.Name;
+            this.InsUser = HttpContext.Current.User.Identity.Name;
+        }
     }
 }

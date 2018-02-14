@@ -50,7 +50,6 @@ namespace Argos.Models
     {
         [Required]
         [Display(Name = "Nombre de usuario")]
-        [EmailAddress]
         public string UserName { get; set; }
 
         [Required]
