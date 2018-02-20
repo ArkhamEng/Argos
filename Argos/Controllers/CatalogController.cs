@@ -124,6 +124,10 @@ namespace Argos.Controllers
                 client.UpdUser = User.Identity.Name;
 
                 db.Entry(client).State = EntityState.Modified;
+                db.Entry(client).Property(c => c.InsDate).IsModified = false;
+                db.Entry(client).Property(c => c.InsUser).IsModified = false;
+                db.Entry(client).Property(c => c.IsActive).IsModified = false;
+
                 db.SaveChanges();
             }
             catch (Exception ex)
@@ -132,7 +136,7 @@ namespace Argos.Controllers
                 {
                     Result = JResponse.Warning,
                     Header = "Error al modificar el cliente",
-                    Body = string.Format("Ocurrion un error al guardar los cambios del cliente {0}  detalle del error {1}",
+                    Body = string.Format("Ocurrio un error al guardar los cambios del cliente {0},  detalle del error {1}",
                                         client.Name, ex.Message),
                 });
             }
@@ -161,6 +165,10 @@ namespace Argos.Controllers
                     client.IsActive = false;
 
                     db.Entry(client).State = EntityState.Modified;
+
+                    db.Entry(client).Property(c => c.InsUser).IsModified = false;
+                    db.Entry(client).Property(c => c.InsDate).IsModified = false;
+
                     db.SaveChanges();
                 }
                 else
@@ -169,8 +177,7 @@ namespace Argos.Controllers
                     {
                         Result = JResponse.Warning,
                         Header = "No existe el client a eliminar!",
-                        Body = string.Format("Este cliente ya no esta activo en el catálgo"),
-                        Id = client.ClientId
+                        Body = string.Format("Este cliente ya no esta activo en el catálgo")                        
                     });
                 }
               
@@ -196,7 +203,7 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult AutoCompleateClient(string filter)
         {
-            var clients = db.Clients.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(20).
+            var clients = db.Clients.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
                 Select(c => new { Label = c.Name, Id = c.ClientId, Value = c.FTR });
 
             return Json(clients);
@@ -304,7 +311,7 @@ namespace Argos.Controllers
                 {
                     Result = JResponse.Warning,
                     Header = "Error al obtener el empleado",
-                    Body = string.Format("Ocurrion un error al ontener los datos del empleado detalle del error:{0}", ex.Message),
+                    Body = string.Format("Ocurrio un error al ontener los datos del empleado, detalle del error:{0}", ex.Message),
                 });
             }
         }
@@ -319,6 +326,10 @@ namespace Argos.Controllers
                 employee.UpdUser = User.Identity.Name;
 
                 db.Entry(employee).State = EntityState.Modified;
+                db.Entry(employee).Property(c => c.InsUser).IsModified = false;
+                db.Entry(employee).Property(c => c.InsDate).IsModified = false;
+                db.Entry(employee).Property(c => c.IsActive).IsModified = false;
+
                 db.SaveChanges();
             }
             catch (Exception ex)
@@ -327,7 +338,7 @@ namespace Argos.Controllers
                 {
                     Result = JResponse.Warning,
                     Header = "Error al modificar el empleado",
-                    Body = string.Format("Ocurrion un error al guardar los cambios del empleado {0}  detalle del error {1}",
+                    Body = string.Format("Ocurrio un error al guardar los cambios del empleado {0}  detalle del error {1}",
                                         employee.Name, ex.Message),
                 });
             }
@@ -356,6 +367,9 @@ namespace Argos.Controllers
                     employee.IsActive = false;
 
                     db.Entry(employee).State = EntityState.Modified;
+                    db.Entry(employee).Property(e => e.InsDate).IsModified = false;
+                    db.Entry(employee).Property(e => e.InsUser).IsModified = false;
+
                     db.SaveChanges();
                 }
                 else
@@ -364,8 +378,7 @@ namespace Argos.Controllers
                     {
                         Result = JResponse.Warning,
                         Header = "No existe el empleado a eliminar!",
-                        Body = string.Format("Este empleado ya no esta activo en el catálgo"),
-                        Id = employee.EmployeeId
+                        Body = string.Format("Este empleado ya no esta activo en el catálgo")                        
                     });
                 }
 
@@ -387,53 +400,216 @@ namespace Argos.Controllers
                 Id = employee.EmployeeId
             });
         }
-        #endregion
-
-
 
         [HttpPost]
-        public ActionResult BeginCreateUser(int id,bool isEmployee)
+        public ActionResult AutoCompleatEmployee(string filter)
+        {
+            var employees = db.Employees.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
+                Select(c => new { Label = c.Name, Id = c.EmployeeId, Value = c.FTR });
+
+            return Json(employees);
+        }
+        #endregion
+
+        #region Provider Methods
+        public ActionResult Providers()
+        {
+            var model = new List<Provider>();
+
+            ViewBag.States = db.States.ToSelectList();
+            ViewBag.Cities = new List<City>().ToSelectList();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult SearchProviders(string ftr, string name, int? stateId, int? cityId, int? id)
+        {
+            var model = db.Providers.Where(c => (ftr == string.Empty || ftr == null || c.FTR == ftr)
+            && (id == null || c.ProviderId == id)
+            && (name == string.Empty || name == null || c.Name.Contains(name))
+            && (cityId == null || c.CityId == cityId) && (stateId == null || c.City.StateId == stateId)
+            && c.IsActive).Include(c => c.City).ToList();
+
+            return PartialView("_ProviderList", model);
+        }
+
+        [HttpPost]
+        public ActionResult BeginAddProvider()
+        {
+            var model = new Provider();
+
+            ViewBag.States = db.States.ToSelectList();
+            ViewBag.Cities = new List<City>().ToSelectList();
+
+            return PartialView("_ProviderEdit", model);
+        }
+
+        [HttpPost]
+        public ActionResult AddProvider(Provider provider)
         {
             try
             {
-                RegisterViewModel vm = null;
-                if (isEmployee)
-                {
-                    var employee = db.Employees.Find(id);
-                    vm = new RegisterViewModel
-                    {
-                        Id = employee.EmployeeId,
-                        Name = employee.Name,
-                        Email = employee.Email,
-                        Phone = employee.Phone,
-                        UserName = employee.Email != null? employee.Email.Split('@').First(): employee.Name
-                    };
-                }
-                else
-                {
-                    var employee = db.Employees.Find(id);
-                    vm = new RegisterViewModel
-                    {
-                        Id = employee.EmployeeId,
-                        Name = employee.Name,
-                        Email = employee.Email,
-                        Phone = employee.Phone,
-                        UserName = employee.Email != null ? employee.Email.Split('@').First() : employee.Name
-                    };
-                }
+                provider.InsDate = DateTime.Now.ToLocal();
+                provider.UpdDate = DateTime.Now.ToLocal();
+                provider.UpdUser = User.Identity.Name;
+                provider.InsUser = User.Identity.Name;
+                provider.IsActive = true;
 
-                return PartialView("_RegistUser", vm);
+                db.Providers.Add(provider);
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
                 return Json(new JResponse
                 {
                     Result = JResponse.Warning,
-                    Header = "Error al obtener el empleado",
-                    Body = string.Format("Ocurrio un error al ontener los datos para el usuario detalle:{0}", ex.Message),
+                    Header = "Error al guardar el proveedor",
+                    Body = "Ocurrion un error al agregar el proveedor " + ex.Message
+                });
+            }
+            return Json(new JResponse
+            {
+                Result = JResponse.Success,
+                Header = "Datos del proveedor guardados",
+                Body = string.Format("El proveedor {0} fue agregado al catálogo", provider.Name),
+                Id = provider.ProviderId
+            });
+        }
+
+
+        [HttpPost]
+        public ActionResult BeginUpdateProvider(int id)
+        {
+            try
+            {
+                var model = db.Providers.Include(c => c.City).
+                    FirstOrDefault(c => c.ProviderId == id && c.IsActive);
+
+                if (model != null)
+                {
+                    ViewBag.States = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.City.StateId);
+                    ViewBag.Cities = db.Cities.Where(c => c.StateId == model.City.StateId).ToSelectList();
+
+                    return PartialView("_ProviderEdit", model);
+                }
+                else
+                {
+                    return Json(new JResponse
+                    {
+                        Result = JResponse.Warning,
+                        Header = "Proveedor inexistente!",
+                        Body = string.Format("Este proveedor ya no esta activo en el catálgo"),
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new JResponse
+                {
+                    Result = JResponse.Warning,
+                    Header = "Error al eliminar el proveedor",
+                    Body = string.Format("Ocurrion un error al eliminar el proveedor detalle del error:{0}", ex.Message),
                 });
             }
         }
+
+
+        [HttpPost]
+        public ActionResult UpdateProvider(Provider provider)
+        {
+            try
+            {
+                provider.UpdDate = DateTime.Now.ToLocal();
+                provider.UpdUser = User.Identity.Name;
+
+                db.Entry(provider).State = EntityState.Modified;
+                db.Entry(provider).Property(c => c.InsDate).IsModified = false;
+                db.Entry(provider).Property(c => c.InsUser).IsModified = false;
+                db.Entry(provider).Property(c => c.IsActive).IsModified = false;
+
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Json(new JResponse
+                {
+                    Result = JResponse.Warning,
+                    Header = "Error al modificar el proveedor",
+                    Body = string.Format("Ocurrion un error al guardar los cambios del proveedor {0}  detalle del error {1}",
+                                        provider.Name, ex.Message),
+                });
+            }
+            return Json(new JResponse
+            {
+                Result = JResponse.Success,
+                Header = "Datos del proveedor guardados",
+                Body = string.Format("Los datos del proveedor {0} fueron modificados", provider.Name),
+                Id = provider.ProviderId
+            });
+        }
+
+
+        [HttpPost]
+        public ActionResult DeleteProvider(int id)
+        {
+            Provider provider = new Provider();
+            try
+            {
+                provider = db.Providers.FirstOrDefault(c => c.ProviderId == id && c.IsActive);
+
+                if (provider != null)
+                {
+                    provider.UpdUser = User.Identity.Name;
+                    provider.UpdDate = DateTime.Now.ToLocal();
+                    provider.IsActive = false;
+
+                    db.Entry(provider).State = EntityState.Modified;
+                    db.Entry(provider).Property(p => p.InsDate).IsModified = false;
+                    db.Entry(provider).Property(p => p.InsUser).IsModified = false;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    return Json(new JResponse
+                    {
+                        Result = JResponse.Warning,
+                        Header = "No existe el proveedor a eliminar!",
+                        Body = string.Format("Este proveedor ya no esta activo en el catálgo")
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new JResponse
+                {
+                    Result = JResponse.Warning,
+                    Header = "Error al eliminar el proveedor",
+                    Body = string.Format("Ocurrion un error al eliminar el proveedor detalle del error:{0}", ex.Message)
+                });
+            }
+            return Json(new JResponse
+            {
+                Result = JResponse.Success,
+                Header = "Proveedor eliminado!",
+                Body = string.Format("El proveedor {0} fue eliminado del catálogo", provider.Name),
+                Id = provider.ProviderId
+            });
+        }
+
+        [HttpPost]
+        public ActionResult AutoCompleatProvider(string filter)
+        {
+            var providers = db.Providers.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
+                Select(c => new { Label = c.Name, Id = c.ProviderId, Value = c.FTR });
+
+            return Json(providers);
+        }
+
+        #endregion
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

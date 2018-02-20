@@ -9,7 +9,8 @@ namespace Argos.Models.BaseTypes
     {
         [Display(Name = "Nombre")]
         [Required]
-        [MaxLength(100)]
+        [MaxLength(150)]
+        [Index("IDX_Name", IsUnique = false)]
         public string Name { get; set; }
 
         //Federal Taxpayer register

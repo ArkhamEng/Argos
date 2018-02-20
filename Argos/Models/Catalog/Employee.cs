@@ -1,6 +1,7 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Sales;
 using Argos.Models.Security;
+using Argos.Models.Transaction;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,6 +17,14 @@ namespace Argos.Models.Catalog
         [Column(Order = 1)]
         [Display(Name ="Puesto")]
         public int JobPositionId { get; set; }
+
+        [Display(Name ="Sexo")]
+        [MaxLength(1)]
+        public string Gender { get; set; }
+
+        [Display(Name ="Cumpleaños")]
+        [DataType(DataType.Date)]
+        public DateTime BirthDate { get; set; }
 
         [Display(Name="NSS")]
         [MaxLength(11,ErrorMessage ="El número de seguro social no debe exceder 11 digitos")]

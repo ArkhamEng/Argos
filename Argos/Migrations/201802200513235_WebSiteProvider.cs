@@ -3,16 +3,16 @@ namespace Argos.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ServiceLocatableField : DbMigration
+    public partial class WebSiteProvider : DbMigration
     {
         public override void Up()
         {
-            AddColumn("Catalog.ServiceType", "IsLocatable", c => c.Boolean(nullable: false));
+            AddColumn("Security.Providers", "WebSite", c => c.String(maxLength: 200));
         }
         
         public override void Down()
         {
-            DropColumn("Catalog.ServiceType", "IsLocatable");
+            DropColumn("Security.Providers", "WebSite");
         }
     }
 }

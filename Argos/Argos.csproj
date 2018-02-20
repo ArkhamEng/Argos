@@ -195,59 +195,69 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201802140159071_Initial.cs" />
-    <Compile Include="Migrations\201802140159071_Initial.Designer.cs">
-      <DependentUpon>201802140159071_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201802200029530_Initial.cs" />
+    <Compile Include="Migrations\201802200029530_Initial.Designer.cs">
+      <DependentUpon>201802200029530_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201802140432546_ServiceLocatableField.cs" />
-    <Compile Include="Migrations\201802140432546_ServiceLocatableField.Designer.cs">
-      <DependentUpon>201802140432546_ServiceLocatableField.cs</DependentUpon>
+    <Compile Include="Migrations\201802200241419_Gender.cs" />
+    <Compile Include="Migrations\201802200241419_Gender.Designer.cs">
+      <DependentUpon>201802200241419_Gender.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201802140451320_serviceCodeLenght.cs" />
-    <Compile Include="Migrations\201802140451320_serviceCodeLenght.Designer.cs">
-      <DependentUpon>201802140451320_serviceCodeLenght.cs</DependentUpon>
+    <Compile Include="Migrations\201802200513235_WebSiteProvider.cs" />
+    <Compile Include="Migrations\201802200513235_WebSiteProvider.Designer.cs">
+      <DependentUpon>201802200513235_WebSiteProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802200523290_ChangeSchemaProvider.cs" />
+    <Compile Include="Migrations\201802200523290_ChangeSchemaProvider.Designer.cs">
+      <DependentUpon>201802200523290_ChangeSchemaProvider.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Catalog\ProductStock.cs" />
-    <Compile Include="Models\Config\CommissionStatus.cs" />
+    <Compile Include="Models\BaseTypes\ProductBase.cs" />
+    <Compile Include="Models\BaseTypes\Status.cs" />
+    <Compile Include="Models\BaseTypes\TransactionBase.cs" />
+    <Compile Include="Models\Config\ProductSubCategory.cs" />
+    <Compile Include="Models\Enums\TransStatus.cs" />
+    <Compile Include="Models\Operative\Inventory.cs" />
     <Compile Include="Models\Operative\Policy.cs" />
     <Compile Include="Models\Operative\ServiceAccount.cs" />
+    <Compile Include="Models\Operative\ServiceStatus.cs" />
+    <Compile Include="Models\Transaction\Purchase.cs" />
+    <Compile Include="Models\Transaction\PurchaseDetail.cs" />
+    <Compile Include="Models\Transaction\TransactionType.cs" />
     <Compile Include="Support\FileManager.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\BaseTypes\AuditableEntity.cs" />
     <Compile Include="Models\BaseTypes\JResponse.cs" />
     <Compile Include="Models\BaseTypes\LocalizableEntity.cs" />
-    <Compile Include="Models\BaseTypes\Status.cs" />
     <Compile Include="Models\Catalog\Product.cs" />
-    <Compile Include="Models\Catalog\ProductType.cs" />
+    <Compile Include="Models\Config\ProductCategory.cs" />
     <Compile Include="Models\Config\Branch.cs" />
     <Compile Include="Models\Config\City.cs" />
     <Compile Include="Models\Catalog\Client.cs" />
-    <Compile Include="Models\Sales\SaleDetail.cs" />
-    <Compile Include="Models\Sales\Commission.cs" />
-    <Compile Include="Models\Config\SaleStatus.cs" />
+    <Compile Include="Models\Transaction\SaleDetail.cs" />
+    <Compile Include="Models\Transaction\Commission.cs" />
+    <Compile Include="Models\Transaction\TransactionStatus.cs" />
     <Compile Include="Models\Operative\OperationType.cs" />
     <Compile Include="Models\Operative\Service.cs" />
-    <Compile Include="Models\Catalog\ServiceType.cs" />
+    <Compile Include="Models\Config\ServiceCategory.cs" />
     <Compile Include="Models\Catalog\Employee.cs" />
     <Compile Include="Models\BaseTypes\Person.cs" />
     <Compile Include="Models\BaseTypes\ISelectable.cs" />
     <Compile Include="Models\Catalog\JobPosition.cs" />
     <Compile Include="Models\Catalog\Provider.cs" />
     <Compile Include="Models\Config\State.cs" />
-    <Compile Include="Models\Enums\AccountStatus.cs" />
+    <Compile Include="Models\Enums\ServStatus.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
-    <Compile Include="Models\Sales\Sale.cs" />
+    <Compile Include="Models\Transaction\Sale.cs" />
     <Compile Include="Models\Operative\Operation.cs" />
     <Compile Include="Models\Operative\AccountAddress.cs" />
     <Compile Include="Models\Operative\ServiceAttachment.cs" />
-    <Compile Include="Models\Config\ServiceStatus.cs" />
     <Compile Include="Models\Security\EmployeeUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Support\Common.cs" />
+    <Compile Include="Support\Cons.cs" />
     <Compile Include="Support\Extension.cs" />
     <Compile Include="ViewModels\Operative\AccountSearchViewModel.cs" />
     <Compile Include="ViewModels\Operative\BeginAccountViewModel.cs" />
@@ -399,6 +409,9 @@
     <Content Include="Views\Services\_AccountAddress.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_SideBar.cshtml" />
+    <Content Include="Views\Catalog\Providers.cshtml" />
+    <Content Include="Views\Catalog\_ProviderEdit.cshtml" />
+    <Content Include="Views\Catalog\_ProviderList.cshtml" />
     <None Include="Views\Services\Accounts.cshtml" />
     <Content Include="Views\Services\_AccountList.cshtml" />
     <Content Include="Views\Services\_BeginAccount.cshtml" />
@@ -416,14 +429,17 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201802140159071_Initial.resx">
-      <DependentUpon>201802140159071_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201802200029530_Initial.resx">
+      <DependentUpon>201802200029530_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802140432546_ServiceLocatableField.resx">
-      <DependentUpon>201802140432546_ServiceLocatableField.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201802200241419_Gender.resx">
+      <DependentUpon>201802200241419_Gender.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802140451320_serviceCodeLenght.resx">
-      <DependentUpon>201802140451320_serviceCodeLenght.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201802200513235_WebSiteProvider.resx">
+      <DependentUpon>201802200513235_WebSiteProvider.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802200523290_ChangeSchemaProvider.resx">
+      <DependentUpon>201802200523290_ChangeSchemaProvider.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

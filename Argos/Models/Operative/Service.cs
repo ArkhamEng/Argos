@@ -1,6 +1,6 @@
 ﻿using Argos.Models.BaseTypes;
 using Argos.Models.Config;
-using Argos.Models.Sales;
+using Argos.Models.Transaction;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +16,7 @@ namespace Argos.Models.Operative
         [Display(Name ="Status")]
         public int ServiceStatusId { get; set; }
 
+      
         [Display(Name = "Contratación")]
         [DataType(DataType.Date)]
         public DateTime HireDate { get; set; }
@@ -24,10 +25,11 @@ namespace Argos.Models.Operative
         [DataType(DataType.Currency)]
         public double HirePrice { get; set; }
 
-        #region Navigation Properties
-       
-        public virtual ServiceStatus ServiceStatus { get; set; }
 
+        #region Navigation Properties
+
+     
+        public virtual ServiceStatus ServiceStatus { get; set; }
 
         public ICollection<SaleDetail> SaleDetails { get; set; }
 

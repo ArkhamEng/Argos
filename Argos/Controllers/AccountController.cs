@@ -23,20 +23,7 @@ namespace Argos.Controllers
         {
         }
 
-        [HttpPost]
-        public JsonResult GetUserData()
-        {
-            string userId = User.Identity.GetUserId();
-            var bdUsers = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
-            var user = bdUsers.Users.Find(userId);
-
-            var path = user.PicturePath ?? "/Images/sinimagen.jpg";
-
-           
-            return Json(new { Result=Common.ResponseSuccess, Name=user.UserName, ImagePath= path });
-        }
-
-
+      
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
@@ -77,6 +64,8 @@ namespace Argos.Controllers
             return View();
         }
 
+
+
         //
         // POST: /Account/Login
         [HttpPost]
@@ -106,6 +95,21 @@ namespace Argos.Controllers
                     return View(model);
             }
         }
+
+        [HttpPost]
+        public JsonResult GetUserData()
+        {
+            string userId = User.Identity.GetUserId();
+            var bdUsers = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            var user = bdUsers.Users.Find(userId);
+
+            var path = user.PicturePath ?? "/Images/sinimagen.jpg";
+
+
+            return Json(new { Result = Cons.ResponseSuccess, Name = user.UserName, ImagePath = path });
+        }
+
+
 
         //
         // GET: /Account/VerifyCode
@@ -159,7 +163,7 @@ namespace Argos.Controllers
             try
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.Phone };
-                var result = await UserManager.CreateAsync(user, Common.DefaultPassword);
+                var result = await UserManager.CreateAsync(user, Cons.DefaultPassword);
 
                 //if creation suceed, add a realation with the corresponding entity (employee or client)
                 if (result.Succeeded)

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Argos.Models.Catalog
+namespace Argos.Models.Config
 {
-    [Table("ServiceType", Schema = "Catalog")]
-    public class ServiceType:AuditableEntity,ISelectable
+    [Table("ServiceCategory", Schema = "Config")]
+    public class ServiceCategory:AuditableEntity,ISelectable
     {
         [Column(Order = 0)]
-        public int ServiceTypeId { get; set; }
+        public int ServiceCategoryId { get; set; }
 
         [Column(Order = 1)]
         [Required]
@@ -39,7 +39,7 @@ namespace Argos.Models.Catalog
         [NotMapped]
         public int Id
         {
-            get { return this.ServiceTypeId; }
+            get { return this.ServiceCategoryId; }
         }
 
         #region Navigation Properties

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Argos.Support
 {
-    public static class Common
+    public  class Cons
     {
         public const string ResponseSuccess = "success";
 
@@ -23,13 +20,15 @@ namespace Argos.Support
 
         public const int One = 1;
 
+        public const int AutoCompleateRows = 20;
+
+        public const string MaleLabel = "Masculino";
         
+        public const string MaleValue = "M";
 
-        public static string GetCode(string serviceShorName, int numericValue)
-        {
-            var code = serviceShorName + numericValue.ToString(CodeNumeric);
+        public const string FemaleLabel = "Femenino";
 
-            return code;
-        }
+        public const string FemaleValue = "F";
+
     }
 }

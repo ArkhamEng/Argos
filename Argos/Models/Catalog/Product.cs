@@ -1,5 +1,7 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Sales;
+using Argos.Models.Config;
+using Argos.Models.Operative;
+using Argos.Models.Transaction;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,13 +15,14 @@ namespace Argos.Models.Catalog
         public int ProductId { get; set; }
 
         [Column(Order = 1)]
-        public int ProductTypeId { get; set; }
+        public int ProductSubCategoryId { get; set; }
 
         [Column(Order = 2)]
         [MaxLength(30)]
         public string Code { get; set; }
 
         [Column(Order = 3)]
+        [MaxLength(250)]
         public string Description { get; set; }
 
         [Column(Order = 4)]
@@ -53,11 +56,11 @@ namespace Argos.Models.Catalog
 
         #region Navigation Properties
 
-        public virtual ProductType ProductType { get; set; }
+        public virtual ProductSubCategory ProductSubCategory { get; set; }
 
         public ICollection<SaleDetail> SaleDetail { get; set; }
 
-        public ICollection<ProductStock> ProductStocks { get; set; }
+        public ICollection<Inventory> Inventories { get; set; }
 
         #endregion
     }

@@ -12,7 +12,7 @@ namespace Argos.ViewModels.Operative
 {
     public class AccountSearchViewModel
     {
-        public SelectList ServiceTypes { get; set; }
+        public SelectList ServiceCategories { get; set; }
 
         public SelectList ServiceStatus { get; set; }
 
@@ -20,8 +20,8 @@ namespace Argos.ViewModels.Operative
 
         public AccountSearchViewModel()
         {
-            this.ServiceTypes = new List<ServiceType>().ToSelectList();
-            this.ServiceStatus = new List<ServiceStatus>().ToSelectList();
+            this.ServiceCategories = new List<ServiceCategory>().ToSelectList();
+            this.ServiceStatus = new List<ServiceCategory>().ToSelectList();
             this.Accounts       = new List<ServiceAccount>();
         }
 

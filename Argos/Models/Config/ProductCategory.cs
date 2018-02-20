@@ -1,18 +1,16 @@
 ﻿using Argos.Models.BaseTypes;
-using System;
+using Argos.Models.Catalog;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
-namespace Argos.Models.Catalog
+namespace Argos.Models.Config
 {
-    [Table("ProductType", Schema = "Catalog")]
-    public class ProductType : AuditableEntity, ISelectable
+    [Table("ProductCategory", Schema = "Config")]
+    public class ProductCategory : AuditableEntity, ISelectable
     {
         [Column(Order =0)]
-        public int ProductTypeId { get; set; }
+        public int ProductCategoryId { get; set; }
 
         [Column(Order = 1)]
         [MaxLength(30)]
@@ -28,13 +26,13 @@ namespace Argos.Models.Catalog
         public bool IsActive { get; set; }
 
         #region Navigation Property
-        public ICollection<Product> Product { get; set; }
+        public ICollection<ProductSubCategory> ProductSubCategories { get; set; }
 
         public int Id
         {
             get
             {
-                return ProductTypeId;
+                return ProductCategoryId;
             }
         }
         #endregion

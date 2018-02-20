@@ -7,13 +7,13 @@ namespace Argos.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class ServiceLocatableField : IMigrationMetadata
+    public sealed partial class Gender : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ServiceLocatableField));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Gender));
         
         string IMigrationMetadata.Id
         {
-            get { return "201802140432546_ServiceLocatableField"; }
+            get { return "201802200241419_Gender"; }
         }
         
         string IMigrationMetadata.Source

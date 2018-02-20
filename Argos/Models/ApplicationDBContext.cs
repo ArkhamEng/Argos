@@ -9,9 +9,14 @@ namespace Argos.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        #region Catalog
         public DbSet<Client> Clients { get; set; }
 
         public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<Provider> Providers { get; set; }
+
+        #endregion
 
         public DbSet<State> States { get; set; }
 
@@ -21,9 +26,12 @@ namespace Argos.Models
 
         public DbSet<EmployeeUser> EmployeeUsers { get; set; }
 
-        public DbSet<ServiceType> ServiceTypes { get; set; }
+        public DbSet<ProductCategory> ProductCategory { get; set; }
 
-        public DbSet<ServiceStatus> ServiceStatus { get; set; }
+        public DbSet<ProductSubCategory> ProductSubCategory { get; set; }
+
+        public DbSet<ServiceCategory> ServiceCategory { get; set; }
+
 
         public DbSet<ServiceAccount> ServiceAccounts { get; set; }
 

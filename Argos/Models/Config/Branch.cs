@@ -1,12 +1,16 @@
 ﻿using Argos.Models.BaseTypes;
 using Argos.Models.Catalog;
 using Argos.Models.Operative;
+using Argos.Models.Transaction;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Argos.Models.Config
 {
+    /// <summary>
+    /// Sucursales de la compañia
+    /// </summary>
     [Table("Branch", Schema = "Config")]
     public class Branch : LocatableEntity
     {
@@ -28,11 +32,19 @@ namespace Argos.Models.Config
         [Index("Unq_Phone", IsUnique = true)]
         public string Phone { get; set; }
 
+        /// <summary>
+        /// una Sucursales puede tener diversas Ventas, compras y tener asignadas N cuentas,
+        /// asi como tambien tener cada una su inventario
+        /// </summary>
         #region Navigation Properties
+        
+        public ICollection<Sale> Sales { get; set; }
+
+        public ICollection<Purchase> Purchases { get; set; }
 
         public ICollection<ServiceAccount> ServiceAccount { get; set; }
 
-        public ICollection<ProductStock> ProductStocks { get; set; }
+        public ICollection<Inventory> ProductStocks { get; set; }
 
         #endregion
     }

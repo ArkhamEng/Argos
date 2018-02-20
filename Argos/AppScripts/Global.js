@@ -216,17 +216,17 @@ function ShowMessage(textHeader, textBody, type, confirmCallBack, cancelCallBack
     if (type == 'success')
     {
         $("#MessageContent").attr("class", 'modal-content panel panel-success');
-        $("#MessageImage").attr("src", '../Images/success.png');
+        $("#MessageImage").attr("src", '/Images/success.png');
     }
     else if (type == 'warning')
     {
         $("#MessageContent").attr("class", 'modal-content panel panel-warning');
-        $("#MessageImage").attr("src", '../Images/warning.png');
+        $("#MessageImage").attr("src", '/Images/warning.png');
     }
     else if (type == 'confirm')
     {
         $("#MessageContent").attr("class", 'modal-content panel panel-info');
-        $("#MessageImage").attr("src", '../Images/question.png');
+        $("#MessageImage").attr("src", '/Images/question.png');
         $("#MessageGroup").children().show();
         $("#MessageOk").hide();
     }

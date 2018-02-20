@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Argos.Models.Sales
+namespace Argos.Models.Transaction
 {
-    [Table("Commission", Schema = "Sales")]
+    [Table("Commission", Schema = "Transaction")]
     public class Commission:AuditableEntity
     {
         [Column(Order =0),ForeignKey("Sale")]
@@ -23,8 +23,6 @@ namespace Argos.Models.Sales
         [Display(Name = "Monto")]
         public double  Amount { get; set; }
 
-        [Column(Order = 3)]
-        public int Status { get; set; }
 
         #region Navigation Properties
         public virtual Sale Sale { get; set; }

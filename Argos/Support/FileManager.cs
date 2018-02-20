@@ -24,7 +24,7 @@ namespace Argos.Support
                 switch (type)
                 {
                     case FileType.ProfilePicture:
-                        serverUrl = Common.UserPicturePath + "/" + parentId.ToString();
+                        serverUrl = Cons.UserPicturePath + "/" + parentId.ToString();
                         break;
                 }
 
@@ -61,7 +61,7 @@ namespace Argos.Support
                 switch (type)
                 {
                     case FileType.ProfilePicture:
-                        serverUrl = Common.UserPicturePath + "/" + parentId.ToString();
+                        serverUrl = Cons.UserPicturePath + "/" + parentId.ToString();
                         break;
                 }
 

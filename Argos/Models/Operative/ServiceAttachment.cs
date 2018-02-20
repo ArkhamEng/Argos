@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Argos.Models.Operative
 {
-    [Table("OperationType", Schema = "Operative")]
+    [Table("ServiceAttachment", Schema = "Operative")]
     public class ServiceAttachment
     {
         public int ServiceAttachmentId { get; set; }

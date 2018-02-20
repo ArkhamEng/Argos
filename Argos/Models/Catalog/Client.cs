@@ -1,6 +1,6 @@
 ﻿using Argos.Models.BaseTypes;
 using Argos.Models.Operative;
-using Argos.Models.Sales;
+using Argos.Models.Transaction;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,7 +14,7 @@ namespace Argos.Models.Catalog
         public int ClientId { get; set; }
 
         [Display(Name = "Razón Social")]
-        [MaxLength(130)]
+        [MaxLength(200)]
         [Index("Unq_BusinessName", IsUnique = true)]
         public string BusinessName { get; set; }
 

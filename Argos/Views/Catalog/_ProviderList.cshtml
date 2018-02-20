@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Argos.Models.Catalog.Provider>
+
+
+<table id="TbClientList" class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Proveedor")
+            </th>
+            <th>
+                @Html.DisplayName("Dirección")
+            </th>
+            <th>
+                @Html.DisplayName("Contacto")
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr ondblclick="BeginUpdateProvider(@item.ProviderId)">
+                <td class="col-md-4">
+                    <span class="fa fa-user control-label"></span>   @Html.DisplayFor(modelItem => item.Name)<br />
+                    <span class="fa fa-black-tie control-label"></span>   @Html.DisplayFor(modelItem => item.BusinessName)<br />
+                    <span class="fa fa-id-badge control-label"></span>   @Html.DisplayFor(modelItem => item.FTR)
+                </td>
+                <td class="col-md-4">
+                    <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
+                    @Html.DisplayFor(modelItem => item.Location)  @Html.DisplayFor(modelItem => item.ZipCode) <br />
+                    @Html.DisplayFor(modelItem => item.City.State.Name), @Html.DisplayFor(modelItem => item.City.Name)
+                </td>
+
+                <td class="col-md-3">
+                    <span class="fa fa-phone"></span>
+                    @Html.DisplayFor(modelItem => item.Phone)<br />
+
+                    <span class="fa fa-envelope"></span>
+                    @Html.DisplayFor(modelItem => item.Email)<br />
+
+                    <span class="fa fa-globe"></span>
+                    @Html.DisplayFor(modelItem => item.WebSite)
+                </td>
+
+                <td class="col-md-1">
+                    <button class="btn btn-danger" type="button" onclick="BeginDelete('@item.ProviderId','@item.Name')">
+                        <span class="fa fa-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    var idClient = 0;
+
+    $(document).ready(function()
+    {
+        Paginate("#TbProviderList", 5,false)
+    });
+
+    function BeginDelete(id,name)
+    {
+        console.log("Id{0} Name{1}",id,name);
+        idClient = id;
+        var hdr ="Eliminar Proveedor!";
+        var body = "Esta seguro que deseas eliminar el proveedor " + name;
+        ShowMessage(hdr, body, 'confirm', DeleteClient, OnDeleteCanceled, 'static')
+        
+    }
+
+    function DeleteClient()
+    {
+        console.log("Deleting client");
+        ExecuteAjax('@Url.Action("DeleteClient","Catalog")', { id: idClient }, function (response)
+        {
+            HideLoading(function ()
+            {
+                if (response.Result == 'success')
+                {
+                    ShowMessage(response.Header, response.Body, response.Result, null, SearchClients, 'static');
+                }
+                else {
+                    ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
+                }
+            });
+        });
+    }
+
+  
+    function OnDeleteCanceled()
+    {
+        console.log("Confirm Cerrado");
+    }
+</script>

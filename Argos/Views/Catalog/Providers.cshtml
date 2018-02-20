@@ -1,8 +1,8 @@
-﻿@model IEnumerable<Argos.Models.Catalog.Employee>
+﻿@model IEnumerable<Argos.Models.Catalog.Provider>
 
 @{
-    ViewBag.Title = "Catálogo de Empleados";
-    ViewBag.Class = "fa fa-address-card";
+    ViewBag.Title = "Catálogo de Proveedores";
+    ViewBag.Class = "fa fa-handshake-o";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -20,15 +20,15 @@
                 @Html.TextBox("txtName", "", htmlAttributes: new
            {
                @class = "form-control",
-               placeholder = "Clave o nombre del empleado",
+               placeholder = "Clave o nombre del Proveedor",
                style = "width:70%"
            })
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button" id="btnSearch" onclick="SearchEmployees()">
+                    <button class="btn btn-primary" type="button" id="btnSearch" onclick="SearchProviders()">
                         <span class="glyphicon glyphicon-search"></span>
                         <u>B</u>uscar
                     </button>
-                    <button type="button" class="btn btn-success" id="btnCreate" onclick="BeginAddEmployee()">
+                    <button type="button" class="btn btn-success" id="btnCreate" onclick="BeginAddProvider()">
                         <span class="glyphicon  glyphicon-file"></span>
                         <u>N</u>uevo
                     </button>
@@ -54,62 +54,59 @@
 </div>
 
 <div class="panel panel-default">
-    <div id="divEmployeeList" class="panel-body" style="min-height:300px">
-        @Html.Partial("_EmployeeList", Model)
+    <div id="divProviderList" class="panel-body" style="min-height:300px">
+        @Html.Partial("_ProviderList", Model)
     </div>
 </div>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function ()
+    {
         SetCascade('#ddlStateId', '#ddlCityId', '@Url.Action("GetCities","Configuration")');
-       
-        $("#liEmployees").addClass("active");
     });
 
-    function BeginAddEmployee() {
+    function BeginAddProvider() {
         ShowLoading(true);
 
-        ExecuteAjax('@Url.Action("BeginAddEmployee", "Catalog")', {}, function (response) {
+        ExecuteAjax('@Url.Action("BeginAddProvider", "Catalog")', {}, function (response) {
             HideLoading(function () {
-                ShowModal('<span class="fa fa-user-o"></span>Creación de Empleado', response, SaveEmployee, function () { }, 'static');
+                ShowModal('<span class="fa fa-handshake-o"></span>Nuevo Provedor', response, SaveProvider, function () { }, 'static');
             });
         });
     }
 
-    function BeginUpdateEmployee(id)
+    function BeginUpdateProvider(id)
     {
         ShowLoading(true);
 
-        ExecuteAjax('@Url.Action("BeginUpdateEmployee", "Catalog")', { id: id }, function (response)
-        {
+        ExecuteAjax('@Url.Action("BeginUpdateProvider", "Catalog")', {id:id}, function (response) {
             HideLoading(function () {
-                ShowModal('<span class="fa fa-user-o"></span>Edición de Empleado', response, SaveEmployee, null, 'static');
+                ShowModal('<span class="fa fa-handshake-o"></span> Edición de Proveedor', response, SaveProvider, null, 'static');
             });
         });
     }
 
-    function SaveEmployee()
+    function SaveProvider()
     {
-        var form = $("#EmployeeForm");
+        var form = $("#ProviderForm");
 
         if (!form.valid())
             return;
 
         ShowModLoading();
 
-        var employee = {
-            Name: $("#Name").val(), JobPositionId: $("#JobPositionId").val(), FTR: $("#FTR").val(), Street: $("#Street").val(),
-            Commission: $("#Commission").val(), InNumber: $("#InNumber").val(), OutNumber: $("#OutNumber").val(), Location: $("#Location").val(),
-            Email: $("#Email").val(), SSN: $("#SSN").val(), ZipCode: $("#ZipCode").val(), Phone: $("#Phone").val(), BirthDate: $("#BirthDate").val(),
-            EmployeeId: $("#EmployeeId").val(), CityId: $("#CityId").val(), IsActive: $("#IsActive").val(), Gender: $("input[name=Gender]:checked")
+        var provider = {
+            Name: $("#Name").val(), BusinessName: $("#BusinessName").val(), FTR: $("#FTR").val(), Street: $("#Street").val(),
+            InNumber: $("#InNumber").val(), OutNumber: $("#OutNumber").val(), Location: $("#Location").val(), Email: $("#Email").val(),
+            ZipCode: $("#ZipCode").val(), Phone: $("#Phone").val(), ProviderId: $("#ProviderId").val(), CityId: $("#CityId").val(),
+            WebSite: $("#WebSite").val()
         }
-        console.log(employee);
 
-        if (parseInt(employee.EmployeeId) > 0)
+        if (parseInt(provider.ProviderId) > 0)
         {
-            ExecuteAjax('@Url.Action("UpdateEmployee")', { employee: employee }, function (response)
+            ExecuteAjax('@Url.Action("UpdateProvider")', { provider: provider }, function (response)
             {
-                SearchEmployeeById(response.Id);
+                SearchById(response.Id);
                 HideModal(true, function () {
                     ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
                 });
@@ -117,9 +114,9 @@
         }
         else
         {
-            ExecuteAjax('@Url.Action("AddEmployee")', { employee: employee }, function (response)
+            ExecuteAjax('@Url.Action("AddProvider")', { provider: provider }, function (response)
             {
-                SearchEmployeeById(response.Id);
+                SearchById(response.Id);
                 HideModal(true, function ()
                 {
                     ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
@@ -128,15 +125,15 @@
         }
     }
 
-    function SearchEmployeeById(id)
+    function SearchById(id)
     {
-        ExecuteAjax('@Url.Action("SearchEmployees")', { id: id }, function (response)
+        ExecuteAjax('@Url.Action("SearchProviders")', { id: id }, function (response)
         {
-            $("#divEmployeeList").html(response);
+            $("#divProviderList").html(response);
         });
     }
 
-    function SearchEmployees()
+    function SearchProviders()
     {
         ShowLoading('static');
 
@@ -145,10 +142,10 @@
             stateId: $("#ddlStateId").val(), cityId: $("#ddlCityId").val()
         };
 
-        ExecuteAjax('@Url.Action("SearchEmployees")', data, function (response) {
+        ExecuteAjax('@Url.Action("SearchProviders")', data, function (response) {
             HideLoading(function ()
             {
-                $("#divEmployeeList").html(response);
+                $("#divProviderList").html(response);
             });
         });
     }

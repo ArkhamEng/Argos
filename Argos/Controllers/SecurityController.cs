@@ -1,4 +1,5 @@
 ﻿using Argos.Models;
+using Argos.Models.BaseTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Argos.Controllers
 {
+    [Authorize]
     public class SecurityController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
@@ -18,7 +20,7 @@ namespace Argos.Controllers
             return View(model);
         }
 
-        // GET: Security/Details/5
+     
         public ActionResult BeginAddUser(int id)
         {
             var model         = new ApplicationUser();
@@ -26,71 +28,50 @@ namespace Argos.Controllers
             return View(model);
         }
 
-        // GET: Security/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Security/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult BeginCreateUser(int id, bool isEmployee)
         {
             try
             {
-                // TODO: Add insert logic here
+                RegisterViewModel vm = null;
+                if (isEmployee)
+                {
+                    var employee = db.Employees.Find(id);
+                    vm = new RegisterViewModel
+                    {
+                        Id = employee.EmployeeId,
+                        Name = employee.Name,
+                        Email = employee.Email,
+                        Phone = employee.Phone,
+                        UserName = employee.Email != null ? employee.Email.Split('@').First() : employee.Name
+                    };
+                }
+                else
+                {
+                    var client = db.Clients.Find(id);
+                    vm = new RegisterViewModel
+                    {
+                        Id = client.ClientId,
+                        Name = client.Name,
+                        Email = client.Email,
+                        Phone = client.Phone,
+                        UserName = client.Email != null ? client.Email.Split('@').First() : client.Name
+                    };
+                }
 
-                return RedirectToAction("Index");
+                return PartialView("_RegistUser", vm);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(new JResponse
+                {
+                    Result = JResponse.Warning,
+                    Header = "Error al obtener el empleado",
+                    Body = string.Format("Ocurrio un error al ontener los datos para el usuario detalle:{0}", ex.Message),
+                });
             }
         }
 
-        // GET: Security/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Security/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Security/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Security/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         protected override void Dispose(bool disposing)
         {

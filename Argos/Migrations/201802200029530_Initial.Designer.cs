@@ -7,13 +7,13 @@ namespace Argos.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class serviceCodeLenght : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(serviceCodeLenght));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201802140451320_serviceCodeLenght"; }
+            get { return "201802200029530_Initial"; }
         }
         
         string IMigrationMetadata.Source

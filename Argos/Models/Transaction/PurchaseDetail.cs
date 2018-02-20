@@ -1,25 +1,17 @@
 ﻿using Argos.Models.Catalog;
-using Argos.Models.Operative;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
-namespace Argos.Models.Sales
+namespace Argos.Models.Transaction
 {
-    [Table("SaleDetail", Schema = "Sales")]
-    public class SaleDetail
+    [Table("PurchaseDetail", Schema = "Transaction")]
+    public class PurchaseDetail
     {
-        public int SaleDetailId { get; set; }
+        public int PurchaseDetailId { get; set; }
 
-        public int SaleId { get; set; }
+        public int PurchaseId { get; set; }
 
-        public int? ServiceId { get; set; }
-
-        public int? ProductId { get; set; }
-
+        public int ProductId { get; set; }
 
         public double Quantity { get; set; }
 
@@ -33,12 +25,9 @@ namespace Argos.Models.Sales
 
         #region Navigation Properties
 
-        public virtual Sale Sale { get; set; }
-
-        public virtual Service Service { get; set; }
+        public virtual Purchase Purchase { get; set; }
 
         public virtual Product Product { get; set; }
-
 
         #endregion
     }

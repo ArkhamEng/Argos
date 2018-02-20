@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using Argos.ViewModels.Operative;
 using System;
+using Argos.Models.Transaction;
 
 namespace Argos.Controllers
 {
@@ -22,8 +23,8 @@ namespace Argos.Controllers
         public ActionResult Accounts()
         {
             var model = new AccountSearchViewModel();
-            model.ServiceTypes  = db.ServiceTypes.ToSelectList();
-            model.ServiceStatus = db.ServiceStatus.ToSelectList();
+            model.ServiceCategories = db.ServiceCategory.ToSelectList();
+            model.ServiceStatus = db.ServiceCategory.ToSelectList();
 
             return View(model);
         }
@@ -51,7 +52,7 @@ namespace Argos.Controllers
         public ActionResult BeginAccount()
         {
             var model = new BeginAccountViewModel();
-            model.ServiceTypes = db.ServiceTypes.ToSelectList();
+            model.ServiceTypes = db.ServiceCategory.ToSelectList();
             
 
             return PartialView("_BeginAccount",model);
@@ -65,18 +66,18 @@ namespace Argos.Controllers
                 //datos básicos de la cuenta
                 var account = new ServiceAccount
                 {
-                    ClientId = model.ClientId,
-                    ServiceTypeId = model.ServiceTypeId,
-                    HirePrice = model.HirePrice,
-                    HireDate = model.HireDate,
-                    ServiceStatusId = Common.One,
+                    ClientId        = model.ClientId,
+                    ServiceTypeId   = model.ServiceTypeId,
+                    HirePrice       = model.HirePrice,
+                    HireDate        = model.HireDate,
+                    ServiceStatusId = (int)Argos.Models.Enums.ServStatus.Opened
                 };
 
                 //obtengo los datos del servicio seleccionado
-                var service = db.ServiceTypes.Find(model.ServiceTypeId);
+                var service = db.ServiceCategory.Find(model.ServiceTypeId);
 
                 //Obtengo el nombre corto del tipo de servicio y genero un código provisional
-                account.Code = Common.GetCode(service.ShortName, Common.Zero);
+                account.Code = Extens.GetCode(service.ShortName, Cons.Zero);
 
                 //guardo los datos básicos
                 db.ServiceAccounts.Add(account);
@@ -109,7 +110,7 @@ namespace Argos.Controllers
                 return Json(new JResponse
                 {
                     Id = account.ServiceId,
-                    Result = Common.ResponseSuccess,
+                    Result = Cons.ResponseSuccess,
                 });
 
             }
@@ -117,7 +118,7 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = Common.ResponseDanger,
+                    Result = Cons.ResponseDanger,
                     Body = String.Format("Detalle del error {0}", ex.Message),
                     Header = "Error al crear la cuenta"
                 });
@@ -130,10 +131,10 @@ namespace Argos.Controllers
 
             var model = db.ServiceAccounts.
                 Where(a => a.ServiceId == id).Include(a=> a.AccountAddress).Include(a=> a.AccountAddress.City.State).
-                Include(a=> a.ServiceType).Include(a=> a.ServiceStatus).Include(a=> a.Client).FirstOrDefault();
+                Include(a=> a.ServiceCategory).Include(a=> a.ServiceStatus).Include(a=> a.Client).FirstOrDefault();
 
 
-            ViewBag.ServiceTypes = db.ServiceTypes.ToSelectList();
+            ViewBag.Categories = db.ServiceCategory.ToSelectList();
             ViewBag.States       = db.States.ToSelectList();
             ViewBag.Cities       = db.Cities.Where(c=> c.StateId == model.Client.City.StateId).ToSelectList();
             return View(model);

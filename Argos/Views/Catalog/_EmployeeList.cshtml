@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Argos.Models.Catalog.Employee>
-
+@using Argos.Support
 
 <table id="TbEmployeeList" class="table table-hover">
     <thead>
@@ -22,29 +22,42 @@
         {
             <tr ondblclick="BeginUpdateEmployee(@item.EmployeeId)">
                 <td class="col-md-4">
+
                     <span class="fa fa-user control-label"></span>   @Html.DisplayFor(modelItem => item.Name)<br />
                     <span class="fa fa-briefcase control-label"></span>   @Html.DisplayFor(modelItem => item.JobPosition.Name)
-                  
-                    @if (item.EmployeeUsers.Count != 0)
-                    {
-                        <span class="fa fa-user-circle-o control-label"></span>
-                        @item.EmployeeUsers.First().User.UserName
-                    }
-                    <br /><span class="fa fa-at control-label"></span> @Html.DisplayFor(modelItem => item.Email)
+                    <br />
+                    <span class="fa fa-medkit control-label"></span>   @Html.DisplayFor(modelItem => item.SSN) |
+                    <span class="fa fa-id-badge control-label"></span>   @Html.DisplayFor(modelItem => item.FTR)<br />
+
                 </td>
                 <td class="col-md-4">
                     <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
-                    @Html.DisplayFor(modelItem => item.Location)  <br />
-                    @Html.DisplayFor(modelItem => item.City.Name)     CP @Html.DisplayFor(modelItem => item.ZipCode) <br />
-                    @Html.DisplayFor(modelItem => item.City.State.Name)
+                    @Html.DisplayFor(modelItem => item.Location)   CP @Html.DisplayFor(modelItem => item.ZipCode)<br />
+                    @Html.DisplayFor(modelItem => item.City.Name), @Html.DisplayFor(modelItem => item.City.State.Name)
                 </td>
 
                 <td class="col-md-3">
-                    <span class="fa fa-medkit control-label"></span>   @Html.DisplayFor(modelItem => item.SSN)<br />
-                    <span class="fa fa-id-badge control-label"></span>   @Html.DisplayFor(modelItem => item.FTR)<br />
-                    <span class="fa fa-phone control-label"></span> @Html.DisplayFor(modelItem => item.Phone)<br />
-                    
+                    @if (item.EmployeeUsers.Count != 0)
+                    {
+                        <span class="fa fa-user-circle-o control-label"></span>
+                        @item.EmployeeUsers.First().User.UserName <a>|</a>
+                    }
                     <span class="fa fa-percent control-label"></span>   @Html.DisplayFor(modelItem => item.Commission)<br />
+                    <span class="fa fa-phone control-label"></span> @Html.DisplayFor(modelItem => item.Phone)<br />
+                    <span class="fa fa-envelope control-label"></span> @Html.DisplayFor(modelItem => item.Email)<br />
+                   
+                     @if (item.Gender == Cons.FemaleValue)
+                    {
+                        <span class="fa fa-female"></span>
+                        <a>@Cons.FemaleLabel</a>
+                    }
+                    else
+                    {
+                        <span class="fa fa-male"></span>
+                        <a>@Cons.MaleLabel</a>
+                    }|
+                    <span class="fa fa-birthday-cake"></span>@Html.DisplayFor(modelItem => item.BirthDate)<br />
+
                 </td>
 
                 <td class="col-md-1 btn-group-vertical">
@@ -95,7 +108,7 @@
 
     function BeginCreateUser(id) {
         ShowLoading('static');
-        ExecuteAjax('@Url.Action("BeginCreateUser", "Catalog")', { id: id, isEmployee: true }, function (response) {
+        ExecuteAjax('@Url.Action("BeginCreateUser", "Security")', { id: id, isEmployee: true }, function (response) {
             HideLoading(function () {
                 ShowModal('<span class="fa fa-user-circle-o"></span> Creación de Usuario', response, AddUser, null, 'static', true);
             });
@@ -106,15 +119,14 @@
         //shows the loading in current modal
         ShowModLoading();
 
-        var model = { Id: $("#Id").val(), UserName: $("#UserName").val(), Email: $("#Email").val(), 
-            Phone: $("#Phone").val(), Name: $("#Name").val(),IsEmployee:true
+        var model = {
+            Id: $("#Id").val(), UserName: $("#UserName").val(), Email: $("#Email").val(),
+            Phone: $("#Phone").val(), Name: $("#Name").val(), IsEmployee: true
         };
 
-        ExecuteAjax('@Url.Action("Register", "Account")', { model: model }, function (response)
-        {
+        ExecuteAjax('@Url.Action("Register", "Account")', { model: model }, function (response) {
             SearchEmployeeById(response.Id);
-            HideModal(true, function ()
-            {
+            HideModal(true, function () {
                 ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
             });
         });
