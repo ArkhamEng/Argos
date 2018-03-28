@@ -178,8 +178,8 @@ namespace Argos.Controllers
                                 UserId = user.Id,
                                 InsDate = DateTime.Now.ToLocal(),
                                 UpdDate = DateTime.Now.ToLocal(),
-                                InsUser = "Administrador", //User.Identity.Name,
-                                UpdUser = "Administrador" //User.Identity.Name
+                                InsUser = User.Identity.Name,
+                                UpdUser = User.Identity.Name
                             };
 
                             db.EmployeeUsers.Add(eu);
@@ -193,7 +193,7 @@ namespace Argos.Controllers
 
                     return Json(new JResponse
                     {
-                        Result = JResponse.Success,
+                        Result = Cons.ResponseSuccess,
                         Header = "Creacion de usuario exitosa!",
                         Body = string.Format("Se creo el usuario {0} para  {1}, es necesario que el "+
                                         "usuario inicie sesión y cambie contraseña de inmediato", model.UserName, model.Name),
@@ -202,20 +202,28 @@ namespace Argos.Controllers
                 }
                 else
                 {
-                    throw new Exception(result.Errors.First());
+                    return Json(new JResponse
+                    {
+                        Result = Cons.ResponseWarning,
+                        Header = "Error al crear el usuario",
+                        Body = string.Format("Ocurrion un error al crear el usuario {0} para {1}. Detalle del error {2}",
+                                        model.UserName, model.Name, result.Errors.First())
+                    });
                 }
             }
             catch (Exception ex)
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al crear el usuario",
                     Body = string.Format("Ocurrion un error al crear el usuario {0} para {1}. Detalle del error {2}",
                                         model.UserName,model.Name, ex.Message)
                 });
             }
             //Microsoft.AspNet.Identity.PasswordHasher hs = new PasswordHasher()
+
+            //    hs.VerifyHashedPassword(pss,provPss)
         }
 
         //

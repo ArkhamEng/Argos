@@ -17,19 +17,30 @@ namespace Argos.Models.BaseTypes
 
         public int TransactionTypeId { get; set; }
 
-        public int TransactionStatusId { get; set; }
+        public int StatusId { get; set; }
 
-        [Display(Name = "Total")]
+        public virtual DateTime OrderDate { get; set; }
+
+        public virtual DateTime? DuDate { get; set; }
+
+        [Display(Name = "Sub Total")]
         [DataType(DataType.Currency)]
-        public double TotalAmount { get; set; }
+        public double SubTotal { get; set; }
 
-        [Display(Name = "Fecha de Venta")]
-        public virtual DateTime TransactionDate { get; set; }
+        [Display(Name = "IVA")]
+        [DataType(DataType.Currency)]
+        public double TaxAmount { get; set; }
+
+        [Display(Name = "Monto Total")]
+        [DataType(DataType.Currency)]
+        public double DueTotal { get; set; }
+
 
         #region Navigation Properties
         public virtual Branch Branch { get; set; }
 
-        public virtual TransactionStatus TransactionStatus { get; set; }
+   
+        public virtual Status Status { get; set; }
 
         public virtual Employee Employee { get; set; }
 

@@ -5,10 +5,7 @@
 @Scripts.Render("~/bundles/jqueryval")
 
 <form id="EmployeeForm">
-  
-   
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
     <div class="panel-group">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -87,15 +84,15 @@
                     <div class="input-group-addon">
                         <Label class="control-label">
                             <span class="fa fa-male"></span>
-                            @Cons.MaleLabel
-                            @Html.RadioButtonFor(model => model.Gender, Cons.MaleValue)
+                            @Cons.Male
+                            @Html.RadioButtonFor(model => model.Gender, Cons.Male)
                         </Label>
                     </div>
                     <div class="input-group-addon">
                         <Label class="control-label">
                             <span class="fa fa-female"></span>
-                            @Cons.FemaleLabel
-                            @Html.RadioButtonFor(model => model.Gender, Cons.FemaleValue)
+                            @Cons.Female
+                            @Html.RadioButtonFor(model => model.Gender, Cons.Female)
                         </Label>
                     </div>
                 </div>
@@ -167,13 +164,8 @@
             </div>
         </div>
     </div>
-    @Html.HiddenFor(m=> m.InsUser)
-    @Html.HiddenFor(m => m.InsDate)
-    @Html.HiddenFor(m => m.UpdUser)
-    @Html.HiddenFor(m => m.UpdDate)
+   
     @Html.HiddenFor(m => m.EmployeeId)
-    @Html.HiddenFor(m => m.IsActive)
-    
 </form>
 
 <script>

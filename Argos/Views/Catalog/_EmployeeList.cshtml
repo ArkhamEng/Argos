@@ -22,13 +22,38 @@
         {
             <tr ondblclick="BeginUpdateEmployee(@item.EmployeeId)">
                 <td class="col-md-4">
-
-                    <span class="fa fa-user control-label"></span>   @Html.DisplayFor(modelItem => item.Name)<br />
-                    <span class="fa fa-briefcase control-label"></span>   @Html.DisplayFor(modelItem => item.JobPosition.Name)
+                    <a title="Nombre">
+                        <span class="fa fa-user control-label" ></span>   @Html.DisplayFor(modelItem => item.Name)<br />
+                    </a>
+                    <a title="Puesto">
+                        <span class="fa fa-briefcase control-label" ></span>   @Html.DisplayFor(modelItem => item.JobPosition.Name)
+                    </a>
                     <br />
-                    <span class="fa fa-medkit control-label"></span>   @Html.DisplayFor(modelItem => item.SSN) |
-                    <span class="fa fa-id-badge control-label"></span>   @Html.DisplayFor(modelItem => item.FTR)<br />
+                    <a title="NSS">
+                        <span class="fa fa-medkit control-label" ></span>   @Html.DisplayFor(modelItem => item.SSN)                       
+                    </a>
+                    |
+                    <a title="RFC">
+                        <span class="fa fa-id-badge control-label" ></span>   @Html.DisplayFor(modelItem => item.FTR)
+                    </a>
+                    <br />
 
+                    <a title="Sexo">
+                    @if (item.Gender == Cons.Female)
+                    {
+                        <span class="fa fa-female"></span>
+                        @Cons.Female
+                    }
+                    else
+                    {
+                        <span class="fa fa-male"></span>
+                        @Cons.Male
+                    }
+                    </a> |
+                    <a title="Fecha de nacimiento">
+                        <span class="fa fa-birthday-cake"></span>@Html.DisplayFor(modelItem => item.BirthDate)
+                    </a>
+                    <br />
                 </td>
                 <td class="col-md-4">
                     <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
@@ -46,17 +71,7 @@
                     <span class="fa fa-phone control-label"></span> @Html.DisplayFor(modelItem => item.Phone)<br />
                     <span class="fa fa-envelope control-label"></span> @Html.DisplayFor(modelItem => item.Email)<br />
                    
-                     @if (item.Gender == Cons.FemaleValue)
-                    {
-                        <span class="fa fa-female"></span>
-                        <a>@Cons.FemaleLabel</a>
-                    }
-                    else
-                    {
-                        <span class="fa fa-male"></span>
-                        <a>@Cons.MaleLabel</a>
-                    }|
-                    <span class="fa fa-birthday-cake"></span>@Html.DisplayFor(modelItem => item.BirthDate)<br />
+                  
 
                 </td>
 

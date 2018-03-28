@@ -1,4 +1,4 @@
-﻿using Argos.Models.Catalog;
+﻿using Argos.Models.Inventory;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

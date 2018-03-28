@@ -3,9 +3,9 @@
 INSERT INTO [Security].[AspNetUsers]
            ([Id],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount],[UserName])
      VALUES
-           (N'384a8104-cbc6-40a5-a27c-2947263e0fcc','arkhameng@gmail.com',1,N'AK6X8N0K4cOnpKk8DOHYYocTWSNB/yLXybmoExtH1AE7+QsgZQ07NNg6NL5DXiKJqQ==',N'c7d38da5-c068-4838-97b1-b563eaf4a53b',0,0,1,0,'Administrador')
+           (N'384a8104-cbc6-40a5-a27c-2947263e0fcc','arkhameng@gmail.com',1,N'ALIU7GyVEDX2YlBvmSlPhe4EKwhOIwUmSpjc+K5jww/vuzjpzHgGaNDCSJCXfMxtWA==',N'c7d38da5-c068-4838-97b1-b563eaf4a53b',0,0,1,0,'Administrador')
 
-
+		   
 --==================STATES=================================
 SET IDENTITY_INSERT Config.State ON
 

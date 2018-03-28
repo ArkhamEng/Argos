@@ -1,0 +1,144 @@
+﻿@model IEnumerable<List<Argos.Models.Catalog.Product>>
+
+@{
+    ViewBag.Title = "Catálogo de Productos";
+    ViewBag.Class = "fa fa-cubes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<hr />
+<div class="panel panel-danger">
+    <div class="panel-body">
+        <div class="col-md-11 input-group">
+            @Html.DropDownList("CategoryId", (SelectList)ViewBag.Categories, "Categoría", new { @class = "form-control text-uppercase", style = "width:20% !important" })
+            @Html.DropDownList("SubCategoryId", (SelectList)ViewBag.SubCategories, "Sub Categoría", new { @class = "form-control text-uppercase", style = "width:20% !important" })
+            @Html.TextBox("Text", "", htmlAttributes: new { @class = "form-control text-uppercase", placeholder = "Búsqueda por código o descripción", style = "width:60% !important" })
+            <div class="input-group-btn">
+                <button class="btn btn-primary " type="button" title="Buscar productos" onclick="SearchProducts()">
+                    <span class="glyphicon glyphicon-search"></span>
+                    Buscar
+                </button>
+                <button type="button" class="btn btn-success hidden-xs hidden-sm" title="Registrar nuevo producto" onclick="BeginAddProduct()">
+                    <span class="glyphicon  glyphicon-file"></span>
+                    Nuevo
+                </button>
+            </div>
+        </div>
+        <br />
+        <div class="input-group col-md-10 hidden-sm hidden-xs">
+            <span class="input-group-addon"><i class="fa fa-registered"></i></span>
+            @Html.DropDownList("CarMakeId", (SelectList)ViewBag.CarMakes, "Armadora", new { @class = "form-control text-uppercase " })
+            <span class="input-group-addon"><i class="fa fa-car"></i></span>
+            @Html.DropDownList("CarModelId", (SelectList)ViewBag.CarModels, "Modelo", new { @class = "form-control text-uppercase " })
+            <span class="input-group-addon"><i class="fa fa-calendar-check-o"></i></span>
+            @Html.DropDownList("CarYearId", (SelectList)ViewBag.CarYears, "Año", new { @class = "form-control text-uppercase " })
+            <span class="input-group-btn">
+                <button id="btnSwitch" type="button" class="btn btn-default" title="Ver como tabla">
+                    <span id="spSwitch" class="fa fa-th-large"></span>
+                </button>
+                <button class="btn btn-info" type="button" id="btnClear" title="Recargar">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                    Limpiar
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+
+@Html.Hidden("IsGrid")
+
+
+<div class="panel panel-default">
+    <div id="divProductList" class="panel-body" style="min-height:300px">
+        @Html.Partial("_ProductList", Model)
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        SetCascade('#CarMakeId', '#CarModelId', '@Url.Action("GetModels","Configuration")');
+
+        SetCascade('#CarModelId', '#CarYearId', '@Url.Action("GetYears", "Configuration")');
+
+        SetCascade('#CategoryId', '#SubCategoryId', '@Url.Action("GetProductSubCategories", "Configuration")');
+    });
+
+    function BeginAddProduct() {
+        ShowLoading(true);
+
+        ExecuteAjax('@Url.Action("BeginAddProduct", "Catalog")', {}, function (response) {
+            HideLoading(function () {
+                ShowModal('<span class="fa fa-cubes"></span> Nuevo producto', response, SaveProduct, function () { }, 'static');
+            });
+        });
+    }
+
+    function BeginUpdateClient(id) {
+        ShowLoading(true);
+
+        ExecuteAjax('@Url.Action("BeginUpdateClient", "Catalog")', { id: id }, function (response) {
+            HideLoading(function () {
+                ShowModal('<span class="fa fa-cubes"></span> Edición de producto', response, SaveProduct, null, 'static');
+            });
+        });
+    }
+
+    function SaveProduct() {
+        var form = $("#ProductForm");
+
+        if (!form.valid())
+            return;
+
+        ShowModLoading();
+
+        var product = {
+            Description: $("#Description").val(), ProductSubCategoryId: $("#ProductSubCategoryId").val(), Code: $("#Code").val(), TradeMark: $("#TradeMark").val(),
+            Cost: $("#Cost").val(), Percentage: $("#Percentage").val(), Price: $("#Price").val(), MiddlePercentage: $("#MiddlePercentage").val(),
+            MiddlePrice: $("#MiddlePrice").val(), LowerPercentage: $("#LowerPercentage").val(), LowerPrice: $("#LowerPrice").val(), ProductId: $("#ProductId").val()
+        }
+
+        if (parseInt(product.ProductId) > 0) {
+            ExecuteAjax('@Url.Action("UpdateProduct")', { product: product }, function (response) {
+                SearchById(response.Id);
+                HideModal(true, function () {
+                    ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
+                });
+            });
+        }
+        else {
+            ExecuteAjax('@Url.Action("AddProduct")', { product: product }, function (response) {
+                SearchById(response.Id);
+                HideModal(true, function () {
+                    ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
+                });
+            });
+        }
+    }
+
+    function SearchById(id) {
+        var filter = { ProductId: id };
+
+        ExecuteAjax('@Url.Action("SearchProducts")', { id: id }, function (response) {
+            $("#divProductList").html(response);
+        });
+    }
+
+    function SearchProducts() {
+        ShowLoading('static');
+
+        var filter = {
+            CategoryId: $("#CategoryId").val(), SubCategoryId: $("#SubCategoryId").val(), Text: $("#Text").val(),
+            CarMakeId: $("#CarMakeId").val(), CarModelId: $("#CarModelId").val(), CarYearId: $("#CarYearId").val()
+        };
+
+        ExecuteAjax('@Url.Action("SearchProducts")', { filter: filter }, function (response) {
+            HideLoading(function () {
+                $("#divProductList").html(response);
+            });
+        });
+    }
+
+    function Clear() {
+        window.location = window.location;
+    }
+</script>

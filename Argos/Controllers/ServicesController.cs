@@ -23,8 +23,8 @@ namespace Argos.Controllers
         public ActionResult Accounts()
         {
             var model = new AccountSearchViewModel();
-            model.ServiceCategories = db.ServiceCategory.ToSelectList();
-            model.ServiceStatus = db.ServiceCategory.ToSelectList();
+            model.ServiceCategories = db.ServiceCategories.ToSelectList();
+            model.ServiceStatus = db.ServiceCategories.ToSelectList();
 
             return View(model);
         }
@@ -42,7 +42,7 @@ namespace Argos.Controllers
                          where (client == string.Empty || arClient.All(w => s.Client.Name.Contains(w))) &&
                                (phone == string.Empty || s.Client.Phone == phone) &&
                                (serviceTypeId == null || s.ServiceTypeId == serviceTypeId) &&
-                               (serviceStatusId == null || s.ServiceStatusId == serviceStatusId) 
+                               (serviceStatusId == null || s.StatusId == serviceStatusId) 
                          select s).ToList();
 
             return PartialView("_AccountList", model);
@@ -52,7 +52,7 @@ namespace Argos.Controllers
         public ActionResult BeginAccount()
         {
             var model = new BeginAccountViewModel();
-            model.ServiceTypes = db.ServiceCategory.ToSelectList();
+            model.ServiceTypes = db.ServiceCategories.ToSelectList();
             
 
             return PartialView("_BeginAccount",model);
@@ -70,11 +70,11 @@ namespace Argos.Controllers
                     ServiceTypeId   = model.ServiceTypeId,
                     HirePrice       = model.HirePrice,
                     HireDate        = model.HireDate,
-                    ServiceStatusId = (int)Argos.Models.Enums.ServStatus.Opened
+                    StatusId        = (int)Argos.Models.Enums.ServStatus.Opened
                 };
 
                 //obtengo los datos del servicio seleccionado
-                var service = db.ServiceCategory.Find(model.ServiceTypeId);
+                var service = db.ServiceCategories.Find(model.ServiceTypeId);
 
                 //Obtengo el nombre corto del tipo de servicio y genero un código provisional
                 account.Code = Extens.GetCode(service.ShortName, Cons.Zero);
@@ -131,10 +131,10 @@ namespace Argos.Controllers
 
             var model = db.ServiceAccounts.
                 Where(a => a.ServiceId == id).Include(a=> a.AccountAddress).Include(a=> a.AccountAddress.City.State).
-                Include(a=> a.ServiceCategory).Include(a=> a.ServiceStatus).Include(a=> a.Client).FirstOrDefault();
+                Include(a=> a.ServiceCategory).Include(a=> a.Status).Include(a=> a.Client).FirstOrDefault();
 
 
-            ViewBag.Categories = db.ServiceCategory.ToSelectList();
+            ViewBag.Categories = db.ServiceCategories.ToSelectList();
             ViewBag.States       = db.States.ToSelectList();
             ViewBag.Cities       = db.Cities.Where(c=> c.StateId == model.Client.City.StateId).ToSelectList();
             return View(model);

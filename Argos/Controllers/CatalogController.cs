@@ -12,7 +12,7 @@ using Argos.Models.BaseTypes;
 namespace Argos.Controllers
 {
 
-    public class CatalogController : Controller
+    public partial class CatalogController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -66,12 +66,12 @@ namespace Argos.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new JResponse { Result = JResponse.Warning, Header = "Error al guardar el cliente",
+                return Json(new JResponse { Result = Cons.ResponseDanger, Header = "Error al guardar el cliente",
                     Body = "Ocurrion un error al agregar el cliente " + ex.Message });
             }
             return Json(new JResponse
             {
-                Result = JResponse.Success,
+                Result = Cons.ResponseSuccess,
                 Header = "Datos del cliente guardados",
                 Body = string.Format("El cliente {0} fue agregado al catálogo", client.Name),
                 Id = client.ClientId
@@ -96,7 +96,7 @@ namespace Argos.Controllers
                 {
                     return Json(new JResponse
                     {
-                        Result = JResponse.Warning,
+                        Result = Cons.ResponseWarning,
                         Header = "Cliente inexistente!",
                         Body = string.Format("Este cliente ya no esta activo en el catálgo"),
                     });
@@ -107,7 +107,7 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el cliente",
                     Body = string.Format("Ocurrion un error al eliminar el cliente detalle del error:{0}", ex.Message),
                 });
@@ -134,7 +134,7 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al modificar el cliente",
                     Body = string.Format("Ocurrio un error al guardar los cambios del cliente {0},  detalle del error {1}",
                                         client.Name, ex.Message),
@@ -142,7 +142,7 @@ namespace Argos.Controllers
             }
             return Json(new JResponse
             {
-                Result = JResponse.Success,
+                Result = Cons.ResponseSuccess,
                 Header = "Datos del cliente guardados",
                 Body = string.Format("Los datos del cliente {0} fueron modificados", client.Name),
                 Id = client.ClientId
@@ -175,7 +175,7 @@ namespace Argos.Controllers
                 {
                     return Json(new JResponse
                     {
-                        Result = JResponse.Warning,
+                        Result = Cons.ResponseWarning,
                         Header = "No existe el client a eliminar!",
                         Body = string.Format("Este cliente ya no esta activo en el catálgo")                        
                     });
@@ -186,14 +186,14 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el cliente",
                     Body = string.Format("Ocurrion un error al eliminar el cliente detalle del error:{0}", ex.Message)
                 });
             }
             return Json(new JResponse
             {
-                Result = JResponse.Success,
+                Result = Cons.ResponseSuccess,
                 Header = "Cliente eliminado!",
                 Body = string.Format("El cliente {0} fue eliminado del catálogo", client.Name),
                 Id = client.ClientId
@@ -265,14 +265,14 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al guardar el empleado",
-                    Body = "Ocurrion un error al agregar el empleado " + ex.Message
+                    Body = "Ocurrio un error al agregar el empleado " + ex.Message
                 });
             }
             return Json(new JResponse
             {
-                Result = JResponse.Success,
+                Result = Cons.ResponseSuccess,
                 Header = "Datos del empleado guardados",
                 Body = string.Format("El empleado {0} fue agregado al catálogo", employee.Name),
                 Id = employee.EmployeeId
@@ -298,7 +298,7 @@ namespace Argos.Controllers
                 {
                     return Json(new JResponse
                     {
-                        Result = JResponse.Warning,
+                        Result = Cons.ResponseWarning,
                         Header = "Empleado inexistente!",
                         Body = string.Format("Este empleado ya no esta activo en el catálgo"),
                     });
@@ -309,7 +309,7 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al obtener el empleado",
                     Body = string.Format("Ocurrio un error al ontener los datos del empleado, detalle del error:{0}", ex.Message),
                 });
@@ -336,7 +336,7 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al modificar el empleado",
                     Body = string.Format("Ocurrio un error al guardar los cambios del empleado {0}  detalle del error {1}",
                                         employee.Name, ex.Message),
@@ -344,7 +344,7 @@ namespace Argos.Controllers
             }
             return Json(new JResponse
             {
-                Result = JResponse.Success,
+                Result = Cons.ResponseSuccess,
                 Header = "Datos del empleado guardados",
                 Body = string.Format("Los datos del empleado {0} fueron modificados", employee.Name),
                 Id = employee.EmployeeId
@@ -376,7 +376,7 @@ namespace Argos.Controllers
                 {
                     return Json(new JResponse
                     {
-                        Result = JResponse.Warning,
+                        Result = Cons.ResponseWarning,
                         Header = "No existe el empleado a eliminar!",
                         Body = string.Format("Este empleado ya no esta activo en el catálgo")                        
                     });
@@ -387,14 +387,14 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el Employee",
                     Body = string.Format("Ocurrion un error al eliminar el Employee detalle del error:{0}", ex.Message)
                 });
             }
             return Json(new JResponse
             {
-                Result = JResponse.Success,
+                Result = Cons.ResponseSuccess,
                 Header = "Employee eliminado!",
                 Body = string.Format("El Employee {0} fue eliminado del catálogo", employee.Name),
                 Id = employee.EmployeeId
@@ -414,7 +414,7 @@ namespace Argos.Controllers
         #region Provider Methods
         public ActionResult Providers()
         {
-            var model = new List<Provider>();
+            var model = new List<Supplier>();
 
             ViewBag.States = db.States.ToSelectList();
             ViewBag.Cities = new List<City>().ToSelectList();
@@ -426,7 +426,7 @@ namespace Argos.Controllers
         public ActionResult SearchProviders(string ftr, string name, int? stateId, int? cityId, int? id)
         {
             var model = db.Providers.Where(c => (ftr == string.Empty || ftr == null || c.FTR == ftr)
-            && (id == null || c.ProviderId == id)
+            && (id == null || c.SupplierId == id)
             && (name == string.Empty || name == null || c.Name.Contains(name))
             && (cityId == null || c.CityId == cityId) && (stateId == null || c.City.StateId == stateId)
             && c.IsActive).Include(c => c.City).ToList();
@@ -437,7 +437,7 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult BeginAddProvider()
         {
-            var model = new Provider();
+            var model = new Supplier();
 
             ViewBag.States = db.States.ToSelectList();
             ViewBag.Cities = new List<City>().ToSelectList();
@@ -446,7 +446,7 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddProvider(Provider provider)
+        public ActionResult AddProvider(Supplier provider)
         {
             try
             {
@@ -463,17 +463,17 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al guardar el proveedor",
                     Body = "Ocurrion un error al agregar el proveedor " + ex.Message
                 });
             }
             return Json(new JResponse
             {
-                Result = JResponse.Success,
+                Result = Cons.ResponseSuccess,
                 Header = "Datos del proveedor guardados",
                 Body = string.Format("El proveedor {0} fue agregado al catálogo", provider.Name),
-                Id = provider.ProviderId
+                Id = provider.SupplierId
             });
         }
 
@@ -484,7 +484,7 @@ namespace Argos.Controllers
             try
             {
                 var model = db.Providers.Include(c => c.City).
-                    FirstOrDefault(c => c.ProviderId == id && c.IsActive);
+                    FirstOrDefault(c => c.SupplierId == id && c.IsActive);
 
                 if (model != null)
                 {
@@ -497,7 +497,7 @@ namespace Argos.Controllers
                 {
                     return Json(new JResponse
                     {
-                        Result = JResponse.Warning,
+                        Result = Cons.ResponseWarning,
                         Header = "Proveedor inexistente!",
                         Body = string.Format("Este proveedor ya no esta activo en el catálgo"),
                     });
@@ -508,7 +508,7 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el proveedor",
                     Body = string.Format("Ocurrion un error al eliminar el proveedor detalle del error:{0}", ex.Message),
                 });
@@ -517,7 +517,7 @@ namespace Argos.Controllers
 
 
         [HttpPost]
-        public ActionResult UpdateProvider(Provider provider)
+        public ActionResult UpdateProvider(Supplier provider)
         {
             try
             {
@@ -535,7 +535,7 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al modificar el proveedor",
                     Body = string.Format("Ocurrion un error al guardar los cambios del proveedor {0}  detalle del error {1}",
                                         provider.Name, ex.Message),
@@ -543,10 +543,10 @@ namespace Argos.Controllers
             }
             return Json(new JResponse
             {
-                Result = JResponse.Success,
+                Result = Cons.ResponseSuccess,
                 Header = "Datos del proveedor guardados",
                 Body = string.Format("Los datos del proveedor {0} fueron modificados", provider.Name),
-                Id = provider.ProviderId
+                Id = provider.SupplierId
             });
         }
 
@@ -554,10 +554,10 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult DeleteProvider(int id)
         {
-            Provider provider = new Provider();
+            Supplier provider = new Supplier();
             try
             {
-                provider = db.Providers.FirstOrDefault(c => c.ProviderId == id && c.IsActive);
+                provider = db.Providers.FirstOrDefault(c => c.SupplierId == id && c.IsActive);
 
                 if (provider != null)
                 {
@@ -574,7 +574,7 @@ namespace Argos.Controllers
                 {
                     return Json(new JResponse
                     {
-                        Result = JResponse.Warning,
+                        Result = Cons.ResponseWarning,
                         Header = "No existe el proveedor a eliminar!",
                         Body = string.Format("Este proveedor ya no esta activo en el catálgo")
                     });
@@ -585,17 +585,17 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el proveedor",
                     Body = string.Format("Ocurrion un error al eliminar el proveedor detalle del error:{0}", ex.Message)
                 });
             }
             return Json(new JResponse
             {
-                Result = JResponse.Success,
+                Result = Cons.ResponseSuccess,
                 Header = "Proveedor eliminado!",
                 Body = string.Format("El proveedor {0} fue eliminado del catálogo", provider.Name),
-                Id = provider.ProviderId
+                Id = provider.SupplierId
             });
         }
 
@@ -603,12 +603,14 @@ namespace Argos.Controllers
         public ActionResult AutoCompleatProvider(string filter)
         {
             var providers = db.Providers.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
-                Select(c => new { Label = c.Name, Id = c.ProviderId, Value = c.FTR });
+                Select(c => new { Label = c.Name, Id = c.SupplierId, Value = c.FTR });
 
             return Json(providers);
         }
 
         #endregion
+
+       
 
         protected override void Dispose(bool disposing)
         {

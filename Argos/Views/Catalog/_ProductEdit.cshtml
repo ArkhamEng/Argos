@@ -1,0 +1,98 @@
+﻿@model Argos.Models.Catalog.Product
+@using Argos.Support
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <form id="ProductForm">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="panel-group">
+            <div class="panel panel-default">
+
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" href="#general">
+                            <span class="fa fa-columns"></span>
+                            Datos Generales
+                        </a>
+                    </li>
+
+                    @if (Model.ProductId > Cons.Zero)
+                    {
+                        <li>
+                            <a data-toggle="tab" href="#models">
+                                <span class="fa fa-car"></span>
+                                Compatibilidad
+                                <span class="bg-danger badge">
+                                    @Model.Compatibilities.Count
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#images">
+                                <span class="fa fa-image"></span> Imagenes
+                                <span class="bg-danger badge">
+                                    @Model.ProductImages.Count
+                                </span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Model.SoldAs == Cons.Package)
+                    {
+                        <li>
+                            <a data-toggle="tab" href="#detail">
+                                <span class="fa fa-cubes"></span> Productos
+                                <span id="spDetCount" class="bg-danger badge">
+                                    @Model.PackageDetails.Sum(pd => pd.Quantity)
+                                </span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+                <div class="tab-content">
+                    <div id="general" class="tab-pane fade in active">
+                        @Html.Partial("_ProductGeneralData", Model)
+                    </div>
+
+                   @if (Model.SoldAs == Cons.Package)
+                   {
+                        <div id="detail" class="tab-pane fade">
+                            <div id="divPackageDetails">
+                                @Html.Partial("_ProductDetails", Model.PackageDetails)
+                            </div>
+                        </div>
+                    }
+            
+                    <div id="models" class="tab-pane fade">
+                        <div>
+                            @Html.Partial("_ProductCarModel", Model)
+                        </div>
+                    </div>
+
+                    <div id="images" class="tab-pane fade">
+                        <div>
+                            <div class="col-md-12" id="divImages" style="align-items:center">
+                                @Html.Partial("_ProductImages", Model.ProductImages)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.HiddenFor(m => m.ProductId)
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            SetCascade("#StateId", "#CityId", '@Url.Action("GetCities","Configuration")');
+
+            var form = $("#ProviderForm");
+            form.validate();
+        });
+
+
+    </script>

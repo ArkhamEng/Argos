@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Argos.Models.Catalog
 {
-    [Table("Provider", Schema = "Catalog")]
-    public class Provider:Person
+    [Table("Supplier", Schema = "Catalog")]
+    public class Supplier:Person
     {
-        public int ProviderId { get; set; }
+        public int SupplierId { get; set; }
 
         [Display(Name = "Razón Social")]
         [MaxLength(200)]

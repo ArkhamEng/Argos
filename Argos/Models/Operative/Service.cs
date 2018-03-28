@@ -14,7 +14,7 @@ namespace Argos.Models.Operative
         public int ServiceId { get; set; }
 
         [Display(Name ="Status")]
-        public int ServiceStatusId { get; set; }
+        public int StatusId { get; set; }
 
       
         [Display(Name = "Contratación")]
@@ -27,9 +27,8 @@ namespace Argos.Models.Operative
 
 
         #region Navigation Properties
-
      
-        public virtual ServiceStatus ServiceStatus { get; set; }
+        public virtual Status Status { get; set; }
 
         public ICollection<SaleDetail> SaleDetails { get; set; }
 

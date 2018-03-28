@@ -8,23 +8,17 @@ using System;
 namespace Argos.Models.Catalog
 {
     [Table("JobPosition", Schema = "Catalog")]
-    public class JobPosition : AuditableEntity,ISelectable
+    public class JobPosition : AuditableEntity
     {
-        public int JobPositionId { get; set; }
-
-        [Required(ErrorMessage ="Se requiere un nombre para el puesto")]
+        [Column(Order =0),Key]
         [MaxLength(20, ErrorMessage ="El nombre del puesto no debe ser mayor a 20 caractéres")]
-        public string Name { get; set; }
+        public string JobPositionName { get; set; }
 
+        [Column(Order = 1)]
         [MaxLength(50, ErrorMessage = "La descripción del puesto no debe ser mayor a 50 caractéres")]
         public string Description { get; set; }
 
         public ICollection<Employee> Employees { get; set; }
 
-        [NotMapped]
-        public int Id
-        {
-            get { return this.JobPositionId; }
-        }
     }
 }

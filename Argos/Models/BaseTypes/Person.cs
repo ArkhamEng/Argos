@@ -15,7 +15,7 @@ namespace Argos.Models.BaseTypes
 
         //Federal Taxpayer register
         [Display(Name = "R.F.C.")]
-        [MaxLength(15)]
+        [MaxLength(13)]
         [Index("Unq_FTR", IsUnique = true)]
         public string FTR { get; set; }
 
@@ -27,7 +27,7 @@ namespace Argos.Models.BaseTypes
 
 
         [Display(Name = "E-mail")]
-        [DataType(DataType.EmailAddress)]
+        [DataType(DataType.EmailAddress,ErrorMessage ="El e-mail no tiene un formato correcto")]
         [MaxLength(150)]
         [Index("Unq_Email", IsUnique = true)]
         public string Email { get; set; }

@@ -26,7 +26,32 @@ namespace Argos.Controllers
 
            return Json(cities);
         }
-    
+
+
+        [HttpPost]
+        public JsonResult GetModels(int id)
+        {
+            var cities = db.CarModels.Where(c => c.CarMakeId == id).ToSelectList();
+
+            return Json(cities);
+        }
+
+        [HttpPost]
+        public JsonResult GetYears(int id)
+        {
+            var cities = db.CarYears.Where(c => c.CarModelId == id).ToSelectList();
+
+            return Json(cities);
+        }
+
+        [HttpPost]
+        public JsonResult GetProductSubcategories(int id)
+        {
+            var cities = db.SubCategories.Where(c => c.CategoryId == id).ToSelectList();
+
+            return Json(cities);
+        }
+
         #endregion
 
         // GET: Configuration/Create

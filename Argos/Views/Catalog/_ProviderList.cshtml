@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Argos.Models.Catalog.Provider>
-
+@using Argos.Support
 
 <table id="TbClientList" class="table table-hover">
     <thead>
@@ -53,7 +53,7 @@
     </tbody>
 </table>
 <script>
-    var idClient = 0;
+    var idProvider = 0;
 
     $(document).ready(function()
     {
@@ -62,24 +62,22 @@
 
     function BeginDelete(id,name)
     {
-        console.log("Id{0} Name{1}",id,name);
-        idClient = id;
+        idProvider = id;
         var hdr ="Eliminar Proveedor!";
-        var body = "Esta seguro que deseas eliminar el proveedor " + name;
-        ShowMessage(hdr, body, 'confirm', DeleteClient, OnDeleteCanceled, 'static')
+        var body = "¿Esta seguro que deseas eliminar el proveedor " + name +"?";
+        ShowMessage(hdr, body, 'confirm', DeleteProvider, null, 'static')
         
     }
 
-    function DeleteClient()
+    function DeleteProvider()
     {
-        console.log("Deleting client");
-        ExecuteAjax('@Url.Action("DeleteClient","Catalog")', { id: idClient }, function (response)
+        ExecuteAjax('@Url.Action("DeleteProvider","Catalog")', { id: idProvider }, function (response)
         {
             HideLoading(function ()
             {
-                if (response.Result == 'success')
+                if (response.Result == '@Cons.ResponseSuccess')
                 {
-                    ShowMessage(response.Header, response.Body, response.Result, null, SearchClients, 'static');
+                    ShowMessage(response.Header, response.Body, response.Result, null, SearchProviders, 'static');
                 }
                 else {
                     ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
@@ -89,8 +87,5 @@
     }
 
   
-    function OnDeleteCanceled()
-    {
-        console.log("Confirm Cerrado");
-    }
+   
 </script>

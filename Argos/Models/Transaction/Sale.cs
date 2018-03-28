@@ -17,19 +17,23 @@ namespace Argos.Models.Transaction
         [Column(Order = 1)]
         public int ClientId { get; set; }
 
+        [Column(Order = 2)]
+        public int DeliveryMethodId { get; set; }
+
         [Column(Order = 3)]
         [MaxLength(10)]
-        public string Folio { get; set; }
+        public string SaleCode { get; set; }
 
 
         #region Navigation Properties
+        public virtual DeliveryMethod DeliveryMethod { get; set; }
 
         public virtual Client Client { get; set; }
 
         public virtual Commission Commission { get; set; }
 
         public  ICollection<SaleDetail> SaleDetails { get; set; }
-
+        
         #endregion
 
     }

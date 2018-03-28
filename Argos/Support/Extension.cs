@@ -5,6 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Web.Mvc;
 using System.Linq;
+using System.Web;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
+using System.Security.Principal;
 
 namespace Argos.Support
 {
@@ -20,7 +24,7 @@ namespace Argos.Support
 
         public static SelectList ToSelectList(this IEnumerable data)
         {
-            return new SelectList(data, nameof(ISelectable.Id), nameof(ISelectable.Name));
+            return new SelectList(data, nameof(ISelectable.Value), nameof(ISelectable.Text));
         }
 
 
@@ -29,6 +33,30 @@ namespace Argos.Support
             var code = serviceShorName + numericValue.ToString(Cons.CodeNumeric);
 
             return code;
+        }
+
+         public static int GetBranchId(this IIdentity user)
+        {
+            return user.GetBranchSession().Id;
+        }
+
+        public static JResponse GetBranchSession(this IIdentity user)
+        {
+            var um = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var userId = user.GetUserId();
+            var claim = um.GetClaims(userId).FirstOrDefault(c => c.Type == Cons.BranchSession);
+
+            JResponse session;
+
+            if (claim != null)
+            {
+                var sArry = claim.Value.Split(',');
+                session = new JResponse { Id = Convert.ToInt32(sArry[0]), Extra = sArry[1] };
+            }
+            else
+                session = new JResponse();
+
+            return session;
         }
 
     }

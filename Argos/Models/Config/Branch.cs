@@ -44,7 +44,7 @@ namespace Argos.Models.Config
 
         public ICollection<ServiceAccount> ServiceAccount { get; set; }
 
-        public ICollection<Inventory> ProductStocks { get; set; }
+        public ICollection<Stock> Stocks { get; set; }
 
         #endregion
     }

@@ -1,11 +1,7 @@
-﻿using Argos.Models.Catalog;
+﻿using Argos.Models.Inventory;
 using Argos.Models.Operative;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace Argos.Models.Transaction
 {

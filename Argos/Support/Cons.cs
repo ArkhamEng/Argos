@@ -4,6 +4,7 @@ namespace Argos.Support
 {
     public  class Cons
     {
+        #region Response Status
         public const string ResponseSuccess = "success";
 
         public const string ResponseWarning = "warning";
@@ -12,7 +13,14 @@ namespace Argos.Support
 
         public const string DefaultPassword = "default";
 
-        public const string UserPicturePath = "/Files/ProfilePictures";
+        #endregion
+
+        #region File Paths
+        public const string UserPicturePath  = "/Files/ProfilePictures";
+
+        public const string ProductImagePath = "/Files/ProductImages";
+
+        #endregion
 
         public const string CodeNumeric = "-0000-0000-0000";
 
@@ -20,15 +28,29 @@ namespace Argos.Support
 
         public const int One = 1;
 
+
         public const int AutoCompleateRows = 20;
 
-        public const string MaleLabel = "Masculino";
-        
-        public const string MaleValue = "M";
+        public const int MaxSearchRows = 400;
 
-        public const string FemaleLabel = "Femenino";
+        public const int LockDuration = 10;
 
-        public const string FemaleValue = "F";
+    //gender values
+        public const string Male  = "Masculino";
 
+        public const string Female = "Femenino";
+
+
+       //product type values
+        public const string Package = "Paquete";
+
+        public const string Single = "Individual";
+
+
+        #region Variables y Sesiones
+        public const string BranchSession = "BranchSession";
+
+        public const string IVA = "IVA";
+        #endregion
     }
 }

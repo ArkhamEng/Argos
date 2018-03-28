@@ -3,6 +3,7 @@ using Argos.Models.Operative;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 namespace Argos.Models.Config
 {
@@ -36,14 +37,31 @@ namespace Argos.Models.Config
 
         public bool IsLocatable { get; set; }
 
-        [NotMapped]
-        public int Id
-        {
-            get { return this.ServiceCategoryId; }
-        }
-
+    
         #region Navigation Properties
         public ICollection<ServiceAccount> ServiceAccount { get; set; }
+
+        #endregion
+
+        #region Not Mapped
+
+        [NotMapped]
+        public string Value
+        {
+            get
+            {
+                return ServiceCategoryId.ToString();
+            }
+        }
+
+        [NotMapped]
+        public string Text
+        {
+            get
+            {
+                return Name;
+            }
+        }
 
         #endregion
 

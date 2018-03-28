@@ -10,7 +10,8 @@ namespace Argos
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/_jquery-ui-1.12.1.min.js",
-                        "~/Scripts/jquery-3.2.1.min.js"));
+                        "~/Scripts/jquery-3.2.1.min.js",
+                        "~/Scripts/jquery.maskedinput.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate.js",
@@ -31,7 +32,8 @@ namespace Argos
                       "~/Content/font-awesome.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
-                       "~/AppScripts/Global.js"));
+                       "~/AppScripts/Global.js",
+                       "~/AppScripts/Catalog.js"));
 
            
         }

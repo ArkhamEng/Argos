@@ -116,7 +116,8 @@ function ShowModal(header, html, confirmCallBack, cancelCallBack, backdrop, isRe
 }
 
 //REPLACE MODAL CONTENT
-function ReplaceModal(header, html) {
+function ReplaceModal(header, html)
+{
     $("#SiteModalHeader").html(header);
 
     $("#SiteModalBody").html(html);
@@ -146,13 +147,14 @@ function HideModal(cleaUp, callback)
 
 
 //Loading In Modal
-
-function ShowModLoading() {
+function ShowModLoading()
+{
     $("#ModalContent").children().hide();
     $("#ModalLoading").children().show();
 }
 
-function HideModLoading() {
+function HideModLoading()
+{
     $("#ModalLoading").children().hide();
     $("#ModalContent").children().show();
 }
@@ -192,7 +194,7 @@ function ShowLoading(backdrop)
 
 function HideLoading(callback)
 {
-    $('#Loading').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
+    $("#Loading").off("hidden.bs.modal").on("hidden.bs.modal", function (e)
     {
         if (callback != null)
             callback();
@@ -217,11 +219,13 @@ function ShowMessage(textHeader, textBody, type, confirmCallBack, cancelCallBack
     {
         $("#MessageContent").attr("class", 'modal-content panel panel-success');
         $("#MessageImage").attr("src", '/Images/success.png');
+        $("#MessageOk").attr('class','btn btn-success');
     }
     else if (type == 'warning')
     {
         $("#MessageContent").attr("class", 'modal-content panel panel-warning');
         $("#MessageImage").attr("src", '/Images/warning.png');
+        $("#MessageOk").attr('class', 'btn btn-warning');
     }
     else if (type == 'confirm')
     {

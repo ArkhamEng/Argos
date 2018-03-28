@@ -1,5 +1,6 @@
 ﻿using Argos.Models;
 using Argos.Models.BaseTypes;
+using Argos.Support;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,7 +66,7 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
-                    Result = JResponse.Warning,
+                    Result = Cons.ResponseDanger,
                     Header = "Error al obtener el empleado",
                     Body = string.Format("Ocurrio un error al ontener los datos para el usuario detalle:{0}", ex.Message),
                 });

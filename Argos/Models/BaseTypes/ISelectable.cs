@@ -7,17 +7,17 @@ namespace Argos.Models.BaseTypes
 {
     public interface ISelectable
     {
-        int Id { get; }
+        string Value { get; }
 
-        string Name { get; }
+        string Text { get; }
     }
 
 
     public class Selectable : ISelectable
     {
 
-        public int Id { get; set; }
+        public string Value { get; set; }
 
-        public string Name { get; set; }
+        public string Text { get; set; }
     }
 }

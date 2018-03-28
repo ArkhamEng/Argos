@@ -16,10 +16,12 @@ namespace Argos.Models.Catalog
 
         [Column(Order = 1)]
         [Display(Name ="Puesto")]
-        public int JobPositionId { get; set; }
+        [MaxLength(50)]
+        [ForeignKey("JobPosition")]
+        public string JobPositionName { get; set; }
 
         [Display(Name ="Sexo")]
-        [MaxLength(1)]
+        [MaxLength(10)]
         public string Gender { get; set; }
 
         [Display(Name ="Cumpleaños")]

@@ -16,9 +16,5 @@ namespace Argos.Models.BaseTypes
         public string Body { get; set; }
 
         public string Extra { get; set; }
-
-        public const string Success = "success";
-        public const string Warning = "warning";
-        public const string Confirm = "confirm";
     }
 }

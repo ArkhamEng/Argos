@@ -7,6 +7,7 @@
 }
 
 <hr />
+
 <div class="panel panel-danger">
     <div class="panel-body">
         <div class="col-md-11">
@@ -24,18 +25,18 @@
                style = "width:70%"
            })
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button" id="btnSearch" onclick="SearchClients()">
+                    <button class="btn btn-primary" type="button"  onclick="SearchClients()">
                         <span class="glyphicon glyphicon-search"></span>
                         <u>B</u>uscar
                     </button>
-                    <button type="button" class="btn btn-success" id="btnCreate" onclick="BeginAddClient()">
+                    <button type="button" class="btn btn-success"  onclick="BeginAddClient()">
                         <span class="glyphicon  glyphicon-file"></span>
                         <u>N</u>uevo
                     </button>
                 </span>
             </div>
         </div>
-        <br /><br /><br />
+        <br />
         <div class="col-md-10">
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
@@ -59,6 +60,7 @@
     </div>
 </div>
 
+
 <script>
     $(document).ready(function ()
     {
@@ -66,62 +68,15 @@
         $("#liClients").addClass("active")
     });
 
-    function BeginAddClient() {
-        ShowLoading(true);
-
-        ExecuteAjax('@Url.Action("BeginAddClient", "Catalog")', {}, function (response) {
-            HideLoading(function () {
-                ShowModal('<span class="fa fa-user-o"></span>Creación de Cliente', response, SaveClient, function () { }, 'static');
-            });
-        });
+   
+    function BeginAddClient()
+    {
+        ShowClientModal(SearchById, null, null);
     }
 
     function BeginUpdateClient(id)
     {
-        ShowLoading(true);
-
-        ExecuteAjax('@Url.Action("BeginUpdateClient", "Catalog")', {id:id}, function (response) {
-            HideLoading(function () {
-                ShowModal('<span class="fa fa-user-o"></span>Edición de Cliente', response, SaveClient, null, 'static');
-            });
-        });
-    }
-
-    function SaveClient() {
-        var form = $("#ClientForm");
-
-        if (!form.valid())
-            return;
-
-        ShowModLoading();
-
-        var client = {
-            Name: $("#Name").val(), BusinessName: $("#BusinessName").val(), FTR: $("#FTR").val(), Street: $("#Street").val(),
-            InNumber: $("#InNumber").val(), OutNumber: $("#OutNumber").val(), Location: $("#Location").val(), Email: $("#Email").val(),
-            ZipCode: $("#ZipCode").val(), Phone: $("#Phone").val(), ClientId: $("#ClientId").val(), CityId: $("#CityId").val()
-        }
-
-        if (parseInt(client.ClientId) > 0)
-        {
-            ExecuteAjax('@Url.Action("UpdateClient")', { client: client }, function (response)
-            {
-                SearchById(response.Id);
-                HideModal(true, function () {
-                    ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
-                });
-            });
-        }
-        else
-        {
-            ExecuteAjax('@Url.Action("AddClient")', { client: client }, function (response)
-            {
-                SearchById(response.Id);
-                HideModal(true, function ()
-                {
-                    ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
-                });
-            });
-        }
+        ShowClientModal(SearchById,null, id)
     }
 
     function SearchById(id)
