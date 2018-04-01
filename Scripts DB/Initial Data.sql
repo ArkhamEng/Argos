@@ -9,7 +9,7 @@ INSERT INTO [Security].[AspNetUsers]
 --==================STATES=================================
 SET IDENTITY_INSERT Config.State ON
 
-INSERT INTO Config.State (StateId, Code, Name, ShorName) VALUES
+INSERT INTO Config.State (StateId, Code, Name, ShortName) VALUES
 (1, '01', 'Aguascalientes', 'Ags.'),
 (2, '02', 'Baja California', 'BC'),
 (3, '03', 'Baja California Sur', 'BCS'),
@@ -2549,32 +2549,32 @@ INSERT INTO Config.City(CityId,StateId,Code,Name) VALUES
 SET IDENTITY_INSERT Config.City off
 
 /**********************JOB POSITIONS****************************/
-INSERT INTO [Catalog].[JobPosition]
-           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
+INSERT INTO [HumanResources].[JobPosition]
+           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser],IsActive)
      VALUES
-           ('GERENTE GENERAL','GERENTE GENERAL',GETDATE(),GETDATE(),'Administrador','Administrador')
+           ('GERENTE GENERAL','GERENTE GENERAL',GETDATE(),GETDATE(),'Administrador','Administrador',1)
 GO
-INSERT INTO [Catalog].[JobPosition]
-           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
+INSERT INTO [HumanResources].[JobPosition]
+           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser],IsActive)
      VALUES
-           ('GERENTE OPERATIVO','GERENTE OPERATIVO',GETDATE(),GETDATE(),'Administrador','Administrador')
+           ('GERENTE OPERATIVO','GERENTE OPERATIVO',GETDATE(),GETDATE(),'Administrador','Administrador',1)
 GO
-INSERT INTO [Catalog].[JobPosition]
-           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
+INSERT INTO [HumanResources].[JobPosition]
+           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser],IsActive)
      VALUES
-           ('GERENTE DE VENTAS','GERENTE DE VENTAS',GETDATE(),GETDATE(),'Administrador','Administrador')
+           ('GERENTE DE VENTAS','GERENTE DE VENTAS',GETDATE(),GETDATE(),'Administrador','Administrador',1)
 GO
-INSERT INTO [Catalog].[JobPosition]
-           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
+INSERT INTO [HumanResources].[JobPosition]
+           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser],IsActive)
      VALUES
-           ('SUPERVISOR','GERENTE DE VENTAS',GETDATE(),GETDATE(),'Administrador','Administrador')
+           ('SUPERVISOR','GERENTE DE VENTAS',GETDATE(),GETDATE(),'Administrador','Administrador',1)
 GO
-INSERT INTO [Catalog].[JobPosition]
-           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
+INSERT INTO [HumanResources].[JobPosition]
+           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser],IsActive)
      VALUES
-           ('VENDEDOR','VENDEDOR',GETDATE(),GETDATE(),'Administrador','Administrador')
+           ('VENDEDOR','VENDEDOR',GETDATE(),GETDATE(),'Administrador','Administrador',1)
 GO
-INSERT INTO [Catalog].[JobPosition]
-           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
+INSERT INTO [HumanResources].[JobPosition]
+           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser],IsActive)
      VALUES
-           ('INSTALADOR','INSTALADOR',GETDATE(),GETDATE(),'Administrador','Administrador')
+           ('INSTALADOR','INSTALADOR',GETDATE(),GETDATE(),'Administrador','Administrador',1)

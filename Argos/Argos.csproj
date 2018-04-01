@@ -192,18 +192,17 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
-    <Compile Include="Controllers\ServicesController.cs" />
+    <Compile Include="Controllers\OperativeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803280619268_Initial.cs" />
-    <Compile Include="Migrations\201803280619268_Initial.Designer.cs">
-      <DependentUpon>201803280619268_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201803292234267_Initial.cs" />
+    <Compile Include="Migrations\201803292234267_Initial.Designer.cs">
+      <DependentUpon>201803292234267_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\BaseTypes\ProductBase.cs" />
-    <Compile Include="Models\Config\Status.cs" />
-    <Compile Include="Models\BaseTypes\TransactionBase.cs" />
+    <Compile Include="Models\BaseTypes\TransactionDetail.cs" />
+    <Compile Include="Models\BaseTypes\Transaction.cs" />
     <Compile Include="Models\Config\City.cs" />
     <Compile Include="Models\Config\Configuration.cs" />
     <Compile Include="Models\Config\Locality.cs" />
@@ -219,12 +218,19 @@
     <Compile Include="Models\Inventory\MeasureUnit.cs" />
     <Compile Include="Models\Enums\TransStatus.cs" />
     <Compile Include="Models\Inventory\Stock.cs" />
+    <Compile Include="Models\Operative\AccountType.cs" />
+    <Compile Include="Models\Operative\ServiceType.cs" />
     <Compile Include="Models\Operative\Policy.cs" />
-    <Compile Include="Models\Operative\ServiceAccount.cs" />
+    <Compile Include="Models\Operative\PolicyCharge.cs" />
+    <Compile Include="Models\Operative\PolicyHistory.cs" />
+    <Compile Include="Models\Operative\OperativeStatus.cs" />
+    <Compile Include="Models\Security\ClientUser.cs" />
     <Compile Include="Models\Transaction\Purchase.cs" />
     <Compile Include="Models\Transaction\PurchaseDetail.cs" />
-    <Compile Include="Models\Transaction\DeliveryMethod.cs" />
-    <Compile Include="Models\Transaction\TransactionType.cs" />
+    <Compile Include="Models\Transaction\ShipMethod.cs" />
+    <Compile Include="Models\Transaction\Shipping.cs" />
+    <Compile Include="Models\Transaction\TransStatus.cs" />
+    <Compile Include="Models\Transaction\TransType.cs" />
     <Compile Include="Support\FileManager.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -234,26 +240,24 @@
     <Compile Include="Models\Inventory\Product.cs" />
     <Compile Include="Models\Inventory\Category.cs" />
     <Compile Include="Models\Config\Branch.cs" />
-    <Compile Include="Models\Catalog\Client.cs" />
+    <Compile Include="Models\Transaction\Client.cs" />
     <Compile Include="Models\Transaction\SaleDetail.cs" />
-    <Compile Include="Models\Transaction\Commission.cs" />
-    <Compile Include="Models\Operative\OperationType.cs" />
-    <Compile Include="Models\Operative\Service.cs" />
-    <Compile Include="Models\Config\ServiceCategory.cs" />
-    <Compile Include="Models\Catalog\Employee.cs" />
+    <Compile Include="Models\HumanResources\Commission.cs" />
+    <Compile Include="Models\Operative\Account.cs" />
+    <Compile Include="Models\HumanResources\Employee.cs" />
     <Compile Include="Models\BaseTypes\Person.cs" />
     <Compile Include="Models\BaseTypes\ISelectable.cs" />
-    <Compile Include="Models\Catalog\JobPosition.cs" />
-    <Compile Include="Models\Catalog\Supplier.cs" />
+    <Compile Include="Models\HumanResources\JobPosition.cs" />
+    <Compile Include="Models\Transaction\Supplier.cs" />
     <Compile Include="Models\Enums\ServStatus.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="ViewModels\Inventory\ProductFilterViewModel.cs" />
     <Compile Include="ViewModels\Inventory\ProductViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\Transaction\Sale.cs" />
-    <Compile Include="Models\Operative\Operation.cs" />
-    <Compile Include="Models\Operative\AccountAddress.cs" />
-    <Compile Include="Models\Operative\ServiceAttachment.cs" />
+    <Compile Include="Models\Operative\Service.cs" />
+    <Compile Include="Models\Operative\Location.cs" />
+    <Compile Include="Models\Operative\AccountFile.cs" />
     <Compile Include="Models\Security\EmployeeUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -407,22 +411,22 @@
     <Content Include="Views\Security\Users.cshtml" />
     <Content Include="Views\Security\_UserList.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Services\ManageAccount.cshtml" />
+    <Content Include="Views\Operative\ManageAccount.cshtml" />
     <Content Include="Views\Shared\_SearchPerson.cshtml" />
-    <Content Include="Views\Services\_AccountAddress.cshtml" />
+    <Content Include="Views\Operative\_AccountAddress.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_SideBar.cshtml" />
-    <Content Include="Views\Catalog\Providers.cshtml" />
-    <Content Include="Views\Catalog\_ProviderEdit.cshtml" />
-    <Content Include="Views\Catalog\_ProviderList.cshtml" />
+    <Content Include="Views\Catalog\Suppliers.cshtml" />
+    <Content Include="Views\Catalog\_SupplierEdit.cshtml" />
+    <Content Include="Views\Catalog\_SupplierList.cshtml" />
     <Content Include="Views\Catalog\Products.cshtml" />
     <Content Include="Views\Catalog\_ProductList.cshtml" />
     <Content Include="Views\Catalog\_ProductEdit.cshtml" />
     <Content Include="Views\Catalog\_ProductGeneralData.cshtml" />
     <Content Include="Views\Catalog\_ProductImages.cshtml" />
-    <None Include="Views\Services\Accounts.cshtml" />
-    <Content Include="Views\Services\_AccountList.cshtml" />
-    <Content Include="Views\Services\_BeginAccount.cshtml" />
+    <None Include="Views\Operative\Accounts.cshtml" />
+    <Content Include="Views\Operative\_AccountList.cshtml" />
+    <Content Include="Views\Operative\_BeginAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -439,8 +443,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803280619268_Initial.resx">
-      <DependentUpon>201803280619268_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803292234267_Initial.resx">
+      <DependentUpon>201803292234267_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

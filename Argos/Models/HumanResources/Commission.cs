@@ -1,15 +1,12 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Operative;
+using Argos.Models.Transaction;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
-namespace Argos.Models.Transaction
+namespace Argos.Models.HumanResources
 {
-    [Table("Commission", Schema = "Transaction")]
+    [Table("Commission", Schema = "HumanResources")]
     public class Commission:AuditableEntity
     {
         [Column(Order =0),ForeignKey("Sale")]
@@ -17,12 +14,17 @@ namespace Argos.Models.Transaction
 
         [Column(Order = 1)]
         [Display(Name="Porcentaje")]
-        public int Percentage { get; set; }
+        public int Profit { get; set; }
 
         [Column(Order = 2)]
         [Display(Name = "Monto")]
         public double  Amount { get; set; }
 
+        [Column(Order = 3)]
+        public DateTime? PayDate { get; set; }
+
+        [NotMapped]
+        public bool IsPayed { get { return PayDate != null ? true : false; } }
 
         #region Navigation Properties
         public virtual Sale Sale { get; set; }

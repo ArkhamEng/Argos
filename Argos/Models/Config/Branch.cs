@@ -1,5 +1,5 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Catalog;
+using Argos.Models.HumanResources;
 using Argos.Models.Operative;
 using Argos.Models.Transaction;
 using System.Collections.Generic;
@@ -41,8 +41,6 @@ namespace Argos.Models.Config
         public ICollection<Sale> Sales { get; set; }
 
         public ICollection<Purchase> Purchases { get; set; }
-
-        public ICollection<ServiceAccount> ServiceAccount { get; set; }
 
         public ICollection<Stock> Stocks { get; set; }
 

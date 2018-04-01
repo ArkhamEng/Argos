@@ -206,7 +206,7 @@ namespace Argos.Controllers
                     {
                         Result = Cons.ResponseWarning,
                         Header = "Error al crear el usuario",
-                        Body = string.Format("Ocurrion un error al crear el usuario {0} para {1}. Detalle del error {2}",
+                        Body = string.Format("Ocurrio un error al crear el usuario {0} para {1}. Detalle del error {2}",
                                         model.UserName, model.Name, result.Errors.First())
                     });
                 }
@@ -217,7 +217,7 @@ namespace Argos.Controllers
                 {
                     Result = Cons.ResponseDanger,
                     Header = "Error al crear el usuario",
-                    Body = string.Format("Ocurrion un error al crear el usuario {0} para {1}. Detalle del error {2}",
+                    Body = string.Format("Ocurrio un error al crear el usuario {0} para {1}. Detalle del error {2}",
                                         model.UserName,model.Name, ex.Message)
                 });
             }

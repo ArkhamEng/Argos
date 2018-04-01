@@ -12,7 +12,11 @@ namespace Argos.Models.Config
     {
         public int StateId { get; set; }
 
+        public string Code { get; set; }
+
         public string Name { get; set; }
+
+        public string ShortName { get; set; }
 
         public ICollection<City> Cities { get; set; }
 

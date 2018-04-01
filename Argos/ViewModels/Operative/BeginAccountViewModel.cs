@@ -18,11 +18,11 @@ namespace Argos.ViewModels.Operative
         public string ClientName { get; set; }
 
         
-        public SelectList ServiceTypes { get; set; }
+        public SelectList AccountTypes { get; set; }
 
-        [Required(ErrorMessage = "debe seleccionar el tipo de servicio")]
-        [Display(Name ="Tipo de Servicio")]
-        public int ServiceTypeId { get; set; }
+        [Required(ErrorMessage = "debe seleccionar el tipo de cuenta")]
+        [Display(Name ="Tipo de cuenta")]
+        public int AccountTypeId { get; set; }
 
         [Required(ErrorMessage = "debe ingresar la fecha de contratación")]
         [Display(Name ="Fecha de contrato")]

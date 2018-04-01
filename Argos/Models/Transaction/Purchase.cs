@@ -1,5 +1,5 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Catalog;
+using Argos.Models.HumanResources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +9,7 @@ namespace Argos.Models.Transaction
 {
 
     [Table("Purchase", Schema = "Transaction")]
-    public class Purchase : TransactionBase
+    public class Purchase : BaseTypes.Transaction
     {
         [Column(Order = 0)]
         public int PurchaseId { get; set; }
@@ -23,7 +23,7 @@ namespace Argos.Models.Transaction
 
         [Column(Order = 3)]
         [Display(Name ="Fecha de Compra")]
-        public override DateTime OrderDate { get; set; }
+        public  DateTime PurchaseDate { get; set; }
        
         #region Navigation Properties
 

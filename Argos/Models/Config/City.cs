@@ -1,5 +1,7 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Catalog;
+using Argos.Models.HumanResources;
+using Argos.Models.Operative;
+using Argos.Models.Transaction;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +18,9 @@ namespace Argos.Models.Config
 
         public int StateId { get; set; }
 
+        [MaxLength(30)]
+        public string Code { get; set; }
+
         [MaxLength(150)]
         public string  Name { get; set; }
 
@@ -28,6 +33,8 @@ namespace Argos.Models.Config
         public ICollection<Employee> Employees { get; set; }
 
         public ICollection<Supplier> Suppliers { get; set; }
+
+        public ICollection<AccountLocation> Locations { get; set; }
 
         #region Not Mapped
         [NotMapped]

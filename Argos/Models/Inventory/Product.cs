@@ -19,14 +19,17 @@ namespace Argos.Models.Inventory
 
         [Column(Order = 2)]
         [MaxLength(30)]
+        [Required]
         public string Code { get; set; }
 
         [Column(Order = 3)]
         [MaxLength(250)]
+        [Required]
         public string Description { get; set; }
 
         [Column(Order = 4)]
         [MaxLength(50)]
+        [Required]
         public string TradeMark { get; set; }
 
         [Column(Order = 5)]
@@ -35,36 +38,30 @@ namespace Argos.Models.Inventory
         public double Cost { get; set; }
 
         [Column(Order = 6)]
-        public int Percentage { get; set; }
+        public int HighestProfit { get; set; }
 
         [Column(Order = 7)]
         [Display(Name = "Precio")]
         [DataType(DataType.Currency)]
-        public double Price { get; set; }
+        public double HighestPrice { get; set; }
 
         [Column(Order = 8)]
-        public int MiddlePercentage { get; set; }
+        [Display(Name = "Precio Minimo")]
+        [Required]
+        public int LowestProfit { get; set; }
 
         [Column(Order = 9)]
-        [Display(Name = "Precio")]
+        [Display(Name = "Precio Minimo")]
         [DataType(DataType.Currency)]
-        public double MiddlePrice { get; set; }
+        public double LowestPrice { get; set; }
 
         [Column(Order = 10)]
-        public int LowerPercentage { get; set; }
-
-        [Column(Order = 11)]
-        [Display(Name = "Precio")]
-        [DataType(DataType.Currency)]
-        public double LowerPrice { get; set; }
-
-        [Column(Order = 12)]
         [Display(Name = "Unidad")]
         [MaxLength(5)]
         public string MeasureUnitId { get; set; }
 
-        [Column(Order = 13)]
-        public bool IsActive { get; set; }
+        [Column(Order = 11)]
+        public bool StockRequired { get; set; }
 
 
         #region Navigation Properties

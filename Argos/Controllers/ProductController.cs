@@ -299,7 +299,7 @@ namespace Argos.Controllers
                 {
                     Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el product",
-                    Body = string.Format("Ocurrion un error al eliminar el producto detalle del error:{0}", ex.Message)
+                    Body = string.Format("Ocurrio un error al eliminar el producto detalle del error:{0}", ex.Message)
                 });
             }
             return Json(new JResponse

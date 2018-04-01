@@ -7,10 +7,10 @@ using System.Web;
 
 namespace Argos.Models.Transaction
 {
-    [Table("DeliveryMethod", Schema = "Transaction")]
-    public class DeliveryMethod
+    [Table("ShipMethod", Schema = "Transaction")]
+    public class ShipMethod
     {
-        public int DeliveryMethodId { get; set; }
+        public int ShipMethodId { get; set; }
 
         [MaxLength(30)]
         [Required(ErrorMessage ="Se require un nombre")]
@@ -20,7 +20,7 @@ namespace Argos.Models.Transaction
         [Required(ErrorMessage = "Se require una descripción")]
         public string Description { get; set; }
 
-        public ICollection<Sale> Sales { get; set; }
+        public ICollection<Shipping> Shippings { get; set; }
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Catalog;
+using Argos.Models.HumanResources;
+using Argos.Models.Transaction;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 

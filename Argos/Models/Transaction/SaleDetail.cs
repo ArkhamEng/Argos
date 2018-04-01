@@ -1,4 +1,5 @@
-﻿using Argos.Models.Inventory;
+﻿using Argos.Models.BaseTypes;
+using Argos.Models.Inventory;
 using Argos.Models.Operative;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,35 +7,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Argos.Models.Transaction
 {
     [Table("SaleDetail", Schema = "Transaction")]
-    public class SaleDetail
+    public class SaleDetail:TransactionDetail
     {
         public int SaleDetailId { get; set; }
 
         public int SaleId { get; set; }
 
-        public int? ServiceId { get; set; }
-
-        public int? ProductId { get; set; }
-
-
-        public double Quantity { get; set; }
-
-        [Display(Name = "Precio")]
-        [DataType(DataType.Currency)]
-        public double Price { get; set; }
-
-        [Display(Name = "Monto Parcial")]
-        [DataType(DataType.Currency)]
-        public double PartialAmount { get; set; }
 
         #region Navigation Properties
 
         public virtual Sale Sale { get; set; }
-
-        public virtual Service Service { get; set; }
-
-        public virtual Product Product { get; set; }
-
 
         #endregion
     }

@@ -1,5 +1,5 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Catalog;
+using Argos.Models.HumanResources;
 using Argos.Models.Config;
 using Argos.Models.Inventory;
 using System;

@@ -1,4 +1,4 @@
-﻿@model Argos.Models.Catalog.Product
+﻿@model Argos.Models.Inventory.Product
 @using Argos.Support
 
 <div class="col-md-5 form-group">
@@ -10,27 +10,27 @@
     @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
 </div>
 <div class="form-group col-md-6 col-md-offset-1">
-    @Html.LabelFor(m=> m.ProductSubCategory.ProductCategoryId, htmlAttributes: new { @class = "control-label" })
+    @Html.LabelFor(m=> m.SubCategory.CategoryId, htmlAttributes: new { @class = "control-label" })
     <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
-        @Html.DropDownListFor(m => m.ProductSubCategory.ProductCategoryId, (SelectList)ViewBag.Categories, "", new { @class = "form-control text-uppercase", required = "true" })
+        @Html.DropDownListFor(m => m.SubCategory.CategoryId, (SelectList)ViewBag.Categories, "", new { @class = "form-control text-capitalize", required = "true" })
     </div>
-    @Html.ValidationMessageFor(m => m.ProductSubCategory.ProductCategoryId, "", new { @class = "text-danger" })
+    @Html.ValidationMessageFor(m => m.SubCategory.CategoryId, "", new { @class = "text-danger" })
 </div>
 <div class="form-group col-md-6 col-md-offset-1">
-    @Html.LabelFor(m => m.ProductSubCategoryId, htmlAttributes: new { @class = "control-label" })
+    @Html.LabelFor(m => m.SubCategoryId, htmlAttributes: new { @class = "control-label" })
     <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
-        @Html.DropDownListFor(m => m.ProductSubCategoryId, (SelectList)ViewBag.SubCategories, "", new { @class = "form-control text-uppercase", required = "true" })
+        @Html.DropDownListFor(m => m.SubCategoryId, (SelectList)ViewBag.SubCategories, "", new { @class = "form-control text-capitalize", required = "true" })
     </div>
-    @Html.ValidationMessageFor(m => m.ProductSubCategoryId, "", new { @class = "text-danger" })
+    @Html.ValidationMessageFor(m => m.SubCategoryId, "", new { @class = "text-danger" })
 </div>
 
 <div class="col-md-12 form-group">
     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-comment-o"></i></span>
-        @Html.TextAreaFor(model => model.Description, 3, 1, htmlAttributes: new { @class = "form-control text-uppercase" })
+        @Html.TextAreaFor(model => model.Description, 3, 1, htmlAttributes: new { @class = "form-control text-capitalize" })
     </div>
     @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
 </div>
@@ -45,12 +45,12 @@
 </div>
 
 <div class="col-md-3 form-group">
-    @Html.LabelFor(model => model.UnitMeasureId, htmlAttributes: new { @class = "control-label" })
+    @Html.LabelFor(model => model.MeasureUnitId, htmlAttributes: new { @class = "control-label" })
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
-        @Html.DropDownListFor(model => model.UnitMeasureId, (SelectList)ViewBag.MeasureUnits, new { @class = "form-control text-uppercase" })
+        @Html.DropDownListFor(model => model.MeasureUnitId, (SelectList)ViewBag.MeasureUnits, new { @class = "form-control text-capitalize" })
     </div>
-    @Html.ValidationMessageFor(model => model.UnitMeasureId, "", new { @class = "text-danger" })
+    @Html.ValidationMessageFor(model => model.MeasureUnitId, "", new { @class = "text-danger" })
 </div>
 
 <div class="col-md-3 form-group">
@@ -63,57 +63,29 @@
 </div>
 
 <div class="col-md-4 form-group">
-    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })
+    @Html.LabelFor(model => model.LowestPrice, htmlAttributes: new { @class = "control-label" })
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-percent"></i></span>
-        @Html.EditorFor(model => model.Percentage, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.LowestProfit, new { htmlAttributes = new { @class = "form-control" } })
         <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.LowestPrice, new { htmlAttributes = new { @class = "form-control" } })
     </div>
-    @Html.ValidationMessageFor(model => model.Percentage, "", new { @class = "text-danger" })
-    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-</div>
-<div class="col-md-4 form-group">
-    @Html.LabelFor(model => model.MiddlePrice, htmlAttributes: new { @class = "control-label" })
-    <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-percent"></i></span>
-        @Html.EditorFor(model => model.MiddlePercentage, new { htmlAttributes = new { @class = "form-control" } })
-        <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-        @Html.EditorFor(model => model.MiddlePrice, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    @Html.ValidationMessageFor(model => model.MiddlePrice, "", new { @class = "text-danger" })
-    @Html.ValidationMessageFor(model => model.MiddlePercentage, "", new { @class = "text-danger" })
+    @Html.ValidationMessageFor(model => model.LowestProfit, "", new { @class = "text-danger" })
+    @Html.ValidationMessageFor(model => model.LowestPrice, "", new { @class = "text-danger" })
 </div>
 
 <div class="col-md-4 form-group">
-    @Html.LabelFor(model => model.LowerPrice, htmlAttributes: new { @class = "control-label" })
+    @Html.LabelFor(model => model.HighestPrice, htmlAttributes: new { @class = "control-label" })
     <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-percent"></i></span>
-        @Html.EditorFor(model => model.LowerPercentage, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.HighestProfit, new { htmlAttributes = new { @class = "form-control" } })
         <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-        @Html.EditorFor(model => model.LowerPrice, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.HighestPrice, new { htmlAttributes = new { @class = "form-control" } })
     </div>
-    @Html.ValidationMessageFor(model => model.LowerPrice, "", new { @class = "text-danger" })
-    @Html.ValidationMessageFor(model => model.LowerPercentage, "", new { @class = "text-danger" })
+    @Html.ValidationMessageFor(model => model.HighestPrice, "", new { @class = "text-danger" })
+    @Html.ValidationMessageFor(model => model.HighestProfit, "", new { @class = "text-danger" })
 </div>
 
-<div class="col-md-3 form-group" id="divProductType">
-        @Html.LabelFor(model => model.SoldAs, htmlAttributes: new { @class = "control-label" })
-        <div class="input-group-addon">
-            <Label class="control-label">
-                <span class="fa fa-cubes"></span>
-                @Cons.Package
-                @Html.RadioButtonFor(model => model.SoldAs, Cons.Package)
-            </Label>
-        </div>
-        <div class="input-group-addon">
-            <Label class="control-label">
-                <span class="fa fa-cube"></span>
-                @Cons.Single
-                @Html.RadioButtonFor(model => model.SoldAs, Cons.Single)
-            </Label>
-        </div>
-</div>
 
 <div class="col-md-2 col-md-offset-1 form-group">
     @Html.Label("Fila", htmlAttributes: new { @class = "control-label" })

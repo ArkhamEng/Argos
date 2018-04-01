@@ -7,19 +7,27 @@ using System.Web;
 
 namespace Argos.Models.Operative
 {
-    [Table("OperationType", Schema = "Operative")]
-    public class OperationType
+    [Table("Status", Schema = "Operative")]
+    public class OperativeStatus
     {
-        public int OperationTypeId { get; set; }
+        [Key]
+        public int StatusId { get; set; }
 
         [MaxLength(20)]
         public string Name { get; set; }
 
         [MaxLength(50)]
-        public string Description { get; set; }
+        public string Description { get; }
 
         #region Navigation Properties
-        public ICollection<Operation> Operation { get; set; }
+
+        public ICollection<Account> Accounts { get; set; }
+
+        public ICollection<Policy> Policies { get; set; }
+
+        public ICollection<PolicyHistory> PolicyHistories { get; set; }
+
+
         #endregion
     }
 }

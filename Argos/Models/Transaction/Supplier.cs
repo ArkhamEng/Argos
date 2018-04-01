@@ -1,26 +1,24 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Operative;
-using Argos.Models.Transaction;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Argos.Models.Catalog
+namespace Argos.Models.Transaction
 {
-    [Table("Client", Schema = "Catalog")]
-    public class Client:Person
+    [Table("Supplier", Schema = "Transaction")]
+    public class Supplier:Person
     {
-        [Column(Order = 0)]
-        public int ClientId { get; set; }
+        public int SupplierId { get; set; }
 
         [Display(Name = "Razón Social")]
         [MaxLength(200)]
         [Index("Unq_BusinessName", IsUnique = true)]
         public string BusinessName { get; set; }
 
-        public ICollection<Service> Account { get; set; }
+        [DataType(DataType.Url)]
+        [MaxLength(200)]
+        public string WebSite { get; set; }
 
-        public ICollection<Sale> Sale { get; set; }
-
+        public ICollection<Purchase> Purchase { get; set; }
     }
 }

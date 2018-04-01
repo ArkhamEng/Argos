@@ -1,17 +1,18 @@
 ﻿using System.Linq;
 using Argos.Models;
 using System.Web.Mvc;
-using Argos.Models.Catalog;
+using Argos.Models.HumanResources;
 using Argos.Support;
 using Argos.Models.Config;
 using System.Collections.Generic;
 using System;
 using System.Data.Entity;
 using Argos.Models.BaseTypes;
+using Argos.Models.Transaction;
 
 namespace Argos.Controllers
 {
-
+    [Authorize]
     public partial class CatalogController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -55,19 +56,13 @@ namespace Argos.Controllers
         {
             try
             {
-                client.InsDate = DateTime.Now.ToLocal();
-                client.UpdDate = DateTime.Now.ToLocal();
-                client.UpdUser = User.Identity.Name;
-                client.InsUser = User.Identity.Name;
-                client.IsActive = true;
-
                 db.Clients.Add(client);
                 db.SaveChanges();
             }
             catch (Exception ex)
             {
                 return Json(new JResponse { Result = Cons.ResponseDanger, Header = "Error al guardar el cliente",
-                    Body = "Ocurrion un error al agregar el cliente " + ex.Message });
+                    Body = "Ocurrio un error al agregar el cliente " + ex.Message });
             }
             return Json(new JResponse
             {
@@ -77,6 +72,7 @@ namespace Argos.Controllers
                 Id = client.ClientId
             });
         }
+
         [HttpPost]
         public ActionResult BeginUpdateClient(int id)
         {
@@ -87,6 +83,17 @@ namespace Argos.Controllers
 
                 if (model != null)
                 {
+                    var json = EvalLock(model);
+
+                    if (json != null)
+                        return json;
+
+                    //bloqueo el registro
+                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
+
+                    db.SaveChanges();
+
                     ViewBag.States = new SelectList(db.States,nameof(State.StateId),nameof(State.Name), model.City.StateId);
                     ViewBag.Cities = db.Cities.Where(c => c.StateId == model.City.StateId).ToSelectList();
 
@@ -109,7 +116,7 @@ namespace Argos.Controllers
                 {
                     Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el cliente",
-                    Body = string.Format("Ocurrion un error al eliminar el cliente detalle del error:{0}", ex.Message),
+                    Body = string.Format("Ocurrio un error al eliminar el cliente detalle del error:{0}", ex.Message),
                 });
             }
         }
@@ -122,6 +129,8 @@ namespace Argos.Controllers
             {
                 client.UpdDate = DateTime.Now.ToLocal();
                 client.UpdUser = User.Identity.Name;
+                client.LockEndDate  = null;
+                client.LockUser     = null;
 
                 db.Entry(client).State = EntityState.Modified;
                 db.Entry(client).Property(c => c.InsDate).IsModified = false;
@@ -149,6 +158,41 @@ namespace Argos.Controllers
             });
         }
 
+        [HttpPost]
+        public ActionResult UnLockClient(int id, string entity)
+        {
+            try
+            {
+                var model = db.Clients.Find(id);
+
+                if(!model.IsLocked)
+                {
+                    model.LockUser = null;
+                    model.LockEndDate = null;
+                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
+
+                    db.SaveChanges();
+                }
+
+                return Json(new JResponse
+                {
+                    Result = Cons.ResponseSuccess,
+                    Header = "Registro desbloqueado",
+                    Body = string.Format("El registro ha sido desbloqueado")
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new JResponse
+                {
+                    Result = Cons.ResponseDanger,
+                    Header = "Error al desbloquear el resgistro",
+                    Body = string.Format("Ocurrio un error al eliminar el cliente detalle del error:{0}", ex.Message)
+                });
+            }
+        }
 
         [HttpPost]
         public ActionResult DeleteClient(int id)
@@ -188,7 +232,7 @@ namespace Argos.Controllers
                 {
                     Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el cliente",
-                    Body = string.Format("Ocurrion un error al eliminar el cliente detalle del error:{0}", ex.Message)
+                    Body = string.Format("Ocurrio un error al eliminar el cliente detalle del error:{0}", ex.Message)
                 });
             }
             return Json(new JResponse
@@ -252,12 +296,6 @@ namespace Argos.Controllers
         {
             try
             {
-                employee.InsDate = DateTime.Now.ToLocal();
-                employee.UpdDate = DateTime.Now.ToLocal();
-                employee.UpdUser = User.Identity.Name;
-                employee.InsUser = User.Identity.Name;
-                employee.IsActive = true;
-
                 db.Employees.Add(employee);
                 db.SaveChanges();
             }
@@ -287,7 +325,18 @@ namespace Argos.Controllers
                     FirstOrDefault(e => e.EmployeeId == id && e.IsActive);
 
                 if (model != null)
-                {                    
+                {
+                    var json = EvalLock(model);
+
+                    if (json != null)
+                        return json;
+
+                    //bloqueo el registro
+                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
+
+                    db.SaveChanges();
+                
                     ViewBag.States       = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.City.StateId);
                     ViewBag.Cities       = db.Cities.Where(c => c.StateId == model.City.StateId).ToSelectList();
                     ViewBag.JobPositions = db.JobPositions.ToSelectList();
@@ -351,6 +400,42 @@ namespace Argos.Controllers
             });
         }
 
+        [HttpPost]
+        public ActionResult UnLockEmployee(int id)
+        {
+            try
+            {
+                var model = db.Employees.Find(id);
+
+                if (!model.IsLocked)
+                {
+                    model.LockUser = null;
+                    model.LockEndDate = null;
+                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
+
+                    db.SaveChanges();
+                }
+
+                return Json(new JResponse
+                {
+                    Result = Cons.ResponseSuccess,
+                    Header = "Registro desbloqueado",
+                    Body = string.Format("El registro ha sido desbloqueado")
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new JResponse
+                {
+                    Result = Cons.ResponseDanger,
+                    Header = "Error al desbloquear el resgistro",
+                    Body = string.Format("Ocurrio un error al eliminar el cliente detalle del error:{0}", ex.Message)
+                });
+            }
+        }
+
 
         [HttpPost]
         public ActionResult DeleteEmployee(int id)
@@ -366,9 +451,9 @@ namespace Argos.Controllers
                     employee.UpdDate = DateTime.Now.ToLocal();
                     employee.IsActive = false;
 
-                    db.Entry(employee).State = EntityState.Modified;
-                    db.Entry(employee).Property(e => e.InsDate).IsModified = false;
-                    db.Entry(employee).Property(e => e.InsUser).IsModified = false;
+                    db.Entry(employee).Property(e => e.UpdUser).IsModified  = true;
+                    db.Entry(employee).Property(e => e.UpdDate).IsModified  = true;
+                    db.Entry(employee).Property(e => e.IsActive).IsModified = true;
 
                     db.SaveChanges();
                 }
@@ -389,7 +474,7 @@ namespace Argos.Controllers
                 {
                     Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el Employee",
-                    Body = string.Format("Ocurrion un error al eliminar el Employee detalle del error:{0}", ex.Message)
+                    Body = string.Format("Ocurrio un error al eliminar el Employee detalle del error:{0}", ex.Message)
                 });
             }
             return Json(new JResponse
@@ -411,8 +496,8 @@ namespace Argos.Controllers
         }
         #endregion
 
-        #region Provider Methods
-        public ActionResult Providers()
+        #region Supplier Methods
+        public ActionResult Suppliers()
         {
             var model = new List<Supplier>();
 
@@ -423,40 +508,34 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
-        public ActionResult SearchProviders(string ftr, string name, int? stateId, int? cityId, int? id)
+        public ActionResult SearchSuppliers(string ftr, string name, int? stateId, int? cityId, int? id)
         {
-            var model = db.Providers.Where(c => (ftr == string.Empty || ftr == null || c.FTR == ftr)
+            var model = db.Suppliers.Where(c => (ftr == string.Empty || ftr == null || c.FTR == ftr)
             && (id == null || c.SupplierId == id)
             && (name == string.Empty || name == null || c.Name.Contains(name))
             && (cityId == null || c.CityId == cityId) && (stateId == null || c.City.StateId == stateId)
             && c.IsActive).Include(c => c.City).ToList();
 
-            return PartialView("_ProviderList", model);
+            return PartialView("_SupplierList", model);
         }
 
         [HttpPost]
-        public ActionResult BeginAddProvider()
+        public ActionResult BeginAddSupplier()
         {
             var model = new Supplier();
 
             ViewBag.States = db.States.ToSelectList();
             ViewBag.Cities = new List<City>().ToSelectList();
 
-            return PartialView("_ProviderEdit", model);
+            return PartialView("_SupplierEdit", model);
         }
 
         [HttpPost]
-        public ActionResult AddProvider(Supplier provider)
+        public ActionResult AddSupplier(Supplier supplier)
         {
             try
             {
-                provider.InsDate = DateTime.Now.ToLocal();
-                provider.UpdDate = DateTime.Now.ToLocal();
-                provider.UpdUser = User.Identity.Name;
-                provider.InsUser = User.Identity.Name;
-                provider.IsActive = true;
-
-                db.Providers.Add(provider);
+                db.Suppliers.Add(supplier);
                 db.SaveChanges();
             }
             catch (Exception ex)
@@ -465,33 +544,44 @@ namespace Argos.Controllers
                 {
                     Result = Cons.ResponseDanger,
                     Header = "Error al guardar el proveedor",
-                    Body = "Ocurrion un error al agregar el proveedor " + ex.Message
+                    Body = "Ocurrio un error al agregar el proveedor " + ex.Message
                 });
             }
             return Json(new JResponse
             {
                 Result = Cons.ResponseSuccess,
                 Header = "Datos del proveedor guardados",
-                Body = string.Format("El proveedor {0} fue agregado al catálogo", provider.Name),
-                Id = provider.SupplierId
+                Body = string.Format("El proveedor {0} fue agregado al catálogo", supplier.Name),
+                Id = supplier.SupplierId
             });
         }
 
 
         [HttpPost]
-        public ActionResult BeginUpdateProvider(int id)
+        public ActionResult BeginUpdateSupplier(int id)
         {
             try
             {
-                var model = db.Providers.Include(c => c.City).
+                var model = db.Suppliers.Include(c => c.City).
                     FirstOrDefault(c => c.SupplierId == id && c.IsActive);
 
                 if (model != null)
                 {
+                    var json = EvalLock(model);
+
+                    if (json != null)
+                        return json;
+
+                    //bloqueo el registro
+                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
+
+                    db.SaveChanges();
+
                     ViewBag.States = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.City.StateId);
                     ViewBag.Cities = db.Cities.Where(c => c.StateId == model.City.StateId).ToSelectList();
 
-                    return PartialView("_ProviderEdit", model);
+                    return PartialView("_SupplierEdit", model);
                 }
                 else
                 {
@@ -510,24 +600,24 @@ namespace Argos.Controllers
                 {
                     Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el proveedor",
-                    Body = string.Format("Ocurrion un error al eliminar el proveedor detalle del error:{0}", ex.Message),
+                    Body = string.Format("Ocurrio un error al eliminar el proveedor detalle del error:{0}", ex.Message),
                 });
             }
         }
 
 
         [HttpPost]
-        public ActionResult UpdateProvider(Supplier provider)
+        public ActionResult UpdateProvider(Supplier supplier)
         {
             try
             {
-                provider.UpdDate = DateTime.Now.ToLocal();
-                provider.UpdUser = User.Identity.Name;
+                supplier.UpdDate = DateTime.Now.ToLocal();
+                supplier.UpdUser = User.Identity.Name;
 
-                db.Entry(provider).State = EntityState.Modified;
-                db.Entry(provider).Property(c => c.InsDate).IsModified = false;
-                db.Entry(provider).Property(c => c.InsUser).IsModified = false;
-                db.Entry(provider).Property(c => c.IsActive).IsModified = false;
+                db.Entry(supplier).State = EntityState.Modified;
+                db.Entry(supplier).Property(c => c.InsDate).IsModified = false;
+                db.Entry(supplier).Property(c => c.InsUser).IsModified = false;
+                db.Entry(supplier).Property(c => c.IsActive).IsModified = false;
 
                 db.SaveChanges();
             }
@@ -537,27 +627,62 @@ namespace Argos.Controllers
                 {
                     Result = Cons.ResponseDanger,
                     Header = "Error al modificar el proveedor",
-                    Body = string.Format("Ocurrion un error al guardar los cambios del proveedor {0}  detalle del error {1}",
-                                        provider.Name, ex.Message),
+                    Body = string.Format("Ocurrio un error al guardar los cambios del proveedor {0}  detalle del error {1}",
+                                        supplier.Name, ex.Message),
                 });
             }
             return Json(new JResponse
             {
                 Result = Cons.ResponseSuccess,
                 Header = "Datos del proveedor guardados",
-                Body = string.Format("Los datos del proveedor {0} fueron modificados", provider.Name),
-                Id = provider.SupplierId
+                Body = string.Format("Los datos del proveedor {0} fueron modificados", supplier.Name),
+                Id = supplier.SupplierId
             });
         }
 
+        [HttpPost]
+        public ActionResult UnLockSupplier(int id)
+        {
+            try
+            {
+                var model = db.Suppliers.Find(id);
+
+                if (!model.IsLocked)
+                {
+                    model.LockUser = null;
+                    model.LockEndDate = null;
+                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
+
+                    db.SaveChanges();
+                }
+
+                return Json(new JResponse
+                {
+                    Result = Cons.ResponseSuccess,
+                    Header = "Registro desbloqueado",
+                    Body = string.Format("El registro ha sido desbloqueado")
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new JResponse
+                {
+                    Result = Cons.ResponseDanger,
+                    Header = "Error al desbloquear el resgistro",
+                    Body = string.Format("Ocurrio un error al eliminar el cliente detalle del error:{0}", ex.Message)
+                });
+            }
+        }
 
         [HttpPost]
-        public ActionResult DeleteProvider(int id)
+        public ActionResult DeleteSupplier(int id)
         {
             Supplier provider = new Supplier();
             try
             {
-                provider = db.Providers.FirstOrDefault(c => c.SupplierId == id && c.IsActive);
+                provider = db.Suppliers.FirstOrDefault(c => c.SupplierId == id && c.IsActive);
 
                 if (provider != null)
                 {
@@ -565,9 +690,9 @@ namespace Argos.Controllers
                     provider.UpdDate = DateTime.Now.ToLocal();
                     provider.IsActive = false;
 
-                    db.Entry(provider).State = EntityState.Modified;
-                    db.Entry(provider).Property(p => p.InsDate).IsModified = false;
-                    db.Entry(provider).Property(p => p.InsUser).IsModified = false;
+                    db.Entry(provider).Property(p => p.UpdDate).IsModified = true;
+                    db.Entry(provider).Property(p => p.UpdUser).IsModified = true;
+                    db.Entry(provider).Property(p => p.IsActive).IsModified = true;
                     db.SaveChanges();
                 }
                 else
@@ -587,7 +712,7 @@ namespace Argos.Controllers
                 {
                     Result = Cons.ResponseDanger,
                     Header = "Error al eliminar el proveedor",
-                    Body = string.Format("Ocurrion un error al eliminar el proveedor detalle del error:{0}", ex.Message)
+                    Body = string.Format("Ocurrio un error al eliminar el proveedor detalle del error:{0}", ex.Message)
                 });
             }
             return Json(new JResponse
@@ -600,9 +725,9 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
-        public ActionResult AutoCompleatProvider(string filter)
+        public ActionResult AutoCompleatSupplier(string filter)
         {
-            var providers = db.Providers.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
+            var providers = db.Suppliers.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
                 Select(c => new { Label = c.Name, Id = c.SupplierId, Value = c.FTR });
 
             return Json(providers);
@@ -610,7 +735,27 @@ namespace Argos.Controllers
 
         #endregion
 
-       
+
+        private JsonResult EvalLock(AuditableEntity model)
+        {
+            if (model.IsLocked)
+            {
+                var time = (model.LockEndDate.Value - DateTime.Now.ToLocal()).ToString("mm:ss");
+                return Json(new JResponse
+                {
+                    Result = Cons.ResponseWarning,
+                    Header = "Resistro bloqueado!",
+                    Body = string.Format("Este registro ha sido bloqueado por  el usuario {0}, tiempo restante del bloqueo {1}", model.LockUser, time),
+                });
+            }
+            else
+            {
+                model.LockUser    = User.Identity.Name;
+                model.LockEndDate = DateTime.Now.ToLocal().AddMinutes(Cons.LockDuration);
+                return null;
+            }
+              
+        }
 
         protected override void Dispose(bool disposing)
         {

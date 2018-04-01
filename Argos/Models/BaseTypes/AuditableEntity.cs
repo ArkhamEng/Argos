@@ -10,6 +10,8 @@ namespace Argos.Models.BaseTypes
 {
     public abstract class AuditableEntity
     {
+        public bool IsActive { get; set; }
+
         [Required]
         public DateTime InsDate { get; set; }
 
@@ -18,9 +20,8 @@ namespace Argos.Models.BaseTypes
         public string InsUser { get; set; }
 
         [Required]
-        public DateTime UpdDate { get; set; }
+        public DateTime? UpdDate { get; set; }
 
-      
         [Required]
         [MaxLength(30)]
         public string UpdUser { get; set; }
@@ -49,6 +50,7 @@ namespace Argos.Models.BaseTypes
 
         public AuditableEntity()
         {
+            this.IsActive = true;
             this.InsDate = DateTime.Now.ToLocal();
             this.UpdDate = DateTime.Now.ToLocal();
             this.UpdUser = HttpContext.Current.User.Identity.Name;

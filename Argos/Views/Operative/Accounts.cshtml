@@ -1,12 +1,12 @@
 ﻿@model Argos.ViewModels.Operative.AccountSearchViewModel
 
 @{
-    ViewBag.Title = "Cuentas de Servicios";
+    ViewBag.Title = "Cuentas";
     ViewBag.Class = "fa fa-files-o";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <hr />
-<div class="panel panel-primary">
+<div class="panel panel-default">
     <div class="panel-body">
         <div class="input-group col-md-10">
             @Html.TextBox("txtPhone", "", htmlAttributes: new
@@ -33,12 +33,12 @@
             </span>
         </div>
 
-        <br />
-        <div class="input-group col-md-8" >
+        
+        <div class="input-group col-md-8" style="margin-top:10px">
             <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-            @Html.DropDownList("ddlServiceTypes", Model.ServiceTypes, "Servicio", new { @class = "form-control" })
+            @Html.DropDownList("ddlAccountTypes", Model.AccountTypes, "Tipo de cuenta", new { @class = "form-control" })
             <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-            @Html.DropDownList("ddlServiceStatus", Model.ServiceStatus, "Status", new { @class = "form-control" })
+            @Html.DropDownList("ddlStatus", Model.Status, "Status", new { @class = "form-control" })
             <span class="input-group-btn">
                 <button class="btn btn-info" type="button" id="btnClear" onclick="Clear()">
                     <span class="glyphicon glyphicon-refresh"></span>
@@ -63,8 +63,8 @@
         var filter = {
             client: $("#txtName").val(),
             phone: $("#txtPhone").val(),
-            serviceTypeId: $("#ddlServiceTypes").val(),
-            serviceStatusId: $("#ddlServiceStatus").val()
+            typeId: $("#ddlAccountTypes").val(),
+            statusId: $("#ddlStatus").val()
         };
 
         ExecuteAjax('@Url.Action("SearchAccounts")', filter, function (response)
@@ -73,11 +73,13 @@
         });
     }
 
-    function BeginAccount() {
+    function BeginAccount()
+    {
         ShowLoading('static');
 
         ExecuteAjax('@Url.Action("BeginAccount")', {}, function (response) {
-            HideLoading(function () {
+            HideLoading(function ()
+            {
                 $("#divBeginCreate").html(response);
             });
         });

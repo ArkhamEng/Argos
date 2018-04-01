@@ -1,26 +1,27 @@
-﻿using Argos.Models.Operative;
-using Argos.Models.Transaction;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Argos.Models.Config
+namespace Argos.Models.Transaction
 {
-    [Table("Status", Schema = "Config")]
-    public  class Status
+    [Table("Status", Schema = "Transaction")]
+    public class TransStatus
     {
+        [Key]
         public int StatusId { get; set; }
 
         [MaxLength(20)]
         public string Name { get; set; }
 
         [MaxLength(50)]
-        public  string Description { get; }
+        public string Description { get; }
 
-        public string Type { get; set; }
+        public bool ForSale { get; set; }
+
+        public bool ForPurchase { get; set; }
 
         #region Navigation Properties
 
@@ -28,7 +29,6 @@ namespace Argos.Models.Config
 
         public ICollection<Purchase> Purchases { get; set; }
 
-        public ICollection<Service> Services { get; set; }
         #endregion
     }
 }

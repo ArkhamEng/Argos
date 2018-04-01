@@ -1,40 +1,33 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Config;
-using Argos.Models.Transaction;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
 
 namespace Argos.Models.Operative
 {
     [Table("Service", Schema = "Operative")]
-    public class Service : AuditableEntity
+    public class Service:AuditableEntity
     {
         public int ServiceId { get; set; }
 
-        [Display(Name ="Status")]
-        public int StatusId { get; set; }
+        public int AccountId { get; set; }
 
-      
-        [Display(Name = "Contratación")]
-        [DataType(DataType.Date)]
-        public DateTime HireDate { get; set; }
+        public int ServiceTypeId { get; set; }
 
-        [Display(Name = "Precio")]
-        [DataType(DataType.Currency)]
-        public double HirePrice { get; set; }
+        [MaxLength(10)]
+        public string Folio { get; set; }
 
+        [Display(Name ="Fecha programada")]
+        public DateTime ScheduleDate { get; set; }
 
         #region Navigation Properties
-     
-        public virtual Status Status { get; set; }
 
-        public ICollection<SaleDetail> SaleDetails { get; set; }
+        public virtual Account Account { get; set; }
 
-        public ICollection<ServiceAttachment> ServiceAttachment { get; set; }
-
-        public ICollection<Operation> Operation { get; set; }
+        public virtual ServiceType ServiceType { get; set; }
         #endregion
     }
 }

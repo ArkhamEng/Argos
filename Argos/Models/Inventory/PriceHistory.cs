@@ -19,8 +19,17 @@ namespace Argos.Models.Inventory
         public DateTime EndDate { get; set; }
 
         [DataType(DataType.Currency)]
-        public double Price { get; set; }
+        public double HighestPrice { get; set; }
 
+        [DataType(DataType.Currency)]
+        public double LowestPrice { get; set; }
+
+        public DateTime InsDate { get; set; }
+
+        [MaxLength(30)]
+        public string InsUser { get; set; }
+
+      
         public virtual Product Product { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Argos.Models.BaseTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,38 +8,47 @@ using System.Web;
 
 namespace Argos.Models.Operative
 {
-   
-    public class ChildService : Service
+    [Table("Policy", Schema = "Operative")]
+    public class Policy : AuditableEntity
     {
-        [ForeignKey("ParentService")]
-        public int ParentServiceId { get; set; }
+        [Column(Order =0),Key,ForeignKey("Account")]
+        public int PolicyId { get; set; }
 
-        public virtual Service ParentService { get; set; }
-    }
+        [Column(Order = 1),ForeignKey("Status")]
+        public int StatusId { get; set; }
 
 
-    public class Policy: ChildService
-    {
+        [Column(Order = 2)]
+        public int CutOffDay { get; set; }
+
+        [Column(Order = 3)]
+        [Display(Name = "Próximo corte")]
+        [DataType(DataType.DateTime)]
+        public DateTime NextCutOff { get; set; }
+
+        [Column(Order = 4)]
+        [DataType(DataType.Currency)]
+        public double Price { get; set; }
+
+        [Column(Order = 5)]
         [Required]
         [Display(Name = "Periodo pago")]
-        public int PaymentPeriod { get; set; }
+        public int PayFreq { get; set; }
 
+        [Column(Order = 6)]
         [Required]
-        [Display(Name = "Tolerancia pago")]
-        public int PaymentTolerance { get; set; }
+        [Display(Name = "Periodo Mantto")]
+        public int MaintFreq { get; set; }
 
-        [Required]
-        [Display(Name = "Periodo mantto")]
-        public int MaintenancePeriod { get; set; }
+        #region Navigation Properties
+        public virtual Account Account { get; set; }
 
-        [Required]
-        [Display(Name = "Tolerancia mantto")]
-        public int MaintenanceTolerance { get; set; }
+        public virtual OperativeStatus Status { get; set; }
 
+        public ICollection<PolicyHistory> Histories { get; set; }
+
+        public ICollection<PolicyCharge> Charges { get; set; }
+        #endregion
     }
 
-    public class Extension:ChildService
-    {
-
-    }
 }

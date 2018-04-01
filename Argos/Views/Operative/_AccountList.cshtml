@@ -1,13 +1,13 @@
-﻿@model IEnumerable<Argos.Models.Operative.ServiceAccount>
+﻿@model IEnumerable<Argos.Models.Operative.Account>
 
 
-<div class="panel panel-primary">
+<div class="panel panel-default">
     <div class="panel-body">
         <table id="tbAccounts" class="table table-condensed">
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.ServiceTypeId)
+                        @Html.DisplayNameFor(model => model.AccountTypeId)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Code)
@@ -23,7 +23,7 @@
                         @Html.DisplayNameFor(model => model.HirePrice)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ServiceStatusId)
+                        @Html.DisplayNameFor(model => model.StatusId)
                     </th>
                     <th></th>
                 </tr>
@@ -33,7 +33,7 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ServiceType.Name)
+                            @Html.DisplayFor(modelItem => item.AccountType.Name)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Code)
@@ -49,10 +49,10 @@
                         </td>
                         
                         <td>
-                            @Html.DisplayFor(modelItem => item.ServiceStatus.Name)
+                            @Html.DisplayFor(modelItem => item.Status.Name)
                         </td>
                         <td>
-                           <button class="btn btn-primary" title="Ver detalle y editar" onclick="SelectAccount(@item.ServiceId)">
+                           <button class="btn btn-primary" title="Ver detalle y editar" onclick="SelectAccount(@item.AccountId)">
                                <span class="fa fa-edit"></span>
                            </button>
                         </td>

@@ -1,4 +1,4 @@
-﻿using Argos.Models.Catalog;
+﻿using Argos.Models.HumanResources;
 using Argos.Models.Config;
 using Argos.Models.Transaction;
 using System;
@@ -6,22 +6,23 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Argos.Models.BaseTypes
 {
-    public abstract class TransactionBase:AuditableEntity
+    public abstract class Transaction:AuditableEntity
     {
-        public int EmployeeId { get; set; }
-
         public int BranchId { get; set; }
 
-        public int TransactionTypeId { get; set; }
+        [ForeignKey("Type")]
+        public int TypeId { get; set; }
 
+        [ForeignKey("Status")]
         public int StatusId { get; set; }
 
-        public virtual DateTime OrderDate { get; set; }
-
         public virtual DateTime? DuDate { get; set; }
+
+        public int TaxPercentage { get; set; }
 
         [Display(Name = "Sub Total")]
         [DataType(DataType.Currency)]
@@ -33,18 +34,15 @@ namespace Argos.Models.BaseTypes
 
         [Display(Name = "Monto Total")]
         [DataType(DataType.Currency)]
-        public double DueTotal { get; set; }
+        public double Total { get; set; }
 
 
         #region Navigation Properties
         public virtual Branch Branch { get; set; }
 
-   
-        public virtual Status Status { get; set; }
+        public virtual TransStatus Status { get; set; }
 
-        public virtual Employee Employee { get; set; }
-
-        public virtual TransactionType TransactionType { get; set; }
+        public virtual TransType Type { get; set; }
         #endregion
     }
 }

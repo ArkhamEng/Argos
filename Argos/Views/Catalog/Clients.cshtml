@@ -1,8 +1,8 @@
-﻿@model IEnumerable<Argos.Models.Catalog.Client>
+﻿@model IEnumerable<Argos.Models.Transaction.Client>
 
 @{
     ViewBag.Title = "Catálogo de Clientes";
-    ViewBag.Class = "fa fa-address-book";
+    ViewBag.Class = "fa fa-users";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -37,7 +37,7 @@
             </div>
         </div>
         <br />
-        <div class="col-md-10">
+        <div class="col-md-10" style="margin-top:10px">
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
                 @Html.DropDownList("ddlStateId", (SelectList)ViewBag.States, "Estado / Entidad", new { @class = "form-control" })
@@ -96,7 +96,8 @@
             stateId: $("#ddlStateId").val(), cityId: $("#ddlCityId").val()
         };
 
-        ExecuteAjax('@Url.Action("SearchClients")', data, function (response) {
+        ExecuteAjax('@Url.Action("SearchClients")', data, function (response)
+        {
             HideLoading(function ()
             {
                 $("#divClientList").html(response);

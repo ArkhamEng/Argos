@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Argos.Models.Catalog.Employee>
+﻿@model IEnumerable<Argos.Models.HumanResources.Employee>
 @using Argos.Support
 
 <table id="TbEmployeeList" class="table table-hover">
@@ -22,10 +22,10 @@
         {
             <tr ondblclick="BeginUpdateEmployee(@item.EmployeeId)">
                 <td class="col-md-4">
-                    <a title="Nombre">
+                    <a title="Nombre" class="text-capitalize">
                         <span class="fa fa-user control-label" ></span>   @Html.DisplayFor(modelItem => item.Name)<br />
                     </a>
-                    <a title="Puesto">
+                    <a title="Puesto" class="text-capitalize">
                         <span class="fa fa-briefcase control-label" ></span>   @Html.DisplayFor(modelItem => item.JobPosition.Name)
                     </a>
                     <br />
@@ -33,12 +33,12 @@
                         <span class="fa fa-medkit control-label" ></span>   @Html.DisplayFor(modelItem => item.SSN)                       
                     </a>
                     |
-                    <a title="RFC">
+                    <a title="RFC" class="text-uppercase">
                         <span class="fa fa-id-badge control-label" ></span>   @Html.DisplayFor(modelItem => item.FTR)
                     </a>
                     <br />
 
-                    <a title="Sexo">
+                    <a title="Sexo" class="text-capitalize">
                     @if (item.Gender == Cons.Female)
                     {
                         <span class="fa fa-female"></span>
@@ -55,7 +55,7 @@
                     </a>
                     <br />
                 </td>
-                <td class="col-md-4">
+                <td class="col-md-4 text-capitalize" >
                     <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
                     @Html.DisplayFor(modelItem => item.Location)   CP @Html.DisplayFor(modelItem => item.ZipCode)<br />
                     @Html.DisplayFor(modelItem => item.City.Name), @Html.DisplayFor(modelItem => item.City.State.Name)
@@ -69,10 +69,10 @@
                     }
                     <span class="fa fa-percent control-label"></span>   @Html.DisplayFor(modelItem => item.Commission)<br />
                     <span class="fa fa-phone control-label"></span> @Html.DisplayFor(modelItem => item.Phone)<br />
-                    <span class="fa fa-envelope control-label"></span> @Html.DisplayFor(modelItem => item.Email)<br />
-                   
-                  
-
+                    <span class="fa fa-envelope control-label"></span>
+                    <a class="text-lowercase"> 
+                     @Html.DisplayFor(modelItem => item.Email)
+                    </a><br />
                 </td>
 
                 <td class="col-md-1 btn-group-vertical">
@@ -92,14 +92,18 @@
         }
     </tbody>
 </table>
+
+
 <script>
     var idEmployee = 0;
 
-    $(document).ready(function () {
+    $(document).ready(function ()
+    {
         Paginate("#TbEmployeeList", 5, false)
     });
 
-    function BeginDelete(id, name) {
+    function BeginDelete(id, name)
+    {
         idEmployee = id;
         var hdr = "Eliminar cliente!";
         var body = "Esta seguro que deseas eliminar el empleado " + name;
@@ -107,7 +111,8 @@
 
     }
 
-    function DeleteEmployee() {
+    function DeleteEmployee()
+    {
         ExecuteAjax('@Url.Action("DeleteEmployee", "Catalog")', { id: idEmployee }, function (response) {
             HideLoading(function () {
                 if (response.Result == 'success') {
@@ -121,7 +126,8 @@
     }
 
 
-    function BeginCreateUser(id) {
+    function BeginCreateUser(id)
+    {
         ShowLoading('static');
         ExecuteAjax('@Url.Action("BeginCreateUser", "Security")', { id: id, isEmployee: true }, function (response) {
             HideLoading(function () {
@@ -130,7 +136,8 @@
         });
     }
 
-    function AddUser() {
+    function AddUser()
+    {
         //shows the loading in current modal
         ShowModLoading();
 
@@ -139,9 +146,11 @@
             Phone: $("#Phone").val(), Name: $("#Name").val(), IsEmployee: true
         };
 
-        ExecuteAjax('@Url.Action("Register", "Account")', { model: model }, function (response) {
+        ExecuteAjax('@Url.Action("Register", "Account")', { model: model }, function (response)
+        {
             SearchEmployeeById(response.Id);
-            HideModal(true, function () {
+            HideModal(true, function ()
+            {
                 ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
             });
         });

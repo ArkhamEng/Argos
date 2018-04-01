@@ -1,4 +1,4 @@
-﻿@model IEnumerable<List<Argos.Models.Catalog.Product>>
+﻿@model IEnumerable<List<Argos.Models.Inventory.Product>>
 
 @{
     ViewBag.Title = "Catálogo de Productos";
@@ -24,14 +24,14 @@
                 </button>
             </div>
         </div>
-        <br />
-        <div class="input-group col-md-10 hidden-sm hidden-xs">
+        
+        <div class="input-group col-md-10 hidden-sm hidden-xs" style="margin-top:10px">
             <span class="input-group-addon"><i class="fa fa-registered"></i></span>
-            @Html.DropDownList("CarMakeId", (SelectList)ViewBag.CarMakes, "Armadora", new { @class = "form-control text-uppercase " })
+            @Html.DropDownList("CarMakeId", (SelectList)ViewBag.CarMakes, "Armadora", new { @class = "form-control text-capitalize" })
             <span class="input-group-addon"><i class="fa fa-car"></i></span>
-            @Html.DropDownList("CarModelId", (SelectList)ViewBag.CarModels, "Modelo", new { @class = "form-control text-uppercase " })
+            @Html.DropDownList("CarModelId", (SelectList)ViewBag.CarModels, "Modelo", new { @class = "form-control text-capitalize" })
             <span class="input-group-addon"><i class="fa fa-calendar-check-o"></i></span>
-            @Html.DropDownList("CarYearId", (SelectList)ViewBag.CarYears, "Año", new { @class = "form-control text-uppercase " })
+            @Html.DropDownList("CarYearId", (SelectList)ViewBag.CarYears, "Año", new { @class = "form-control text-capitalize" })
             <span class="input-group-btn">
                 <button id="btnSwitch" type="button" class="btn btn-default" title="Ver como tabla">
                     <span id="spSwitch" class="fa fa-th-large"></span>
