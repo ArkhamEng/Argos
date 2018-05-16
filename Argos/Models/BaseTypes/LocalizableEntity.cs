@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Argos.Models.BaseTypes
 {
-    public abstract class LocatableEntity:AuditableEntity
+    public abstract class LocatableEntity:AuditableCatalog
     {
         [Display(Name = "Municipio")]
         [Required(ErrorMessage ="Se requiere el municipo o ciudad")]

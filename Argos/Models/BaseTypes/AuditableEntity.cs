@@ -10,8 +10,6 @@ namespace Argos.Models.BaseTypes
 {
     public abstract class AuditableEntity
     {
-        public bool IsActive { get; set; }
-
         [Required]
         public DateTime InsDate { get; set; }
 
@@ -20,37 +18,15 @@ namespace Argos.Models.BaseTypes
         public string InsUser { get; set; }
 
         [Required]
-        public DateTime? UpdDate { get; set; }
+        public DateTime UpdDate { get; set; }
 
         [Required]
         [MaxLength(30)]
         public string UpdUser { get; set; }
 
-        public DateTime? LockEndDate { get; set; }
-
-        [MaxLength(30)]
-        public string LockUser { get; set; }
-
-        [NotMapped]
-        public bool IsLocked
-        {
-            get
-            {
-                if (LockEndDate != null)
-                {
-                    if (LockEndDate.Value >= DateTime.Now.ToLocal() && LockUser != HttpContext.Current.User.Identity.Name)
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
-            }
-        }
 
         public AuditableEntity()
         {
-            this.IsActive = true;
             this.InsDate = DateTime.Now.ToLocal();
             this.UpdDate = DateTime.Now.ToLocal();
             this.UpdUser = HttpContext.Current.User.Identity.Name;

@@ -1,7 +1,7 @@
 ﻿using Argos.Models.BaseTypes;
 using Argos.Models.Config;
 using Argos.Models.Operative;
-using Argos.Models.Transaction;
+using Argos.Models.Production;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Argos.Models.Inventory
 {
     [Table("Product", Schema = "Inventory")]
-    public class Product:AuditableEntity
+    public class Product:AuditableCatalog
     {
         [Column(Order = 0)]
         public int ProductId { get; set; }
@@ -38,20 +38,21 @@ namespace Argos.Models.Inventory
         public double Cost { get; set; }
 
         [Column(Order = 6)]
-        public int HighestProfit { get; set; }
+        [Display(Name = "Porcentaje")]
+        public double Profit { get; set; }
 
         [Column(Order = 7)]
         [Display(Name = "Precio")]
         [DataType(DataType.Currency)]
-        public double HighestPrice { get; set; }
+        public double Price { get; set; }
 
         [Column(Order = 8)]
-        [Display(Name = "Precio Minimo")]
+        [Display(Name = "Porcentaje mínimo")]
         [Required]
-        public int LowestProfit { get; set; }
+        public double LowestProfit { get; set; }
 
         [Column(Order = 9)]
-        [Display(Name = "Precio Minimo")]
+        [Display(Name = "Precio mínimo")]
         [DataType(DataType.Currency)]
         public double LowestPrice { get; set; }
 
@@ -60,45 +61,55 @@ namespace Argos.Models.Inventory
         [MaxLength(5)]
         public string MeasureUnitId { get; set; }
 
+        /// <summary>
+        /// Indica si el producto se almacena en inventario
+        /// </summary>
         [Column(Order = 11)]
-        public bool StockRequired { get; set; }
+        public bool IsStockable { get; set; }
 
+        /// <summary>
+        /// Indica si el producto requiere rastreo por numero de serie
+        /// </summary>
+        [Column(Order = 12)]
+        public bool IsTrackable { get; set; }
 
+        /// <summary>
+        /// Indica si el producto esta disponible para venta
+        /// </summary>
+        [Column(Order = 13)]
+        public bool IsForSale { get; set; }
+
+        /// <summary>
+        /// Indica si el producto esta disponible para compra
+        /// </summary>
+        [Column(Order = 14)]
+        public bool IsForPurchase { get; set; }
+
+    
         #region Navigation Properties
+        /// <summary>
+        /// Unidad de medida
+        /// </summary>
         public virtual MeasureUnit MeasureUnit { get; set; }
 
+        /// <summary>
+        /// Sub clasificación del producto
+        /// </summary>
         public virtual SubCategory SubCategory { get; set; }
 
-        public ICollection<SaleDetail> SaleDetail { get; set; }
+        public  ICollection<ProductStock> ProductStocks { get; set; }
 
-        public ICollection<Stock> Stocks { get; set; }
+        public ICollection<OperationDetail> OperationDetails { get; set; }
 
         public ICollection<ProductImage> ProductImages { get; set; }
 
         public ICollection<Compatibility> Compatibilities { get; set; }
 
-        public ICollection<Equivalence> Equivalences { get; set; }
+        public ICollection<PriceChange> PriceChanges { get; set; }
 
-        public ICollection<PriceHistory> PriceHistories { get; set; }
-
-        [InverseProperty("Package")]
-        public virtual ICollection<PackageDetail> PackageDetails { get; set; }
+        public ICollection<ExternalProduct> ExternalProducts { get; set; }
 
         #endregion
 
-        #region Not Mapped
-        [NotMapped]
-        public double Available { get; set; }
-
-        [NotMapped]
-        public string Row { get; set; }
-
-        [NotMapped]
-        public string Ledge { get; set; }
-
-        [NotMapped]
-        public ICollection<CarModel> ModelCompatibilities { get; set; }
-
-        #endregion
     }
 }

@@ -26,7 +26,8 @@
                         <span class="fa fa-user control-label" ></span>   @Html.DisplayFor(modelItem => item.Name)<br />
                     </a>
                     <a title="Puesto" class="text-capitalize">
-                        <span class="fa fa-briefcase control-label" ></span>   @Html.DisplayFor(modelItem => item.JobPosition.Name)
+                        <span class="fa fa-briefcase control-label" ></span>   @Html.DisplayFor(modelItem => item.JobPosition.Name) |
+                        <span class="fa fa-percent control-label"></span>   @Html.DisplayFor(modelItem => item.Commission)
                     </a>
                     <br />
                     <a title="NSS">
@@ -38,22 +39,7 @@
                     </a>
                     <br />
 
-                    <a title="Sexo" class="text-capitalize">
-                    @if (item.Gender == Cons.Female)
-                    {
-                        <span class="fa fa-female"></span>
-                        @Cons.Female
-                    }
-                    else
-                    {
-                        <span class="fa fa-male"></span>
-                        @Cons.Male
-                    }
-                    </a> |
-                    <a title="Fecha de nacimiento">
-                        <span class="fa fa-birthday-cake"></span>@Html.DisplayFor(modelItem => item.BirthDate)
-                    </a>
-                    <br />
+
                 </td>
                 <td class="col-md-4 text-capitalize" >
                     <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
@@ -65,9 +51,25 @@
                     @if (item.EmployeeUsers.Count != 0)
                     {
                         <span class="fa fa-user-circle-o control-label"></span>
-                        @item.EmployeeUsers.First().User.UserName <a>|</a>
+                        @item.EmployeeUsers.First().User.UserName <br />
                     }
-                    <span class="fa fa-percent control-label"></span>   @Html.DisplayFor(modelItem => item.Commission)<br />
+                    <a title="Sexo" class="text-capitalize">
+                        @if (item.Gender == Cons.Female)
+                        {
+                            <span class="fa fa-female"></span>
+                            @Cons.Female
+                        }
+                        else
+                        {
+                            <span class="fa fa-male"></span>
+                            @Cons.Male
+                        }
+                    </a> |
+                    <a title="Fecha de nacimiento">
+                        <span class="fa fa-birthday-cake"></span>@Html.DisplayFor(modelItem => item.BirthDate)
+                    </a>
+                    <br />
+                    
                     <span class="fa fa-phone control-label"></span> @Html.DisplayFor(modelItem => item.Phone)<br />
                     <span class="fa fa-envelope control-label"></span>
                     <a class="text-lowercase"> 

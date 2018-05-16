@@ -1,10 +1,12 @@
 ﻿using Argos.Models.BaseTypes;
+using Argos.Models.Finance;
 using Argos.Models.Security;
-using Argos.Models.Transaction;
+using Argos.Models.Production;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Argos.Models.Operative;
 
 namespace Argos.Models.HumanResources
 {
@@ -16,7 +18,7 @@ namespace Argos.Models.HumanResources
 
         [Column(Order = 1)]
         [Display(Name ="Puesto")]
-        public string JobPositionId { get; set; }
+        public int JobPositionId { get; set; }
 
         [Display(Name ="Sexo")]
         [MaxLength(10)]
@@ -36,10 +38,19 @@ namespace Argos.Models.HumanResources
         #region Navigation Properties
         public virtual JobPosition JobPosition { get; set; }
 
-        public ICollection<Sale> Sale { get; set; }
+        public ICollection<Sale> Sales { get; set; }
 
-        public virtual ICollection<EmployeeUser> EmployeeUsers { get; set; }
+        public ICollection<EmployeeUser> EmployeeUsers { get; set; }
+
+        public ICollection<Commission> Commissions { get; set; }
+
+        public ICollection<EmployeeBranch> EmployeeBranches { get; set; }
+
+        public ICollection<CashSession> CashSessions { get; set; }
+
         #endregion
     }
+
+  
 
 }

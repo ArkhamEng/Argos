@@ -2,7 +2,7 @@
 using Argos.Models.BaseTypes;
 using Argos.Models.HumanResources;
 using Argos.Models.Config;
-using Argos.Models.Operative;
+using Argos.Models.Production;
 using Argos.Support;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,8 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using Argos.ViewModels.Operative;
 using System;
-using Argos.Models.Transaction;
+using Argos.Models.Production;
+using Argos.Models.Enums;
 
 namespace Argos.Controllers
 {
@@ -30,19 +31,19 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
-        public ActionResult SearchAccounts(string client,string phone, int? typeId, int? statusId)
+        public ActionResult SearchAccounts(string client, string phone, int? typeId, int? statusId)
         {
             //si el nombre de cliente vien con datos divido todas las palabras
             var arClient = new List<string>().ToArray();
 
-            if(client != null && client != string.Empty)
-                arClient =  client.Split(' ');
+            if (client != null && client != string.Empty)
+                arClient = client.Split(' ');
 
-            var model = (from s in db.Accounts
+            var model = (from s in db.Accounts.Include(a=> a.AccountType)
                          where (client == string.Empty || arClient.All(w => s.Client.Name.Contains(w))) &&
                                (phone == string.Empty || s.Client.Phone == phone) &&
                                (typeId == null || s.AccountTypeId == typeId) &&
-                               (statusId == null || s.StatusId == statusId) 
+                               (statusId == null || s.StatusId == statusId)
                          select s).ToList();
 
             return PartialView("_AccountList", model);
@@ -53,28 +54,70 @@ namespace Argos.Controllers
         {
             var model = new BeginAccountViewModel();
             model.AccountTypes = db.AccountTypes.ToSelectList();
-            
 
-            return PartialView("_BeginAccount",model);
+
+            return PartialView("_BeginAccount", model);
         }
 
         [HttpPost]
         public ActionResult CreateAccount(BeginAccountViewModel model)
         {
-            return View();
+            try
+            {
+                var code = db.AccountTypes.Find(model.AccountTypeId).Code;
+
+                var account = new Account
+                {
+                    AccountTypeId = model.AccountTypeId,
+                    ClientId = model.ClientId,
+                    HireDate = model.HireDate,
+                    HirePrice = model.HirePrice,
+                    StatusId = 0,
+                    Code = Extens.GetCode(code, model.HireDate, (int)decimal.Zero)
+                };
+
+                db.Accounts.Add(account);
+                db.SaveChanges();
+
+                return Json(new JResponse { Id = account.AccountId, Result = Cons.ResponseSuccess });
+            }
+            catch (Exception ex)
+            {
+                return Json(new JResponse
+                {
+                    Result = Cons.ResponseDanger,
+                    Body = ex.Message,
+                    Header = "Ocurrio un error al registrar la cuenta"
+                });
+            }
         }
 
 
         public ActionResult ManageAccount(int id)
         {
+            //obtengo datos de la cuenta
+            var account = db.Accounts.Include(a => a.Client).Include(a => a.AccountFile).Include(a => a.Location).
+                Include(a=> a.AccountType).Include(a => a.Location.City).Include(a => a.Policy).
+                Include(a => a.Services).FirstOrDefault(a => a.AccountId == id);
 
-            Account model = null;
+            //genero el ViewModel para la pagina
+            var model                          = new AccountViewModel(account);
+            model.AccountTypes                 = db.AccountTypes.ToSelectList();
+            model.LocationViewModel.States     = db.States.ToSelectList();
+            model.LocationViewModel.Cities     = new SelectList(new List<City>());
+            model.PolicyViewModel.PolicyStatus = db.OperativeStatus.ToSelectList();
+
+            //si la ubicacón tiene datos lleno el combo de ciudades en base al estado
+            if (model.LocationViewModel.Location != null)
+                model.LocationViewModel.Cities = db.Cities.Where(c => c.StateId == model.LocationViewModel.Location.City.StateId).ToSelectList();
+            else
+                model.LocationViewModel.Location = new AccountLocation();
 
             return View(model);
         }
 
 
-     
+
 
         [HttpPost]
         public ActionResult GetClientAddress(int clientId)

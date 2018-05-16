@@ -33,7 +33,8 @@ namespace Argos
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                        "~/AppScripts/Global.js",
-                       "~/AppScripts/Catalog.js"));
+                       "~/AppScripts/Catalog.js",
+                       "~/AppScripts/Operative.js"));
 
            
         }

@@ -16,15 +16,7 @@ namespace Argos.Controllers
         #region Client Methods
         public ActionResult Products()
         {
-            var model = new List<List<Product>>();
-
-            ViewBag.Categories      = db.Categories.ToSelectList();
-            ViewBag.SubCategories  = new List<SubCategory>().ToSelectList();
-            ViewBag.CarMakes  = db.CarMakes.ToSelectList();
-            ViewBag.CarModels = new List<CarModel>().ToSelectList();
-            ViewBag.CarYears  = new List<CarYear>().ToSelectList();
-
-            return View(model);
+            return View();
         }
 
         [HttpPost]
@@ -56,45 +48,27 @@ namespace Argos.Controllers
 
             List<Product> products = new List<Product>();
 
-            //se realiza la busqueda con el "posible código"
-            if (code != null)
-            {
-                products = (from p in db.Products.Include(p => p.ProductImages).Include(p => p.Stocks).
-                            Include(p => p.Compatibilities).Include(p => p.Compatibilities.Select(c => c.CarYear)).
-                            Include(p => p.Compatibilities.Select(c => c.CarYear.CarModel))
-                            where (p.Code == code)
-                            select p).ToList();
-            }
-
             // si no se encuentra un código que coincida, se realiza una búsqueda con todos lo filtros
             //buscando coincidencias con todas las palabras del array entre código, descripción y marca
             if (products.Count == Cons.Zero)
             {
-                products = (from p in db.Products.Include(p => p.ProductImages).Include(p => p.Stocks).
+                products = (from p in db.Products.Include(p => p.ProductImages).Include(p => p.ProductStocks).
                             Include(p => p.SubCategory).Include(p => p.SubCategory.Category).Include(p => p.Compatibilities).
-                            Include(p => p.Compatibilities.Select(c => c.CarYear))
+                            Include(p => p.Compatibilities.Select(c => c.Model))
                             where (filter.CategoryId == null || p.SubCategory.CategoryId == filter.CategoryId)
                             && (filter.CategoryId == null || p.SubCategoryId == filter.SubCategoryId)
                             && (filter.Text == null || filter.Text == string.Empty ||
                                 arr.All(s => (p.Code + " " + p.Description + " " + p.TradeMark).Contains(s)))
-                            //si alunos de los filtros de auto es requerido, se realiza el filtrado
-                            && (filter.CarYearId == null || p.Compatibilities.Where(c => c.CarYearId == filter.CarYearId).ToList().Count > Cons.Zero)
-                            && (filter.CarModelId == null || p.Compatibilities.Where(c => c.CarYear.CarModelId == filter.CarModelId).ToList().Count > Cons.Zero)
-                            && (filter.CarMakeId == null || p.Compatibilities.Where(c => c.CarYear.CarModel.CarMakeId == filter.CarMakeId).ToList().Count > Cons.Zero)
+                           
+                                //si algunos de los filtros de auto es requerido, se realiza el filtrado
+                            && (filter.CarYearId == null || p.Compatibilities.Where(c => c.CompatibilityId == filter.CarYearId).ToList().Count > Cons.Zero)
+                            && (filter.CarModelId == null || p.Compatibilities.Where(c => c.ModelId == filter.CarModelId).ToList().Count > Cons.Zero)
+                            && (filter.CarMakeId == null || p.Compatibilities.Where(c => c.Model.MakerId == filter.CarMakeId).ToList().Count > Cons.Zero)
 
                             select p).OrderBy(s => s.Description).Take(Cons.MaxSearchRows).ToList();
             }
 
-            //lleno los datos de inventario de la sucursal activa en la sesión
-            products.ForEach(p =>
-            {
-                var bp = p.Stocks.FirstOrDefault(b => b.BranchId == branchId);
-
-                p.Available = bp != null ? bp.Available : Cons.Zero;
-                p.Row = bp != null ? bp.Row : string.Empty;
-                p.Ledge = bp != null ? bp.Ledge : string.Empty;
-            });
-
+          
             if (filter.IsGrid)
                 return OrderAsGrid(products);
             else
@@ -148,10 +122,7 @@ namespace Argos.Controllers
         {
             var model = new Product();
 
-            ViewBag.Categories = db.States.ToSelectList();
-            ViewBag.SubCategories = new List<City>().ToSelectList();
-            ViewBag.MeassureUnits = db.MeasureUnits.ToSelectList();
-
+        
             return PartialView("_ProductEdit", model);
         }
 

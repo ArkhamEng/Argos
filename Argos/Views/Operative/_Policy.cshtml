@@ -1,0 +1,52 @@
+﻿@model Argos.ViewModels.Operative.PolicyViewModel
+
+<div class="panel panel-primary">
+    <div class="panel-body">
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Policy.StatusId, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-stop-circle"></i></span>
+                @Html.DropDownListFor(m => m.Policy.StatusId, Model.PolicyStatus, "", htmlAttributes: new { @class = "form-control input-sm" })
+            </div>
+            @Html.ValidationMessageFor(model => model.Policy.StatusId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-offset-4 col-md-4">
+            @Html.LabelFor(model => model.Policy.CutOffDay, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-scissors"></i></span>
+                @Html.EditorFor(model => model.Policy.CutOffDay, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "dia del mes" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.Policy.CutOffDay, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Policy.Price, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                @Html.EditorFor(model => model.Policy.Price, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "monto a pagar" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.Policy.Price, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Policy.PayFreq, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-hourglass-1"></i></span>
+                @Html.EditorFor(model => model.Policy.PayFreq, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "en meses" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.Policy.PayFreq, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Policy.MaintFreq, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-hourglass"></i></span>
+                @Html.EditorFor(model => model.Policy.MaintFreq, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "en meses" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.Policy.MaintFreq, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+</div>

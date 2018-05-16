@@ -10,7 +10,7 @@ namespace Argos.Models.HumanResources
     [Table("JobPosition", Schema = "HumanResources")]
     public class JobPosition : AuditableEntity,ISelectable
     {
-        [Column(Order = 0), Key]
+        [Column(Order = 0)]
         public int JobPositionId { get; set; }
 
         [Column(Order = 1)]

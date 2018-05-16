@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using System;
 using System.Data.Entity;
 using Argos.Models.BaseTypes;
-using Argos.Models.Transaction;
+using Argos.ViewModels.Generic;
+using Argos.Models.Operative;
 
 namespace Argos.Controllers
 {
@@ -20,11 +21,9 @@ namespace Argos.Controllers
         #region Client Methods
         public ActionResult Clients()
         {
-            var model = new List<Client>();
-
-            ViewBag.States = db.States.ToSelectList();
-            ViewBag.Cities = new List<City>().ToSelectList();
-          
+            var model = new PersonFilterViewModel<Client>();
+            model.States = db.States.ToSelectList();
+           
             return View(model);
         }
 
@@ -43,10 +42,10 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult BeginAddClient()
         {
-            var model = new Client();
+            var model = new PersonViewModel<Client>();
 
-            ViewBag.States = db.States.ToSelectList();
-            ViewBag.Cities = new List<City>().ToSelectList();
+            model.States = db.States.ToSelectList();
+            model.Cities = new List<City>().ToSelectList();
 
             return PartialView("_ClientEdit",model);
         }
@@ -78,24 +77,26 @@ namespace Argos.Controllers
         {
             try
             {
-                var model = db.Clients.Include(c=> c.City).
+                var model = new PersonViewModel<Client>();
+
+                model.Entity = db.Clients.Include(c=> c.City).
                     FirstOrDefault(c => c.ClientId == id && c.IsActive);
 
                 if (model != null)
                 {
-                    var json = EvalLock(model);
+                    var json = EvalLock(model.Entity);
 
                     if (json != null)
                         return json;
 
                     //bloqueo el registro
-                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
+                    db.Entry(model.Entity).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(model.Entity).Property(c => c.LockUser).IsModified = true;
 
                     db.SaveChanges();
 
-                    ViewBag.States = new SelectList(db.States,nameof(State.StateId),nameof(State.Name), model.City.StateId);
-                    ViewBag.Cities = db.Cities.Where(c => c.StateId == model.City.StateId).ToSelectList();
+                    model.States = new SelectList(db.States,nameof(State.StateId),nameof(State.Name), model.Entity.City.StateId);
+                    model.Cities = db.Cities.Where(c => c.StateId == model.Entity.City.StateId).ToSelectList();
 
                     return PartialView("_ClientEdit", model);
                 }
@@ -159,7 +160,7 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
-        public ActionResult UnLockClient(int id, string entity)
+        public ActionResult UnLockClient(int id)
         {
             try
             {
@@ -208,10 +209,9 @@ namespace Argos.Controllers
                     client.UpdDate = DateTime.Now.ToLocal();
                     client.IsActive = false;
 
-                    db.Entry(client).State = EntityState.Modified;
-
-                    db.Entry(client).Property(c => c.InsUser).IsModified = false;
-                    db.Entry(client).Property(c => c.InsDate).IsModified = false;
+                    db.Entry(client).Property(c => c.UpdUser).IsModified = true;
+                    db.Entry(client).Property(c => c.UpdDate).IsModified = true;
+                    db.Entry(client).Property(c => c.IsActive).IsModified = true;
 
                     db.SaveChanges();
                 }
@@ -258,11 +258,8 @@ namespace Argos.Controllers
         #region Employee Methods
         public ActionResult Employees()
         {
-            var model = new List<Employee>();
-
-            ViewBag.States = db.States.ToSelectList();
-            ViewBag.Cities = new List<City>().ToSelectList();
-            ViewBag.JobPositions = db.JobPositions.ToSelectList();
+            var model = new PersonFilterViewModel<Employee>();
+            model.States = db.States.ToSelectList();
 
             return View(model);
         }
@@ -270,7 +267,7 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult SearchEmployees(string ftr, string name, int? stateId, int? cityId, int? id)
         {
-            var model = db.Employees.Where(e => (ftr == string.Empty || ftr == null || e.FTR == ftr)
+            var model = db.Employees.Include(e=> e.JobPosition).Where(e => (ftr == string.Empty || ftr == null || e.FTR == ftr)
             && (id == null || e.EmployeeId == id)
             && (name == string.Empty || name == null || e.Name.Contains(name))
             && (cityId == null || e.CityId == cityId) && (stateId == null || e.City.StateId == stateId)
@@ -282,11 +279,10 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult BeginAddEmployee()
         {
-            var model = new Employee();
+            var model = new PersonViewModel<Client>();
 
-            ViewBag.States = db.States.ToSelectList();
-            ViewBag.Cities = new List<City>().ToSelectList();
-            ViewBag.JobPositions = db.JobPositions.ToSelectList();
+            model.States = db.States.ToSelectList();
+            model.JobPositions = db.JobPositions.ToSelectList();
 
             return PartialView("_EmployeeEdit", model);
         }
@@ -321,25 +317,27 @@ namespace Argos.Controllers
         {
             try
             {
-                var model = db.Employees.Include(e => e.City).Include(e=>e.JobPosition).
-                    FirstOrDefault(e => e.EmployeeId == id && e.IsActive);
+                var model = new PersonViewModel<Employee>();
+
+                model.Entity = db.Employees.Include(e => e.City).Include(e=>e.JobPosition).
+                                            FirstOrDefault(e => e.EmployeeId == id && e.IsActive);
 
                 if (model != null)
                 {
-                    var json = EvalLock(model);
+                    var json = EvalLock(model.Entity);
 
                     if (json != null)
                         return json;
 
                     //bloqueo el registro
-                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
+                    db.Entry(model.Entity).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(model.Entity).Property(c => c.LockUser).IsModified = true;
 
                     db.SaveChanges();
                 
-                    ViewBag.States       = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.City.StateId);
-                    ViewBag.Cities       = db.Cities.Where(c => c.StateId == model.City.StateId).ToSelectList();
-                    ViewBag.JobPositions = db.JobPositions.ToSelectList();
+                    model.States       = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.Entity.City.StateId);
+                    model.Cities       = db.Cities.Where(c => c.StateId == model.Entity.City.StateId).ToSelectList();
+                    model.JobPositions = db.JobPositions.ToSelectList();
 
                     return PartialView("_EmployeeEdit", model);
                 }
@@ -499,10 +497,8 @@ namespace Argos.Controllers
         #region Supplier Methods
         public ActionResult Suppliers()
         {
-            var model = new List<Supplier>();
-
-            ViewBag.States = db.States.ToSelectList();
-            ViewBag.Cities = new List<City>().ToSelectList();
+            var model = new PersonFilterViewModel<Supplier>();
+            model.States = db.States.ToSelectList();
 
             return View(model);
         }
@@ -522,7 +518,7 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult BeginAddSupplier()
         {
-            var model = new Supplier();
+            var model = new PersonViewModel<Supplier>();
 
             ViewBag.States = db.States.ToSelectList();
             ViewBag.Cities = new List<City>().ToSelectList();
@@ -562,24 +558,25 @@ namespace Argos.Controllers
         {
             try
             {
-                var model = db.Suppliers.Include(c => c.City).
-                    FirstOrDefault(c => c.SupplierId == id && c.IsActive);
+                var model = new PersonViewModel<Supplier>();
+                    
+                 model.Entity =  db.Suppliers.Include(c => c.City).FirstOrDefault(c => c.SupplierId == id && c.IsActive);
 
                 if (model != null)
                 {
-                    var json = EvalLock(model);
+                    var json = EvalLock(model.Entity);
 
                     if (json != null)
                         return json;
 
                     //bloqueo el registro
-                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
+                    db.Entry(model.Entity).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(model.Entity).Property(c => c.LockUser).IsModified = true;
 
                     db.SaveChanges();
 
-                    ViewBag.States = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.City.StateId);
-                    ViewBag.Cities = db.Cities.Where(c => c.StateId == model.City.StateId).ToSelectList();
+                    model.States = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.Entity.City.StateId);
+                    model.Cities = db.Cities.Where(c => c.StateId == model.Entity.City.StateId).ToSelectList();
 
                     return PartialView("_SupplierEdit", model);
                 }
@@ -607,7 +604,7 @@ namespace Argos.Controllers
 
 
         [HttpPost]
-        public ActionResult UpdateProvider(Supplier supplier)
+        public ActionResult UpdateSupplier(Supplier supplier)
         {
             try
             {
@@ -736,7 +733,7 @@ namespace Argos.Controllers
         #endregion
 
 
-        private JsonResult EvalLock(AuditableEntity model)
+        private JsonResult EvalLock(AuditableCatalog model)
         {
             if (model.IsLocked)
             {

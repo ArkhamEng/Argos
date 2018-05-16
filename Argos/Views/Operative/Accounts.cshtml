@@ -52,15 +52,15 @@
     @Html.Partial("_AccountList", Model.Accounts)
 </div>
 
-<div id="divBeginCreate">
-
+<div id="divEditAccount">
 </div>
 
 <script>
 
     function SearchAccounts()
     {
-        var filter = {
+        var filter =
+        {
             client: $("#txtName").val(),
             phone: $("#txtPhone").val(),
             typeId: $("#ddlAccountTypes").val(),
@@ -75,14 +75,10 @@
 
     function BeginAccount()
     {
-        ShowLoading('static');
-
-        ExecuteAjax('@Url.Action("BeginAccount")', {}, function (response) {
-            HideLoading(function ()
-            {
-                $("#divBeginCreate").html(response);
-            });
-        });
+        ShowEditAccount("#divEditAccount", function (id)
+        {
+            window.location = '@Url.Action("ManageAccount","Operative")/' + id;
+        },null,null);
     }
 
 </script>

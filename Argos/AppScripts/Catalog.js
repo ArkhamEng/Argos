@@ -84,11 +84,11 @@ function SaveClient(OnCompleate)
     $("#EditClientLoading").show();
 
     var client = {
-        Name: $("#Name").val(), BusinessName: $("#BusinessName").val(), FTR: $("#FTR").val(), Street: $("#Street").val(),
-        InNumber: $("#InNumber").val(), OutNumber: $("#OutNumber").val(), Location: $("#Location").val(), Email: $("#Email").val(),
-        ZipCode: $("#ZipCode").val(), Phone: $("#Phone").val(), ClientId: $("#ClientId").val(), CityId: $("#CityId").val()
+        Name: $("#cliName").val(), BusinessName: $("#cliBusinessName").val(), FTR: $("#cliFTR").val(), Street: $("#cliStreet").val(),
+        InNumber: $("#cliInNumber").val(), OutNumber: $("#cliOutNumber").val(), Location: $("#cliLocation").val(), Email: $("#cliEmail").val(),
+        ZipCode: $("#cliZipCode").val(), Phone: $("#cliPhone").val(), ClientId: $("#cliClientId").val(), CityId: $("#cliCityId").val()
     };
-
+    console.log(client);
     //URL para agregar
     var url = "/Catalog/AddClient/";
 
@@ -205,10 +205,10 @@ function SaveEmployee(OnCompleate)
     $("#EditEmployeeLoading").show();
   
     var employee = {
-        Name: $("#Name").val(), JobPositionId: $("#JobPositionId").val(), FTR: $("#FTR").val(), Street: $("#Street").val(),
-        Commission: $("#Commission").val(), InNumber: $("#InNumber").val(), OutNumber: $("#OutNumber").val(), Location: $("#Location").val(),
-        Email: $("#Email").val(), SSN: $("#SSN").val(), ZipCode: $("#ZipCode").val(), Phone: $("#Phone").val(), BirthDate: $("#BirthDate").val(),
-        EmployeeId: $("#EmployeeId").val(), CityId: $("#CityId").val(), Gender: $("input[name=Gender]:checked").val()
+        Name: $("#empName").val(), JobPositionId: $("#empJobPositionId").val(), FTR: $("#empFTR").val(), Street: $("#empStreet").val(),
+        Commission: $("#empCommission").val(), InNumber: $("#empInNumber").val(), OutNumber: $("#empOutNumber").val(), Location: $("#empLocation").val(),
+        Email: $("#empEmail").val(), SSN: $("#empSSN").val(), ZipCode: $("#empZipCode").val(), Phone: $("#empPhone").val(), BirthDate: $("#empBirthDate").val(),
+        EmployeeId: $("#empEmployeeId").val(), CityId: $("#empCityId").val(), Gender: $("input[name=Entity_Gender]:checked").val()
     };
     
     //URL para agregar
@@ -252,7 +252,8 @@ function ShowSupplierModal(OnCompleate, CloseCallBack, id)
     var url = "/Catalog/BeginAddSupplier/";
     var text = '<span class="fa fa-handshake-o"></span> Agregar nuevo proveedor';
 
-    if (parseInt(id) > 0) {
+    if (parseInt(id) > 0)
+    {
         param = { id: id }
         url = "/Catalog/BeginUpdateSupplier/";
         text = '<span class="fa fa-handshake-o"></span> Editar datos del proveedor';
@@ -326,10 +327,10 @@ function SaveSupplier(OnCompleate)
     $("#EditSupplierLoading").show();
 
     var supplier = {
-        Name: $("#Name").val(), BusinessName: $("#BusinessName").val(), FTR: $("#FTR").val(), Street: $("#Street").val(),
-        InNumber: $("#InNumber").val(), OutNumber: $("#OutNumber").val(), Location: $("#Location").val(), Email: $("#Email").val(),
-        ZipCode: $("#ZipCode").val(), Phone: $("#Phone").val(), SupplierId: $("#SupplierId").val(), CityId: $("#CityId").val(),
-        WebSite: $("#WebSite").val()
+        Name: $("#supName").val(), BusinessName: $("#supBusinessName").val(), FTR: $("#supFTR").val(), Street: $("#supStreet").val(),
+        InNumber: $("#supInNumber").val(), OutNumber: $("#supOutNumber").val(), Location: $("#supLocation").val(), Email: $("#supEmail").val(),
+        ZipCode: $("#supZipCode").val(), Phone: $("#supPhone").val(), SupplierId: $("#supSupplierId").val(), CityId: $("#supCityId").val(),
+        WebSite: $("#supWebSite").val()
     }
 
     //URL para agregar

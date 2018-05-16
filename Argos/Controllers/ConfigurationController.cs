@@ -31,7 +31,7 @@ namespace Argos.Controllers
         [HttpPost]
         public JsonResult GetModels(int id)
         {
-            var cities = db.CarModels.Where(c => c.CarMakeId == id).ToSelectList();
+            var cities = db.Models.Where(c => c.MakerId == id).ToSelectList();
 
             return Json(cities);
         }
@@ -39,7 +39,7 @@ namespace Argos.Controllers
         [HttpPost]
         public JsonResult GetYears(int id)
         {
-            var cities = db.CarYears.Where(c => c.CarModelId == id).ToSelectList();
+            var cities = db.Compatibilities.Where(c => c.ModelId == id).ToSelectList();
 
             return Json(cities);
         }

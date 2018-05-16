@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Argos.Models.Config.Branch" Collapsed="true">
+    <Position X="8.25" Y="0.75" Width="1.5" />
+    <AssociationLine Name="CashRegisters" Type="Argos.Models.Finance.CashRegister">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.242" Y="0.526" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAAAAAAAAAAIBBQQAAEAAAIAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Config\Branch.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="CashRegisters" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Transaction.Sale" Collapsed="true">
+    <Position X="5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAABAgAgEBAAAgAAAAAAACAACAAABAAAAAAEAEAQ=</HashCode>
+      <FileName>Models\Transaction\Sale.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="FinantialMovements" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Finance.CashRegister" Collapsed="true">
+    <Position X="8.25" Y="2.25" Width="1.5" />
+    <AssociationLine Name="CashSessions" Type="Argos.Models.Finance.CashSession">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.432" Y="0.414" Height="0.182" Width="1.201" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAABAgAAAAAAQAAAQAAAAAAAgAIAAgCAAAAAA=</HashCode>
+      <FileName>Models\Finance\CashRegister.cs</FileName>
+      <NewMemberFileName>Models\Finance\CashSession.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="CashSessions" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Argos.Models.Finance.CashSession" Collapsed="true">
+    <Position X="8.25" Y="3.5" Width="1.5" />
+    <AssociationLine Name="FinantialMovements" Type="Argos.Models.Finance.FinantialMovement">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.39" Y="0.685" Height="0.182" Width="1.277" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAIAAAABAAAAAQAAAAACAAAAAAAAQAgAAICCAQ=</HashCode>
+      <FileName>Models\Finance\CashSession.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="FinantialMovements" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.HumanResources.Employee" Collapsed="true">
+    <Position X="11.75" Y="3.5" Width="1.5" />
+    <AssociationLine Name="CashSessions" Type="Argos.Models.Finance.CashSession">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.912" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAABAAABCAAAAABAQACEAAARABAAAAAAACAAA=</HashCode>
+      <FileName>Models\HumanResources\Employee.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="CashSessions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Finance.FinantialMovement" Collapsed="true">
+    <Position X="8.25" Y="5" Width="1.75" />
+    <AssociationLine Name="DerivedNote" Type="Argos.Models.Finance.CreditNote">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.133" Y="0.631" Height="0.182" Width="1.097" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAIIAFABAAAIAAAggkAAKAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Models\Finance\FinantialMovement.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DerivedNote" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Argos.Models.Finance.PayMethod" Collapsed="true">
+    <Position X="11.75" Y="5" Width="1.5" />
+    <AssociationLine Name="FinantialMovement" Type="Argos.Models.Finance.FinantialMovement">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.36" Y="0.102" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgBAAAAAgAAAQAAAAAAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Models\Finance\PayMethod.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="FinantialMovement" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Argos.Models.Finance.CreditNote" Collapsed="true">
+    <Position X="8.25" Y="6.5" Width="1.75" />
+    <AssociationLine Name="FinantialMovements" Type="Argos.Models.Finance.FinantialMovement">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.617" Y="0.277" Height="0.182" Width="1.556" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAABCAAAgAgAACAAAAAAIgAAAgAAAAAAAA=</HashCode>
+      <FileName>Models\Finance\CreditNote.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="FinantialMovements" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

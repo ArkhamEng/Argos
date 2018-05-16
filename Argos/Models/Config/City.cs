@@ -1,7 +1,8 @@
 ﻿using Argos.Models.BaseTypes;
 using Argos.Models.HumanResources;
 using Argos.Models.Operative;
-using Argos.Models.Transaction;
+using Argos.Models.Production;
+using Argos.Models.Production;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +17,7 @@ namespace Argos.Models.Config
     {
         public int CityId { get; set; }
 
+        [Display(Name="Estado/Entidad")]
         public int StateId { get; set; }
 
         [MaxLength(30)]

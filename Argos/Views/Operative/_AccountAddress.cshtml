@@ -1,71 +1,73 @@
-﻿@model Argos.Models.BaseTypes.LocatableEntity 
+﻿@model Argos.ViewModels.Operative.LocationViewModel 
 
 <div class="panel panel-primary">
-    <div class="panel-heading">
-        <h4 class="panel-title">
-            <span class="fa fa-map-signs"></span>
-            Ubicación de la cuenta
-        </h4>
-    </div>
     <div class="panel-body">
         <div class="form-group col-md-6">
-            @Html.LabelFor(model => model.City.StateId, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.Location.City.StateId, htmlAttributes: new { @class = "control-label" })
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-map"></i></span>
-                @Html.DropDownListFor(model => model.City.StateId, (SelectList)ViewBag.States, "", htmlAttributes: new { @class = "form-control input-sm" })
+                @Html.DropDownListFor(model => model.Location.City.StateId, Model.States, "", htmlAttributes: new { @class = "form-control input-sm" })
             </div>
-            @Html.ValidationMessageFor(model => model.City.StateId, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.Location.City.StateId, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group col-md-6">
-            @Html.LabelFor(model => model.CityId, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.Location.CityId, htmlAttributes: new { @class = "control-label" })
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-map"></i></span>
-                @Html.DropDownListFor(model => model.CityId, (SelectList)ViewBag.Cities, "", htmlAttributes: new { @class = "form-control input-sm" })
+                @Html.DropDownListFor(model => model.Location.CityId, Model.Cities, "", htmlAttributes: new { @class = "form-control input-sm" })
             </div>
-            @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.Location.CityId, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group col-md-6">
-            @Html.LabelFor(model => model.Street, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group col-md-8">
+            @Html.LabelFor(model => model.Location.Street, htmlAttributes: new { @class = "control-label" })
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
-                @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.EditorFor(model => model.Location.Street, new { htmlAttributes = new { @class = "form-control input-sm" } })
             </div>
-            @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.Location.Street, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group col-md-3">
-            @Html.LabelFor(model => model.OutNumber, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group col-md-2">
+            @Html.LabelFor(model => model.Location.OutNumber, htmlAttributes: new { @class = "control-label" })
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
-                @Html.EditorFor(model => model.OutNumber, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                @Html.ValidationMessageFor(model => model.OutNumber, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Location.OutNumber, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.Location.OutNumber, "", new { @class = "text-danger" })
             </div>
-            @Html.ValidationMessageFor(model => model.InNumber, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.Location.InNumber, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group col-md-3">
-            @Html.LabelFor(model => model.InNumber, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group col-md-2">
+            @Html.LabelFor(model => model.Location.InNumber, htmlAttributes: new { @class = "control-label" })
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
-                @Html.EditorFor(model => model.InNumber, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.EditorFor(model => model.Location.InNumber, new { htmlAttributes = new { @class = "form-control input-sm" } })
             </div>
         </div>
         <div class="form-group col-md-8">
-            @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.Location.Location, htmlAttributes: new { @class = "control-label" })
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
-                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.EditorFor(model => model.Location.Location, new { htmlAttributes = new { @class = "form-control input-sm" } })
             </div>
-            @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.Location.Location, "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group col-md-4">
-            @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.Location.ZipCode, htmlAttributes: new { @class = "control-label" })
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
-                @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.EditorFor(model => model.Location.ZipCode, new { htmlAttributes = new { @class = "form-control input-sm" } })
             </div>
-            @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.Location.ZipCode, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function ()
+    {
+        SetCascade("#Location_City_StateId", "#Location_CityId", '@Url.Action("GetCities","Configuration")');
+
+    });
+</script>

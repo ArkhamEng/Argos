@@ -9,10 +9,9 @@
         <div class="modal-dialog">
             <div class="modal-content panel-primary">
                 <div class="modal-header panel-heading">
-                    <h4 class="modal-title">
-                        <span class="fa fa-files-o"></span>
-                        Registro de Nueva Cuenta
-                    </h4>
+                    <h5 id="EditAccountTitle" class="modal-title">
+                     
+                    </h5>
                 </div>
                 <div class="modal-body panel-body">
                     <div class="col-md-12  form-group">
@@ -64,11 +63,11 @@
                 </div>
                 <div class="panel-footer">
                     <div class="btn-group">
-                        <button id="btnAccept" class="btn btn-primary" onclick="AcceptCreate()" type="button">
+                        <button  id="btnEditAccountAccept" class="btn btn-primary"  type="button" >
                             <span class="fa fa-check"></span>
                             Aceptar
                         </button>
-                        <button class="btn btn-danger" onclick="Close()" type="button">
+                        <button id="btnEditAccountCancel" class="btn btn-danger" type="button">
                             <span class="fa fa-times"></span>
                             Cancelar
                         </button>
@@ -77,10 +76,9 @@
             </div>
         </div>
     </div>
-
+    @Html.HiddenFor(model => model.ClientId)
 </form>
 
-@Html.HiddenFor(model => model.ClientId)
 
 <script>
 
@@ -88,8 +86,6 @@
     {
         var form = $("#frmBeginAccount");
         form.validate();
-
-        $("#ModalBeginAccount").modal({ backdrop: 'static' });
 
         Compleate("#ClientName", "#Clients", '@Url.Action("AutoCompleateClient", "Catalog")', OnClientSelected)
     });
@@ -117,44 +113,7 @@
         $("#ClientId").val(id);
     }
 
-    function AcceptCreate()
-    {
-        var form = $("#frmBeginAccount");
-
-        if (!form.valid())
-            return;
-
-        $("#ModalBeginAccount").off("hidden.bs.modal").on("hidden.bs.modal", function ()
-        {
-            $("#ModalBeginAccount").off("hidden.bs.modal");
-
-            ShowLoading('static');
-
-            var account =
-                {
-                    ClientId: $("#ClientId").val(),
-                    HireDate: $("#SaleDate").val(),
-                    ServiceTypeId: $("#ServiceTypeId").val(),
-                    HirePrice: $("#HirePrice").val()
-                };
-
-            ExecuteAjax('@Url.Action("CreateAccount")', { model: account }, function (response)
-            {
-                if (response.Result != "OK")
-                {
-                    HideLoading(function ()
-                    {
-                        ShowMessage(response.Header, response.Message, 'warning',null,null,'static');
-                    });
-                }
-                else
-                    window.location = '@Url.Action("ManageAccount")/' + response.Id;
-            });
-        });
-
-        $("#ModalBeginAccount").modal('hide');
-
-    }
+ 
 
     function Close() {
         $("#ModalBeginAccount").modal('hide');

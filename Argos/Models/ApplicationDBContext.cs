@@ -1,38 +1,35 @@
 ﻿using Argos.Models.HumanResources;
 using Argos.Models.Config;
 using Argos.Models.Inventory;
-using Argos.Models.Operative;
+using Argos.Models.Production;
 using Argos.Models.Security;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
-using Argos.Models.Transaction;
+using Argos.Models.Operative;
 
 namespace Argos.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        #region Transaction
+        #region Operative
 
         public DbSet<Client> Clients { get; set; }
 
         public DbSet<Supplier> Suppliers { get; set; }
 
-        public DbSet<Sale> Sales { get; set; }
+        public DbSet<ShipMethod> ShipMethods { get; set; }
 
-        public DbSet<SaleDetail> SaleDetails { get; set; }
+        public DbSet<Shipping> Shippings { get; set; }
 
-        public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<OperationStatus> OperationStatus { get; set; }
 
-        public DbSet<PurchaseDetail> PurchaseDetails { get; set; }
+        public DbSet<OperationType> OperationType { get; set; }
 
-        public DbSet<ShipMethod> ShipMethodes { get; set; }
+        public DbSet<OperationChange> OperationChanges { get; set; }
 
-        public DbSet<Shipping> Shipping { get; set; }
+        public DbSet<Operation> Operations { get; set; }
 
-        public DbSet<Transaction.TransStatus> TransStatus { get; set; }
-
-        public DbSet<TransType> TransType { get; set; }
-
+        public DbSet<OperationDetail> OperationDetails { get; set; }
 
 
         #endregion
@@ -52,23 +49,21 @@ namespace Argos.Models
 
         public DbSet<ProductImage> ProductImages { get; set; }
 
-        public DbSet<Compatibility> Compatibilities { get; set; }
-
-        public DbSet<Equivalence> Equivalences { get; set; }
-
         public DbSet<ExternalProduct> ExternalProduct { get; set; }
 
-        public DbSet<PackageDetail> PackageDetail { get; set; }
+        public DbSet<PriceChange> PriceHistories { get; set; }
 
-        public DbSet<PriceHistory> PriceHistories { get; set; }
-
-        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<ProductStock> ProductStocks { get; set; }
 
         public DbSet<MeasureUnit> MeasureUnits { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<SubCategory> SubCategories { get; set; }
+
+        public DbSet<Serial> Serials { get; set; }
+
+        public DbSet<StockMovement> StockMovements { get; set; }
 
         #endregion
 
@@ -79,18 +74,18 @@ namespace Argos.Models
 
         public DbSet<Locality> Localities { get; set; }
 
-        public DbSet<CarMake> CarMakes { get; set; }
+        public DbSet<Maker> Makers { get; set; }
 
-        public DbSet<CarModel> CarModels { get; set; }
+        public DbSet<Model> Models { get; set; }
 
-        public DbSet<CarYear> CarYears { get; set; }
+        public DbSet<Compatibility> Compatibilities { get; set; }
 
         public DbSet<Configuration> Config { get; set; }
 
 
         #endregion
 
-        #region Operative
+        #region Production
 
         public DbSet<Account> Accounts { get; set; }
 
@@ -102,7 +97,7 @@ namespace Argos.Models
 
         public DbSet<AccountLocation> Locations { get; set; }
 
-        public DbSet<Operative.OperativeStatus> OperativeStatus { get; set; }
+        public DbSet<Production.OperativeStatus> OperativeStatus { get; set; }
 
         #endregion
 

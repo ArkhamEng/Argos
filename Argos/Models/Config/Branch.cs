@@ -1,7 +1,9 @@
 ﻿using Argos.Models.BaseTypes;
+using Argos.Models.Finance;
 using Argos.Models.HumanResources;
+using Argos.Models.Inventory;
 using Argos.Models.Operative;
-using Argos.Models.Transaction;
+using Argos.Models.Production;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -32,17 +34,17 @@ namespace Argos.Models.Config
         [Index("Unq_Phone", IsUnique = true)]
         public string Phone { get; set; }
 
-        /// <summary>
-        /// una Sucursales puede tener diversas Ventas, compras y tener asignadas N cuentas,
-        /// asi como tambien tener cada una su inventario
-        /// </summary>
+     
         #region Navigation Properties
-        
-        public ICollection<Sale> Sales { get; set; }
 
-        public ICollection<Purchase> Purchases { get; set; }
+        public ICollection<Operation> Operation { get; set; }
 
-        public ICollection<Stock> Stocks { get; set; }
+        public ICollection<ProductStock> ProductStocks { get; set; }
+
+        public ICollection<CashRegister> CashRegisters { get; set; }
+
+        public ICollection<EmployeeBranch> EmployeeBranches { get; set; }
+
 
         #endregion
     }

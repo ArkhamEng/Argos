@@ -1,9 +1,10 @@
-﻿@using Argos.Support
+﻿@using Microsoft.AspNet.Identity
+@using Argos.Support
 
 <nav id="sidebar">
     <!-- Sidebar Session Controls-->
     <div class="sidebar-header" style="text-align:center">
-        <div class="col-md-12">
+        <div class="col-md-12 bgSidebar">
             <img id="UserPicture" src="~/Images/sinimagen.jpg" class="img-responsive img-circle col-xs-10 col-xs-offset-1" style="max-height:100px"
                  onmouseover="SetPointer(this)" title="Cambiar foto de perfil" onclick="ChangePassword()" />
         </div>
@@ -12,23 +13,23 @@
              onclick="ShowLoading(); window.location = '@Url.Action("ChangePassword","Manage")'">
              <a id="UserName"></a>
         </div>
-    </div>
+    </div> 
     <ul class="list-unstyled components">
 
         <li>
             <a href="#catalogsSm" data-toggle="collapse" aria-expanded="false">&nbsp;Catálogos<span class="glyphicon glyphicon-book" style="float:left" /></a>
             <ul class="collapse list-unstyled" id="catalogsSm">
-                <li><a href="/Catalog/Clients" onclick="ShowLoading()">&nbsp;Clientes<span class="fa fa-users" style="float:left" /></a></li>
-                <li><a href="/Catalog/Employees" onclick="ShowLoading()">&nbsp;Empleados<span class="fa fa-black-tie" style="float:left" /></a></li>
-                <li><a href="/Catalog/Suppliers" onclick="ShowLoading()">&nbsp;Proveedores<span class="fa fa-handshake-o" style="float:left" /></a></li>
-                <li><a href="/Catalog/Products" onclick="ShowLoading()">&nbsp;Productos<span class="fa fa-cubes" style="float:left" /></a></li> 
+                <li><a href="/Catalog/Clients" onclick="ShowLoading('static')">&nbsp;Clientes<span class="fa fa-users" style="float:left" /></a></li>
+                <li><a href="/Catalog/Employees" onclick="ShowLoading('static')">&nbsp;Empleados<span class="fa fa-black-tie" style="float:left" /></a></li>
+                <li><a href="/Catalog/Suppliers" onclick="ShowLoading('static')">&nbsp;Proveedores<span class="fa fa-handshake-o" style="float:left" /></a></li>
+                <li><a href="/Catalog/Products" onclick="ShowLoading('static')">&nbsp;Productos<span class="fa fa-cubes" style="float:left" /></a></li> 
             </ul>
         </li>
 
         <li>
             <a href="#operativeSm" data-toggle="collapse" aria-expanded="false">&nbsp;Operaciones<span class="fa fa-cogs" style="float:left" /></a>
             <ul class="collapse list-unstyled" id="operativeSm">
-                <li><a href="/Operative/Accounts" onclick="ShowLoading()">&nbsp;Cuentas<span class="fa fa-files-o" style="float:left" /></a></li>
+                <li><a href="/Operative/Accounts" onclick="ShowLoading('static')">&nbsp;Cuentas<span class="fa fa-files-o" style="float:left" /></a></li>
             </ul>
         </li>
 

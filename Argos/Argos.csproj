@@ -196,41 +196,54 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803292234267_Initial.cs" />
-    <Compile Include="Migrations\201803292234267_Initial.Designer.cs">
-      <DependentUpon>201803292234267_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201805160528143_Initial.cs" />
+    <Compile Include="Migrations\201805160528143_Initial.Designer.cs">
+      <DependentUpon>201805160528143_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\BaseTypes\TransactionDetail.cs" />
-    <Compile Include="Models\BaseTypes\Transaction.cs" />
+    <Compile Include="Models\BaseTypes\AuditableCatalog.cs" />
+    <Compile Include="Models\Inventory\Serial.cs" />
+    <Compile Include="Models\Operative\OperationDetail.cs" />
+    <Compile Include="Models\Operative\Operation.cs" />
     <Compile Include="Models\Config\City.cs" />
+    <Compile Include="Models\Config\Compatibility.cs" />
     <Compile Include="Models\Config\Configuration.cs" />
     <Compile Include="Models\Config\Locality.cs" />
+    <Compile Include="Models\Config\Model.cs" />
     <Compile Include="Models\Config\State.cs" />
-    <Compile Include="Models\Inventory\Equivalence.cs" />
+    <Compile Include="Models\Enums\PMethod.cs" />
+    <Compile Include="Models\Enums\OpType.cs" />
+    <Compile Include="Models\Finance\FinantialMovement.cs" />
+    <Compile Include="Models\Finance\CashRegister.cs" />
+    <Compile Include="Models\Finance\CashSession.cs" />
+    <Compile Include="Models\Finance\CreditNote.cs" />
+    <Compile Include="Models\Finance\PayMethod.cs" />
+    <Compile Include="Models\HumanResources\EmployeeBranch.cs" />
     <Compile Include="Models\Inventory\ExternalProduct.cs" />
-    <Compile Include="Models\Inventory\PackageDetail.cs" />
-    <Compile Include="Models\Config\CarMake.cs" />
-    <Compile Include="Models\Inventory\Compatibility.cs" />
-    <Compile Include="Models\Inventory\PriceHistory.cs" />
+    <Compile Include="Models\Config\Maker.cs" />
+    <Compile Include="Models\Inventory\PriceChange.cs" />
     <Compile Include="Models\Inventory\ProductImage.cs" />
+    <Compile Include="Models\Inventory\StockMovement.cs" />
     <Compile Include="Models\Inventory\SubCategory.cs" />
     <Compile Include="Models\Inventory\MeasureUnit.cs" />
-    <Compile Include="Models\Enums\TransStatus.cs" />
-    <Compile Include="Models\Inventory\Stock.cs" />
-    <Compile Include="Models\Operative\AccountType.cs" />
-    <Compile Include="Models\Operative\ServiceType.cs" />
-    <Compile Include="Models\Operative\Policy.cs" />
-    <Compile Include="Models\Operative\PolicyCharge.cs" />
-    <Compile Include="Models\Operative\PolicyHistory.cs" />
-    <Compile Include="Models\Operative\OperativeStatus.cs" />
+    <Compile Include="Models\Enums\OpStatus.cs" />
+    <Compile Include="Models\Inventory\ProductStock.cs" />
+    <Compile Include="Models\Operative\Transfer.cs" />
+    <Compile Include="Models\Operative\TransferDetail.cs" />
+    <Compile Include="Models\Production\AccountType.cs" />
+    <Compile Include="Models\Production\ServiceType.cs" />
+    <Compile Include="Models\Production\Policy.cs" />
+    <Compile Include="Models\Production\PolicyCharge.cs" />
+    <Compile Include="Models\Production\PolicyHistory.cs" />
+    <Compile Include="Models\Production\OperativeStatus.cs" />
     <Compile Include="Models\Security\ClientUser.cs" />
-    <Compile Include="Models\Transaction\Purchase.cs" />
-    <Compile Include="Models\Transaction\PurchaseDetail.cs" />
-    <Compile Include="Models\Transaction\ShipMethod.cs" />
-    <Compile Include="Models\Transaction\Shipping.cs" />
-    <Compile Include="Models\Transaction\TransStatus.cs" />
-    <Compile Include="Models\Transaction\TransType.cs" />
+    <Compile Include="Models\Operative\Purchase.cs" />
+    <Compile Include="Models\Operative\PurchaseDetail.cs" />
+    <Compile Include="Models\Operative\OperationChange.cs" />
+    <Compile Include="Models\Operative\ShipMethod.cs" />
+    <Compile Include="Models\Operative\Shipping.cs" />
+    <Compile Include="Models\Operative\OperationStatus.cs" />
+    <Compile Include="Models\Operative\OperationType.cs" />
     <Compile Include="Support\FileManager.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -240,24 +253,24 @@
     <Compile Include="Models\Inventory\Product.cs" />
     <Compile Include="Models\Inventory\Category.cs" />
     <Compile Include="Models\Config\Branch.cs" />
-    <Compile Include="Models\Transaction\Client.cs" />
-    <Compile Include="Models\Transaction\SaleDetail.cs" />
+    <Compile Include="Models\Operative\Client.cs" />
+    <Compile Include="Models\Operative\SaleDetail.cs" />
     <Compile Include="Models\HumanResources\Commission.cs" />
-    <Compile Include="Models\Operative\Account.cs" />
+    <Compile Include="Models\Production\Account.cs" />
     <Compile Include="Models\HumanResources\Employee.cs" />
     <Compile Include="Models\BaseTypes\Person.cs" />
     <Compile Include="Models\BaseTypes\ISelectable.cs" />
     <Compile Include="Models\HumanResources\JobPosition.cs" />
-    <Compile Include="Models\Transaction\Supplier.cs" />
-    <Compile Include="Models\Enums\ServStatus.cs" />
+    <Compile Include="Models\Operative\Supplier.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="ViewModels\Generic\PersonFilterViewModel.cs" />
     <Compile Include="ViewModels\Inventory\ProductFilterViewModel.cs" />
     <Compile Include="ViewModels\Inventory\ProductViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
-    <Compile Include="Models\Transaction\Sale.cs" />
-    <Compile Include="Models\Operative\Service.cs" />
-    <Compile Include="Models\Operative\Location.cs" />
-    <Compile Include="Models\Operative\AccountFile.cs" />
+    <Compile Include="Models\Operative\Sale.cs" />
+    <Compile Include="Models\Production\Service.cs" />
+    <Compile Include="Models\Production\Location.cs" />
+    <Compile Include="Models\Production\AccountFile.cs" />
     <Compile Include="Models\Security\EmployeeUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -265,11 +278,13 @@
     <Compile Include="Support\Extension.cs" />
     <Compile Include="ViewModels\Operative\AccountSearchViewModel.cs" />
     <Compile Include="ViewModels\Operative\BeginAccountViewModel.cs" />
+    <Compile Include="ViewModels\Operative\AccountViewModel.cs" />
     <Compile Include="ViewModels\SearchPerson.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppScripts\Catalog.js" />
     <Content Include="AppScripts\Global.js" />
+    <Content Include="AppScripts\Operative.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -343,6 +358,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Models\Finance\Finance.cd" />
+    <Content Include="Models\Operative\StockMovement.cd" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.2.1-vsdoc.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
@@ -427,11 +444,12 @@
     <None Include="Views\Operative\Accounts.cshtml" />
     <Content Include="Views\Operative\_AccountList.cshtml" />
     <Content Include="Views\Operative\_BeginAccount.cshtml" />
+    <Content Include="Views\Operative\_Policy.cshtml" />
+    <Content Include="Views\Operative\_AccountGeneral.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Files\ProfilePictures\" />
-    <Folder Include="ViewModels\Catalog\" />
     <Folder Include="Views\Configuration\" />
     <Folder Include="Views\Product\" />
   </ItemGroup>
@@ -443,8 +461,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803292234267_Initial.resx">
-      <DependentUpon>201803292234267_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805160528143_Initial.resx">
+      <DependentUpon>201805160528143_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<Argos.Models.HumanResources.Employee>
-
+﻿@model Argos.ViewModels.Generic.PersonFilterViewModel<Employee>
+@using Argos.Models.HumanResources
 @{
     ViewBag.Title = "Catálogo de Empleados";
     ViewBag.Class = "fa fa-black-tie";
@@ -39,9 +39,9 @@
         <div class="col-md-10" style="margin-top:10px">
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-                @Html.DropDownList("ddlStateId", (SelectList)ViewBag.States, "Estado / Entidad", new { @class = "form-control" })
+                @Html.DropDownList("ddlStateId", Model.States, "Estado / Entidad", new { @class = "form-control" })
                 <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-                @Html.DropDownList("ddlCityId", (SelectList)ViewBag.Cities, "Ciudad / Municipio", new { @class = "form-control" })
+                @Html.DropDownList("ddlCityId", Model.Cities, "Ciudad / Municipio", new { @class = "form-control" })
                 <span class="input-group-btn">
                     <button class="btn btn-info" type="button" id="btnClear" onclick="Clear()">
                         <span class="glyphicon glyphicon-refresh"></span>
@@ -55,7 +55,7 @@
 
 <div class="panel panel-default">
     <div id="divEmployeeList" class="panel-body" style="min-height:300px">
-        @Html.Partial("_EmployeeList", Model)
+        @Html.Partial("_EmployeeList", Model.Entities)
     </div>
 </div>
 

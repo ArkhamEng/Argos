@@ -1,5 +1,5 @@
-﻿@model IEnumerable<Argos.Models.Transaction.Supplier>
-
+﻿@model Argos.ViewModels.Generic.PersonFilterViewModel<Supplier>
+@using Argos.Models.Operative
 @{
     ViewBag.Title = "Catálogo de Proveedores";
     ViewBag.Class = "fa fa-handshake-o";
@@ -39,9 +39,9 @@
         <div class="col-md-10" style="margin-top:10px">
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-                @Html.DropDownList("ddlStateId", (SelectList)ViewBag.States, "Estado / Entidad", new { @class = "form-control" })
+                @Html.DropDownList("ddlStateId", Model.States, "Estado / Entidad", new { @class = "form-control" })
                 <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-                @Html.DropDownList("ddlCityId", (SelectList)ViewBag.Cities, "Ciudad / Municipio", new { @class = "form-control" })
+                @Html.DropDownList("ddlCityId", Model.Cities, "Ciudad / Municipio", new { @class = "form-control" })
                 <span class="input-group-btn">
                     <button class="btn btn-info" type="button" id="btnClear" onclick="Clear()">
                         <span class="glyphicon glyphicon-refresh"></span>
@@ -55,7 +55,7 @@
 
 <div class="panel panel-default">
     <div id="divSupplierList" class="panel-body" style="min-height:300px">
-        @Html.Partial("_SupplierList", Model)
+        @Html.Partial("_SupplierList", Model.Entities)
     </div>
 </div>
 
@@ -93,7 +93,8 @@
             stateId: $("#ddlStateId").val(), cityId: $("#ddlCityId").val()
         };
 
-        ExecuteAjax('@Url.Action("SearchSuppliers")', data, function (response) {
+        ExecuteAjax('@Url.Action("SearchSuppliers")', data, function (response)
+        {
             HideLoading(function ()
             {
                 $("#divSupplierList").html(response);

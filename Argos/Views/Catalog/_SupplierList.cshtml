@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Argos.Models.Transaction.Supplier>
+﻿@model IEnumerable<Argos.Models.Operative.Supplier>
 @using Argos.Support
 
 <table id="TbSupplierList" class="table table-hover">
@@ -22,17 +22,21 @@
         {
             <tr ondblclick="BeginUpdateSupplier(@item.SupplierId)">
                 <td class="col-md-4">
-                    <span class="fa fa-user control-label"></span>   @Html.DisplayFor(modelItem => item.Name)<br />
-                    <span class="fa fa-black-tie control-label"></span>   @Html.DisplayFor(modelItem => item.BusinessName)<br />
-                    <span class="fa fa-id-badge control-label"></span>   @Html.DisplayFor(modelItem => item.FTR)
+                    <span class="fa fa-user control-label"></span>
+                    <a class="text-capitalize">@Html.DisplayFor(modelItem => item.Name)</a><br />
+                    <span class="fa fa-black-tie control-label"></span>
+                    <a class="text-capitalize">@Html.DisplayFor(modelItem => item.BusinessName)</a><br />
+                    <span class="fa fa-id-badge control-label"></span>
+                    <a class="text-uppercase">@item.FTR</a>
                 </td>
-                <td class="col-md-4">
-                    <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
+                <td class="col-md-4 text-capitalize">
+                    <span class="fa fa-street-view control-label"></span>
+                    @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
                     @Html.DisplayFor(modelItem => item.Location)  @Html.DisplayFor(modelItem => item.ZipCode) <br />
                     @Html.DisplayFor(modelItem => item.City.State.Name), @Html.DisplayFor(modelItem => item.City.Name)
                 </td>
 
-                <td class="col-md-3">
+                <td class="col-md-3 text-lowercase">
                     <span class="fa fa-phone"></span>
                     @Html.DisplayFor(modelItem => item.Phone)<br />
 
@@ -55,28 +59,22 @@
 <script>
     var idSupplier = 0;
 
-    $(document).ready(function()
-    {
-        Paginate("#TbSupplierList", 5,false)
+    $(document).ready(function () {
+        Paginate("#TbSupplierList", 5, false)
     });
 
-    function BeginDelete(id,name)
-    {
+    function BeginDelete(id, name) {
         idSupplier = id;
-        var hdr ="Eliminar Proveedor!";
-        var body = "¿Esta seguro que deseas eliminar el proveedor " + name +"?";
+        var hdr = "Eliminar Proveedor!";
+        var body = "¿Esta seguro que deseas eliminar el proveedor " + name + "?";
         ShowMessage(hdr, body, 'confirm', DeleteSupplier, null, 'static')
-        
+
     }
 
-    function DeleteSupplier()
-    {
-        ExecuteAjax('@Url.Action("DeleteSupplier","Catalog")', { id: idSupplier }, function (response)
-        {
-            HideLoading(function ()
-            {
-                if (response.Result == '@Cons.ResponseSuccess')
-                {
+    function DeleteSupplier() {
+        ExecuteAjax('@Url.Action("DeleteSupplier","Catalog")', { id: idSupplier }, function (response) {
+            HideLoading(function () {
+                if (response.Result == '@Cons.ResponseSuccess') {
                     ShowMessage(response.Header, response.Body, response.Result, null, SearchProviders, 'static');
                 }
                 else {
@@ -86,6 +84,6 @@
         });
     }
 
-  
-   
+
+
 </script>
