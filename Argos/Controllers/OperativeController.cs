@@ -122,7 +122,7 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult GetClientAddress(int clientId)
         {
-            LocatableEntity model = db.Clients.Include(c => c.City).FirstOrDefault(c => c.ClientId == clientId);
+            LocatableEntity model = db.Persons.Include(c => c.City).FirstOrDefault(c => c.PersonId == clientId);
             ViewBag.States = db.States.ToSelectList();
             ViewBag.Cities = db.Cities.ToSelectList();
 

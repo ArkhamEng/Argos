@@ -35,7 +35,6 @@ namespace Argos.Models.BaseTypes
         public string ZipCode { get; set; }
 
       
-
         #region Navigation Properties
         public  City City { get; set; }
         #endregion

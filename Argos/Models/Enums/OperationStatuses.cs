@@ -8,7 +8,7 @@ namespace Argos.Models.Enums
     /// <summary>
     /// Status de transacciones (compras y ventas)
     /// </summary>
-    public enum OpStatus:int
+    public enum OperationStatuses:int
     {
         /// <summary>
         /// Cancelada

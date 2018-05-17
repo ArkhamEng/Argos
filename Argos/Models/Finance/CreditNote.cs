@@ -18,7 +18,7 @@ namespace Argos.Models.Finance
         /// <summary>
         /// Llave foranea primaria hacia el movimiento origen
         /// </summary>
-        [Key,ForeignKey("OriginMovement")]
+        [Key,ForeignKey("Transaction")]
         public int CreditNoteId { get; set; }
 
         /// <summary>
@@ -49,15 +49,6 @@ namespace Argos.Models.Finance
         [Index("IDX_Sequential", 2, IsUnique = false)]
         public int Sequential { get; set; }
 
-        /// <summary>
-        /// Movimiento financiero, que origino la nota de crédito
-        /// </summary>
-        public virtual FinantialMovement OriginMovement { get; set; }
-
-        /// <summary>
-        /// Movimientos donde se ha utilizado la nota como medio de pago
-        /// </summary>
-        public ICollection<FinantialMovement> FinantialMovements { get; set; }
-
+        public virtual Transaction Transaction { get; set; }
     }
 }

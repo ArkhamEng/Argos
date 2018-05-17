@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Argos.Models.BusinessEntity.Person" Collapsed="true">
+    <Position X="8" Y="3.25" Width="1.5" />
+    <AssociationLine Name="EmailAddresses" Type="Argos.Models.BusinessEntity.EmailAddress">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.029" Y="1.027" Height="0.182" Width="1.285" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAFAAAAACAAAAAAEAAAAQAQAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Models\BusinessEntity\Person.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PhoneNumbers" />
+      <Property Name="EmailAddresses" />
+      <Property Name="Addresses" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.BusinessEntity.PhoneType" Collapsed="true">
+    <Position X="12.75" Y="3" Width="1.5" />
+    <AssociationLine Name="PhoneNumbers" Type="Argos.Models.BusinessEntity.PhoneNumber" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.438" Y="3.562" />
+        <Point X="13.438" Y="4.312" />
+        <Point X="12.25" Y="4.312" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.245" Y="0.508" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAgAAAAAAAAQAQAAAAAAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Models\BusinessEntity\PhoneType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PhoneNumbers" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Argos.Models.BusinessEntity.PhoneNumber" Collapsed="true">
+    <Position X="10.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAgAAAAAAEAAAABAQAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\BusinessEntity\PhoneNumber.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.BusinessEntity.Address" Collapsed="true">
+    <Position X="10" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QIAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Models\BusinessEntity\Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.BusinessEntity.AddressType" Collapsed="true">
+    <Position X="11.75" Y="0.75" Width="1.5" />
+    <AssociationLine Name="Addresses" Type="Argos.Models.BusinessEntity.Address">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.068" Y="0.779" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAgAAAAAAAAAAQAAAQAAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Models\BusinessEntity\AddressType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Addresses" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Argos.Models.BusinessEntity.EmailAddress" Collapsed="true">
+    <Position X="8" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAACAAEAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BusinessEntity\EmailAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Security.SystemUser" Collapsed="true">
+    <Position X="5.75" Y="2" Width="1.5" />
+    <AssociationLine Name="Person" Type="Argos.Models.BusinessEntity.Person" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.25" Y="2.325" />
+        <Point X="8.344" Y="2.325" />
+        <Point X="8.344" Y="3.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.341" Y="1.027" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIABAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Models\Security\SystemUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+      <Property Name="Person" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Argos.Models.ApplicationUser" Collapsed="true">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\IdentityModels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

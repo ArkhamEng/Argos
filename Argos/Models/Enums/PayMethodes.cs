@@ -8,7 +8,7 @@ namespace Argos.Models.Enums
     /// <summary>
     /// Metodos de pago
     /// </summary>
-    public enum PMethod
+    public enum PayMethodes
     {
         /// <summary>
         /// Efectivo

@@ -8,7 +8,7 @@ namespace Argos.Models.Enums
     /// <summary>
     /// tipos de transacciones (compras y ventas)
     /// </summary>
-    public enum OpType : int
+    public enum OpertionType : int
     {
         /// <summary>
         /// Cotización, este tipo no descuenta el producto del inventario

@@ -41,8 +41,8 @@ namespace Argos.Support
             using (var db = new ApplicationDbContext())
             {
                 var id = user.GetUserId();
-                var ue =  db.EmployeeUsers.FirstOrDefault(b => b.UserId == id);
-                return ue.Employee;
+                var employee =  db.Persons.OfType<Employee>().FirstOrDefault(e => e.SystemUser.UserId == id);
+                return employee;
             }
         }
 

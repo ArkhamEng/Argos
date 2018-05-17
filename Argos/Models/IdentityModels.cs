@@ -13,7 +13,7 @@ namespace Argos.Models
     {
         public string PicturePath { get; set; }
 
-        public virtual ICollection<EmployeeUser> UserEmployee { get; set; }
+        public virtual ICollection<SystemUser> UserForPersons { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

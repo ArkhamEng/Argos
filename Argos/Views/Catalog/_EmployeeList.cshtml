@@ -20,72 +20,61 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr ondblclick="BeginUpdateEmployee(@item.EmployeeId)">
+            <tr ondblclick="BeginUpdateEmployee(@item.PersonId)">
                 <td class="col-md-4">
                     <a title="Nombre" class="text-capitalize">
-                        <span class="fa fa-user control-label" ></span>   @Html.DisplayFor(modelItem => item.Name)<br />
+                        <span class="fa fa-user control-label"></span>   @Html.DisplayFor(modelItem => item.Name)<br />
                     </a>
                     <a title="Puesto" class="text-capitalize">
-                        <span class="fa fa-briefcase control-label" ></span>   @Html.DisplayFor(modelItem => item.JobPosition.Name) |
+                        <span class="fa fa-briefcase control-label"></span>   @Html.DisplayFor(modelItem => item.JobPosition.Name) |
                         <span class="fa fa-percent control-label"></span>   @Html.DisplayFor(modelItem => item.Commission)
                     </a>
                     <br />
                     <a title="NSS">
-                        <span class="fa fa-medkit control-label" ></span>   @Html.DisplayFor(modelItem => item.SSN)                       
+                        <span class="fa fa-medkit control-label"></span>   @Html.DisplayFor(modelItem => item.SSN)
                     </a>
                     |
                     <a title="RFC" class="text-uppercase">
-                        <span class="fa fa-id-badge control-label" ></span>   @Html.DisplayFor(modelItem => item.FTR)
+                        <span class="fa fa-id-badge control-label"></span>   @Html.DisplayFor(modelItem => item.FTR)
                     </a>
                     <br />
 
 
                 </td>
-                <td class="col-md-4 text-capitalize" >
+                <td class="col-md-4 text-capitalize">
                     <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
                     @Html.DisplayFor(modelItem => item.Location)   CP @Html.DisplayFor(modelItem => item.ZipCode)<br />
                     @Html.DisplayFor(modelItem => item.City.Name), @Html.DisplayFor(modelItem => item.City.State.Name)
                 </td>
 
                 <td class="col-md-3">
-                    @if (item.EmployeeUsers.Count != 0)
-                    {
-                        <span class="fa fa-user-circle-o control-label"></span>
-                        @item.EmployeeUsers.First().User.UserName <br />
-                    }
+                    <span class="fa fa-user-circle-o control-label"></span>
+                    @item.UserName <br />
                     <a title="Sexo" class="text-capitalize">
-                        @if (item.Gender == Cons.Female)
-                        {
-                            <span class="fa fa-female"></span>
-                            @Cons.Female
-                        }
-                        else
-                        {
-                            <span class="fa fa-male"></span>
-                            @Cons.Male
-                        }
+                        <span class="@item.GenderClass"></span>
+                        @item.GenderName
                     </a> |
                     <a title="Fecha de nacimiento">
                         <span class="fa fa-birthday-cake"></span>@Html.DisplayFor(modelItem => item.BirthDate)
                     </a>
                     <br />
-                    
+
                     <span class="fa fa-phone control-label"></span> @Html.DisplayFor(modelItem => item.Phone)<br />
                     <span class="fa fa-envelope control-label"></span>
-                    <a class="text-lowercase"> 
-                     @Html.DisplayFor(modelItem => item.Email)
+                    <a class="text-lowercase">
+                        @Html.DisplayFor(modelItem => item.Email)
                     </a><br />
                 </td>
 
                 <td class="col-md-1 btn-group-vertical">
 
-                    <button class="btn btn-danger" type="button" onclick="BeginDelete('@item.EmployeeId','@item.Name')">
+                    <button class="btn btn-danger" type="button" onclick="BeginDelete('@item.PersonId','@item.Name')">
                         <span class="fa fa-trash"></span>
                     </button>
-                    @if (item.EmployeeUsers.Count == 0)
+                   
+                     @if (item.CanCreateUser)
                     {
-
-                        <button class="btn btn-primary" type="button" onclick="BeginCreateUser('@item.EmployeeId')" title="Crear usuario">
+                        <button class="btn btn-primary" type="button" onclick="BeginCreateUser('@item.PersonId')" title="Crear usuario">
                             <span class="fa fa-user-circle-o"></span>
                         </button>
                     }
@@ -115,12 +104,16 @@
 
     function DeleteEmployee()
     {
-        ExecuteAjax('@Url.Action("DeleteEmployee", "Catalog")', { id: idEmployee }, function (response) {
-            HideLoading(function () {
-                if (response.Result == 'success') {
+        ExecuteAjax('@Url.Action("DeleteEmployee", "Catalog")', { id: idEmployee }, function (response)
+        {
+            HideLoading(function ()
+            {
+                if (response.Result == 'success')
+                {
                     ShowMessage(response.Header, response.Body, response.Result, null, SearchEmployees, 'static');
                 }
-                else {
+                else
+                {
                     ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
                 }
             });
@@ -131,15 +124,16 @@
     function BeginCreateUser(id)
     {
         ShowLoading('static');
-        ExecuteAjax('@Url.Action("BeginCreateUser", "Security")', { id: id, isEmployee: true }, function (response) {
-            HideLoading(function () {
+        ExecuteAjax('@Url.Action("BeginCreateUser", "Security")', { id: id }, function (response)
+        {
+            HideLoading(function ()
+            {
                 ShowModal('<span class="fa fa-user-circle-o"></span> Creación de Usuario', response, AddUser, null, 'static', true);
             });
         });
     }
 
-    function AddUser()
-    {
+    function AddUser() {
         //shows the loading in current modal
         ShowModLoading();
 
@@ -148,11 +142,9 @@
             Phone: $("#Phone").val(), Name: $("#Name").val(), IsEmployee: true
         };
 
-        ExecuteAjax('@Url.Action("Register", "Account")', { model: model }, function (response)
-        {
+        ExecuteAjax('@Url.Action("Register", "Account")', { model: model }, function (response) {
             SearchEmployeeById(response.Id);
-            HideModal(true, function ()
-            {
+            HideModal(true, function () {
                 ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
             });
         });

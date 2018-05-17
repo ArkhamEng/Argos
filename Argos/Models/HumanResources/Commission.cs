@@ -13,7 +13,7 @@ namespace Argos.Models.HumanResources
         [Column(Order = 0), ForeignKey("Sale")]
         public int CommissionId { get; set; }
 
-        public int EmployeeId { get; set; }
+        public int PersonId { get; set; }
 
         [Column(Order = 1)]
         [Display(Name = "Porcentaje")]
@@ -26,7 +26,6 @@ namespace Argos.Models.HumanResources
         [Column(Order = 3)]
         public DateTime? PayDate { get; set; }
 
-        [NotMapped]
         public bool IsPayed { get { return PayDate != null ? true : false; } }
 
         #region Navigation Properties

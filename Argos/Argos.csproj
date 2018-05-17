@@ -196,12 +196,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805160528143_Initial.cs" />
-    <Compile Include="Migrations\201805160528143_Initial.Designer.cs">
-      <DependentUpon>201805160528143_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201805170544245_Initial.cs" />
+    <Compile Include="Migrations\201805170544245_Initial.Designer.cs">
+      <DependentUpon>201805170544245_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseTypes\AuditableCatalog.cs" />
+    <Compile Include="Models\BusinessEntity\Address.cs" />
+    <Compile Include="Models\BusinessEntity\AddressType.cs" />
+    <Compile Include="Models\BusinessEntity\EmailAddress.cs" />
+    <Compile Include="Models\BusinessEntity\PhoneNumber.cs" />
+    <Compile Include="Models\BusinessEntity\PhoneType.cs" />
+    <Compile Include="Models\Enums\AddressTypes.cs" />
+    <Compile Include="Models\Enums\PhoneTypes.cs" />
+    <Compile Include="Models\Finance\Transaction.cs" />
+    <Compile Include="Models\Finance\CashMoment.cs" />
     <Compile Include="Models\Inventory\Serial.cs" />
     <Compile Include="Models\Operative\OperationDetail.cs" />
     <Compile Include="Models\Operative\Operation.cs" />
@@ -211,9 +220,8 @@
     <Compile Include="Models\Config\Locality.cs" />
     <Compile Include="Models\Config\Model.cs" />
     <Compile Include="Models\Config\State.cs" />
-    <Compile Include="Models\Enums\PMethod.cs" />
-    <Compile Include="Models\Enums\OpType.cs" />
-    <Compile Include="Models\Finance\FinantialMovement.cs" />
+    <Compile Include="Models\Enums\PayMethodes.cs" />
+    <Compile Include="Models\Enums\OpertionType.cs" />
     <Compile Include="Models\Finance\CashRegister.cs" />
     <Compile Include="Models\Finance\CashSession.cs" />
     <Compile Include="Models\Finance\CreditNote.cs" />
@@ -226,7 +234,7 @@
     <Compile Include="Models\Inventory\StockMovement.cs" />
     <Compile Include="Models\Inventory\SubCategory.cs" />
     <Compile Include="Models\Inventory\MeasureUnit.cs" />
-    <Compile Include="Models\Enums\OpStatus.cs" />
+    <Compile Include="Models\Enums\OperationStatuses.cs" />
     <Compile Include="Models\Inventory\ProductStock.cs" />
     <Compile Include="Models\Operative\Transfer.cs" />
     <Compile Include="Models\Operative\TransferDetail.cs" />
@@ -236,14 +244,13 @@
     <Compile Include="Models\Production\PolicyCharge.cs" />
     <Compile Include="Models\Production\PolicyHistory.cs" />
     <Compile Include="Models\Production\OperativeStatus.cs" />
-    <Compile Include="Models\Security\ClientUser.cs" />
     <Compile Include="Models\Operative\Purchase.cs" />
     <Compile Include="Models\Operative\PurchaseDetail.cs" />
-    <Compile Include="Models\Operative\OperationChange.cs" />
     <Compile Include="Models\Operative\ShipMethod.cs" />
     <Compile Include="Models\Operative\Shipping.cs" />
     <Compile Include="Models\Operative\OperationStatus.cs" />
     <Compile Include="Models\Operative\OperationType.cs" />
+    <Compile Include="Models\Security\SystemUser.cs" />
     <Compile Include="Support\FileManager.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -258,7 +265,7 @@
     <Compile Include="Models\HumanResources\Commission.cs" />
     <Compile Include="Models\Production\Account.cs" />
     <Compile Include="Models\HumanResources\Employee.cs" />
-    <Compile Include="Models\BaseTypes\Person.cs" />
+    <Compile Include="Models\BusinessEntity\Person.cs" />
     <Compile Include="Models\BaseTypes\ISelectable.cs" />
     <Compile Include="Models\HumanResources\JobPosition.cs" />
     <Compile Include="Models\Operative\Supplier.cs" />
@@ -271,7 +278,6 @@
     <Compile Include="Models\Production\Service.cs" />
     <Compile Include="Models\Production\Location.cs" />
     <Compile Include="Models\Production\AccountFile.cs" />
-    <Compile Include="Models\Security\EmployeeUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Support\Cons.cs" />
@@ -359,7 +365,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Models\Finance\Finance.cd" />
-    <Content Include="Models\Operative\StockMovement.cd" />
+    <Content Include="Models\Inventory\StockMovement.cd" />
+    <Content Include="Models\BusinessEntity\BusinessEntity.cd" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.2.1-vsdoc.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
@@ -461,8 +468,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805160528143_Initial.resx">
-      <DependentUpon>201805160528143_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805170544245_Initial.resx">
+      <DependentUpon>201805170544245_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

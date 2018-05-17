@@ -1,5 +1,6 @@
 ﻿using Argos.Models;
 using Argos.Models.BaseTypes;
+using Argos.Models.Operative;
 using Argos.Support;
 using System;
 using System.Collections.Generic;
@@ -17,48 +18,34 @@ namespace Argos.Controllers
         public ActionResult Users()
         {
             var model = new List<ApplicationUser>();
-            
+
             return View(model);
         }
 
-     
+
         public ActionResult BeginAddUser(int id)
         {
-            var model         = new ApplicationUser();
-            ViewBag.Employees = db.Employees.Where(e => e.EmployeeUsers == null).ToList();
+            var model = new ApplicationUser();
+            ViewBag.Employees = db.Persons.Where(e => e.SystemUser == null).ToList();
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult BeginCreateUser(int id, bool isEmployee)
+        public ActionResult BeginCreateUser(int id)
         {
             try
             {
                 RegisterViewModel vm = null;
-                if (isEmployee)
+
+                var person = db.Persons.Find(id);
+                vm = new RegisterViewModel
                 {
-                    var employee = db.Employees.Find(id);
-                    vm = new RegisterViewModel
-                    {
-                        Id = employee.EmployeeId,
-                        Name = employee.Name,
-                        Email = employee.Email,
-                        Phone = employee.Phone,
-                        UserName = employee.Email != null ? employee.Email.Split('@').First() : employee.Name
-                    };
-                }
-                else
-                {
-                    var client = db.Clients.Find(id);
-                    vm = new RegisterViewModel
-                    {
-                        Id = client.ClientId,
-                        Name = client.Name,
-                        Email = client.Email,
-                        Phone = client.Phone,
-                        UserName = client.Email != null ? client.Email.Split('@').First() : client.Name
-                    };
-                }
+                    Id = person.PersonId,
+                    Name = person.Name,
+                    Email = person.Email,
+                    Phone = person.Phone,
+                    UserName = person.Email != null ? person.Email.Split('@').First() : person.Name
+                };
 
                 return PartialView("_RegistUser", vm);
             }

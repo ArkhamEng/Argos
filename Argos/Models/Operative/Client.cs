@@ -1,4 +1,4 @@
-﻿using Argos.Models.BaseTypes;
+﻿using Argos.Models.BusinessEntity;
 using Argos.Models.Production;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,9 +9,7 @@ namespace Argos.Models.Operative
     [Table("Client", Schema = "Operative")]
     public class Client:Person
     {
-        [Column(Order = 0)]
-        public int ClientId { get; set; }
-
+      
         [Display(Name = "Razón Social")]
         [MaxLength(200)]
         [Index("Unq_BusinessName", IsUnique = true)]

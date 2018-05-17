@@ -12,7 +12,9 @@ namespace Argos.Models.Inventory
     {
         public int ExternalProductId { get; set; }
 
+        [ForeignKey("Supplier")]
         public int SupplierId { get; set; }
+
 
         public int? ProductId { get; set; }
 
@@ -33,7 +35,6 @@ namespace Argos.Models.Inventory
 
         public virtual Product Product { get; set; }
 
-        public virtual MeasureUnit MeasureUnit { get; set; }
 
         #endregion
     }

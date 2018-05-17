@@ -170,24 +170,13 @@ namespace Argos.Controllers
                 {
                     using (var db = new ApplicationDbContext())
                     {
-                        if (model.IsEmployee)
-                        {
-                            var eu = new EmployeeUser
+                            var eu = new SystemUser
                             {
-                                EmployeeId = model.Id,
-                                UserId = user.Id,
-                                InsDate = DateTime.Now.ToLocal(),
-                                UpdDate = DateTime.Now.ToLocal(),
-                                InsUser = User.Identity.Name,
-                                UpdUser = User.Identity.Name
+                                SystemUserId = model.Id,
+                                UserId = user.Id
                             };
-
-                            db.EmployeeUsers.Add(eu);
-                        }
-                        else
-                        {
-                            //reserverd for ClientUser
-                        }
+                            db.SystemUsers.Add(eu);
+                       
                         db.SaveChanges();
                     }
 

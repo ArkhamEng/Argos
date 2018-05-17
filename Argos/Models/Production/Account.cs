@@ -16,6 +16,7 @@ namespace Argos.Models.Production
         public int AccountTypeId { get; set; }
 
         [Display(Name ="Cliente")]
+        [ForeignKey("Client")]
         public int ClientId { get; set; }
 
         [Display(Name ="Status")]

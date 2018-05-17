@@ -1,28 +1,32 @@
-﻿using Argos.Models.BaseTypes;
-using Argos.Models.Finance;
+﻿using Argos.Models.Finance;
 using Argos.Models.Security;
-using Argos.Models.Production;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Argos.Models.Operative;
+using Argos.Models.BusinessEntity;
+using Argos.Support;
 
 namespace Argos.Models.HumanResources
 {
     [Table("Employee", Schema = "HumanResources")]
     public class Employee:Person
     {
-        [Column(Order = 0)]
-        public int EmployeeId { get; set; }
-
-        [Column(Order = 1)]
         [Display(Name ="Puesto")]
         public int JobPositionId { get; set; }
 
         [Display(Name ="Sexo")]
-        [MaxLength(10)]
-        public string Gender { get; set; }
+        [MaxLength(1)]
+        public char Gender { get; set; }
+
+        [Display(Name = "Estado civil")]
+        [MaxLength(1)]
+        public char MaritalStatus { get; set; }
+
+        [Display(Name = "Contratado en")]
+        [DataType(DataType.Date)]
+        public DateTime HireDate { get; set; }
 
         [Display(Name ="Cumpleaños")]
         [DataType(DataType.Date)]
@@ -35,12 +39,18 @@ namespace Argos.Models.HumanResources
         [Display(Name ="% Comisión")]
         public int Commission { get; set; }
 
+        public string GenderClass
+        {
+            get { return this.Gender == Cons.MaleChar ? Cons.MaleClass : Cons.FemaleClass; }
+        }
+
+        public string GenderName
+        {
+            get { return this.Gender == Cons.MaleChar ? Cons.Male : Cons.Female; }
+        }
+
         #region Navigation Properties
         public virtual JobPosition JobPosition { get; set; }
-
-        public ICollection<Sale> Sales { get; set; }
-
-        public ICollection<EmployeeUser> EmployeeUsers { get; set; }
 
         public ICollection<Commission> Commissions { get; set; }
 

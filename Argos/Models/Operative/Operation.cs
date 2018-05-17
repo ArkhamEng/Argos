@@ -10,6 +10,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Argos.Support;
 using Argos.Models.Enums;
 using Argos.Models.BaseTypes;
+using Argos.Models.Finance;
+using Argos.Models.BusinessEntity;
 
 namespace Argos.Models.Operative
 {
@@ -22,6 +24,8 @@ namespace Argos.Models.Operative
         public int OperationId { get; set; }
 
         public int BranchId { get; set; }
+
+        public int PersonId { get; set; }
 
         public DateTime OperationDate { get; set; }
 
@@ -49,7 +53,12 @@ namespace Argos.Models.Operative
         #region Navigation Properties
         public virtual Branch Branch { get; set; }
 
+        public virtual Person Person { get; set; }
+
         public ICollection<OperationDetail> OperationDetails { get; set; }
+
+        public ICollection<Transaction> Transactions { get; set; }
+
         #endregion
     }
 

@@ -20,7 +20,7 @@ namespace Argos.Models.Finance
 
         public int CashRegisterId { get; set; }
 
-        public int EmployeeId { get; set; }
+        public int PersonId { get; set; }
 
         /// <summary>
         /// Monto depositado en la apertura
@@ -53,14 +53,14 @@ namespace Argos.Models.Finance
 
         public virtual Employee Employee { get; set; }
 
-        public ICollection<FinantialMovement> FinantialMovements { get; set; }
+        public ICollection<CashMovement> CashMovements { get; set; }
         #endregion
 
 
         public CashSession()
         {
             this.OpeningDate = DateTime.Now.ToLocal();
-            this.EmployeeId  = HttpContext.Current.User.Identity.ToEmployee().EmployeeId;
+            this.PersonId    = HttpContext.Current.User.Identity.ToEmployee().PersonId;
         }
 
     }

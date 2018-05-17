@@ -41,7 +41,7 @@ namespace Argos.Migrations
                     })
                 .PrimaryKey(t => t.AccountId)
                 .ForeignKey("Production.AccountType", t => t.AccountTypeId, cascadeDelete: true)
-                .ForeignKey("Operative.Client", t => t.ClientId, cascadeDelete: true)
+                .ForeignKey("Operative.Client", t => t.ClientId)
                 .ForeignKey("Production.Status", t => t.StatusId, cascadeDelete: true)
                 .Index(t => t.AccountTypeId)
                 .Index(t => t.ClientId)
@@ -61,15 +61,14 @@ namespace Argos.Migrations
                 .PrimaryKey(t => t.AccountTypeId);
             
             CreateTable(
-                "Operative.Client",
+                "BusinessEntity.Person",
                 c => new
                     {
-                        ClientId = c.Int(nullable: false, identity: true),
-                        BusinessName = c.String(maxLength: 200),
+                        PersonId = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 150),
                         FTR = c.String(maxLength: 13),
-                        Phone = c.String(maxLength: 15),
                         Email = c.String(maxLength: 150),
+                        Phone = c.String(maxLength: 15),
                         CityId = c.Int(nullable: false),
                         Street = c.String(nullable: false, maxLength: 80),
                         OutNumber = c.String(nullable: false, maxLength: 6),
@@ -84,14 +83,52 @@ namespace Argos.Migrations
                         UpdDate = c.DateTime(nullable: false),
                         UpdUser = c.String(nullable: false, maxLength: 30),
                     })
-                .PrimaryKey(t => t.ClientId)
-                .ForeignKey("Config.City", t => t.CityId, cascadeDelete: true)
-                .Index(t => t.BusinessName, unique: true, name: "Unq_BusinessName")
+                .PrimaryKey(t => t.PersonId)
+                .ForeignKey("Config.City", t => t.CityId, cascadeDelete: false)
                 .Index(t => t.Name, name: "IDX_Name")
                 .Index(t => t.FTR, unique: true, name: "Unq_FTR")
-                .Index(t => t.Phone, unique: true, name: "Unq_Phone")
                 .Index(t => t.Email, unique: true, name: "Unq_Email")
+                .Index(t => t.Phone, unique: true, name: "Unq_Phone")
                 .Index(t => t.CityId);
+            
+            CreateTable(
+                "BusinessEntity.Address",
+                c => new
+                    {
+                        AddressId = c.Int(nullable: false, identity: true),
+                        AddressTypeId = c.Int(nullable: false),
+                        PersonId = c.Int(nullable: false),
+                        CityId = c.Int(nullable: false),
+                        Street = c.String(nullable: false, maxLength: 80),
+                        OutNumber = c.String(nullable: false, maxLength: 6),
+                        InNumber = c.String(maxLength: 6),
+                        Location = c.String(nullable: false, maxLength: 50),
+                        ZipCode = c.String(maxLength: 10),
+                        IsActive = c.Boolean(nullable: false),
+                        LockEndDate = c.DateTime(),
+                        LockUser = c.String(maxLength: 30),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(nullable: false, maxLength: 30),
+                        UpdDate = c.DateTime(nullable: false),
+                        UpdUser = c.String(nullable: false, maxLength: 30),
+                    })
+                .PrimaryKey(t => t.AddressId)
+                .ForeignKey("BusinessEntity.AddressType", t => t.AddressTypeId, cascadeDelete: true)
+                .ForeignKey("BusinessEntity.Person", t => t.PersonId, cascadeDelete: true)
+                .ForeignKey("Config.City", t => t.CityId, cascadeDelete: false)
+                .Index(t => t.AddressTypeId)
+                .Index(t => t.PersonId)
+                .Index(t => t.CityId);
+            
+            CreateTable(
+                "BusinessEntity.AddressType",
+                c => new
+                    {
+                        AddressTypeId = c.Int(nullable: false),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.AddressTypeId);
             
             CreateTable(
                 "Config.City",
@@ -107,19 +144,24 @@ namespace Argos.Migrations
                 .Index(t => t.StateId);
             
             CreateTable(
-                "HumanResources.Employee",
+                "Config.Locality",
                 c => new
                     {
-                        EmployeeId = c.Int(nullable: false, identity: true),
-                        JobPositionId = c.Int(nullable: false),
-                        Gender = c.String(maxLength: 10),
-                        BirthDate = c.DateTime(nullable: false),
-                        SSN = c.String(maxLength: 11),
-                        Commission = c.Int(nullable: false),
-                        Name = c.String(nullable: false, maxLength: 150),
-                        FTR = c.String(maxLength: 13),
-                        Phone = c.String(maxLength: 15),
-                        Email = c.String(maxLength: 150),
+                        LocalityId = c.Int(nullable: false, identity: true),
+                        CityId = c.Int(nullable: false),
+                        ZipCode = c.String(maxLength: 5),
+                        Location = c.String(maxLength: 150),
+                        Type = c.String(maxLength: 100),
+                    })
+                .PrimaryKey(t => t.LocalityId)
+                .ForeignKey("Config.City", t => t.CityId, cascadeDelete: true)
+                .Index(t => t.CityId);
+            
+            CreateTable(
+                "Production.Location",
+                c => new
+                    {
+                        LocationId = c.Int(nullable: false),
                         CityId = c.Int(nullable: false),
                         Street = c.String(nullable: false, maxLength: 80),
                         OutNumber = c.String(nullable: false, maxLength: 6),
@@ -134,48 +176,45 @@ namespace Argos.Migrations
                         UpdDate = c.DateTime(nullable: false),
                         UpdUser = c.String(nullable: false, maxLength: 30),
                     })
-                .PrimaryKey(t => t.EmployeeId)
+                .PrimaryKey(t => t.LocationId)
+                .ForeignKey("Production.Account", t => t.LocationId)
                 .ForeignKey("Config.City", t => t.CityId, cascadeDelete: true)
-                .ForeignKey("HumanResources.JobPosition", t => t.JobPositionId, cascadeDelete: true)
-                .Index(t => t.JobPositionId)
-                .Index(t => t.Name, name: "IDX_Name")
-                .Index(t => t.FTR, unique: true, name: "Unq_FTR")
-                .Index(t => t.Phone, unique: true, name: "Unq_Phone")
-                .Index(t => t.Email, unique: true, name: "Unq_Email")
+                .Index(t => t.LocationId)
                 .Index(t => t.CityId);
             
             CreateTable(
-                "Finance.CashSession",
+                "BusinessEntity.EmailAddress",
                 c => new
                     {
-                        CashSessionId = c.Int(nullable: false, identity: true),
-                        CashRegisterId = c.Int(nullable: false),
-                        EmployeeId = c.Int(nullable: false),
-                        OpeningAmount = c.Double(nullable: false),
-                        OpeningDate = c.DateTime(nullable: false),
-                        ClosingAmount = c.Double(nullable: false),
-                        ClosingDate = c.DateTime(nullable: false),
-                        ClosingUser = c.String(),
+                        EmailAddressId = c.Int(nullable: false, identity: true),
+                        PersonId = c.Int(nullable: false),
+                        Email = c.String(maxLength: 150),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(nullable: false, maxLength: 30),
+                        UpdDate = c.DateTime(nullable: false),
+                        UpdUser = c.String(nullable: false, maxLength: 30),
                     })
-                .PrimaryKey(t => t.CashSessionId)
-                .ForeignKey("Finance.CashRegister", t => t.CashRegisterId, cascadeDelete: true)
-                .ForeignKey("HumanResources.Employee", t => t.EmployeeId, cascadeDelete: true)
-                .Index(t => t.CashRegisterId)
-                .Index(t => t.EmployeeId);
+                .PrimaryKey(t => t.EmailAddressId)
+                .ForeignKey("BusinessEntity.Person", t => t.PersonId, cascadeDelete: true)
+                .Index(t => t.PersonId)
+                .Index(t => t.Email, unique: true, name: "Unq_Email");
             
             CreateTable(
-                "Finance.CashRegister",
+                "Operative.Operation",
                 c => new
                     {
-                        CashRegisterId = c.Int(nullable: false, identity: true),
+                        OperationId = c.Int(nullable: false, identity: true),
                         BranchId = c.Int(nullable: false),
-                        Name = c.String(maxLength: 30),
-                        Description = c.String(maxLength: 100),
-                        IsOpen = c.Boolean(nullable: false),
+                        PersonId = c.Int(nullable: false),
+                        OperationDate = c.DateTime(nullable: false),
+                        LockEndDate = c.DateTime(),
+                        LockUser = c.String(maxLength: 30),
                     })
-                .PrimaryKey(t => t.CashRegisterId)
+                .PrimaryKey(t => t.OperationId)
                 .ForeignKey("Config.Branch", t => t.BranchId, cascadeDelete: true)
-                .Index(t => t.BranchId);
+                .ForeignKey("BusinessEntity.Person", t => t.PersonId, cascadeDelete: true)
+                .Index(t => t.BranchId)
+                .Index(t => t.PersonId);
             
             CreateTable(
                 "Config.Branch",
@@ -205,43 +244,107 @@ namespace Argos.Migrations
                 .Index(t => t.CityId);
             
             CreateTable(
-                "HumanResources.EmployeeBranch",
+                "Finance.CashRegister",
                 c => new
                     {
+                        CashRegisterId = c.Int(nullable: false, identity: true),
                         BranchId = c.Int(nullable: false),
-                        EmployeeId = c.Int(nullable: false),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(maxLength: 50),
+                        Name = c.String(maxLength: 30),
+                        Description = c.String(maxLength: 100),
+                        IsOpen = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => new { t.BranchId, t.EmployeeId })
-                .ForeignKey("Config.Branch", t => t.BranchId, cascadeDelete: true)
-                .ForeignKey("HumanResources.Employee", t => t.EmployeeId, cascadeDelete: true)
-                .Index(t => t.BranchId)
-                .Index(t => t.EmployeeId);
-            
-            CreateTable(
-                "Operative.Operation",
-                c => new
-                    {
-                        OperationId = c.Int(nullable: false, identity: true),
-                        BranchId = c.Int(nullable: false),
-                        OperationDate = c.DateTime(nullable: false),
-                        LockEndDate = c.DateTime(),
-                        LockUser = c.String(maxLength: 30),
-                    })
-                .PrimaryKey(t => t.OperationId)
+                .PrimaryKey(t => t.CashRegisterId)
                 .ForeignKey("Config.Branch", t => t.BranchId, cascadeDelete: true)
                 .Index(t => t.BranchId);
+            
+            CreateTable(
+                "Finance.CashSession",
+                c => new
+                    {
+                        CashSessionId = c.Int(nullable: false, identity: true),
+                        CashRegisterId = c.Int(nullable: false),
+                        PersonId = c.Int(nullable: false),
+                        OpeningAmount = c.Double(nullable: false),
+                        OpeningDate = c.DateTime(nullable: false),
+                        ClosingAmount = c.Double(nullable: false),
+                        ClosingDate = c.DateTime(nullable: false),
+                        ClosingUser = c.String(),
+                    })
+                .PrimaryKey(t => t.CashSessionId)
+                .ForeignKey("Finance.CashRegister", t => t.CashRegisterId, cascadeDelete: true)
+                .ForeignKey("HumanResources.Employee", t => t.PersonId)
+                .Index(t => t.CashRegisterId)
+                .Index(t => t.PersonId);
+            
+            CreateTable(
+                "Finance.CashMovement",
+                c => new
+                    {
+                        CashMovementId = c.Int(nullable: false, identity: true),
+                        CashSessionId = c.Int(nullable: false),
+                        PayMethodId = c.Int(nullable: false),
+                        Amount = c.Double(nullable: false),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(),
+                    })
+                .PrimaryKey(t => t.CashMovementId)
+                .ForeignKey("Finance.CashSession", t => t.CashSessionId, cascadeDelete: true)
+                .ForeignKey("Finance.PaymentMethod", t => t.PayMethodId, cascadeDelete: true)
+                .Index(t => t.CashSessionId)
+                .Index(t => t.PayMethodId);
+            
+            CreateTable(
+                "Finance.CreditNote",
+                c => new
+                    {
+                        CreditNoteId = c.Int(nullable: false),
+                        Code = c.String(maxLength: 10),
+                        Ident = c.String(maxLength: 15),
+                        Amount = c.Double(nullable: false),
+                        DueDate = c.DateTime(nullable: false),
+                        Year = c.Int(nullable: false),
+                        Sequential = c.Int(nullable: false),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(nullable: false, maxLength: 30),
+                        UpdDate = c.DateTime(nullable: false),
+                        UpdUser = c.String(nullable: false, maxLength: 30),
+                    })
+                .PrimaryKey(t => t.CreditNoteId)
+                .ForeignKey("Finance.Transaction", t => t.CreditNoteId)
+                .Index(t => t.CreditNoteId)
+                .Index(t => new { t.Code, t.Ident }, name: "IDX_Code_Indent")
+                .Index(t => new { t.Year, t.Sequential }, name: "IDX_Sequential");
+            
+            CreateTable(
+                "HumanResources.Commission",
+                c => new
+                    {
+                        CommissionId = c.Int(nullable: false),
+                        Profit = c.Int(nullable: false),
+                        Amount = c.Double(nullable: false),
+                        PayDate = c.DateTime(),
+                        PersonId = c.Int(nullable: false),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(nullable: false, maxLength: 30),
+                        UpdDate = c.DateTime(nullable: false),
+                        UpdUser = c.String(nullable: false, maxLength: 30),
+                    })
+                .PrimaryKey(t => t.CommissionId)
+                .ForeignKey("HumanResources.Employee", t => t.PersonId)
+                .ForeignKey("Operative.Sale", t => t.CommissionId)
+                .Index(t => t.CommissionId)
+                .Index(t => t.PersonId);
             
             CreateTable(
                 "Operative.OperationDetail",
                 c => new
                     {
+                        OperationDetailId = c.Int(nullable: false, identity: true),
                         OperationId = c.Int(nullable: false),
                         ProductId = c.Int(nullable: false),
                         Quantity = c.Double(nullable: false),
                     })
-                .PrimaryKey(t => new { t.OperationId, t.ProductId })
+                .PrimaryKey(t => t.OperationDetailId)
                 .ForeignKey("Operative.Operation", t => t.OperationId, cascadeDelete: true)
                 .ForeignKey("Inventory.Product", t => t.ProductId, cascadeDelete: true)
                 .Index(t => t.OperationId)
@@ -341,363 +444,59 @@ namespace Argos.Migrations
                         InsUser = c.String(nullable: false, maxLength: 30),
                         UpdDate = c.DateTime(nullable: false),
                         UpdUser = c.String(nullable: false, maxLength: 30),
-                        MeasureUnit_MeasureUnitId = c.String(maxLength: 5),
                     })
                 .PrimaryKey(t => t.ExternalProductId)
-                .ForeignKey("Inventory.MeasureUnit", t => t.MeasureUnit_MeasureUnitId)
                 .ForeignKey("Inventory.Product", t => t.ProductId)
-                .ForeignKey("Operative.Supplier", t => t.SupplierId, cascadeDelete: true)
+                .ForeignKey("Operative.Supplier", t => t.SupplierId)
                 .Index(t => t.SupplierId)
-                .Index(t => t.ProductId)
-                .Index(t => t.MeasureUnit_MeasureUnitId);
+                .Index(t => t.ProductId);
             
             CreateTable(
-                "Inventory.MeasureUnit",
+                "BusinessEntity.PhoneNumber",
                 c => new
                     {
-                        MeasureUnitId = c.String(nullable: false, maxLength: 5),
-                        Name = c.String(maxLength: 15),
-                        Description = c.String(maxLength: 50),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(nullable: false, maxLength: 30),
-                        UpdDate = c.DateTime(nullable: false),
-                        UpdUser = c.String(nullable: false, maxLength: 30),
-                    })
-                .PrimaryKey(t => t.MeasureUnitId);
-            
-            CreateTable(
-                "Operative.Supplier",
-                c => new
-                    {
-                        SupplierId = c.Int(nullable: false, identity: true),
-                        BusinessName = c.String(maxLength: 200),
-                        WebSite = c.String(maxLength: 200),
-                        Name = c.String(nullable: false, maxLength: 150),
-                        FTR = c.String(maxLength: 13),
+                        PhoneNumberId = c.Int(nullable: false, identity: true),
+                        PhoneTypeId = c.Int(nullable: false),
+                        PersonId = c.Int(nullable: false),
                         Phone = c.String(maxLength: 15),
-                        Email = c.String(maxLength: 150),
-                        CityId = c.Int(nullable: false),
-                        Street = c.String(nullable: false, maxLength: 80),
-                        OutNumber = c.String(nullable: false, maxLength: 6),
-                        InNumber = c.String(maxLength: 6),
-                        Location = c.String(nullable: false, maxLength: 50),
-                        ZipCode = c.String(maxLength: 10),
-                        IsActive = c.Boolean(nullable: false),
-                        LockEndDate = c.DateTime(),
-                        LockUser = c.String(maxLength: 30),
                         InsDate = c.DateTime(nullable: false),
                         InsUser = c.String(nullable: false, maxLength: 30),
                         UpdDate = c.DateTime(nullable: false),
                         UpdUser = c.String(nullable: false, maxLength: 30),
                     })
-                .PrimaryKey(t => t.SupplierId)
-                .ForeignKey("Config.City", t => t.CityId, cascadeDelete: true)
-                .Index(t => t.BusinessName, unique: true, name: "Unq_BusinessName")
-                .Index(t => t.Name, name: "IDX_Name")
-                .Index(t => t.FTR, unique: true, name: "Unq_FTR")
-                .Index(t => t.Phone, unique: true, name: "Unq_Phone")
-                .Index(t => t.Email, unique: true, name: "Unq_Email")
-                .Index(t => t.CityId);
+                .PrimaryKey(t => t.PhoneNumberId)
+                .ForeignKey("BusinessEntity.Person", t => t.PersonId, cascadeDelete: true)
+                .ForeignKey("BusinessEntity.PhoneType", t => t.PhoneTypeId, cascadeDelete: true)
+                .Index(t => t.PhoneTypeId)
+                .Index(t => t.PersonId)
+                .Index(t => t.Phone, unique: true, name: "Unq_Phone");
             
             CreateTable(
-                "Inventory.StockMovement",
+                "BusinessEntity.PhoneType",
                 c => new
                     {
-                        StockMovementId = c.Int(nullable: false, identity: true),
-                        ProductStockId = c.Int(nullable: false),
-                        OperationDetailId = c.Int(nullable: false),
-                        SerialId = c.Int(nullable: false),
-                        Quantity = c.Double(nullable: false),
-                        LastStock = c.Double(nullable: false),
-                        CurrentStock = c.Double(nullable: false),
-                        IsEntry = c.Boolean(nullable: false),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(nullable: false),
-                        OperationDetail_OperationId = c.Int(),
-                        OperationDetail_ProductId = c.Int(),
-                        Stock_BranchId = c.Int(),
-                        Stock_ProductId = c.Int(),
-                    })
-                .PrimaryKey(t => t.StockMovementId)
-                .ForeignKey("Operative.OperationDetail", t => new { t.OperationDetail_OperationId, t.OperationDetail_ProductId })
-                .ForeignKey("Inventory.Stock", t => new { t.Stock_BranchId, t.Stock_ProductId })
-                .ForeignKey("Inventory.Serial", t => t.SerialId, cascadeDelete: true)
-                .Index(t => t.SerialId)
-                .Index(t => new { t.OperationDetail_OperationId, t.OperationDetail_ProductId })
-                .Index(t => new { t.Stock_BranchId, t.Stock_ProductId });
-            
-            CreateTable(
-                "Inventory.Serial",
-                c => new
-                    {
-                        SerialId = c.Int(nullable: false, identity: true),
-                        ProductStockId = c.Int(nullable: false),
-                        SerialNumber = c.String(maxLength: 30),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(nullable: false, maxLength: 30),
-                        UpdDate = c.DateTime(nullable: false),
-                        UpdUser = c.String(nullable: false, maxLength: 30),
-                        ProductStock_BranchId = c.Int(),
-                        ProductStock_ProductId = c.Int(),
-                    })
-                .PrimaryKey(t => t.SerialId)
-                .ForeignKey("Inventory.Stock", t => new { t.ProductStock_BranchId, t.ProductStock_ProductId })
-                .Index(t => new { t.ProductStock_BranchId, t.ProductStock_ProductId });
-            
-            CreateTable(
-                "Inventory.Stock",
-                c => new
-                    {
-                        BranchId = c.Int(nullable: false),
-                        ProductId = c.Int(nullable: false),
-                        Quantity = c.Double(nullable: false),
-                        SerialNumber = c.String(maxLength: 20),
-                        Shelf = c.String(maxLength: 10),
-                        Bin = c.String(maxLength: 10),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(nullable: false, maxLength: 30),
-                        UpdDate = c.DateTime(nullable: false),
-                        UpdUser = c.String(nullable: false, maxLength: 30),
-                    })
-                .PrimaryKey(t => new { t.BranchId, t.ProductId })
-                .ForeignKey("Config.Branch", t => t.BranchId, cascadeDelete: true)
-                .ForeignKey("Inventory.Product", t => t.ProductId, cascadeDelete: true)
-                .Index(t => t.BranchId)
-                .Index(t => t.ProductId);
-            
-            CreateTable(
-                "Inventory.PriceChange",
-                c => new
-                    {
-                        PriceChangeId = c.Int(nullable: false, identity: true),
-                        ProductId = c.Int(nullable: false),
-                        StartDate = c.DateTime(nullable: false),
-                        EndDate = c.DateTime(nullable: false),
-                        HighestPrice = c.Double(nullable: false),
-                        LowestPrice = c.Double(nullable: false),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(maxLength: 30),
-                    })
-                .PrimaryKey(t => t.PriceChangeId)
-                .ForeignKey("Inventory.Product", t => t.ProductId, cascadeDelete: true)
-                .Index(t => t.ProductId);
-            
-            CreateTable(
-                "Inventory.ProductImage",
-                c => new
-                    {
-                        ProductImageId = c.Int(nullable: false, identity: true),
-                        ProductId = c.Int(nullable: false),
-                        Name = c.String(nullable: false, maxLength: 80),
-                        Path = c.String(nullable: false, maxLength: 150),
-                        Type = c.String(nullable: false, maxLength: 30),
-                        Size = c.Int(nullable: false),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(nullable: false, maxLength: 30),
-                        UpdDate = c.DateTime(nullable: false),
-                        UpdUser = c.String(nullable: false, maxLength: 30),
-                    })
-                .PrimaryKey(t => t.ProductImageId)
-                .ForeignKey("Inventory.Product", t => t.ProductId, cascadeDelete: true)
-                .Index(t => t.ProductId);
-            
-            CreateTable(
-                "Inventory.SubCategory",
-                c => new
-                    {
-                        SubCategoryId = c.Int(nullable: false, identity: true),
-                        CategoryId = c.Int(nullable: false),
+                        PhoneTypeId = c.Int(nullable: false),
                         Name = c.String(),
                         Description = c.String(),
                     })
-                .PrimaryKey(t => t.SubCategoryId)
-                .ForeignKey("Inventory.Category", t => t.CategoryId, cascadeDelete: true)
-                .Index(t => t.CategoryId);
+                .PrimaryKey(t => t.PhoneTypeId);
             
             CreateTable(
-                "Inventory.Category",
+                "Security.UserForPerson",
                 c => new
                     {
-                        CategoryId = c.Int(nullable: false, identity: true),
-                        Name = c.String(maxLength: 30),
-                        Description = c.String(maxLength: 100),
-                        IsActive = c.Boolean(nullable: false),
+                        SystemUserId = c.Int(nullable: false),
+                        UserId = c.String(maxLength: 128),
                         InsDate = c.DateTime(nullable: false),
                         InsUser = c.String(nullable: false, maxLength: 30),
                         UpdDate = c.DateTime(nullable: false),
                         UpdUser = c.String(nullable: false, maxLength: 30),
                     })
-                .PrimaryKey(t => t.CategoryId);
-            
-            CreateTable(
-                "Operative.OperationChange",
-                c => new
-                    {
-                        OperationChangeId = c.Int(nullable: false, identity: true),
-                        StatusId = c.Int(nullable: false),
-                        BeginDate = c.DateTime(nullable: false),
-                        EndDate = c.DateTime(nullable: false),
-                        User = c.String(maxLength: 50),
-                        PurchaseId = c.Int(),
-                        SaleId = c.Int(),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
-                        Purchase_OperationId = c.Int(),
-                        Sale_OperationId = c.Int(),
-                    })
-                .PrimaryKey(t => t.OperationChangeId)
-                .ForeignKey("Operative.Purchase", t => t.Purchase_OperationId)
-                .ForeignKey("Operative.Status", t => t.StatusId, cascadeDelete: true)
-                .ForeignKey("Operative.Sale", t => t.Sale_OperationId)
-                .Index(t => t.StatusId)
-                .Index(t => t.Purchase_OperationId)
-                .Index(t => t.Sale_OperationId);
-            
-            CreateTable(
-                "Operative.Status",
-                c => new
-                    {
-                        StatusId = c.Int(nullable: false),
-                        Name = c.String(maxLength: 20),
-                    })
-                .PrimaryKey(t => t.StatusId);
-            
-            CreateTable(
-                "HumanResources.Commission",
-                c => new
-                    {
-                        CommissionId = c.Int(nullable: false),
-                        Profit = c.Int(nullable: false),
-                        Amount = c.Double(nullable: false),
-                        PayDate = c.DateTime(),
-                        EmployeeId = c.Int(nullable: false),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(nullable: false, maxLength: 30),
-                        UpdDate = c.DateTime(nullable: false),
-                        UpdUser = c.String(nullable: false, maxLength: 30),
-                    })
-                .PrimaryKey(t => t.CommissionId)
-                .ForeignKey("HumanResources.Employee", t => t.EmployeeId, cascadeDelete: true)
-                .ForeignKey("Operative.Sale", t => t.CommissionId)
-                .Index(t => t.CommissionId)
-                .Index(t => t.EmployeeId);
-            
-            CreateTable(
-                "Finance.FinantialMovement",
-                c => new
-                    {
-                        FinantialMovementId = c.Int(nullable: false, identity: true),
-                        CashSessionId = c.Int(),
-                        SaleId = c.Int(),
-                        CreditNoteId = c.Int(),
-                        PayMethodId = c.Int(nullable: false),
-                        Amount = c.Double(nullable: false),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(maxLength: 30),
-                        CreditNote_CreditNoteId = c.Int(),
-                        DerivedNote_CreditNoteId = c.Int(),
-                        Sale_OperationId = c.Int(),
-                    })
-                .PrimaryKey(t => t.FinantialMovementId)
-                .ForeignKey("Finance.CreditNote", t => t.CreditNote_CreditNoteId)
-                .ForeignKey("Finance.CreditNote", t => t.CreditNoteId)
-                .ForeignKey("Finance.CashSession", t => t.CashSessionId)
-                .ForeignKey("Finance.CreditNote", t => t.DerivedNote_CreditNoteId)
-                .ForeignKey("Finance.PaymentMethod", t => t.PayMethodId, cascadeDelete: true)
-                .ForeignKey("Operative.Sale", t => t.Sale_OperationId)
-                .Index(t => t.CashSessionId)
-                .Index(t => t.CreditNoteId)
-                .Index(t => t.PayMethodId)
-                .Index(t => t.CreditNote_CreditNoteId)
-                .Index(t => t.DerivedNote_CreditNoteId)
-                .Index(t => t.Sale_OperationId);
-            
-            CreateTable(
-                "Finance.CreditNote",
-                c => new
-                    {
-                        CreditNoteId = c.Int(nullable: false),
-                        Code = c.String(maxLength: 10),
-                        Ident = c.String(maxLength: 15),
-                        Amount = c.Double(nullable: false),
-                        DueDate = c.DateTime(nullable: false),
-                        Year = c.Int(nullable: false),
-                        Sequential = c.Int(nullable: false),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(nullable: false, maxLength: 30),
-                        UpdDate = c.DateTime(nullable: false),
-                        UpdUser = c.String(nullable: false, maxLength: 30),
-                    })
-                .PrimaryKey(t => t.CreditNoteId)
-                .ForeignKey("Finance.FinantialMovement", t => t.CreditNoteId)
-                .Index(t => t.CreditNoteId)
-                .Index(t => new { t.Code, t.Ident }, name: "IDX_Code_Indent")
-                .Index(t => new { t.Year, t.Sequential }, name: "IDX_Sequential");
-            
-            CreateTable(
-                "Finance.PaymentMethod",
-                c => new
-                    {
-                        PayMethodId = c.Int(nullable: false),
-                        Name = c.String(maxLength: 30),
-                        Description = c.String(maxLength: 50),
-                    })
-                .PrimaryKey(t => t.PayMethodId);
-            
-            CreateTable(
-                "Operative.Shipping",
-                c => new
-                    {
-                        ShippingId = c.Int(nullable: false),
-                        ShipMethodId = c.Int(nullable: false),
-                        DeliveryAgent = c.String(maxLength: 50),
-                        ShipDate = c.DateTime(),
-                        ReceptionDate = c.DateTime(),
-                        ReceivedBy = c.String(),
-                        ReceivedSignature = c.String(),
-                    })
-                .PrimaryKey(t => t.ShippingId)
-                .ForeignKey("Operative.Sale", t => t.ShippingId)
-                .ForeignKey("Operative.ShipMethod", t => t.ShipMethodId, cascadeDelete: true)
-                .Index(t => t.ShippingId)
-                .Index(t => t.ShipMethodId);
-            
-            CreateTable(
-                "Operative.ShipMethod",
-                c => new
-                    {
-                        ShipMethodId = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 30),
-                        Description = c.String(nullable: false, maxLength: 100),
-                        GuideRequired = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.ShipMethodId);
-            
-            CreateTable(
-                "Operative.TransType",
-                c => new
-                    {
-                        OperationTypeId = c.Int(nullable: false),
-                        Name = c.String(),
-                        Description = c.String(),
-                    })
-                .PrimaryKey(t => t.OperationTypeId);
-            
-            CreateTable(
-                "Security.UserEmployee",
-                c => new
-                    {
-                        UserId = c.String(nullable: false, maxLength: 128),
-                        EmployeeId = c.Int(nullable: false),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(nullable: false, maxLength: 30),
-                        UpdDate = c.DateTime(nullable: false),
-                        UpdUser = c.String(nullable: false, maxLength: 30),
-                    })
-                .PrimaryKey(t => new { t.UserId, t.EmployeeId })
-                .ForeignKey("HumanResources.Employee", t => t.EmployeeId, cascadeDelete: true)
-                .ForeignKey("Security.AspNetUsers", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.UserId)
-                .Index(t => t.EmployeeId);
+                .PrimaryKey(t => t.SystemUserId)
+                .ForeignKey("BusinessEntity.Person", t => t.SystemUserId)
+                .ForeignKey("Security.AspNetUsers", t => t.UserId)
+                .Index(t => t.SystemUserId)
+                .Index(t => t.UserId);
             
             CreateTable(
                 "Security.AspNetUsers",
@@ -759,6 +558,209 @@ namespace Argos.Migrations
                 .Index(t => t.RoleId);
             
             CreateTable(
+                "Inventory.MeasureUnit",
+                c => new
+                    {
+                        MeasureUnitId = c.String(nullable: false, maxLength: 5),
+                        Name = c.String(maxLength: 15),
+                        Description = c.String(maxLength: 50),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(nullable: false, maxLength: 30),
+                        UpdDate = c.DateTime(nullable: false),
+                        UpdUser = c.String(nullable: false, maxLength: 30),
+                    })
+                .PrimaryKey(t => t.MeasureUnitId);
+            
+            CreateTable(
+                "Inventory.PriceChange",
+                c => new
+                    {
+                        PriceChangeId = c.Int(nullable: false, identity: true),
+                        ProductId = c.Int(nullable: false),
+                        StartDate = c.DateTime(nullable: false),
+                        EndDate = c.DateTime(nullable: false),
+                        HighestPrice = c.Double(nullable: false),
+                        LowestPrice = c.Double(nullable: false),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(maxLength: 30),
+                    })
+                .PrimaryKey(t => t.PriceChangeId)
+                .ForeignKey("Inventory.Product", t => t.ProductId, cascadeDelete: true)
+                .Index(t => t.ProductId);
+            
+            CreateTable(
+                "Inventory.ProductImage",
+                c => new
+                    {
+                        ProductImageId = c.Int(nullable: false, identity: true),
+                        ProductId = c.Int(nullable: false),
+                        Name = c.String(nullable: false, maxLength: 80),
+                        Path = c.String(nullable: false, maxLength: 150),
+                        Type = c.String(nullable: false, maxLength: 30),
+                        Size = c.Int(nullable: false),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(nullable: false, maxLength: 30),
+                        UpdDate = c.DateTime(nullable: false),
+                        UpdUser = c.String(nullable: false, maxLength: 30),
+                    })
+                .PrimaryKey(t => t.ProductImageId)
+                .ForeignKey("Inventory.Product", t => t.ProductId, cascadeDelete: true)
+                .Index(t => t.ProductId);
+            
+            CreateTable(
+                "Inventory.ProductStock",
+                c => new
+                    {
+                        ProductStockId = c.Int(nullable: false, identity: true),
+                        BranchId = c.Int(nullable: false),
+                        ProductId = c.Int(nullable: false),
+                        Quantity = c.Double(nullable: false),
+                        MaxQuantity = c.Double(nullable: false),
+                        MinQuantity = c.Double(nullable: false),
+                        Shelf = c.String(maxLength: 10),
+                        Bin = c.String(maxLength: 10),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(nullable: false, maxLength: 30),
+                        UpdDate = c.DateTime(nullable: false),
+                        UpdUser = c.String(nullable: false, maxLength: 30),
+                    })
+                .PrimaryKey(t => t.ProductStockId)
+                .ForeignKey("Config.Branch", t => t.BranchId, cascadeDelete: true)
+                .ForeignKey("Inventory.Product", t => t.ProductId, cascadeDelete: true)
+                .Index(t => t.BranchId)
+                .Index(t => t.ProductId);
+            
+            CreateTable(
+                "Inventory.Serial",
+                c => new
+                    {
+                        SerialId = c.Int(nullable: false, identity: true),
+                        ProductStockId = c.Int(nullable: false),
+                        SerialNumber = c.String(maxLength: 30),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(nullable: false, maxLength: 30),
+                        UpdDate = c.DateTime(nullable: false),
+                        UpdUser = c.String(nullable: false, maxLength: 30),
+                    })
+                .PrimaryKey(t => t.SerialId)
+                .ForeignKey("Inventory.ProductStock", t => t.ProductStockId, cascadeDelete: true)
+                .Index(t => t.ProductStockId);
+            
+            CreateTable(
+                "Inventory.StockMovement",
+                c => new
+                    {
+                        StockMovementId = c.Int(nullable: false, identity: true),
+                        ProductStockId = c.Int(nullable: false),
+                        OperationDetailId = c.Int(nullable: false),
+                        SerialId = c.Int(),
+                        Quantity = c.Double(nullable: false),
+                        LastStock = c.Double(nullable: false),
+                        CurrentStock = c.Double(nullable: false),
+                        IsEntry = c.Boolean(nullable: false),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.StockMovementId)
+                .ForeignKey("Operative.OperationDetail", t => t.OperationDetailId, cascadeDelete: true)
+                .ForeignKey("Inventory.ProductStock", t => t.ProductStockId, cascadeDelete: false)
+                .ForeignKey("Inventory.Serial", t => t.SerialId)
+                .Index(t => t.ProductStockId)
+                .Index(t => t.OperationDetailId)
+                .Index(t => t.SerialId);
+            
+            CreateTable(
+                "Inventory.SubCategory",
+                c => new
+                    {
+                        SubCategoryId = c.Int(nullable: false, identity: true),
+                        CategoryId = c.Int(nullable: false),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.SubCategoryId)
+                .ForeignKey("Inventory.Category", t => t.CategoryId, cascadeDelete: true)
+                .Index(t => t.CategoryId);
+            
+            CreateTable(
+                "Inventory.Category",
+                c => new
+                    {
+                        CategoryId = c.Int(nullable: false, identity: true),
+                        Name = c.String(maxLength: 30),
+                        Description = c.String(maxLength: 100),
+                        IsActive = c.Boolean(nullable: false),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(nullable: false, maxLength: 30),
+                        UpdDate = c.DateTime(nullable: false),
+                        UpdUser = c.String(nullable: false, maxLength: 30),
+                    })
+                .PrimaryKey(t => t.CategoryId);
+            
+            CreateTable(
+                "Operative.Shipping",
+                c => new
+                    {
+                        ShippingId = c.Int(nullable: false),
+                        ShipMethodId = c.Int(nullable: false),
+                        DeliveryAgent = c.String(maxLength: 50),
+                        ShipDate = c.DateTime(),
+                        ReceptionDate = c.DateTime(),
+                        ReceivedBy = c.String(),
+                        ReceivedSignature = c.String(),
+                    })
+                .PrimaryKey(t => t.ShippingId)
+                .ForeignKey("Operative.Sale", t => t.ShippingId)
+                .ForeignKey("Operative.ShipMethod", t => t.ShipMethodId, cascadeDelete: true)
+                .Index(t => t.ShippingId)
+                .Index(t => t.ShipMethodId);
+            
+            CreateTable(
+                "Operative.ShipMethod",
+                c => new
+                    {
+                        ShipMethodId = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false, maxLength: 30),
+                        Description = c.String(nullable: false, maxLength: 100),
+                        GuideRequired = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.ShipMethodId);
+            
+            CreateTable(
+                "Operative.Status",
+                c => new
+                    {
+                        StatusId = c.Int(nullable: false),
+                        Name = c.String(maxLength: 20),
+                    })
+                .PrimaryKey(t => t.StatusId);
+            
+            CreateTable(
+                "Operative.TransType",
+                c => new
+                    {
+                        OperationTypeId = c.Int(nullable: false),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.OperationTypeId);
+            
+            CreateTable(
+                "HumanResources.EmployeeBranch",
+                c => new
+                    {
+                        BranchId = c.Int(nullable: false),
+                        PersonId = c.Int(nullable: false),
+                        InsDate = c.DateTime(nullable: false),
+                        InsUser = c.String(maxLength: 50),
+                    })
+                .PrimaryKey(t => new { t.BranchId, t.PersonId })
+                .ForeignKey("Config.Branch", t => t.BranchId, cascadeDelete: true)
+                .ForeignKey("HumanResources.Employee", t => t.PersonId)
+                .Index(t => t.BranchId)
+                .Index(t => t.PersonId);
+            
+            CreateTable(
                 "HumanResources.JobPosition",
                 c => new
                     {
@@ -771,45 +773,6 @@ namespace Argos.Migrations
                         UpdUser = c.String(nullable: false, maxLength: 30),
                     })
                 .PrimaryKey(t => t.JobPositionId);
-            
-            CreateTable(
-                "Config.Locality",
-                c => new
-                    {
-                        LocalityId = c.Int(nullable: false, identity: true),
-                        CityId = c.Int(nullable: false),
-                        ZipCode = c.String(maxLength: 5),
-                        Location = c.String(maxLength: 150),
-                        Type = c.String(maxLength: 100),
-                    })
-                .PrimaryKey(t => t.LocalityId)
-                .ForeignKey("Config.City", t => t.CityId, cascadeDelete: true)
-                .Index(t => t.CityId);
-            
-            CreateTable(
-                "Production.Location",
-                c => new
-                    {
-                        LocationId = c.Int(nullable: false),
-                        CityId = c.Int(nullable: false),
-                        Street = c.String(nullable: false, maxLength: 80),
-                        OutNumber = c.String(nullable: false, maxLength: 6),
-                        InNumber = c.String(maxLength: 6),
-                        Location = c.String(nullable: false, maxLength: 50),
-                        ZipCode = c.String(maxLength: 10),
-                        IsActive = c.Boolean(nullable: false),
-                        LockEndDate = c.DateTime(),
-                        LockUser = c.String(maxLength: 30),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(nullable: false, maxLength: 30),
-                        UpdDate = c.DateTime(nullable: false),
-                        UpdUser = c.String(nullable: false, maxLength: 30),
-                    })
-                .PrimaryKey(t => t.LocationId)
-                .ForeignKey("Production.Account", t => t.LocationId)
-                .ForeignKey("Config.City", t => t.CityId, cascadeDelete: true)
-                .Index(t => t.LocationId)
-                .Index(t => t.CityId);
             
             CreateTable(
                 "Config.State",
@@ -879,7 +842,7 @@ namespace Argos.Migrations
                     })
                 .PrimaryKey(t => t.PolicyHistoryId)
                 .ForeignKey("Production.Policy", t => t.PolicyId, cascadeDelete: true)
-                .ForeignKey("Production.Status", t => t.StatusId, cascadeDelete: true)
+                .ForeignKey("Production.Status", t => t.StatusId, cascadeDelete: false)
                 .Index(t => t.PolicyId)
                 .Index(t => t.StatusId);
             
@@ -923,23 +886,6 @@ namespace Argos.Migrations
                 .PrimaryKey(t => t.ServiceTypeId);
             
             CreateTable(
-                "Security.ClientUser",
-                c => new
-                    {
-                        UserId = c.String(nullable: false, maxLength: 128),
-                        ClientId = c.Int(nullable: false),
-                        InsDate = c.DateTime(nullable: false),
-                        InsUser = c.String(nullable: false, maxLength: 30),
-                        UpdDate = c.DateTime(nullable: false),
-                        UpdUser = c.String(nullable: false, maxLength: 30),
-                    })
-                .PrimaryKey(t => new { t.UserId, t.ClientId })
-                .ForeignKey("Operative.Client", t => t.ClientId, cascadeDelete: true)
-                .ForeignKey("Security.AspNetUsers", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.UserId)
-                .Index(t => t.ClientId);
-            
-            CreateTable(
                 "Config.Configuration",
                 c => new
                     {
@@ -949,6 +895,16 @@ namespace Argos.Migrations
                         Type = c.String(maxLength: 200),
                     })
                 .PrimaryKey(t => t.ConfigurationId);
+            
+            CreateTable(
+                "Finance.PaymentMethod",
+                c => new
+                    {
+                        PayMethodId = c.Int(nullable: false),
+                        Name = c.String(maxLength: 30),
+                        Description = c.String(maxLength: 50),
+                    })
+                .PrimaryKey(t => t.PayMethodId);
             
             CreateTable(
                 "Security.AspNetRoles",
@@ -961,70 +917,46 @@ namespace Argos.Migrations
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
             CreateTable(
-                "Operative.Purchase",
+                "Operative.Client",
                 c => new
                     {
-                        OperationId = c.Int(nullable: false),
-                        OperationStatus_StatusId = c.Int(),
-                        OperationType_OperationTypeId = c.Int(),
-                        SupplierId = c.Int(nullable: false),
-                        Bill = c.String(nullable: false, maxLength: 10),
+                        PersonId = c.Int(nullable: false),
+                        BusinessName = c.String(maxLength: 200),
                     })
-                .PrimaryKey(t => t.OperationId)
-                .ForeignKey("Operative.Operation", t => t.OperationId)
-                .ForeignKey("Operative.Status", t => t.OperationStatus_StatusId)
-                .ForeignKey("Operative.TransType", t => t.OperationType_OperationTypeId)
-                .ForeignKey("Operative.Supplier", t => t.SupplierId, cascadeDelete: true)
-                .Index(t => t.OperationId)
-                .Index(t => t.OperationStatus_StatusId)
-                .Index(t => t.OperationType_OperationTypeId)
-                .Index(t => new { t.SupplierId, t.Bill }, unique: true, name: "IDX_Supplier_Bill");
+                .PrimaryKey(t => t.PersonId)
+                .ForeignKey("BusinessEntity.Person", t => t.PersonId)
+                .Index(t => t.PersonId)
+                .Index(t => t.BusinessName, unique: true, name: "Unq_BusinessName");
             
             CreateTable(
-                "Operative.PurchaseDetail",
+                "Finance.Transaction",
                 c => new
                     {
+                        CashMovementId = c.Int(nullable: false),
                         OperationId = c.Int(nullable: false),
-                        ProductId = c.Int(nullable: false),
-                        Purchase_OperationId = c.Int(),
-                        UnitPrice = c.Double(nullable: false),
-                        ReceivedQty = c.Double(nullable: false),
-                        RejectedQty = c.Double(nullable: false),
-                        StockedQty = c.Double(nullable: false),
                     })
-                .PrimaryKey(t => new { t.OperationId, t.ProductId })
-                .ForeignKey("Operative.OperationDetail", t => new { t.OperationId, t.ProductId })
-                .ForeignKey("Operative.Purchase", t => t.Purchase_OperationId)
-                .Index(t => new { t.OperationId, t.ProductId })
-                .Index(t => t.Purchase_OperationId);
+                .PrimaryKey(t => t.CashMovementId)
+                .ForeignKey("Finance.CashMovement", t => t.CashMovementId)
+                .ForeignKey("Operative.Operation", t => t.OperationId, cascadeDelete: true)
+                .Index(t => t.CashMovementId)
+                .Index(t => t.OperationId);
             
             CreateTable(
-                "Operative.SaleDetail",
+                "HumanResources.Employee",
                 c => new
                     {
-                        OperationId = c.Int(nullable: false),
-                        ProductId = c.Int(nullable: false),
-                        UnitPrice = c.Double(nullable: false),
-                        PriceDiscount = c.Double(nullable: false),
-                        SpecialOfferId = c.Int(nullable: false),
+                        PersonId = c.Int(nullable: false),
+                        JobPositionId = c.Int(nullable: false),
+                        HireDate = c.DateTime(nullable: false),
+                        BirthDate = c.DateTime(nullable: false),
+                        SSN = c.String(maxLength: 11),
+                        Commission = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => new { t.OperationId, t.ProductId })
-                .ForeignKey("Operative.OperationDetail", t => new { t.OperationId, t.ProductId })
-                .Index(t => new { t.OperationId, t.ProductId });
-            
-            CreateTable(
-                "Operative.TransferDetail",
-                c => new
-                    {
-                        OperationId = c.Int(nullable: false),
-                        ProductId = c.Int(nullable: false),
-                        Comment = c.String(maxLength: 100),
-                        QtySend = c.Double(nullable: false),
-                        QtyOnSite = c.Double(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.OperationId, t.ProductId })
-                .ForeignKey("Operative.OperationDetail", t => new { t.OperationId, t.ProductId })
-                .Index(t => new { t.OperationId, t.ProductId });
+                .PrimaryKey(t => t.PersonId)
+                .ForeignKey("BusinessEntity.Person", t => t.PersonId)
+                .ForeignKey("HumanResources.JobPosition", t => t.JobPositionId, cascadeDelete: true)
+                .Index(t => t.PersonId)
+                .Index(t => t.JobPositionId);
             
             CreateTable(
                 "Operative.Sale",
@@ -1032,7 +964,6 @@ namespace Argos.Migrations
                     {
                         OperationId = c.Int(nullable: false),
                         ClientId = c.Int(nullable: false),
-                        EmployeeId = c.Int(nullable: false),
                         TypeId = c.Int(nullable: false),
                         StatusId = c.Int(nullable: false),
                         SaleCode = c.String(maxLength: 10),
@@ -1048,16 +979,87 @@ namespace Argos.Migrations
                     })
                 .PrimaryKey(t => t.OperationId)
                 .ForeignKey("Operative.Operation", t => t.OperationId)
-                .ForeignKey("Operative.Client", t => t.ClientId, cascadeDelete: true)
-                .ForeignKey("HumanResources.Employee", t => t.EmployeeId, cascadeDelete: true)
+                .ForeignKey("Operative.Client", t => t.ClientId)
                 .ForeignKey("Operative.TransType", t => t.TypeId, cascadeDelete: true)
                 .ForeignKey("Operative.Status", t => t.StatusId, cascadeDelete: true)
                 .Index(t => t.OperationId)
                 .Index(t => t.ClientId)
-                .Index(t => t.EmployeeId)
                 .Index(t => t.TypeId)
                 .Index(t => t.StatusId)
                 .Index(t => new { t.Year, t.Month, t.Sequential }, unique: true, name: "IDX_Sequence");
+            
+            CreateTable(
+                "Operative.Supplier",
+                c => new
+                    {
+                        PersonId = c.Int(nullable: false),
+                        BusinessName = c.String(maxLength: 200),
+                        WebSite = c.String(maxLength: 200),
+                    })
+                .PrimaryKey(t => t.PersonId)
+                .ForeignKey("BusinessEntity.Person", t => t.PersonId)
+                .Index(t => t.PersonId)
+                .Index(t => t.BusinessName, unique: true, name: "Unq_BusinessName");
+            
+            CreateTable(
+                "Operative.Purchase",
+                c => new
+                    {
+                        OperationId = c.Int(nullable: false),
+                        OperationStatus_StatusId = c.Int(),
+                        OperationType_OperationTypeId = c.Int(),
+                        SupplierId = c.Int(nullable: false),
+                        Bill = c.String(nullable: false, maxLength: 10),
+                    })
+                .PrimaryKey(t => t.OperationId)
+                .ForeignKey("Operative.Operation", t => t.OperationId)
+                .ForeignKey("Operative.Status", t => t.OperationStatus_StatusId)
+                .ForeignKey("Operative.TransType", t => t.OperationType_OperationTypeId)
+                .ForeignKey("Operative.Supplier", t => t.SupplierId)
+                .Index(t => t.OperationId)
+                .Index(t => t.OperationStatus_StatusId)
+                .Index(t => t.OperationType_OperationTypeId)
+                .Index(t => new { t.SupplierId, t.Bill }, unique: true, name: "IDX_Supplier_Bill");
+            
+            CreateTable(
+                "Operative.PurchaseDetail",
+                c => new
+                    {
+                        OperationDetailId = c.Int(nullable: false),
+                        UnitPrice = c.Double(nullable: false),
+                        ReceivedQty = c.Double(nullable: false),
+                        RejectedQty = c.Double(nullable: false),
+                        StockedQty = c.Double(nullable: false),
+                    })
+                .PrimaryKey(t => t.OperationDetailId)
+                .ForeignKey("Operative.OperationDetail", t => t.OperationDetailId)
+                .Index(t => t.OperationDetailId);
+            
+            CreateTable(
+                "Operative.SaleDetail",
+                c => new
+                    {
+                        OperationDetailId = c.Int(nullable: false),
+                        UnitPrice = c.Double(nullable: false),
+                        PriceDiscount = c.Double(nullable: false),
+                        SpecialOfferId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.OperationDetailId)
+                .ForeignKey("Operative.OperationDetail", t => t.OperationDetailId)
+                .Index(t => t.OperationDetailId);
+            
+            CreateTable(
+                "Operative.TransferDetail",
+                c => new
+                    {
+                        OperationDetailId = c.Int(nullable: false),
+                        Comment = c.String(maxLength: 100),
+                        QtySend = c.Double(nullable: false),
+                        QtyOnSite = c.Double(nullable: false),
+                    })
+                .PrimaryKey(t => t.OperationDetailId)
+                .ForeignKey("Operative.OperationDetail", t => t.OperationDetailId)
+                .Index(t => t.OperationDetailId);
             
             CreateTable(
                 "Operative.Transfer",
@@ -1081,24 +1083,25 @@ namespace Argos.Migrations
         {
             DropForeignKey("Operative.Transfer", "DestBranchId", "Config.Branch");
             DropForeignKey("Operative.Transfer", "OperationId", "Operative.Operation");
-            DropForeignKey("Operative.Sale", "StatusId", "Operative.Status");
-            DropForeignKey("Operative.Sale", "TypeId", "Operative.TransType");
-            DropForeignKey("Operative.Sale", "EmployeeId", "HumanResources.Employee");
-            DropForeignKey("Operative.Sale", "ClientId", "Operative.Client");
-            DropForeignKey("Operative.Sale", "OperationId", "Operative.Operation");
-            DropForeignKey("Operative.TransferDetail", new[] { "OperationId", "ProductId" }, "Operative.OperationDetail");
-            DropForeignKey("Operative.SaleDetail", new[] { "OperationId", "ProductId" }, "Operative.OperationDetail");
-            DropForeignKey("Operative.PurchaseDetail", "Purchase_OperationId", "Operative.Purchase");
-            DropForeignKey("Operative.PurchaseDetail", new[] { "OperationId", "ProductId" }, "Operative.OperationDetail");
+            DropForeignKey("Operative.TransferDetail", "OperationDetailId", "Operative.OperationDetail");
+            DropForeignKey("Operative.SaleDetail", "OperationDetailId", "Operative.OperationDetail");
+            DropForeignKey("Operative.PurchaseDetail", "OperationDetailId", "Operative.OperationDetail");
             DropForeignKey("Operative.Purchase", "SupplierId", "Operative.Supplier");
             DropForeignKey("Operative.Purchase", "OperationType_OperationTypeId", "Operative.TransType");
             DropForeignKey("Operative.Purchase", "OperationStatus_StatusId", "Operative.Status");
             DropForeignKey("Operative.Purchase", "OperationId", "Operative.Operation");
+            DropForeignKey("Operative.Supplier", "PersonId", "BusinessEntity.Person");
+            DropForeignKey("Operative.Sale", "StatusId", "Operative.Status");
+            DropForeignKey("Operative.Sale", "TypeId", "Operative.TransType");
+            DropForeignKey("Operative.Sale", "ClientId", "Operative.Client");
+            DropForeignKey("Operative.Sale", "OperationId", "Operative.Operation");
+            DropForeignKey("HumanResources.Employee", "JobPositionId", "HumanResources.JobPosition");
+            DropForeignKey("HumanResources.Employee", "PersonId", "BusinessEntity.Person");
+            DropForeignKey("Finance.Transaction", "OperationId", "Operative.Operation");
+            DropForeignKey("Finance.Transaction", "CashMovementId", "Finance.CashMovement");
+            DropForeignKey("Operative.Client", "PersonId", "BusinessEntity.Person");
             DropForeignKey("Security.AspNetUserRoles", "RoleId", "Security.AspNetRoles");
-            DropForeignKey("Operative.OperationChange", "Sale_OperationId", "Operative.Sale");
-            DropForeignKey("Operative.OperationChange", "StatusId", "Operative.Status");
-            DropForeignKey("Security.ClientUser", "UserId", "Security.AspNetUsers");
-            DropForeignKey("Security.ClientUser", "ClientId", "Operative.Client");
+            DropForeignKey("Finance.CashMovement", "PayMethodId", "Finance.PaymentMethod");
             DropForeignKey("Production.Service", "ServiceTypeId", "Production.ServiceType");
             DropForeignKey("Production.Service", "AccountId", "Production.Account");
             DropForeignKey("Production.Policy", "StatusId", "Production.Status");
@@ -1107,79 +1110,80 @@ namespace Argos.Migrations
             DropForeignKey("Production.PolicyHistory", "PolicyId", "Production.Policy");
             DropForeignKey("Production.PolicyCharge", "PolicyId", "Production.Policy");
             DropForeignKey("Production.Policy", "PolicyId", "Production.Account");
+            DropForeignKey("Production.Account", "ClientId", "Operative.Client");
+            DropForeignKey("BusinessEntity.Address", "CityId", "Config.City");
             DropForeignKey("Config.City", "StateId", "Config.State");
-            DropForeignKey("Production.Location", "CityId", "Config.City");
-            DropForeignKey("Production.Location", "LocationId", "Production.Account");
-            DropForeignKey("Config.Locality", "CityId", "Config.City");
-            DropForeignKey("HumanResources.Employee", "JobPositionId", "HumanResources.JobPosition");
-            DropForeignKey("Security.UserEmployee", "UserId", "Security.AspNetUsers");
+            DropForeignKey("Operative.Operation", "PersonId", "BusinessEntity.Person");
+            DropForeignKey("Operative.Operation", "BranchId", "Config.Branch");
+            DropForeignKey("Config.Branch", "CityId", "Config.City");
+            DropForeignKey("HumanResources.EmployeeBranch", "PersonId", "HumanResources.Employee");
+            DropForeignKey("HumanResources.EmployeeBranch", "BranchId", "Config.Branch");
+            DropForeignKey("HumanResources.Commission", "CommissionId", "Operative.Sale");
+            DropForeignKey("Operative.Shipping", "ShipMethodId", "Operative.ShipMethod");
+            DropForeignKey("Operative.Shipping", "ShippingId", "Operative.Sale");
+            DropForeignKey("Operative.OperationDetail", "ProductId", "Inventory.Product");
+            DropForeignKey("Inventory.Product", "SubCategoryId", "Inventory.SubCategory");
+            DropForeignKey("Inventory.SubCategory", "CategoryId", "Inventory.Category");
+            DropForeignKey("Inventory.StockMovement", "SerialId", "Inventory.Serial");
+            DropForeignKey("Inventory.StockMovement", "ProductStockId", "Inventory.ProductStock");
+            DropForeignKey("Inventory.StockMovement", "OperationDetailId", "Operative.OperationDetail");
+            DropForeignKey("Inventory.Serial", "ProductStockId", "Inventory.ProductStock");
+            DropForeignKey("Inventory.ProductStock", "ProductId", "Inventory.Product");
+            DropForeignKey("Inventory.ProductStock", "BranchId", "Config.Branch");
+            DropForeignKey("Inventory.ProductImage", "ProductId", "Inventory.Product");
+            DropForeignKey("Inventory.PriceChange", "ProductId", "Inventory.Product");
+            DropForeignKey("Inventory.Product", "MeasureUnitId", "Inventory.MeasureUnit");
+            DropForeignKey("Inventory.ExternalProduct", "SupplierId", "Operative.Supplier");
+            DropForeignKey("Security.UserForPerson", "UserId", "Security.AspNetUsers");
             DropForeignKey("Security.AspNetUserRoles", "UserId", "Security.AspNetUsers");
             DropForeignKey("Security.AspNetUserLogins", "UserId", "Security.AspNetUsers");
             DropForeignKey("Security.AspNetUserClaims", "UserId", "Security.AspNetUsers");
-            DropForeignKey("Security.UserEmployee", "EmployeeId", "HumanResources.Employee");
-            DropForeignKey("HumanResources.Employee", "CityId", "Config.City");
-            DropForeignKey("Finance.CashSession", "EmployeeId", "HumanResources.Employee");
-            DropForeignKey("Finance.CashSession", "CashRegisterId", "Finance.CashRegister");
-            DropForeignKey("Operative.Shipping", "ShipMethodId", "Operative.ShipMethod");
-            DropForeignKey("Operative.Shipping", "ShippingId", "Operative.Sale");
-            DropForeignKey("Finance.FinantialMovement", "Sale_OperationId", "Operative.Sale");
-            DropForeignKey("Finance.FinantialMovement", "PayMethodId", "Finance.PaymentMethod");
-            DropForeignKey("Finance.FinantialMovement", "DerivedNote_CreditNoteId", "Finance.CreditNote");
-            DropForeignKey("Finance.FinantialMovement", "CashSessionId", "Finance.CashSession");
-            DropForeignKey("Finance.FinantialMovement", "CreditNoteId", "Finance.CreditNote");
-            DropForeignKey("Finance.CreditNote", "CreditNoteId", "Finance.FinantialMovement");
-            DropForeignKey("Finance.FinantialMovement", "CreditNote_CreditNoteId", "Finance.CreditNote");
-            DropForeignKey("HumanResources.Commission", "CommissionId", "Operative.Sale");
-            DropForeignKey("HumanResources.Commission", "EmployeeId", "HumanResources.Employee");
-            DropForeignKey("Operative.OperationChange", "Purchase_OperationId", "Operative.Purchase");
-            DropForeignKey("Inventory.Product", "SubCategoryId", "Inventory.SubCategory");
-            DropForeignKey("Inventory.SubCategory", "CategoryId", "Inventory.Category");
-            DropForeignKey("Inventory.ProductImage", "ProductId", "Inventory.Product");
-            DropForeignKey("Inventory.PriceChange", "ProductId", "Inventory.Product");
-            DropForeignKey("Inventory.StockMovement", "SerialId", "Inventory.Serial");
-            DropForeignKey("Inventory.StockMovement", new[] { "Stock_BranchId", "Stock_ProductId" }, "Inventory.Stock");
-            DropForeignKey("Inventory.Serial", new[] { "ProductStock_BranchId", "ProductStock_ProductId" }, "Inventory.Stock");
-            DropForeignKey("Inventory.Stock", "ProductId", "Inventory.Product");
-            DropForeignKey("Inventory.Stock", "BranchId", "Config.Branch");
-            DropForeignKey("Inventory.StockMovement", new[] { "OperationDetail_OperationId", "OperationDetail_ProductId" }, "Operative.OperationDetail");
-            DropForeignKey("Operative.OperationDetail", "ProductId", "Inventory.Product");
-            DropForeignKey("Operative.OperationDetail", "OperationId", "Operative.Operation");
-            DropForeignKey("Inventory.ExternalProduct", "SupplierId", "Operative.Supplier");
-            DropForeignKey("Operative.Supplier", "CityId", "Config.City");
+            DropForeignKey("Security.UserForPerson", "SystemUserId", "BusinessEntity.Person");
+            DropForeignKey("BusinessEntity.PhoneNumber", "PhoneTypeId", "BusinessEntity.PhoneType");
+            DropForeignKey("BusinessEntity.PhoneNumber", "PersonId", "BusinessEntity.Person");
             DropForeignKey("Inventory.ExternalProduct", "ProductId", "Inventory.Product");
-            DropForeignKey("Inventory.ExternalProduct", "MeasureUnit_MeasureUnitId", "Inventory.MeasureUnit");
-            DropForeignKey("Inventory.Product", "MeasureUnitId", "Inventory.MeasureUnit");
             DropForeignKey("Config.Compatibility", "ProductId", "Inventory.Product");
             DropForeignKey("Config.Model", "MakerId", "Config.Maker");
             DropForeignKey("Config.Compatibility", "ModelId", "Config.Model");
-            DropForeignKey("Operative.Operation", "BranchId", "Config.Branch");
-            DropForeignKey("HumanResources.EmployeeBranch", "EmployeeId", "HumanResources.Employee");
-            DropForeignKey("HumanResources.EmployeeBranch", "BranchId", "Config.Branch");
-            DropForeignKey("Config.Branch", "CityId", "Config.City");
+            DropForeignKey("Operative.OperationDetail", "OperationId", "Operative.Operation");
+            DropForeignKey("HumanResources.Commission", "PersonId", "HumanResources.Employee");
+            DropForeignKey("Finance.CashSession", "PersonId", "HumanResources.Employee");
+            DropForeignKey("Finance.CashSession", "CashRegisterId", "Finance.CashRegister");
+            DropForeignKey("Finance.CreditNote", "CreditNoteId", "Finance.Transaction");
+            DropForeignKey("Finance.CashMovement", "CashSessionId", "Finance.CashSession");
             DropForeignKey("Finance.CashRegister", "BranchId", "Config.Branch");
-            DropForeignKey("Operative.Client", "CityId", "Config.City");
-            DropForeignKey("Production.Account", "ClientId", "Operative.Client");
+            DropForeignKey("BusinessEntity.EmailAddress", "PersonId", "BusinessEntity.Person");
+            DropForeignKey("BusinessEntity.Person", "CityId", "Config.City");
+            DropForeignKey("BusinessEntity.Address", "PersonId", "BusinessEntity.Person");
+            DropForeignKey("Production.Location", "CityId", "Config.City");
+            DropForeignKey("Production.Location", "LocationId", "Production.Account");
+            DropForeignKey("Config.Locality", "CityId", "Config.City");
+            DropForeignKey("BusinessEntity.Address", "AddressTypeId", "BusinessEntity.AddressType");
             DropForeignKey("Production.Account", "AccountTypeId", "Production.AccountType");
             DropForeignKey("Production.AccountFile", "AccountId", "Production.Account");
             DropIndex("Operative.Transfer", new[] { "DestBranchId" });
             DropIndex("Operative.Transfer", new[] { "OperationId" });
-            DropIndex("Operative.Sale", "IDX_Sequence");
-            DropIndex("Operative.Sale", new[] { "StatusId" });
-            DropIndex("Operative.Sale", new[] { "TypeId" });
-            DropIndex("Operative.Sale", new[] { "EmployeeId" });
-            DropIndex("Operative.Sale", new[] { "ClientId" });
-            DropIndex("Operative.Sale", new[] { "OperationId" });
-            DropIndex("Operative.TransferDetail", new[] { "OperationId", "ProductId" });
-            DropIndex("Operative.SaleDetail", new[] { "OperationId", "ProductId" });
-            DropIndex("Operative.PurchaseDetail", new[] { "Purchase_OperationId" });
-            DropIndex("Operative.PurchaseDetail", new[] { "OperationId", "ProductId" });
+            DropIndex("Operative.TransferDetail", new[] { "OperationDetailId" });
+            DropIndex("Operative.SaleDetail", new[] { "OperationDetailId" });
+            DropIndex("Operative.PurchaseDetail", new[] { "OperationDetailId" });
             DropIndex("Operative.Purchase", "IDX_Supplier_Bill");
             DropIndex("Operative.Purchase", new[] { "OperationType_OperationTypeId" });
             DropIndex("Operative.Purchase", new[] { "OperationStatus_StatusId" });
             DropIndex("Operative.Purchase", new[] { "OperationId" });
+            DropIndex("Operative.Supplier", "Unq_BusinessName");
+            DropIndex("Operative.Supplier", new[] { "PersonId" });
+            DropIndex("Operative.Sale", "IDX_Sequence");
+            DropIndex("Operative.Sale", new[] { "StatusId" });
+            DropIndex("Operative.Sale", new[] { "TypeId" });
+            DropIndex("Operative.Sale", new[] { "ClientId" });
+            DropIndex("Operative.Sale", new[] { "OperationId" });
+            DropIndex("HumanResources.Employee", new[] { "JobPositionId" });
+            DropIndex("HumanResources.Employee", new[] { "PersonId" });
+            DropIndex("Finance.Transaction", new[] { "OperationId" });
+            DropIndex("Finance.Transaction", new[] { "CashMovementId" });
+            DropIndex("Operative.Client", "Unq_BusinessName");
+            DropIndex("Operative.Client", new[] { "PersonId" });
             DropIndex("Security.AspNetRoles", "RoleNameIndex");
-            DropIndex("Security.ClientUser", new[] { "ClientId" });
-            DropIndex("Security.ClientUser", new[] { "UserId" });
             DropIndex("Production.Service", new[] { "ServiceTypeId" });
             DropIndex("Production.Service", new[] { "AccountId" });
             DropIndex("Production.PolicyHistory", new[] { "StatusId" });
@@ -1187,48 +1191,29 @@ namespace Argos.Migrations
             DropIndex("Production.PolicyCharge", new[] { "PolicyId" });
             DropIndex("Production.Policy", new[] { "StatusId" });
             DropIndex("Production.Policy", new[] { "PolicyId" });
-            DropIndex("Production.Location", new[] { "CityId" });
-            DropIndex("Production.Location", new[] { "LocationId" });
-            DropIndex("Config.Locality", new[] { "CityId" });
+            DropIndex("HumanResources.EmployeeBranch", new[] { "PersonId" });
+            DropIndex("HumanResources.EmployeeBranch", new[] { "BranchId" });
+            DropIndex("Operative.Shipping", new[] { "ShipMethodId" });
+            DropIndex("Operative.Shipping", new[] { "ShippingId" });
+            DropIndex("Inventory.SubCategory", new[] { "CategoryId" });
+            DropIndex("Inventory.StockMovement", new[] { "SerialId" });
+            DropIndex("Inventory.StockMovement", new[] { "OperationDetailId" });
+            DropIndex("Inventory.StockMovement", new[] { "ProductStockId" });
+            DropIndex("Inventory.Serial", new[] { "ProductStockId" });
+            DropIndex("Inventory.ProductStock", new[] { "ProductId" });
+            DropIndex("Inventory.ProductStock", new[] { "BranchId" });
+            DropIndex("Inventory.ProductImage", new[] { "ProductId" });
+            DropIndex("Inventory.PriceChange", new[] { "ProductId" });
             DropIndex("Security.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("Security.AspNetUserRoles", new[] { "UserId" });
             DropIndex("Security.AspNetUserLogins", new[] { "UserId" });
             DropIndex("Security.AspNetUserClaims", new[] { "UserId" });
             DropIndex("Security.AspNetUsers", "UserNameIndex");
-            DropIndex("Security.UserEmployee", new[] { "EmployeeId" });
-            DropIndex("Security.UserEmployee", new[] { "UserId" });
-            DropIndex("Operative.Shipping", new[] { "ShipMethodId" });
-            DropIndex("Operative.Shipping", new[] { "ShippingId" });
-            DropIndex("Finance.CreditNote", "IDX_Sequential");
-            DropIndex("Finance.CreditNote", "IDX_Code_Indent");
-            DropIndex("Finance.CreditNote", new[] { "CreditNoteId" });
-            DropIndex("Finance.FinantialMovement", new[] { "Sale_OperationId" });
-            DropIndex("Finance.FinantialMovement", new[] { "DerivedNote_CreditNoteId" });
-            DropIndex("Finance.FinantialMovement", new[] { "CreditNote_CreditNoteId" });
-            DropIndex("Finance.FinantialMovement", new[] { "PayMethodId" });
-            DropIndex("Finance.FinantialMovement", new[] { "CreditNoteId" });
-            DropIndex("Finance.FinantialMovement", new[] { "CashSessionId" });
-            DropIndex("HumanResources.Commission", new[] { "EmployeeId" });
-            DropIndex("HumanResources.Commission", new[] { "CommissionId" });
-            DropIndex("Operative.OperationChange", new[] { "Sale_OperationId" });
-            DropIndex("Operative.OperationChange", new[] { "Purchase_OperationId" });
-            DropIndex("Operative.OperationChange", new[] { "StatusId" });
-            DropIndex("Inventory.SubCategory", new[] { "CategoryId" });
-            DropIndex("Inventory.ProductImage", new[] { "ProductId" });
-            DropIndex("Inventory.PriceChange", new[] { "ProductId" });
-            DropIndex("Inventory.Stock", new[] { "ProductId" });
-            DropIndex("Inventory.Stock", new[] { "BranchId" });
-            DropIndex("Inventory.Serial", new[] { "ProductStock_BranchId", "ProductStock_ProductId" });
-            DropIndex("Inventory.StockMovement", new[] { "Stock_BranchId", "Stock_ProductId" });
-            DropIndex("Inventory.StockMovement", new[] { "OperationDetail_OperationId", "OperationDetail_ProductId" });
-            DropIndex("Inventory.StockMovement", new[] { "SerialId" });
-            DropIndex("Operative.Supplier", new[] { "CityId" });
-            DropIndex("Operative.Supplier", "Unq_Email");
-            DropIndex("Operative.Supplier", "Unq_Phone");
-            DropIndex("Operative.Supplier", "Unq_FTR");
-            DropIndex("Operative.Supplier", "IDX_Name");
-            DropIndex("Operative.Supplier", "Unq_BusinessName");
-            DropIndex("Inventory.ExternalProduct", new[] { "MeasureUnit_MeasureUnitId" });
+            DropIndex("Security.UserForPerson", new[] { "UserId" });
+            DropIndex("Security.UserForPerson", new[] { "SystemUserId" });
+            DropIndex("BusinessEntity.PhoneNumber", "Unq_Phone");
+            DropIndex("BusinessEntity.PhoneNumber", new[] { "PersonId" });
+            DropIndex("BusinessEntity.PhoneNumber", new[] { "PhoneTypeId" });
             DropIndex("Inventory.ExternalProduct", new[] { "ProductId" });
             DropIndex("Inventory.ExternalProduct", new[] { "SupplierId" });
             DropIndex("Config.Model", new[] { "MakerId" });
@@ -1238,40 +1223,51 @@ namespace Argos.Migrations
             DropIndex("Inventory.Product", new[] { "SubCategoryId" });
             DropIndex("Operative.OperationDetail", new[] { "ProductId" });
             DropIndex("Operative.OperationDetail", new[] { "OperationId" });
-            DropIndex("Operative.Operation", new[] { "BranchId" });
-            DropIndex("HumanResources.EmployeeBranch", new[] { "EmployeeId" });
-            DropIndex("HumanResources.EmployeeBranch", new[] { "BranchId" });
+            DropIndex("HumanResources.Commission", new[] { "PersonId" });
+            DropIndex("HumanResources.Commission", new[] { "CommissionId" });
+            DropIndex("Finance.CreditNote", "IDX_Sequential");
+            DropIndex("Finance.CreditNote", "IDX_Code_Indent");
+            DropIndex("Finance.CreditNote", new[] { "CreditNoteId" });
+            DropIndex("Finance.CashMovement", new[] { "PayMethodId" });
+            DropIndex("Finance.CashMovement", new[] { "CashSessionId" });
+            DropIndex("Finance.CashSession", new[] { "PersonId" });
+            DropIndex("Finance.CashSession", new[] { "CashRegisterId" });
+            DropIndex("Finance.CashRegister", new[] { "BranchId" });
             DropIndex("Config.Branch", new[] { "CityId" });
             DropIndex("Config.Branch", "Unq_Phone");
-            DropIndex("Finance.CashRegister", new[] { "BranchId" });
-            DropIndex("Finance.CashSession", new[] { "EmployeeId" });
-            DropIndex("Finance.CashSession", new[] { "CashRegisterId" });
-            DropIndex("HumanResources.Employee", new[] { "CityId" });
-            DropIndex("HumanResources.Employee", "Unq_Email");
-            DropIndex("HumanResources.Employee", "Unq_Phone");
-            DropIndex("HumanResources.Employee", "Unq_FTR");
-            DropIndex("HumanResources.Employee", "IDX_Name");
-            DropIndex("HumanResources.Employee", new[] { "JobPositionId" });
+            DropIndex("Operative.Operation", new[] { "PersonId" });
+            DropIndex("Operative.Operation", new[] { "BranchId" });
+            DropIndex("BusinessEntity.EmailAddress", "Unq_Email");
+            DropIndex("BusinessEntity.EmailAddress", new[] { "PersonId" });
+            DropIndex("Production.Location", new[] { "CityId" });
+            DropIndex("Production.Location", new[] { "LocationId" });
+            DropIndex("Config.Locality", new[] { "CityId" });
             DropIndex("Config.City", new[] { "StateId" });
-            DropIndex("Operative.Client", new[] { "CityId" });
-            DropIndex("Operative.Client", "Unq_Email");
-            DropIndex("Operative.Client", "Unq_Phone");
-            DropIndex("Operative.Client", "Unq_FTR");
-            DropIndex("Operative.Client", "IDX_Name");
-            DropIndex("Operative.Client", "Unq_BusinessName");
+            DropIndex("BusinessEntity.Address", new[] { "CityId" });
+            DropIndex("BusinessEntity.Address", new[] { "PersonId" });
+            DropIndex("BusinessEntity.Address", new[] { "AddressTypeId" });
+            DropIndex("BusinessEntity.Person", new[] { "CityId" });
+            DropIndex("BusinessEntity.Person", "Unq_Phone");
+            DropIndex("BusinessEntity.Person", "Unq_Email");
+            DropIndex("BusinessEntity.Person", "Unq_FTR");
+            DropIndex("BusinessEntity.Person", "IDX_Name");
             DropIndex("Production.Account", new[] { "StatusId" });
             DropIndex("Production.Account", new[] { "ClientId" });
             DropIndex("Production.Account", new[] { "AccountTypeId" });
             DropIndex("Production.AccountFile", new[] { "AccountId" });
             DropTable("Operative.Transfer");
-            DropTable("Operative.Sale");
             DropTable("Operative.TransferDetail");
             DropTable("Operative.SaleDetail");
             DropTable("Operative.PurchaseDetail");
             DropTable("Operative.Purchase");
+            DropTable("Operative.Supplier");
+            DropTable("Operative.Sale");
+            DropTable("HumanResources.Employee");
+            DropTable("Finance.Transaction");
+            DropTable("Operative.Client");
             DropTable("Security.AspNetRoles");
+            DropTable("Finance.PaymentMethod");
             DropTable("Config.Configuration");
-            DropTable("Security.ClientUser");
             DropTable("Production.ServiceType");
             DropTable("Production.Service");
             DropTable("Production.Status");
@@ -1279,46 +1275,47 @@ namespace Argos.Migrations
             DropTable("Production.PolicyCharge");
             DropTable("Production.Policy");
             DropTable("Config.State");
-            DropTable("Production.Location");
-            DropTable("Config.Locality");
             DropTable("HumanResources.JobPosition");
+            DropTable("HumanResources.EmployeeBranch");
+            DropTable("Operative.TransType");
+            DropTable("Operative.Status");
+            DropTable("Operative.ShipMethod");
+            DropTable("Operative.Shipping");
+            DropTable("Inventory.Category");
+            DropTable("Inventory.SubCategory");
+            DropTable("Inventory.StockMovement");
+            DropTable("Inventory.Serial");
+            DropTable("Inventory.ProductStock");
+            DropTable("Inventory.ProductImage");
+            DropTable("Inventory.PriceChange");
+            DropTable("Inventory.MeasureUnit");
             DropTable("Security.AspNetUserRoles");
             DropTable("Security.AspNetUserLogins");
             DropTable("Security.AspNetUserClaims");
             DropTable("Security.AspNetUsers");
-            DropTable("Security.UserEmployee");
-            DropTable("Operative.TransType");
-            DropTable("Operative.ShipMethod");
-            DropTable("Operative.Shipping");
-            DropTable("Finance.PaymentMethod");
-            DropTable("Finance.CreditNote");
-            DropTable("Finance.FinantialMovement");
-            DropTable("HumanResources.Commission");
-            DropTable("Operative.Status");
-            DropTable("Operative.OperationChange");
-            DropTable("Inventory.Category");
-            DropTable("Inventory.SubCategory");
-            DropTable("Inventory.ProductImage");
-            DropTable("Inventory.PriceChange");
-            DropTable("Inventory.Stock");
-            DropTable("Inventory.Serial");
-            DropTable("Inventory.StockMovement");
-            DropTable("Operative.Supplier");
-            DropTable("Inventory.MeasureUnit");
+            DropTable("Security.UserForPerson");
+            DropTable("BusinessEntity.PhoneType");
+            DropTable("BusinessEntity.PhoneNumber");
             DropTable("Inventory.ExternalProduct");
             DropTable("Config.Maker");
             DropTable("Config.Model");
             DropTable("Config.Compatibility");
             DropTable("Inventory.Product");
             DropTable("Operative.OperationDetail");
-            DropTable("Operative.Operation");
-            DropTable("HumanResources.EmployeeBranch");
-            DropTable("Config.Branch");
-            DropTable("Finance.CashRegister");
+            DropTable("HumanResources.Commission");
+            DropTable("Finance.CreditNote");
+            DropTable("Finance.CashMovement");
             DropTable("Finance.CashSession");
-            DropTable("HumanResources.Employee");
+            DropTable("Finance.CashRegister");
+            DropTable("Config.Branch");
+            DropTable("Operative.Operation");
+            DropTable("BusinessEntity.EmailAddress");
+            DropTable("Production.Location");
+            DropTable("Config.Locality");
             DropTable("Config.City");
-            DropTable("Operative.Client");
+            DropTable("BusinessEntity.AddressType");
+            DropTable("BusinessEntity.Address");
+            DropTable("BusinessEntity.Person");
             DropTable("Production.AccountType");
             DropTable("Production.Account");
             DropTable("Production.AccountFile");

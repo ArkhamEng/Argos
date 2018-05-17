@@ -13,7 +13,7 @@ namespace Argos.Models.Operative
     public class OperationStatus:ISelectable
     {
         [Key]
-        public OpStatus StatusId { get; set; }
+        public OperationStatuses StatusId { get; set; }
 
         [MaxLength(20)]
         public string Name { get; set; }

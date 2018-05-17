@@ -43,12 +43,22 @@ namespace Argos.Support
         public const int LockDuration = 10;
 
     //gender values
-        public const string Male  = "Masculino";
+        public const char MaleChar  = 'M';
+
+        public const string Male = "Masculino";
+
+        public const string MaleClass = "fa fa-male";
+
+        public const char FemaleChar = 'F';
 
         public const string Female = "Femenino";
 
+        public const string FemaleClass = "fa fa-female";
 
-       //product type values
+        public const string NoUser = "Sin usuario asignado";
+
+
+        //product type values
         public const string Package = "Paquete";
 
         public const string Single = "Individual";

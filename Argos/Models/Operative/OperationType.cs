@@ -5,10 +5,10 @@ using Argos.Models.Enums;
 
 namespace Argos.Models.Operative
 {
-    [Table("TransType", Schema = "Operative")]
+    [Table("OperationType", Schema = "Operative")]
     public class OperationType:ISelectable
     {
-        public OpType OperationTypeId { get; set; }
+        public OpertionType OperationTypeId { get; set; }
 
         public string Name { get; set; }
 

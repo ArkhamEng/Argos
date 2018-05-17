@@ -31,5 +31,11 @@ namespace Argos.Models.BaseTypes
                     return false;
             }
         }
+
+        public void UnLock()
+        {
+            this.LockEndDate = null;
+            this.LockUser = null;
+        }
     }
 }

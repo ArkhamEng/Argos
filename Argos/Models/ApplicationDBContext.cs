@@ -6,16 +6,46 @@ using Argos.Models.Security;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 using Argos.Models.Operative;
+using Argos.Models.BusinessEntity;
+using Argos.Models.Finance;
 
 namespace Argos.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        #region BussinessEntity
+        public DbSet<Person> Persons { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<AddressType> AddressTypes { get; set; }
+
+        public DbSet<PhoneNumber> PhoneNumbers { get; set; }
+
+        public DbSet<PhoneType> PhoneTypes { get; set; }
+
+        public DbSet<EmailAddress> EmailAddresses { get; set; }
+        #endregion
+
+        #region Config
+        public DbSet<State> States { get; set; }
+
+        public DbSet<City> Cities { get; set; }
+
+        public DbSet<Locality> Localities { get; set; }
+
+        public DbSet<Maker> Makers { get; set; }
+
+        public DbSet<Model> Models { get; set; }
+
+        public DbSet<Compatibility> Compatibilities { get; set; }
+
+        public DbSet<Configuration> Configurations { get; set; }
+
+
+        #endregion
+
         #region Operative
-
-        public DbSet<Client> Clients { get; set; }
-
-        public DbSet<Supplier> Suppliers { get; set; }
 
         public DbSet<ShipMethod> ShipMethods { get; set; }
 
@@ -25,8 +55,7 @@ namespace Argos.Models
 
         public DbSet<OperationType> OperationType { get; set; }
 
-        public DbSet<OperationChange> OperationChanges { get; set; }
-
+     
         public DbSet<Operation> Operations { get; set; }
 
         public DbSet<OperationDetail> OperationDetails { get; set; }
@@ -35,11 +64,12 @@ namespace Argos.Models
         #endregion
 
         #region HumanResources
-        public DbSet<Employee> Employees { get; set; }
-
+      
         public DbSet<JobPosition> JobPositions { get; set; }
 
         public DbSet<Commission> Commissions { get; set; }
+
+        public DbSet<EmployeeBranch> EmployeeBranches { get; set; }
 
         #endregion
 
@@ -67,20 +97,18 @@ namespace Argos.Models
 
         #endregion
 
-        #region Config
-        public DbSet<State> States { get; set; }
 
-        public DbSet<City> Cities { get; set; }
+        #region Finance
 
-        public DbSet<Locality> Localities { get; set; }
+        public DbSet<CashRegister> CashRegisters { get; set; }
 
-        public DbSet<Maker> Makers { get; set; }
+        public DbSet<CashSession> CashSessions { get; set; }
 
-        public DbSet<Model> Models { get; set; }
+        public DbSet<PayMethod> PayMethodes { get; set; }
+        
+        public DbSet<CashMovement> CashMovement { get; set; }
 
-        public DbSet<Compatibility> Compatibilities { get; set; }
-
-        public DbSet<Configuration> Config { get; set; }
+        public DbSet<CreditNote> CreditNotes { get; set; }
 
 
         #endregion
@@ -102,15 +130,10 @@ namespace Argos.Models
         #endregion
 
         #region Security
-
-        public DbSet<EmployeeUser> EmployeeUsers { get; set; }
-
-        public DbSet<ClientUser> ClientUsers { get; set; }
+        
+        public DbSet<SystemUser> SystemUsers { get; set; }
 
         #endregion
-
-
-
 
         public ApplicationDbContext()
             : base("SystemDB", throwIfV1Schema: false)

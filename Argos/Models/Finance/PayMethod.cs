@@ -12,7 +12,7 @@ namespace Argos.Models.Finance
     [Table("PaymentMethod", Schema = "Finance")]
     public class PayMethod:ISelectable
     {
-        public PMethod PayMethodId { get; set; }
+        public PayMethodes PayMethodId { get; set; }
 
         [MaxLength(30)]
         public string Name { get; set; }
@@ -21,7 +21,7 @@ namespace Argos.Models.Finance
         public string Description { get; set; }
 
 
-        public ICollection<FinantialMovement> FinantialMovement { get; set; }
+        public ICollection<CashMovement> CashMovements { get; set; }
 
         #region Not Mapped Properties
 

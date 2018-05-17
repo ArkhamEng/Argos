@@ -1,29 +1,25 @@
-﻿using Argos.Models.BaseTypes;
-using Argos.Models.HumanResources;
-using Argos.Models.Config;
+﻿using Argos.Models.HumanResources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Argos.Support;
-using Argos.Models.Finance;
 using Argos.Models.Enums;
+using Argos.Models.Finance;
 
 namespace Argos.Models.Operative
 {
     [Table("Sale", Schema = "Operative")]
     public class Sale: Operation
     {
-
+        [ForeignKey("Client")]
         public int ClientId { get; set; }
 
-        public int EmployeeId { get; set; }
-
         [ForeignKey("Type")]
-        public OpType TypeId { get; set; }
+        public OpertionType TypeId { get; set; }
 
         [ForeignKey("Status")]
-        public OpStatus StatusId { get; set; }
+        public OperationStatuses StatusId { get; set; }
 
         [MaxLength(10)]
         public string SaleCode { get; set; }
@@ -79,15 +75,12 @@ namespace Argos.Models.Operative
 
         public virtual OperationType Type { get; set; }
 
-        public virtual Employee Employee { get; set; }
-
         public virtual Client Client { get; set; }
 
         public virtual Commission Commission { get; set; }
 
         public virtual Shipping Shipping { get; set; }
 
-        public ICollection<FinantialMovement> FinantialMovements { get; set; }
         #endregion
 
     }

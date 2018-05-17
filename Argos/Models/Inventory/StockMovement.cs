@@ -14,7 +14,7 @@ namespace Argos.Models.Inventory
 
         public int OperationDetailId { get; set; }
 
-        public int SerialId { get; set; }
+        public int? SerialId { get; set; }
 
         public double Quantity { get; set; }
 
@@ -36,7 +36,7 @@ namespace Argos.Models.Inventory
         { get { return IsEntry ? "Entrada" : "Salida"; } }
 
         #region Navigation Properties
-        public virtual ProductStock Stock { get; set; }
+        public virtual ProductStock ProductStock { get; set; }
 
         public virtual OperationDetail OperationDetail { get; set; }
 

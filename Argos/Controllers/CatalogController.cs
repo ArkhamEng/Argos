@@ -10,6 +10,7 @@ using System.Data.Entity;
 using Argos.Models.BaseTypes;
 using Argos.ViewModels.Generic;
 using Argos.Models.Operative;
+using Argos.Models.BusinessEntity;
 
 namespace Argos.Controllers
 {
@@ -30,8 +31,8 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult SearchClients(string ftr, string name, int? stateId, int? cityId,int? id)
         {
-            var model = db.Clients.Where(c=> (ftr == string.Empty || ftr == null || c.FTR == ftr) 
-            && (id==null || c.ClientId == id)
+            var model = db.Persons.OfType<Client>().Where(c=> (ftr == string.Empty || ftr == null || c.FTR == ftr) 
+            && (id==null || c.PersonId == id)
             && (name == string.Empty || name == null || c.Name.Contains(name))
             && (cityId == null || c.CityId == cityId) && (stateId == null || c.City.StateId == stateId) 
             && c.IsActive).Include(c => c.City).ToList();
@@ -55,7 +56,7 @@ namespace Argos.Controllers
         {
             try
             {
-                db.Clients.Add(client);
+                db.Persons.Add(client);
                 db.SaveChanges();
             }
             catch (Exception ex)
@@ -68,7 +69,7 @@ namespace Argos.Controllers
                 Result = Cons.ResponseSuccess,
                 Header = "Datos del cliente guardados",
                 Body = string.Format("El cliente {0} fue agregado al catálogo", client.Name),
-                Id = client.ClientId
+                Id = client.PersonId
             });
         }
 
@@ -79,8 +80,8 @@ namespace Argos.Controllers
             {
                 var model = new PersonViewModel<Client>();
 
-                model.Entity = db.Clients.Include(c=> c.City).
-                    FirstOrDefault(c => c.ClientId == id && c.IsActive);
+                model.Entity = db.Persons.OfType<Client>().Include(c=> c.City).
+                    FirstOrDefault(c => c.PersonId == id && c.IsActive);
 
                 if (model != null)
                 {
@@ -155,23 +156,23 @@ namespace Argos.Controllers
                 Result = Cons.ResponseSuccess,
                 Header = "Datos del cliente guardados",
                 Body = string.Format("Los datos del cliente {0} fueron modificados", client.Name),
-                Id = client.ClientId
+                Id = client.PersonId
             });
         }
 
         [HttpPost]
-        public ActionResult UnLockClient(int id)
+        public ActionResult UnLockPerson(int id)
         {
             try
             {
-                var model = db.Clients.Find(id);
+                var person = db.Persons.Find(id);
 
-                if(!model.IsLocked)
+                if(!person.IsLocked)
                 {
-                    model.LockUser = null;
-                    model.LockEndDate = null;
-                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
+                    person.LockUser = null;
+                    person.LockEndDate = null;
+                    db.Entry(person).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(person).Property(c => c.LockUser).IsModified = true;
 
                     db.SaveChanges();
                 }
@@ -196,22 +197,22 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteClient(int id)
+        public ActionResult DeletePerson(int id)
         {
-            Client client = new Client();
+            Person person = null;
             try
             {
-                client = db.Clients.FirstOrDefault(c=> c.ClientId == id && c.IsActive);
+                person = db.Persons.FirstOrDefault(c=> c.PersonId == id && c.IsActive);
 
-                if(client!=null)
+                if(person!=null)
                 {
-                    client.UpdUser = User.Identity.Name;
-                    client.UpdDate = DateTime.Now.ToLocal();
-                    client.IsActive = false;
+                    person.UpdUser = User.Identity.Name;
+                    person.UpdDate = DateTime.Now.ToLocal();
+                    person.IsActive = false;
 
-                    db.Entry(client).Property(c => c.UpdUser).IsModified = true;
-                    db.Entry(client).Property(c => c.UpdDate).IsModified = true;
-                    db.Entry(client).Property(c => c.IsActive).IsModified = true;
+                    db.Entry(person).Property(c => c.UpdUser).IsModified = true;
+                    db.Entry(person).Property(c => c.UpdDate).IsModified = true;
+                    db.Entry(person).Property(c => c.IsActive).IsModified = true;
 
                     db.SaveChanges();
                 }
@@ -220,8 +221,8 @@ namespace Argos.Controllers
                     return Json(new JResponse
                     {
                         Result = Cons.ResponseWarning,
-                        Header = "No existe el client a eliminar!",
-                        Body = string.Format("Este cliente ya no esta activo en el catálgo")                        
+                        Header = "No existe el registro a eliminar!",
+                        Body = string.Format("Este registro ya no esta activo en el catálgo")                        
                     });
                 }
               
@@ -231,24 +232,24 @@ namespace Argos.Controllers
                 return Json(new JResponse
                 {
                     Result = Cons.ResponseDanger,
-                    Header = "Error al eliminar el cliente",
-                    Body = string.Format("Ocurrio un error al eliminar el cliente detalle del error:{0}", ex.Message)
+                    Header = "Error al eliminar el registro",
+                    Body = string.Format("Ocurrio un error al eliminar el registro detalle del error:{0}", ex.Message)
                 });
             }
             return Json(new JResponse
             {
                 Result = Cons.ResponseSuccess,
-                Header = "Cliente eliminado!",
-                Body = string.Format("El cliente {0} fue eliminado del catálogo", client.Name),
-                Id = client.ClientId
+                Header = "Registro eliminado!",
+                Body = string.Format("El registro {0} fue eliminado del catálogo", person.Name),
+                Id = person.PersonId
             });
         }
 
         [HttpPost]
-        public ActionResult AutoCompleateClient(string filter)
+        public ActionResult AutoCompleatePerson(string filter)
         {
-            var clients = db.Clients.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
-                Select(c => new { Label = c.Name, Id = c.ClientId, Value = c.FTR });
+            var clients = db.Persons.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
+                Select(c => new { Label = c.Name, Id = c.PersonId, Value = c.FTR });
 
             return Json(clients);
         }
@@ -267,11 +268,11 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult SearchEmployees(string ftr, string name, int? stateId, int? cityId, int? id)
         {
-            var model = db.Employees.Include(e=> e.JobPosition).Where(e => (ftr == string.Empty || ftr == null || e.FTR == ftr)
-            && (id == null || e.EmployeeId == id)
+            var model = db.Persons.OfType<Employee>().Include(e=> e.JobPosition).Where(e => (ftr == string.Empty || ftr == null || e.FTR == ftr)
+            && (id == null || e.PersonId == id)
             && (name == string.Empty || name == null || e.Name.Contains(name))
             && (cityId == null || e.CityId == cityId) && (stateId == null || e.City.StateId == stateId)
-            && e.IsActive).Include(c => c.City).Include(e=> e.EmployeeUsers).ToList();
+            && e.IsActive).Include(c => c.City).Include(e=> e.SystemUser).ToList();
 
             return PartialView("_EmployeeList", model);
         }
@@ -279,7 +280,7 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult BeginAddEmployee()
         {
-            var model = new PersonViewModel<Client>();
+            var model = new PersonViewModel<Employee>();
 
             model.States = db.States.ToSelectList();
             model.JobPositions = db.JobPositions.ToSelectList();
@@ -292,7 +293,7 @@ namespace Argos.Controllers
         {
             try
             {
-                db.Employees.Add(employee);
+                db.Persons.Add(employee);
                 db.SaveChanges();
             }
             catch (Exception ex)
@@ -309,7 +310,7 @@ namespace Argos.Controllers
                 Result = Cons.ResponseSuccess,
                 Header = "Datos del empleado guardados",
                 Body = string.Format("El empleado {0} fue agregado al catálogo", employee.Name),
-                Id = employee.EmployeeId
+                Id = employee.PersonId
             });
         }
         [HttpPost]
@@ -319,8 +320,8 @@ namespace Argos.Controllers
             {
                 var model = new PersonViewModel<Employee>();
 
-                model.Entity = db.Employees.Include(e => e.City).Include(e=>e.JobPosition).
-                                            FirstOrDefault(e => e.EmployeeId == id && e.IsActive);
+                model.Entity = db.Persons.OfType<Employee>().Include(e => e.City).Include(e=>e.JobPosition).
+                                            FirstOrDefault(e => e.PersonId == id && e.IsActive);
 
                 if (model != null)
                 {
@@ -394,104 +395,11 @@ namespace Argos.Controllers
                 Result = Cons.ResponseSuccess,
                 Header = "Datos del empleado guardados",
                 Body = string.Format("Los datos del empleado {0} fueron modificados", employee.Name),
-                Id = employee.EmployeeId
+                Id = employee.PersonId
             });
         }
 
-        [HttpPost]
-        public ActionResult UnLockEmployee(int id)
-        {
-            try
-            {
-                var model = db.Employees.Find(id);
-
-                if (!model.IsLocked)
-                {
-                    model.LockUser = null;
-                    model.LockEndDate = null;
-                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
-
-                    db.SaveChanges();
-                }
-
-                return Json(new JResponse
-                {
-                    Result = Cons.ResponseSuccess,
-                    Header = "Registro desbloqueado",
-                    Body = string.Format("El registro ha sido desbloqueado")
-                });
-
-            }
-            catch (Exception ex)
-            {
-                return Json(new JResponse
-                {
-                    Result = Cons.ResponseDanger,
-                    Header = "Error al desbloquear el resgistro",
-                    Body = string.Format("Ocurrio un error al eliminar el cliente detalle del error:{0}", ex.Message)
-                });
-            }
-        }
-
-
-        [HttpPost]
-        public ActionResult DeleteEmployee(int id)
-        {
-            Employee employee = new Employee();
-            try
-            {
-                employee = db.Employees.FirstOrDefault(e => e.EmployeeId == id && e.IsActive);
-
-                if (employee != null)
-                {
-                    employee.UpdUser = User.Identity.Name;
-                    employee.UpdDate = DateTime.Now.ToLocal();
-                    employee.IsActive = false;
-
-                    db.Entry(employee).Property(e => e.UpdUser).IsModified  = true;
-                    db.Entry(employee).Property(e => e.UpdDate).IsModified  = true;
-                    db.Entry(employee).Property(e => e.IsActive).IsModified = true;
-
-                    db.SaveChanges();
-                }
-                else
-                {
-                    return Json(new JResponse
-                    {
-                        Result = Cons.ResponseWarning,
-                        Header = "No existe el empleado a eliminar!",
-                        Body = string.Format("Este empleado ya no esta activo en el catálgo")                        
-                    });
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return Json(new JResponse
-                {
-                    Result = Cons.ResponseDanger,
-                    Header = "Error al eliminar el Employee",
-                    Body = string.Format("Ocurrio un error al eliminar el Employee detalle del error:{0}", ex.Message)
-                });
-            }
-            return Json(new JResponse
-            {
-                Result = Cons.ResponseSuccess,
-                Header = "Employee eliminado!",
-                Body = string.Format("El Employee {0} fue eliminado del catálogo", employee.Name),
-                Id = employee.EmployeeId
-            });
-        }
-
-        [HttpPost]
-        public ActionResult AutoCompleatEmployee(string filter)
-        {
-            var employees = db.Employees.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
-                Select(c => new { Label = c.Name, Id = c.EmployeeId, Value = c.FTR });
-
-            return Json(employees);
-        }
+     
         #endregion
 
         #region Supplier Methods
@@ -506,8 +414,8 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult SearchSuppliers(string ftr, string name, int? stateId, int? cityId, int? id)
         {
-            var model = db.Suppliers.Where(c => (ftr == string.Empty || ftr == null || c.FTR == ftr)
-            && (id == null || c.SupplierId == id)
+            var model = db.Persons.Where(c => (ftr == string.Empty || ftr == null || c.FTR == ftr)
+            && (id == null || c.PersonId == id)
             && (name == string.Empty || name == null || c.Name.Contains(name))
             && (cityId == null || c.CityId == cityId) && (stateId == null || c.City.StateId == stateId)
             && c.IsActive).Include(c => c.City).ToList();
@@ -531,7 +439,7 @@ namespace Argos.Controllers
         {
             try
             {
-                db.Suppliers.Add(supplier);
+                db.Persons.Add(supplier);
                 db.SaveChanges();
             }
             catch (Exception ex)
@@ -548,7 +456,7 @@ namespace Argos.Controllers
                 Result = Cons.ResponseSuccess,
                 Header = "Datos del proveedor guardados",
                 Body = string.Format("El proveedor {0} fue agregado al catálogo", supplier.Name),
-                Id = supplier.SupplierId
+                Id = supplier.PersonId
             });
         }
 
@@ -560,7 +468,7 @@ namespace Argos.Controllers
             {
                 var model = new PersonViewModel<Supplier>();
                     
-                 model.Entity =  db.Suppliers.Include(c => c.City).FirstOrDefault(c => c.SupplierId == id && c.IsActive);
+                 model.Entity =  db.Persons.OfType<Supplier>().Include(s => s.City).FirstOrDefault(s => s.PersonId == id && s.IsActive);
 
                 if (model != null)
                 {
@@ -633,45 +541,10 @@ namespace Argos.Controllers
                 Result = Cons.ResponseSuccess,
                 Header = "Datos del proveedor guardados",
                 Body = string.Format("Los datos del proveedor {0} fueron modificados", supplier.Name),
-                Id = supplier.SupplierId
+                Id = supplier.PersonId
             });
         }
 
-        [HttpPost]
-        public ActionResult UnLockSupplier(int id)
-        {
-            try
-            {
-                var model = db.Suppliers.Find(id);
-
-                if (!model.IsLocked)
-                {
-                    model.LockUser = null;
-                    model.LockEndDate = null;
-                    db.Entry(model).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(model).Property(c => c.LockUser).IsModified = true;
-
-                    db.SaveChanges();
-                }
-
-                return Json(new JResponse
-                {
-                    Result = Cons.ResponseSuccess,
-                    Header = "Registro desbloqueado",
-                    Body = string.Format("El registro ha sido desbloqueado")
-                });
-
-            }
-            catch (Exception ex)
-            {
-                return Json(new JResponse
-                {
-                    Result = Cons.ResponseDanger,
-                    Header = "Error al desbloquear el resgistro",
-                    Body = string.Format("Ocurrio un error al eliminar el cliente detalle del error:{0}", ex.Message)
-                });
-            }
-        }
 
         [HttpPost]
         public ActionResult DeleteSupplier(int id)
@@ -679,7 +552,7 @@ namespace Argos.Controllers
             Supplier provider = new Supplier();
             try
             {
-                provider = db.Suppliers.FirstOrDefault(c => c.SupplierId == id && c.IsActive);
+                provider = db.Persons.OfType<Supplier>().FirstOrDefault(c => c.PersonId == id && c.IsActive);
 
                 if (provider != null)
                 {
@@ -701,8 +574,8 @@ namespace Argos.Controllers
                         Body = string.Format("Este proveedor ya no esta activo en el catálgo")
                     });
                 }
-
             }
+
             catch (Exception ex)
             {
                 return Json(new JResponse
@@ -712,23 +585,16 @@ namespace Argos.Controllers
                     Body = string.Format("Ocurrio un error al eliminar el proveedor detalle del error:{0}", ex.Message)
                 });
             }
+
             return Json(new JResponse
             {
                 Result = Cons.ResponseSuccess,
                 Header = "Proveedor eliminado!",
                 Body = string.Format("El proveedor {0} fue eliminado del catálogo", provider.Name),
-                Id = provider.SupplierId
+                Id = provider.PersonId
             });
         }
 
-        [HttpPost]
-        public ActionResult AutoCompleatSupplier(string filter)
-        {
-            var providers = db.Suppliers.Where(c => c.Name.Contains(filter)).OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
-                Select(c => new { Label = c.Name, Id = c.SupplierId, Value = c.FTR });
-
-            return Json(providers);
-        }
 
         #endregion
 

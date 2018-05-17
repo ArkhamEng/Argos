@@ -7,28 +7,32 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Argos.Models.Inventory
 {
-    [Table("Stock", Schema = "Inventory")]
+    [Table("ProductStock", Schema = "Inventory")]
     public class ProductStock:AuditableEntity
     {
-        [Column(Order = 0), Key, ForeignKey("Branch")]
+        [Column(Order = 0)]
+        public int ProductStockId { get; set; }
+
+        [Column(Order = 1)]
         public int BranchId { get; set; }
 
-        [Column(Order = 1), Key, ForeignKey("Product")]
+        [Column(Order = 2)]
         public int ProductId { get; set; }
 
         [Column(Order = 3)]
         public double Quantity { get; set; }
 
         [Column(Order = 4)]
-        [MaxLength(20)]
-        public string SerialNumber { get; set; }
-
+        public double MaxQuantity { get; set; }
 
         [Column(Order = 5)]
+        public double MinQuantity { get; set; }
+
+        [Column(Order = 6)]
         [MaxLength(10)]
         public string Shelf { get; set; }
 
-        [Column(Order = 6)]
+        [Column(Order = 7)]
         [MaxLength(10)]
         public string Bin { get; set; }
 

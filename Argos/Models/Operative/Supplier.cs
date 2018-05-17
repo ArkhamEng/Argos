@@ -1,4 +1,6 @@
 ﻿using Argos.Models.BaseTypes;
+using Argos.Models.BusinessEntity;
+using Argos.Models.Operative;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,8 +10,6 @@ namespace Argos.Models.Operative
     [Table("Supplier", Schema = "Operative")]
     public class Supplier:Person
     {
-        public int SupplierId { get; set; }
-
         [Display(Name = "Razón Social")]
         [MaxLength(200)]
         [Index("Unq_BusinessName", IsUnique = true)]

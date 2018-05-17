@@ -1,4 +1,5 @@
 ﻿using Argos.Models.BaseTypes;
+using Argos.Models.BusinessEntity;
 using Argos.Models.HumanResources;
 using Argos.Models.Operative;
 using Argos.Models.Production;
@@ -30,11 +31,7 @@ namespace Argos.Models.Config
 
         public ICollection<Locality> Localities { get; set; }
 
-        public ICollection<Client> Clients { get; set; }
-
-        public ICollection<Employee> Employees { get; set; }
-
-        public ICollection<Supplier> Suppliers { get; set; }
+        public ICollection<Person> Persons { get; set; }
 
         public ICollection<AccountLocation> Locations { get; set; }
 

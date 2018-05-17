@@ -20,7 +20,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr ondblclick="BeginUpdateClient(@item.ClientId)">
+            <tr ondblclick="BeginUpdateClient(@item.PersonId)">
                 <td class="col-md-4">
                     <span class="fa fa-user control-label"></span>   @Html.DisplayFor(modelItem => item.Name)<br />
                     <span class="fa fa-black-tie control-label"></span>   @Html.DisplayFor(modelItem => item.BusinessName)<br />
@@ -38,7 +38,7 @@
                 </td>
 
                 <td class="col-md-1">
-                    <button class="btn btn-danger" type="button" onclick="BeginDelete('@item.ClientId','@item.Name')">
+                    <button class="btn btn-danger" type="button" onclick="BeginDelete('@item.PersonId','@item.Name')">
                         <span class="fa fa-trash"></span>
                     </button>
                 </td>
