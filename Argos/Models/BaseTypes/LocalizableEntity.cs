@@ -8,7 +8,8 @@ namespace Argos.Models.BaseTypes
     {
         [Display(Name = "Municipio")]
         [Required(ErrorMessage ="Se requiere el municipo o ciudad")]
-        public  int CityId { get; set; }
+        [MaxLength(6)]
+        public  string TownId { get; set; }
 
         [Display(Name = "Calle")]
         [Required(ErrorMessage = "Se requiere la calle")]
@@ -36,7 +37,7 @@ namespace Argos.Models.BaseTypes
 
       
         #region Navigation Properties
-        public  City City { get; set; }
+        public  Town Town { get; set; }
         #endregion
     }
 }

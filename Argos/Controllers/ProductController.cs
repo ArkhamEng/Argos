@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Argos.Controllers
@@ -16,114 +17,162 @@ namespace Argos.Controllers
         #region Client Methods
         public ActionResult Products()
         {
-            return View();
+            var model = new SearchProductsVM(db);
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult SearchProducts(ProductFilterViewModel filter)
+        public ActionResult SearchProducts(ProductFilters filter)
         {
             var model = LookFor(filter);
             return PartialView("_ProductList", model);
         }
 
-        private List<List<Product>> LookFor(ProductFilterViewModel filter)
+        private List<ProductVM> LookFor(ProductFilters filter)
         {
             //obtengo la sucursa en sesión
             var branchId = User.Identity.GetBranchId();
 
             //configuro variables auxiliares
             string[] arr = new List<string>().ToArray();
-            string code = null;
 
             //si el filtro de texto tiene datos
             if (filter.Text != null && filter.Text != string.Empty)
             {
                 //divido el texto por palabras y lo convierto en un array
                 arr = filter.Text.Trim().Split(' ');
-
-                //si solo hay  una palabra se considera como un posible código
-                if (arr.Length == Cons.One)
-                    code = arr.FirstOrDefault();
             }
 
-            List<Product> products = new List<Product>();
-
-            // si no se encuentra un código que coincida, se realiza una búsqueda con todos lo filtros
-            //buscando coincidencias con todas las palabras del array entre código, descripción y marca
-            if (products.Count == Cons.Zero)
-            {
-                products = (from p in db.Products.Include(p => p.ProductImages).Include(p => p.ProductStocks).
+            var products = (from p in db.Products.Include(p => p.ProductImages).Include(p => p.ProductStocks).
                             Include(p => p.SubCategory).Include(p => p.SubCategory.Category).Include(p => p.Compatibilities).
                             Include(p => p.Compatibilities.Select(c => c.Model))
+
                             where (filter.CategoryId == null || p.SubCategory.CategoryId == filter.CategoryId)
                             && (filter.CategoryId == null || p.SubCategoryId == filter.SubCategoryId)
-                            && (filter.Text == null || filter.Text == string.Empty ||
-                                arr.All(s => (p.Code + " " + p.Description + " " + p.TradeMark).Contains(s)))
-                           
-                                //si algunos de los filtros de auto es requerido, se realiza el filtrado
-                            && (filter.CarYearId == null || p.Compatibilities.Where(c => c.CompatibilityId == filter.CarYearId).ToList().Count > Cons.Zero)
-                            && (filter.CarModelId == null || p.Compatibilities.Where(c => c.ModelId == filter.CarModelId).ToList().Count > Cons.Zero)
-                            && (filter.CarMakeId == null || p.Compatibilities.Where(c => c.Model.MakerId == filter.CarMakeId).ToList().Count > Cons.Zero)
+                            && (filter.Text == null || filter.Text == string.Empty || arr.All(s => (p.Code + " " + p.Description + " " + p.TradeMark).Contains(s)))
+
+                            //si algunos de los filtros de auto es requerido, se realiza el filtrado
+                            && (filter.Year == null || p.Compatibilities.Where(c => c.CompatibilityId == filter.Year).ToList().Count > Cons.Zero)
+                            && (filter.ModelId == null || p.Compatibilities.Where(c => c.ModelId == filter.ModelId).ToList().Count > Cons.Zero)
+                            && (filter.MakerId == null || p.Compatibilities.Where(c => c.Model.MakerId == filter.MakerId).ToList().Count > Cons.Zero)
 
                             select p).OrderBy(s => s.Description).Take(Cons.MaxSearchRows).ToList();
-            }
 
-          
-            if (filter.IsGrid)
-                return OrderAsGrid(products);
-            else
+            List<ProductVM> model = new List<ProductVM>();
+
+            products.ForEach(p =>
             {
-                List<List<Product>> productList = new List<List<Product>>();
+                ProductVM vm = new ProductVM(db);
+                vm.Product = p;
+                vm.Stock = p.ProductStocks.FirstOrDefault(s => s.BranchId == branchId) ?? new ProductStock();
 
-                products.ForEach(p =>
-                {
-                    List<Product> pl = new List<Product>();
-                    pl.Add(p);
-                    productList.Add(pl);
-                });
+                model.Add(vm);
+            });
 
-                return productList;
-            }
+            return model;
         }
 
-        private List<List<Product>> OrderAsGrid(List<Product> products)
-        {
-            List<List<Product>> prodMod = new List<List<Product>>();
-
-            bool newRow = true;
-            List<Product> list = null;
-
-            for (int i = Cons.Zero; i < products.Count; i++)
-            {
-                if (newRow)
-                {
-                    list = new List<Product>();
-                    list.Add(products[i]);
-
-                    if (i == products.Count - Cons.One)
-                        prodMod.Add(list);
-
-                    newRow = false;
-                }
-                else
-                {
-                    list.Add(products[i]);
-                    prodMod.Add(list);
-                    newRow = true;
-                }
-            }
-
-            return prodMod;
-        }
-
-      
         [HttpPost]
         public ActionResult BeginAddProduct()
         {
-            var model = new Product();
-
-        
+            var model = new ProductVM(db);
             return PartialView("_ProductEdit", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveProduct(ProductVM productVm, IEnumerable<HttpPostedFileBase> images)
+        {
+            try
+            {
+
+                if (productVm.Product.ProductId == Cons.Zero)
+                {
+                    var branchId = User.Identity.GetBranchId();
+
+                    //si el producto requiere ser almacenado, se crea stock en la sucursal
+                    if (productVm.Product.IsStockable)
+                    {
+                        productVm.Stock.BranchId = branchId;
+                        productVm.Product.ProductStocks.Add(productVm.Stock);
+                    }
+
+                    db.Products.Add(productVm.Product);
+                }
+                else
+                {
+                    productVm.Product.UnLock();
+                    db.Entry(productVm.Product).State = EntityState.Modified;
+                    db.Entry(productVm.Product).Property(p => p.InsDate).IsModified = false;
+                    db.Entry(productVm.Product).Property(p => p.InsUser).IsModified = false;
+                    db.Entry(productVm.Product).Property(p => p.IsActive).IsModified = false;
+                }
+
+                db.SaveChanges();
+
+                List<HttpPostedFile> files = new List<HttpPostedFile>();
+                //saving Images
+                if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+                {
+                    for (int i = Cons.Zero; i < System.Web.HttpContext.Current.Request.Files.Count; i++)
+                    {
+                        var file = System.Web.HttpContext.Current.Request.Files[i];
+                        if (file.ContentLength > Cons.Zero)
+                            files.Add(file);
+                    }
+                }
+
+                //var saveImages = false;
+                //foreach(var img in images)
+                //{
+                //    if(img!= null)
+                //    {
+                //        saveImages = true;
+                //        var path = FileManager.SaveFileDeprecated(img, productVm.Product.ProductId.ToString(), FileType.ProductImage);
+
+                //        ProductImage image = new ProductImage
+                //        {
+                //            Name = img.FileName,
+                //            Path = path,
+                //            Type = img.ContentType,
+                //            Size = img.ContentLength,
+                //            ProductId = productVm.Product.ProductId
+                //        };
+
+                //        db.ProductImages.Add(image);
+                //    }
+                //}
+
+                //if(saveImages)
+                //db.SaveChanges();
+
+                if (files.Count > Cons.Zero)
+                {
+                      foreach (var f in files)
+                    {
+                        var path = FileManager.SaveFile(f, productVm.Product.ProductId.ToString(), FileType.ProductImage);
+
+                        ProductImage image = new ProductImage
+                        {
+                            Name = f.FileName,
+                            Path = path,
+                            Type = f.ContentType,
+                            Size = f.ContentLength,
+                            ProductId = productVm.Product.ProductId
+                        };
+
+                        db.ProductImages.Add(image);
+                    }
+
+                    db.SaveChanges();
+                }
+
+                return Json(new { Id = productVm.Product.ProductId });
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost]
@@ -157,20 +206,38 @@ namespace Argos.Controllers
                 Id = product.ProductId
             });
         }
+
+
         [HttpPost]
         public ActionResult BeginUpdateProduct(int id)
         {
             try
             {
-                var model = db.Products.Include(p => p.ProductImages).
-                    FirstOrDefault(p => p.ProductId == id);
+                var model = new ProductVM(db);
+
+                model.Product = db.Products.Include(p => p.ProductImages).Include(p => p.ProductImages).Include(p => p.SubCategory).
+                                Include(p => p.ProductStocks).FirstOrDefault(p => p.ProductId == id);
+
 
                 if (model != null)
                 {
-                    ViewBag.Categories = new SelectList(db.Categories, nameof(State.StateId), nameof(State.Name),
-                                                            model.SubCategory.Category.CategoryId);
+                    var json = EvalLock(model.Product);
 
-                    ViewBag.SubCategories = db.SubCategories.Where(sc => sc.CategoryId == model.SubCategory.CategoryId).ToSelectList();
+                    if (json != null)
+                        return json;
+
+                    //bloqueo el registro
+                    db.Entry(model.Product).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(model.Product).Property(c => c.LockUser).IsModified = true;
+
+                    db.SaveChanges();
+
+                    var branchId = User.Identity.GetBranchId();
+
+                    model.Complement.SubCategories = db.SubCategories.
+                        Where(sc => sc.CategoryId == model.Product.SubCategory.CategoryId).ToSelectList();
+
+                    model.Stock = model.Product.ProductStocks.FirstOrDefault(s => s.BranchId == branchId);
 
                     return PartialView("_ProductEdit", model);
                 }
@@ -293,6 +360,6 @@ namespace Argos.Controllers
 
         #endregion
 
-       
+
     }
 }

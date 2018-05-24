@@ -29,7 +29,8 @@ function ShowClientModal(OnCompleate, CloseCallBack,id)
                 $("#EditClientLoading").children().hide();
 
                 //evento del boton save
-                $("#EditClientSave").off('click').click(function (e) {
+                $("#EditClientSave").off('click').click(function (e)
+                {
                     SaveClient(OnCompleate);
                 });
 
@@ -86,14 +87,14 @@ function SaveClient(OnCompleate)
     var client = {
         Name: $("#cliName").val(), BusinessName: $("#cliBusinessName").val(), FTR: $("#cliFTR").val(), Street: $("#cliStreet").val(),
         InNumber: $("#cliInNumber").val(), OutNumber: $("#cliOutNumber").val(), Location: $("#cliLocation").val(), Email: $("#cliEmail").val(),
-        ZipCode: $("#cliZipCode").val(), Phone: $("#cliPhone").val(), ClientId: $("#cliClientId").val(), CityId: $("#cliCityId").val()
+        ZipCode: $("#cliZipCode").val(), Phone: $("#cliPhone").val(), PersonId: $("#cliClientId").val(), TownId: $("#cliCityId").val()
     };
     console.log(client);
     //URL para agregar
     var url = "/Catalog/AddClient/";
 
     //URL para actualización
-    if (parseInt(client.ClientId) > 0)
+    if (parseInt(client.PersonId) > 0)
         url = "/Catalog/UpdateClient/";
 
 
@@ -164,7 +165,7 @@ function ShowEmployeeModal(OnCompleate, CloseCallBack, id)
                     {
                         //si el se tiene un id, desbloqueo el registro para liberarlo
                         if (parseInt(id) > 0) {
-                            ExecuteAjax('/Catalog/UnLockEmployee/', { id: id }, function (response) {
+                            ExecuteAjax('/Catalog/UnLockPerson/', { id: id }, function (response) {
                                 //no hago nada
                             });
                         }
@@ -208,14 +209,14 @@ function SaveEmployee(OnCompleate)
         Name: $("#empName").val(), JobPositionId: $("#empJobPositionId").val(), FTR: $("#empFTR").val(), Street: $("#empStreet").val(),
         Commission: $("#empCommission").val(), InNumber: $("#empInNumber").val(), OutNumber: $("#empOutNumber").val(), Location: $("#empLocation").val(),
         Email: $("#empEmail").val(), SSN: $("#empSSN").val(), ZipCode: $("#empZipCode").val(), Phone: $("#empPhone").val(), BirthDate: $("#empBirthDate").val(),
-        EmployeeId: $("#empEmployeeId").val(), CityId: $("#empCityId").val(), Gender: $("input[name=Entity_Gender]:checked").val()
+        PersonId: $("#empEmployeeId").val(), TownId: $("#empCityId").val(), Gender: $("input[name='Entity.Gender']:checked").val(), HireDate: $("#empHireDate").val()
     };
     
     //URL para agregar
     var url = "/Catalog/AddEmployee/";
 
     //URL para actualización
-    if (parseInt(employee.EmployeeId) > 0)
+    if (parseInt(employee.PersonId) > 0)
         url = "/Catalog/UpdateEmployee/";
 
  
@@ -285,7 +286,7 @@ function ShowSupplierModal(OnCompleate, CloseCallBack, id)
                     {
                         //si el se tiene un id, desbloqueo el registro para liberarlo
                         if (parseInt(id) > 0) {
-                            ExecuteAjax('/Catalog/UnLockSupplier/', { id: id }, function (response)
+                            ExecuteAjax('/Catalog/UnLockPerson/', { id: id }, function (response)
                             {
                                 //no hago nada
                             });
@@ -329,7 +330,7 @@ function SaveSupplier(OnCompleate)
     var supplier = {
         Name: $("#supName").val(), BusinessName: $("#supBusinessName").val(), FTR: $("#supFTR").val(), Street: $("#supStreet").val(),
         InNumber: $("#supInNumber").val(), OutNumber: $("#supOutNumber").val(), Location: $("#supLocation").val(), Email: $("#supEmail").val(),
-        ZipCode: $("#supZipCode").val(), Phone: $("#supPhone").val(), SupplierId: $("#supSupplierId").val(), CityId: $("#supCityId").val(),
+        ZipCode: $("#supZipCode").val(), Phone: $("#supPhone").val(), PersonId: $("#supSupplierId").val(), TownId: $("#supCityId").val(),
         WebSite: $("#supWebSite").val()
     }
 
@@ -337,7 +338,7 @@ function SaveSupplier(OnCompleate)
     var url = "/Catalog/AddSupplier/";
 
     //URL para actualización
-    if (parseInt(supplier.SupplierId) > 0)
+    if (parseInt(supplier.PersonId) > 0)
         url = "/Catalog/UpdateSupplier/";
 
 
@@ -362,5 +363,82 @@ function SaveSupplier(OnCompleate)
         });
 
         $("#EditSupplierModal").modal("hide");
+    });
+}
+
+/***********************************************************
+********** MUESTRA LA VENTANA DE CAPTURA DE PRODUCTO *******
+***********************************************************/
+function ShowProductModal(OnCompleate, CloseCallBack, id)
+{
+    ShowLoading('static');
+
+    var param = {};
+    var url = "/Catalog/BeginAddProduct/";
+    var text = '<span class="fa fa-users"></span> Agregar nuevo Producto';
+
+    if (parseInt(id) > 0)
+    {
+        param = { id: id }
+        url = "/Catalog/BeginUpdateProduct/";
+        text = '<span class="fa fa-users"></span> Editar datos del Producto';
+    }
+
+    ExecuteAjax(url, param, function (response)
+    {
+        HideLoading(function ()
+        {
+            if (!$.isPlainObject(response))
+            {
+                $("#divCatalogModal").html(response);
+
+                $("#divCatalogModal").on("documentReady",OnCompleate);
+
+                //coloco el header
+                $("#EditProductHeader").html(text);
+
+                //oculto el loading de la modal
+                $("#EditProductLoading").children().hide();
+
+             
+                $("#btnProductHidden").off('click').click(function (e,data)
+                {
+                    console.log(data);
+                    OnCompleate(data);
+                });
+
+                //evento del boton cancel
+                $("#EditProductCancel").off('click').click(function (e)
+                {
+                    $('#EditProductModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
+                    {
+                        //si el se tiene un id, desbloqueo el registro para liberarlo
+                        if (parseInt(id) > 0)
+                        {
+                            ExecuteAjax('/Catalog/UnLockProduct/', { id: id }, function (response)
+                            {
+                                //no hago nada
+                            });
+                        }
+
+                        //si hay callback al cerrar lo ejecuto
+                        if (CloseCallBack != null)
+                            CloseCallBack();
+
+                        //elimino la modal del HTML
+                        $("#divCatalogModal").html("");
+                    });
+
+                    //cierro la modal
+                    $("#EditProductModal").modal('hide');
+                });
+
+                //muestro la modal
+                $("#EditProductModal").modal({ backdrop: 'static' });
+
+            }
+            else
+                ShowMessage(response.Result, response.Message, null, null, 'static');
+        });
     });
 }

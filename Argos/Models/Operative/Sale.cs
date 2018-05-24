@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Argos.Support;
 using Argos.Models.Enums;
 using Argos.Models.Finance;
+using Argos.Models.BusinessEntity;
 
 namespace Argos.Models.Operative
 {
@@ -15,8 +16,11 @@ namespace Argos.Models.Operative
         [ForeignKey("Client")]
         public int ClientId { get; set; }
 
+        [ForeignKey("Employee")]
+        public int EmployeeId { get; set; }
+
         [ForeignKey("Type")]
-        public OpertionType TypeId { get; set; }
+        public OpertionTypes TypeId { get; set; }
 
         [ForeignKey("Status")]
         public OperationStatuses StatusId { get; set; }
@@ -76,6 +80,8 @@ namespace Argos.Models.Operative
         public virtual OperationType Type { get; set; }
 
         public virtual Client Client { get; set; }
+
+        public virtual Employee Employee { get; set; }
 
         public virtual Commission Commission { get; set; }
 

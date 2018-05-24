@@ -12,7 +12,8 @@ function Compleate(textbox,list,url,onSelected)
               ExecuteAjax(url, { filter: request.term }, function (json) 
               {
                   $(list).empty();
-                  for (var i = 0; i < json.length; i++) {
+                  for (var i = 0; i < json.length; i++)
+                  {
                       $(list).append($('<option data-id=' + json[i].Id + '></option>').val(json[i].Label).html(json[i].Value));
                   }
               });
@@ -21,16 +22,19 @@ function Compleate(textbox,list,url,onSelected)
       });
 
     //this is executed when an option from DataList is selected
-    $(textbox).bind('input', function ()
+    $(textbox).off('input').bind('input', function ()
     {
         var val = this.value;
-        if ($(list).find('option').filter(function () {
+       
+        if ($(list).find('option').filter(function ()
+        {
             return this.value.toUpperCase() === val.toUpperCase();
-        }).length) {
-            var option = $(list).find('option').filter(function () {
+        }).length)
+        {
+            var option = $(list).find('option').filter(function ()
+            {
                 return this.value.toUpperCase() === val.toUpperCase();
             });
-
 
             var value = option.text();
             var id = option.data("id");
@@ -68,7 +72,8 @@ function ExecuteAjax(url, parameters, callback) {
 }
 
 //DATA TABLE
-function Paginate(table, iniRecords, allowSearch) {
+function Paginate(table, iniRecords, allowSearch)
+{
     var oTable = $(table).DataTable(
        {
            destroy: true,
@@ -161,15 +166,18 @@ function HideModLoading()
 
 //DROP DOWN CASCADE
 function SetCascade(ddlParent, ddlChild, url) {
-    $(ddlParent).unbind('change').change(function (e) {
-        console.log("Cascade execution")
-        if ($(ddlParent).val() != '') {
+    $(ddlParent).unbind('change').change(function (e)
+    {
+        if ($(ddlParent).val() != '')
+        {
             var parentId = $(ddlParent).val();
 
-            ExecuteAjax(url, { id: parentId }, function (data) {
+            ExecuteAjax(url, { id: parentId }, function (data)
+            {
                 $(ddlChild).empty();
                 $(ddlChild).append($('<option></option>').val("").html(""));
-                for (var i = 0; i < data.length; i++) {
+                for (var i = 0; i < data.length; i++)
+                {
                     $(ddlChild).append($('<option></option>').val(data[i].Value).html(data[i].Text));
                 }
                 if (data.length > 0)

@@ -44,7 +44,7 @@
                 <td class="col-md-4 text-capitalize">
                     <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
                     @Html.DisplayFor(modelItem => item.Location)   CP @Html.DisplayFor(modelItem => item.ZipCode)<br />
-                    @Html.DisplayFor(modelItem => item.City.Name), @Html.DisplayFor(modelItem => item.City.State.Name)
+                    @Html.DisplayFor(modelItem => item.Town.Name), @Html.DisplayFor(modelItem => item.Town.State.Name)
                 </td>
 
                 <td class="col-md-3">
@@ -55,7 +55,7 @@
                         @item.GenderName
                     </a> |
                     <a title="Fecha de nacimiento">
-                        <span class="fa fa-birthday-cake"></span>@Html.DisplayFor(modelItem => item.BirthDate)
+                        <span class="fa fa-birthday-cake"></span>@item.BirthDate.ToString("dd/MM/yyyy")
                     </a>
                     <br />
 
@@ -99,7 +99,6 @@
         var hdr = "Eliminar cliente!";
         var body = "Esta seguro que deseas eliminar el empleado " + name;
         ShowMessage(hdr, body, 'confirm', DeleteEmployee, null, 'static')
-
     }
 
     function DeleteEmployee()
@@ -133,7 +132,8 @@
         });
     }
 
-    function AddUser() {
+    function AddUser()
+    {
         //shows the loading in current modal
         ShowModLoading();
 
@@ -142,9 +142,11 @@
             Phone: $("#Phone").val(), Name: $("#Name").val(), IsEmployee: true
         };
 
-        ExecuteAjax('@Url.Action("Register", "Account")', { model: model }, function (response) {
+        ExecuteAjax('@Url.Action("Register", "Account")', { model: model }, function (response)
+        {
             SearchEmployeeById(response.Id);
-            HideModal(true, function () {
+            HideModal(true, function ()
+            {
                 ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
             });
         });

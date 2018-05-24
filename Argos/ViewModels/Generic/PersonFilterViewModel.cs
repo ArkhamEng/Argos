@@ -1,4 +1,5 @@
-﻿using Argos.Models.Config;
+﻿using Argos.Models.BaseTypes;
+using Argos.Models.Config;
 using Argos.Models.HumanResources;
 using Argos.Models.Production;
 using Argos.Support;
@@ -21,22 +22,29 @@ namespace Argos.ViewModels.Generic
         {
             this.Entities = new List<T>();
             this.States = new List<State>().ToSelectList();
-            this.Cities = new List<City>().ToSelectList();
+            this.Cities = new List<Town>().ToSelectList();
         }
     }
 
-  
-    public class PersonViewModel<T>
+
+    public class PersonViewModel<T>:AuthEntity where T :AuditableCatalog
     {
+        public SelectList JobPositions { get; set; }
+
+        public T Entity
+        {
+            get { return (T)this.Catalog; }
+            set { this.Catalog = value; }
+        }
+
         public SelectList States { get; set; }
 
         public SelectList Cities { get; set; }
 
-        public SelectList JobPositions { get; set; }
-
-        public T Entity { get; set; }
-
+        public PersonViewModel()
+        {
+            this.Cities = new List<Town>().ToSelectList();
+        }
     }
 
-   
 }

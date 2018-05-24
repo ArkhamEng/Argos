@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Argos.Models.Operative
 {
     [Table("SaleDetail", Schema = "Operative")]
-    public class SaleDetail:OperationDetail
+    public class SaleDetail : OperationDetail
     {
         [Display(Name = "Precio")]
         [DataType(DataType.Currency)]

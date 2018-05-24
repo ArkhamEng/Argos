@@ -53,8 +53,6 @@ namespace Argos.Models.BusinessEntity
 
         public ICollection<EmailAddress> EmailAddresses { get; set; }
 
-        public ICollection<Operation> Operations { get; set; }
-
         public ICollection<Address> Addresses { get; set; }
 
         public virtual SystemUser SystemUser { get; set; }

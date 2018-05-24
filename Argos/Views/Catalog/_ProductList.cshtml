@@ -1,143 +1,98 @@
-﻿@model List<List<Argos.Models.Catalog.Product>>
+﻿@model List<Argos.ViewModels.Inventory.ProductVM>
 @using Argos.Support
 
-@{ int i = Model.FirstOrDefault() != null ? Model.FirstOrDefault().Count : 1; }
 
 <table id="tbProducts" class="table table-hover text-uppercase">
     <thead class="panel-heading">
         <tr hidden="hidden">
-            @for (var j = 0; j < i; j++)
-            {
-                <th></th>
-            }
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var items in Model)
         {
-            <tr>
-                @foreach (var prod in item)
-                {
-                    string c = string.Format("col-md-{0}  col-xs-4 col-sm-4", (12 / i));
-                    <td class='@c'>
+            <tr class='@items.RowState'>
+                <td>
+                    <div class="col-md-2 col-xs-4" style="vertical-align:central">
+                        <img src='@items.ImagePath' class="img-responsive" />
+                    </div>
+                    <div class='col-md-8  col-xs-6' onclick="Detail(@items.Product.ProductId,@items.Product.IsActive)" onmouseover="SetPointer(this)">
+                        <h4>
+                            <label>@items.Product.Code</label>
+                        </h4>
 
-                        @{ string imgC = string.Format("col-md-{0} col-xs-4 col-sm-4", 2); }
+                        <h4>
+                            @Html.DisplayFor(model => items.Product.Description)
+                        </h4>
 
-                        <div class='@imgC' style="vertical-align:central">
-                            @if (prod.ProductImages.Count > 0)
-                            {
-                                <img src="@prod.ProductImages.First().Path" class="img-responsive img-rounded" style="max-height:150px" />
-                            }
-                            else
-                            {
-                                <img src="~/Images/sinimagen.jpg" class="img-responsive" />
-                            }
-                        </div>
-                        @{ string txtC = string.Format("col-md-{0} {1}", (i == 2 ? 8 : 9), !prod.IsActive ? "text-danger" : string.Empty); }
-                        <div class='@txtC' onclick="Detail(@prod.ProductId,@prod.IsActive)" onmouseover="SetPointer(this)">
-                            <h4>
-                                <label>@prod.Code</label>
-                            </h4>
+                        <h6>
+                            Por @items.TradeMark
+                            <span class="fa fa-registered"></span>
+                        </h6>
 
-                            <h4>
-                                @Html.DisplayFor(model => prod.Description)
-
-                                @if (prod.ModelCompatibilities.Count > 0)
-                                {
-                                    string content = string.Empty;
-
-                                    foreach (var m in prod.ModelCompatibilities)
-                                    {
-                                        content += "<h6>" + m.CarMake.Name + " " + m.Name + " " + m.CarYears.Min(y => y.Year) + '-' + m.CarYears.Max(y => y.Year) + "</h5>";
-                                    }
-
-                                    <span class="glyphicon glyphicon-eye-open text-warning" type="button" rel="popover" onmouseover="SetPointer(this)"
-                                          title="Modelos Compatibles" onclick="CompatibilitiesPop('@content')">
-                                    </span>
-                                }
-                            </h4>
-
-
-                            @if (prod.TradeMark != null)
-                            {
-                                <h6>
-                                    Por @prod.TradeMark
-                                    <span class="fa fa-registered"></span>
-                                </h6>
-                            }
-                            else
-                            {
-                                <h6>
-                                    Código @prod.Code
-                                </h6>
-                            }
+                        @if (items.Product.IsStockable)
+                        {
                             <h4>
                                 <label>
-                                    @Html.DisplayFor(model => prod.Price)
+                                    @Html.DisplayFor(model => items.Product.Price)
                                 </label>
                                 |
                                 <label>
-                                    @Html.DisplayFor(model => prod.MiddlePrice)
-                                </label>
-                                |
-                                <label>
-                                    @Html.DisplayFor(model => prod.LowerPrice)
+                                    @Html.DisplayFor(model => items.Product.LowestPrice)
                                 </label>
                             </h4>
                             <h5>
                                 <span class="badge bg-info">
-                                    @prod.Available
+                                    @items.Stock.Quantity
                                 </span>
                                 disponibles
                                 <span class="fa fa-cubes"></span>
-                                Unidad: @prod.MeasureUnit.Name
+                                Unidad: @items.Product.MeasureUnitId
                             </h5>
                             <h6>
-                                Fila @prod.Row
+                                Estante @items.Stock.Shelf
                                 <span class="fa fa-bars"></span>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                Anaquel @prod.Ledge
+                                Anaquel @items.Stock.Bin
                                 <span class="fa fa-archive"></span>
                             </h6>
-                        </div>
-
-                        @if (User.IsInRole("Capturista") || User.IsInRole("Supervisor") || User.IsInRole("Vendedor"))
-                        {
-                            var btnC = string.Format("col-md-{0} btn-group-vertical hidden-xs hidden-sm", (i == 2 ? i : 1));
-
-                            <div class='@btnC' style="vertical-align:central">
-
-                                @if (User.IsInRole("Capturista") && prod.IsActive)
-                                {
-                                    <button class="btn btn-warning" title="Editar datos de producto"
-                                            onclick="BeginEdit('@prod.ProductId')">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                    </button>
-
-                                    <button class="btn btn-danger" title="Eliminar producto"
-                                            onclick="BeginDelete('@prod.ProductId')">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
-                                }
-
-                                @if (!prod.IsActive && User.IsInRole("Supervisor"))
-                                {
-                                    <button class="btn btn-success" title="Reactivar producto"
-                                            onclick="BeginActivate('@prod.ProductId')">
-                                        <span class="fa fa-recycle"></span>
-                                    </button>
-                                }
-                            </div>
                         }
-                    </td>
+                      
+                    </div>
+
+                    @if (!items.ActionsAllowed)
+                    {
+                        <div class="col-md-2 btn-group-vertical hidden-xs hidden-sm" style="vertical-align:central">
+
+                            @if (!items.CanEdit)
+                            {
+                                <button class="btn btn-warning" title="Editar datos de producto"
+                                        onclick="BeginUpdateProduct('@items.Product.ProductId')">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </button>
                             }
-                @for (var g = item.Count; g < i; g++)
-                {
-                    <td class="col-md-6"></td>
-                }
+
+                            @if (items.CanDelete)
+                            {
+                                <button class="btn btn-danger" title="Eliminar producto"
+                                        onclick="BeginDelete('@items.Product.ProductId')">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            }
+
+                            @if (items.CanActivate)
+                            {
+                                <button class="btn btn-success" title="Reactivar producto"
+                                        onclick="BeginActivate('@items.Product.ProductId')">
+                                    <span class="fa fa-recycle"></span>
+                                </button>
+                            }
+                        </div>
+                    }
+                </td>
             </tr>
-           }
+        }
     </tbody>
 </table>
 
@@ -149,7 +104,12 @@
 
     $(document).ready(function ()
     {
+        //$.fn.dataTable.ext.classes.sPageButton = 'btn btn-primary';
+
         Paginate("#tbProducts", 8, false)
+
+        //$("#tbProducts_previous").removeClass("btn btn-primary");
+        //$("#tbProducts_next").removeClass("btn btn-primary");
     });
 
     function BeginDelete(id, description)
@@ -162,12 +122,9 @@
 
     function DeleteProduct()
     {
-        ExecuteAjax('@Url.Action("DeleteProduct","Catalog")', { id: idProduct }, function (response)
-        {
-            HideLoading(function ()
-            {
-                if (response.Result == '@Cons.ResponseSuccess')
-                {
+        ExecuteAjax('@Url.Action("DeleteProduct","Catalog")', { id: idProduct }, function (response) {
+            HideLoading(function () {
+                if (response.Result == '@Cons.ResponseSuccess') {
                     ShowMessage(response.Header, response.Body, response.Result, null, SearchProducts, 'static');
                 }
                 else {

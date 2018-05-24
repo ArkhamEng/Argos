@@ -8,7 +8,7 @@ namespace Argos.Models.Operative
     [Table("OperationType", Schema = "Operative")]
     public class OperationType:ISelectable
     {
-        public OpertionType OperationTypeId { get; set; }
+        public OpertionTypes OperationTypeId { get; set; }
 
         public string Name { get; set; }
 

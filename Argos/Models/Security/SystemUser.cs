@@ -9,7 +9,7 @@ using System.Web;
 
 namespace Argos.Models.Security
 {
-    [Table("UserForPerson", Schema = "Security")]
+    [Table("SystemUser", Schema = "Security")]
     public class SystemUser:AuditableEntity
     {
         [Key, ForeignKey("Person")]

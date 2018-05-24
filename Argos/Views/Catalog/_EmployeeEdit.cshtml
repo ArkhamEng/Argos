@@ -104,14 +104,14 @@
                                         <Label class="control-label">
                                             <span class="fa fa-male"></span>
                                             @Cons.Male
-                                            @Html.RadioButtonFor(model => model.Entity.Gender, Cons.Male)
+                                            @Html.RadioButtonFor(model => model.Entity.Gender, Cons.MaleChar)
                                         </Label>
                                     </div>
                                     <div class="input-group-addon input-sm">
                                         <Label class="control-label">
                                             <span class="fa fa-female"></span>
                                             @Cons.Female
-                                            @Html.RadioButtonFor(model => model.Entity.Gender, Cons.Female)
+                                            @Html.RadioButtonFor(model => model.Entity.Gender, Cons.FemaleChar)
                                         </Label>
                                     </div>
                                 </div>
@@ -134,22 +134,41 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="form-group col-md-6">
-                                    @Html.LabelFor(model => model.Entity.City.StateId, htmlAttributes: new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.Entity.Town.StateId, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-map"></i></span>
                                         @Html.DropDownList("empStateId", Model.States, "", htmlAttributes: new { @class = "form-control input-sm" })
                                     </div>
-                                    @Html.ValidationMessageFor(model => model.Entity.City.StateId, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.Entity.Town.StateId, "", new { @class = "text-danger" })
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    @Html.LabelFor(model => model.Entity.CityId, htmlAttributes: new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.Entity.TownId, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-map"></i></span>
-                                        @Html.DropDownListFor(model => model.Entity.CityId, Model.Cities, "", 
+                                        @Html.DropDownListFor(model => model.Entity.TownId, Model.Cities, "", 
                                        htmlAttributes: new { @class = "form-control input-sm", id="empCityId" })
                                     </div>
-                                    @Html.ValidationMessageFor(model => model.Entity.City.CityId, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.Entity.Town.TownId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-md-8">
+                                    @Html.LabelFor(model => model.Entity.Location, htmlAttributes: new { @class = "control-label" })
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                                        @Html.EditorFor(model => model.Entity.Location, new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off", id = "empLocation", list = "Locations" } })
+                                        <datalist id="Locations" class="text-capitalize"></datalist>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Entity.Location, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    @Html.LabelFor(model => model.Entity.ZipCode, htmlAttributes: new { @class = "control-label" })
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+                                        @Html.EditorFor(model => model.Entity.ZipCode, new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off", id = "empZipCode", list = "ZipCodes" } })
+                                        <datalist id="ZipCodes" class="text-capitalize"></datalist>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Entity.ZipCode, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-md-8">
                                     @Html.LabelFor(model => model.Entity.Street, htmlAttributes: new { @class = "control-label" })
@@ -179,31 +198,12 @@
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.InNumber, "", new { @class = "text-danger" })
                                 </div>
-
-                                <div class="form-group col-md-8">
-                                    @Html.LabelFor(model => model.Entity.Location, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
-                                        @Html.EditorFor(model => model.Entity.Location, 
-                                       new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocompleate="off", id="empLocation" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Entity.Location, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="form-group col-md-4">
-                                    @Html.LabelFor(model => model.Entity.ZipCode, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
-                                        @Html.EditorFor(model => model.Entity.ZipCode, 
-                                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate="off", id="empZipCode" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Entity.ZipCode, "", new { @class = "text-danger" })
-                                </div>
                             </div>
                         </div>
                     </div>
 
                     @Html.HiddenFor(m => m.Entity.PersonId, new { id = "empEmployeeId" })
+                    @Html.HiddenFor(m => m.Entity.HireDate, new { id = "empHireDate" })
                 </div>
             </div>
             <div id="EditEmployeeLoading">
@@ -218,6 +218,10 @@
     {
         SetCascade("#empStateId", "#empCityId", '@Url.Action("GetCities","Configuration")');
 
+        Compleate("#empZipCode", "#ZipCodes", '@Url.Action("AutoCompleateZipCode", "Configuration")', OnEmpSettlement);
+
+        Compleate("#empLocation", "#Locations", '@Url.Action("AutoCompleateSettlemnt", "Configuration")', OnEmpSettlement);
+
         $("#EditEmployeeDialog").draggable();
 
         $("#empPhone").mask("(999) 999 99 99");
@@ -226,11 +230,28 @@
 
         $("#empFTR").mask("aaa*99999****");
         
-        $("#empZipCode").mask("99999");
-
         var form = $("#EmployeeForm");
         form.validate();
     });
 
+    function OnEmpSettlement(id)
+    {
+        ExecuteAjax('@Url.Action("SettlementSelected","Configuration")', { id: id }, function (response)
+        {
+            $("#empLocation").val(response.Location);
+            $("#empZipCode").val(response.ZipCode);
+
+            $("#empStateId").val(response.StateId);
+
+            $("#empCityId").empty();
+            $("#empCityId").append($('<option></option>').val("").html(""));
+
+            for (var i = 0; i < response.Towns.length; i++) {
+                $("#empCityId").append($('<option></option>').val(response.Towns[i].Value).html(response.Towns[i].Text));
+            }
+
+            $("#empCityId").val(response.TownId);
+        });
+    }
 
 </script>

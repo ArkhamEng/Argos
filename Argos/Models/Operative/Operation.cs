@@ -19,13 +19,11 @@ namespace Argos.Models.Operative
     /// Clase base para operaciones de Transferencia, Compra y venta
     /// </summary>
     [Table("Operation", Schema = "Operative")]
-    public abstract class Operation
+    public abstract class Operation:AuditableEntity
     {
         public int OperationId { get; set; }
 
         public int BranchId { get; set; }
-
-        public int PersonId { get; set; }
 
         public DateTime OperationDate { get; set; }
 
@@ -52,8 +50,6 @@ namespace Argos.Models.Operative
 
         #region Navigation Properties
         public virtual Branch Branch { get; set; }
-
-        public virtual Person Person { get; set; }
 
         public ICollection<OperationDetail> OperationDetails { get; set; }
 

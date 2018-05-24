@@ -8,11 +8,14 @@ namespace Argos.Support
 {
     public enum FileType
     {
-        ProfilePicture
+        ProfilePicture,
+        ProductImage,
+        EmployeeCard,
+        SupplierLogo
     }
     public class FileManager
     {
-        public static string SaveFile(HttpPostedFileBase file, string parentId, FileType type)
+        public static string SaveFileDeprecated(HttpPostedFileBase file, string parentId, FileType type)
         {
             try
             {
@@ -25,6 +28,9 @@ namespace Argos.Support
                 {
                     case FileType.ProfilePicture:
                         serverUrl = Cons.UserPicturePath + "/" + parentId.ToString();
+                        break;
+                    case FileType.ProductImage:
+                        serverUrl = Cons.ProductImagePath + "/" + parentId.ToString();
                         break;
                 }
 
@@ -63,6 +69,9 @@ namespace Argos.Support
                     case FileType.ProfilePicture:
                         serverUrl = Cons.UserPicturePath + "/" + parentId.ToString();
                         break;
+                    case FileType.ProductImage:
+                        serverUrl = Cons.ProductImagePath + "/" + parentId.ToString();
+                        break;
                 }
 
                 var serverPath = HttpContext.Current.Server.MapPath(serverUrl);
@@ -81,7 +90,7 @@ namespace Argos.Support
             }
             catch (System.Exception ex)
             {
-                return null;
+                return string.Empty;
             }
         }
     }

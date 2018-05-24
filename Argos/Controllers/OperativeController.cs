@@ -97,19 +97,19 @@ namespace Argos.Controllers
         {
             //obtengo datos de la cuenta
             var account = db.Accounts.Include(a => a.Client).Include(a => a.AccountFile).Include(a => a.Location).
-                Include(a=> a.AccountType).Include(a => a.Location.City).Include(a => a.Policy).
+                Include(a=> a.AccountType).Include(a => a.Location.Town).Include(a => a.Policy).
                 Include(a => a.Services).FirstOrDefault(a => a.AccountId == id);
 
             //genero el ViewModel para la pagina
             var model                          = new AccountViewModel(account);
             model.AccountTypes                 = db.AccountTypes.ToSelectList();
             model.LocationViewModel.States     = db.States.ToSelectList();
-            model.LocationViewModel.Cities     = new SelectList(new List<City>());
+            model.LocationViewModel.Cities     = new SelectList(new List<Town>());
             model.PolicyViewModel.PolicyStatus = db.OperativeStatus.ToSelectList();
 
             //si la ubicacón tiene datos lleno el combo de ciudades en base al estado
             if (model.LocationViewModel.Location != null)
-                model.LocationViewModel.Cities = db.Cities.Where(c => c.StateId == model.LocationViewModel.Location.City.StateId).ToSelectList();
+                model.LocationViewModel.Cities = db.Towns.Where(c => c.StateId == model.LocationViewModel.Location.Town.StateId).ToSelectList();
             else
                 model.LocationViewModel.Location = new AccountLocation();
 
@@ -122,9 +122,9 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult GetClientAddress(int clientId)
         {
-            LocatableEntity model = db.Persons.Include(c => c.City).FirstOrDefault(c => c.PersonId == clientId);
+            LocatableEntity model = db.Persons.Include(c => c.Town).FirstOrDefault(c => c.PersonId == clientId);
             ViewBag.States = db.States.ToSelectList();
-            ViewBag.Cities = db.Cities.ToSelectList();
+            ViewBag.Cities = db.Towns.ToSelectList();
 
             return PartialView("_AccountAddress", model);
         }

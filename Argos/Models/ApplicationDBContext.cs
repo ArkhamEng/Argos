@@ -30,9 +30,9 @@ namespace Argos.Models
         #region Config
         public DbSet<State> States { get; set; }
 
-        public DbSet<City> Cities { get; set; }
+        public DbSet<Town> Towns { get; set; }
 
-        public DbSet<Locality> Localities { get; set; }
+        public DbSet<Settlement> Settlements { get; set; }
 
         public DbSet<Maker> Makers { get; set; }
 

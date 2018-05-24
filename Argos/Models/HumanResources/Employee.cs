@@ -18,11 +18,11 @@ namespace Argos.Models.HumanResources
 
         [Display(Name ="Sexo")]
         [MaxLength(1)]
-        public char Gender { get; set; }
+        public string Gender { get; set; }
 
         [Display(Name = "Estado civil")]
         [MaxLength(1)]
-        public char MaritalStatus { get; set; }
+        public string MaritalStatus { get; set; }
 
         [Display(Name = "Contratado en")]
         [DataType(DataType.Date)]
@@ -30,6 +30,7 @@ namespace Argos.Models.HumanResources
 
         [Display(Name ="Cumpleaños")]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime BirthDate { get; set; }
 
         [Display(Name="NSS")]
@@ -58,9 +59,12 @@ namespace Argos.Models.HumanResources
 
         public ICollection<CashSession> CashSessions { get; set; }
 
+        public ICollection<Sale> Sales { get; set; }
+
+
         #endregion
     }
 
-  
+
 
 }

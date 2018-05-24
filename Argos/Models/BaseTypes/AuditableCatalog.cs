@@ -35,7 +35,23 @@ namespace Argos.Models.BaseTypes
         public void UnLock()
         {
             this.LockEndDate = null;
-            this.LockUser = null;
+            this.LockUser    = null;
+            this.UpdDate     = DateTime.Now.ToLocal();
+            this.UpdUser     = HttpContext.Current.User.Identity.Name;
+        }
+
+        public void Lock()
+        {
+            this.LockEndDate = DateTime.Now.ToLocal().AddMinutes(Cons.LockDuration);
+            this.LockUser = HttpContext.Current.User.Identity.Name; 
+            this.UpdDate = DateTime.Now.ToLocal();
+            this.UpdUser = HttpContext.Current.User.Identity.Name;
+        }
+
+
+        public AuditableCatalog()
+        {
+            this.IsActive = true;
         }
     }
 }

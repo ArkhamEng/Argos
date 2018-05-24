@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Argos.Support;
+using System.Data.Entity;
+using Argos.ViewModels.Generic;
+using Argos.Models.BusinessEntity;
 
 namespace Argos.Controllers
 {
@@ -12,19 +15,63 @@ namespace Argos.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Configuration
-        public ActionResult Index()
-        {
-            return View();
-        }
+        
 
         #region Common Methods
         [HttpPost]
-        public JsonResult GetCities(int id)
+        public JsonResult GetCities(string id)
         {
-            var cities = db.Cities.Where(c => c.StateId == id).ToSelectList();
+            var cities = db.Towns.Where(c => c.StateId == id).ToSelectList();
 
            return Json(cities);
+        }
+
+        [HttpPost]
+        public JsonResult GetSubCategories(int id)
+        {
+            var cities = db.SubCategories.Where(c => c.CategoryId == id).ToSelectList();
+
+            return Json(cities);
+        }
+
+        [HttpPost]
+        public ActionResult AutoCompleateSettlemnt(string filter)
+        {
+            var clients = db.Settlements.Include(s=> s.Town).
+                Where(c =>  (c.Type +" "+ c.Name).Contains(filter)).
+                OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
+                Select(c => new { Label = "CP " + c.Code + " "  + c.Type + " " + c.Name, Id = c.SettlementId, Value = c.Town.Name});
+
+            return Json(clients);
+        }
+
+        [HttpPost]
+        public ActionResult AutoCompleateCode(string filter)
+        {
+            var clients = db.Settlements.Include(s => s.Town).
+                Where(c => c.Code.Contains(filter)).
+                OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
+                Select(c => new { Label = "CP " + c.Code + " " + c.Type + " " + c.Name, Id = c.SettlementId, Value = c.Town.Name });
+
+
+            return Json(clients);
+        }
+
+        [HttpPost]
+        public ActionResult SettlementSelected(int id)
+        {
+            var settlement = db.Settlements.Include(s => s.Town).FirstOrDefault(c => c.SettlementId == id);
+
+            var model = new
+            {
+                Towns   = db.Towns.Where(t => t.StateId == settlement.Town.StateId).ToSelectList(),
+                Location = settlement.Type + " " + settlement.Name,
+                ZipCode  = settlement.Code,
+                TownId   = settlement.TownId,
+                StateId  = settlement.Town.StateId
+            };
+
+            return Json(model);
         }
 
 

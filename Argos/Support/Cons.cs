@@ -42,14 +42,19 @@ namespace Argos.Support
 
         public const int LockDuration = 10;
 
-    //gender values
-        public const char MaleChar  = 'M';
+
+        public const string NoImage = "../Images/sinimagen.jpg";
+
+        public const string NotApply = "No Aplica";
+
+        //gender values
+        public const string MaleChar  = "M";
 
         public const string Male = "Masculino";
 
         public const string MaleClass = "fa fa-male";
 
-        public const char FemaleChar = 'F';
+        public const string FemaleChar = "F";
 
         public const string Female = "Femenino";
 

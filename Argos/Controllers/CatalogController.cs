@@ -29,13 +29,14 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
-        public ActionResult SearchClients(string ftr, string name, int? stateId, int? cityId,int? id)
+        public ActionResult SearchClients(string ftr, string name, string stateId, string townId,int? id)
         {
             var model = db.Persons.OfType<Client>().Where(c=> (ftr == string.Empty || ftr == null || c.FTR == ftr) 
             && (id==null || c.PersonId == id)
             && (name == string.Empty || name == null || c.Name.Contains(name))
-            && (cityId == null || c.CityId == cityId) && (stateId == null || c.City.StateId == stateId) 
-            && c.IsActive).Include(c => c.City).ToList();
+            && (townId == null || townId == string.Empty || c.TownId == townId)
+            && (stateId == null || stateId == string.Empty || c.Town.StateId == stateId)
+            && c.IsActive).Include(c => c.Town).ToList();
 
             return PartialView("_ClientList",model);
         }
@@ -46,7 +47,7 @@ namespace Argos.Controllers
             var model = new PersonViewModel<Client>();
 
             model.States = db.States.ToSelectList();
-            model.Cities = new List<City>().ToSelectList();
+            model.Cities = new List<Town>().ToSelectList();
 
             return PartialView("_ClientEdit",model);
         }
@@ -79,8 +80,8 @@ namespace Argos.Controllers
             try
             {
                 var model = new PersonViewModel<Client>();
-
-                model.Entity = db.Persons.OfType<Client>().Include(c=> c.City).
+               
+                model.Entity = db.Persons.OfType<Client>().Include(c=> c.Town).
                     FirstOrDefault(c => c.PersonId == id && c.IsActive);
 
                 if (model != null)
@@ -96,8 +97,8 @@ namespace Argos.Controllers
 
                     db.SaveChanges();
 
-                    model.States = new SelectList(db.States,nameof(State.StateId),nameof(State.Name), model.Entity.City.StateId);
-                    model.Cities = db.Cities.Where(c => c.StateId == model.Entity.City.StateId).ToSelectList();
+                    model.States = new SelectList(db.States,nameof(State.StateId),nameof(State.Name), model.Entity.Town.StateId);
+                    model.Cities = db.Towns.Where(c => c.StateId == model.Entity.Town.StateId).ToSelectList();
 
                     return PartialView("_ClientEdit", model);
                 }
@@ -206,8 +207,7 @@ namespace Argos.Controllers
 
                 if(person!=null)
                 {
-                    person.UpdUser = User.Identity.Name;
-                    person.UpdDate = DateTime.Now.ToLocal();
+                    person.UnLock();
                     person.IsActive = false;
 
                     db.Entry(person).Property(c => c.UpdUser).IsModified = true;
@@ -266,13 +266,14 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
-        public ActionResult SearchEmployees(string ftr, string name, int? stateId, int? cityId, int? id)
+        public ActionResult SearchEmployees(string ftr, string name, string stateId,string townId, int? id)
         {
             var model = db.Persons.OfType<Employee>().Include(e=> e.JobPosition).Where(e => (ftr == string.Empty || ftr == null || e.FTR == ftr)
             && (id == null || e.PersonId == id)
             && (name == string.Empty || name == null || e.Name.Contains(name))
-            && (cityId == null || e.CityId == cityId) && (stateId == null || e.City.StateId == stateId)
-            && e.IsActive).Include(c => c.City).Include(e=> e.SystemUser).ToList();
+            && (townId == null || townId == string.Empty || e.TownId == townId)
+            && (stateId == null || stateId == string.Empty || e.Town.StateId == stateId)
+            && e.IsActive).Include(c => c.Town).Include(e=> e.SystemUser).ToList();
 
             return PartialView("_EmployeeList", model);
         }
@@ -281,6 +282,7 @@ namespace Argos.Controllers
         public ActionResult BeginAddEmployee()
         {
             var model = new PersonViewModel<Employee>();
+            model.Entity = new Employee { Gender = Cons.MaleChar, HireDate=DateTime.Now.TodayLocal() };
 
             model.States = db.States.ToSelectList();
             model.JobPositions = db.JobPositions.ToSelectList();
@@ -320,7 +322,7 @@ namespace Argos.Controllers
             {
                 var model = new PersonViewModel<Employee>();
 
-                model.Entity = db.Persons.OfType<Employee>().Include(e => e.City).Include(e=>e.JobPosition).
+                model.Entity = db.Persons.OfType<Employee>().Include(e => e.Town).Include(e=>e.JobPosition).
                                             FirstOrDefault(e => e.PersonId == id && e.IsActive);
 
                 if (model != null)
@@ -336,8 +338,8 @@ namespace Argos.Controllers
 
                     db.SaveChanges();
                 
-                    model.States       = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.Entity.City.StateId);
-                    model.Cities       = db.Cities.Where(c => c.StateId == model.Entity.City.StateId).ToSelectList();
+                    model.States    = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.Entity.Town.StateId);
+                    model.Cities    = db.Towns.Where(c => c.StateId == model.Entity.Town.StateId).ToSelectList();
                     model.JobPositions = db.JobPositions.ToSelectList();
 
                     return PartialView("_EmployeeEdit", model);
@@ -412,13 +414,14 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
-        public ActionResult SearchSuppliers(string ftr, string name, int? stateId, int? cityId, int? id)
+        public ActionResult SearchSuppliers(string ftr, string name, string stateId, string townId, int? id)
         {
-            var model = db.Persons.Where(c => (ftr == string.Empty || ftr == null || c.FTR == ftr)
+            var model = db.Persons.OfType<Supplier>().Where(c => (ftr == string.Empty || ftr == null || c.FTR == ftr)
             && (id == null || c.PersonId == id)
             && (name == string.Empty || name == null || c.Name.Contains(name))
-            && (cityId == null || c.CityId == cityId) && (stateId == null || c.City.StateId == stateId)
-            && c.IsActive).Include(c => c.City).ToList();
+            && (townId == null || townId == string.Empty || c.TownId == townId) 
+            && (stateId == null || stateId == string.Empty || c.Town.StateId == stateId)
+            && c.IsActive).Include(c => c.Town).ToList();
 
             return PartialView("_SupplierList", model);
         }
@@ -428,8 +431,7 @@ namespace Argos.Controllers
         {
             var model = new PersonViewModel<Supplier>();
 
-            ViewBag.States = db.States.ToSelectList();
-            ViewBag.Cities = new List<City>().ToSelectList();
+            model.States = db.States.ToSelectList();
 
             return PartialView("_SupplierEdit", model);
         }
@@ -468,7 +470,7 @@ namespace Argos.Controllers
             {
                 var model = new PersonViewModel<Supplier>();
                     
-                 model.Entity =  db.Persons.OfType<Supplier>().Include(s => s.City).FirstOrDefault(s => s.PersonId == id && s.IsActive);
+                 model.Entity =  db.Persons.OfType<Supplier>().Include(s => s.Town).FirstOrDefault(s => s.PersonId == id && s.IsActive);
 
                 if (model != null)
                 {
@@ -483,8 +485,8 @@ namespace Argos.Controllers
 
                     db.SaveChanges();
 
-                    model.States = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.Entity.City.StateId);
-                    model.Cities = db.Cities.Where(c => c.StateId == model.Entity.City.StateId).ToSelectList();
+                    model.States = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.Entity.Town.StateId);
+                    model.Cities = db.Towns.Where(c => c.StateId == model.Entity.Town.StateId).ToSelectList();
 
                     return PartialView("_SupplierEdit", model);
                 }
@@ -516,8 +518,7 @@ namespace Argos.Controllers
         {
             try
             {
-                supplier.UpdDate = DateTime.Now.ToLocal();
-                supplier.UpdUser = User.Identity.Name;
+                supplier.UnLock();
 
                 db.Entry(supplier).State = EntityState.Modified;
                 db.Entry(supplier).Property(c => c.InsDate).IsModified = false;
@@ -613,8 +614,7 @@ namespace Argos.Controllers
             }
             else
             {
-                model.LockUser    = User.Identity.Name;
-                model.LockEndDate = DateTime.Now.ToLocal().AddMinutes(Cons.LockDuration);
+                model.Lock();
                 return null;
             }
               

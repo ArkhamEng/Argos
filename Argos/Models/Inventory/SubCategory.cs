@@ -10,6 +10,7 @@ namespace Argos.Models.Inventory
     {
         public int SubCategoryId { get; set; }
 
+        [Display(Name = "Categoría")]
         public int CategoryId { get; set; }
 
         [Display(Name="Nombre")]
