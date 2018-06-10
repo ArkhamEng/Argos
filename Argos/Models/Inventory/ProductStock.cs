@@ -23,17 +23,21 @@ namespace Argos.Models.Inventory
         public double Quantity { get; set; }
 
         [Column(Order = 4)]
+        [Display(Name ="Cantidad máxima")]
         public double MaxQuantity { get; set; }
 
         [Column(Order = 5)]
+        [Display(Name = "Cantidad mínima")]
         public double MinQuantity { get; set; }
 
         [Column(Order = 6)]
         [MaxLength(10)]
+        [Display(Name = "Fila")]
         public string Shelf { get; set; }
 
         [Column(Order = 7)]
         [MaxLength(10)]
+        [Display(Name = "Anaquel")]
         public string Bin { get; set; }
 
 

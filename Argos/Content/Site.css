@@ -29,7 +29,8 @@ textarea {
     overflow: hidden;
 }
 
-    .btn-file input[type=file] {
+.btn-file input[type=file] 
+{
         position: absolute;
         top: 0;
         right: 0;
@@ -43,22 +44,25 @@ textarea {
         background: white;
         cursor: inherit;
         display: block;
-    }
+}
 
 /*****PANEL HEADING OVERRIDE*****/
-.panel-warning > .panel-heading {
+.panel-warning > .panel-heading 
+{
     color: #fff;
     background-color: #ffbb33;
     border-color: #ffbb33;
 }
 
-.panel-success > .panel-heading {
+.panel-success > .panel-heading 
+{
     color: #fff;
     background-color: #5cb85c;
     border-color: #5cb85c;
 }
 
-.panel-danger > .panel-heading {
+.panel-danger > .panel-heading 
+{
     color: #fff;
     background-color: #c9302c;
     border-color: #c9302c;
@@ -76,17 +80,19 @@ textarea {
 }
 
 /***************DATA TABLES**********************/
-table.TablePrimary {
+table.TablePrimary 
+{
     width: 100%;
     clear: both;
 }
 
-    table.TablePrimary thead th {
+table.TablePrimary thead th 
+{
         border-bottom: 1px solid transparent;
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
         border-color: #337ab7;
-    }
+}
 
 .dataTables_length {
     background-color: #337ab7;
@@ -200,7 +206,7 @@ a[aria-expanded="true"]::before {
 {
     #sidebar 
     {
-        margin-left: -200px;
+        margin-left: -156px;
     }
 
     #sidebar.active 
@@ -306,9 +312,8 @@ ul ul a {
     border-color: #c9302c;
 }
 
-@media print {
-
-
+@media print 
+{
     .Note table {
         font-size: 8pt !important;
         font-family: Tahoma;
@@ -318,8 +323,6 @@ ul ul a {
         font-size: 10pt !important;
         font-family: Arial;
     }
-
-
 
     .BkPrint {
         color: #FFFFFF !important;

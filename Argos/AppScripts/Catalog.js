@@ -1,5 +1,5 @@
 ﻿//Muestra la ventana de Creación o Edición (si se manda un Id) de clientes
-function ShowClientModal(OnCompleate, CloseCallBack,id)
+function ShowClientModal(OnCompleate, CloseCallBack, id)
 {
     ShowLoading('static');
 
@@ -7,17 +7,15 @@ function ShowClientModal(OnCompleate, CloseCallBack,id)
     var url = "/Catalog/BeginAddClient/";
     var text = '<span class="fa fa-users"></span> Agregar nuevo cliente';
 
-    if (parseInt(id) > 0)
-    {
-        param  = { id: id }
+    if (parseInt(id) > 0) {
+        param = { id: id }
         url = "/Catalog/BeginUpdateClient/";
         text = '<span class="fa fa-users"></span> Editar datos del cliente';
     }
-        
+
     ExecuteAjax(url, param, function (response)
     {
-        HideLoading(function ()
-        {
+        HideLoading(function () {
             if (!$.isPlainObject(response))
             {
                 $("#divCatalogModal").html(response);
@@ -29,21 +27,16 @@ function ShowClientModal(OnCompleate, CloseCallBack,id)
                 $("#EditClientLoading").children().hide();
 
                 //evento del boton save
-                $("#EditClientSave").off('click').click(function (e)
-                {
+                $("#EditClientSave").off('click').click(function (e) {
                     SaveClient(OnCompleate);
                 });
 
                 //evento del boton cancel
-                $("#EditClientCancel").off('click').click(function (e)
-                {
-                    $('#EditClientModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
-                    {
+                $("#EditClientCancel").off('click').click(function (e) {
+                    $('#EditClientModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
                         //si el se tiene un id, desbloqueo el registro para liberarlo
-                        if (parseInt(id) > 0)
-                        {
-                            ExecuteAjax('/Catalog/UnLockClient/', { id: id }, function (response)
-                            {
+                        if (parseInt(id) > 0) {
+                            ExecuteAjax('/Catalog/UnLockClient/', { id: id }, function (response) {
                                 //no hago nada
                             });
                         }
@@ -71,8 +64,7 @@ function ShowClientModal(OnCompleate, CloseCallBack,id)
 }
 
 
-function SaveClient(OnCompleate)
-{
+function SaveClient(OnCompleate) {
     var form = $("#ClientForm");
 
     if (!form.valid())
@@ -98,21 +90,18 @@ function SaveClient(OnCompleate)
         url = "/Catalog/UpdateClient/";
 
 
-    ExecuteAjax(url, { client: client }, function (response)
-    {
+    ExecuteAjax(url, { client: client }, function (response) {
         if (OnCompleate != null)
             OnCompleate(response.Id);
 
-        $('#EditClientModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
-        {
+        $('#EditClientModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
             //muestro mensaje en basa al response, al ocultar la modal
-            ShowMessage(response.Header, response.Body, response.Result, null, function ()
-            {
+            ShowMessage(response.Header, response.Body, response.Result, null, function () {
                 //si no se completa la operación vuelvo a sacar la modal
-                if(response.Result != 'success')
+                if (response.Result != 'success')
                     $("#EditClientModal").modal({ backdrop: 'static' });
-                //de lo contrario la elimino por completo del html
-                else                    
+                    //de lo contrario la elimino por completo del html
+                else
                     $("#divCatalogModal").html("");
 
             }, 'static');
@@ -124,8 +113,7 @@ function SaveClient(OnCompleate)
 
 
 //Muestra la ventana de Creación o Edición (si se manda un Id) de empleados
-function ShowEmployeeModal(OnCompleate, CloseCallBack, id)
-{
+function ShowEmployeeModal(OnCompleate, CloseCallBack, id) {
     ShowLoading('static');
 
     var param = {};
@@ -138,12 +126,9 @@ function ShowEmployeeModal(OnCompleate, CloseCallBack, id)
         text = '<span class="fa fa-black-tie"></span> Editar datos del empleado';
     }
 
-    ExecuteAjax(url, param, function (response)
-    {
-        HideLoading(function ()
-        {
-            if (!$.isPlainObject(response))
-            {
+    ExecuteAjax(url, param, function (response) {
+        HideLoading(function () {
+            if (!$.isPlainObject(response)) {
                 $("#divCatalogModal").html(response);
 
                 //coloco el header
@@ -153,16 +138,13 @@ function ShowEmployeeModal(OnCompleate, CloseCallBack, id)
                 $("#EditEmployeeLoading").children().hide();
 
                 //evento del boton save
-                $("#EditEmployeeSave").off('click').click(function (e)
-                {
+                $("#EditEmployeeSave").off('click').click(function (e) {
                     SaveEmployee(OnCompleate);
                 });
 
                 //evento del boton cancel
-                $("#EditEmployeeCancel").off('click').click(function (e)
-                {
-                    $('#EditEmployeeModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
-                    {
+                $("#EditEmployeeCancel").off('click').click(function (e) {
+                    $('#EditEmployeeModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
                         //si el se tiene un id, desbloqueo el registro para liberarlo
                         if (parseInt(id) > 0) {
                             ExecuteAjax('/Catalog/UnLockPerson/', { id: id }, function (response) {
@@ -192,8 +174,7 @@ function ShowEmployeeModal(OnCompleate, CloseCallBack, id)
     });
 }
 
-function SaveEmployee(OnCompleate)
-{
+function SaveEmployee(OnCompleate) {
     var form = $("#EmployeeForm");
 
     if (!form.valid())
@@ -204,14 +185,14 @@ function SaveEmployee(OnCompleate)
 
     //hago visible el gift loading
     $("#EditEmployeeLoading").show();
-  
+
     var employee = {
         Name: $("#empName").val(), JobPositionId: $("#empJobPositionId").val(), FTR: $("#empFTR").val(), Street: $("#empStreet").val(),
         Commission: $("#empCommission").val(), InNumber: $("#empInNumber").val(), OutNumber: $("#empOutNumber").val(), Location: $("#empLocation").val(),
         Email: $("#empEmail").val(), SSN: $("#empSSN").val(), ZipCode: $("#empZipCode").val(), Phone: $("#empPhone").val(), BirthDate: $("#empBirthDate").val(),
         PersonId: $("#empEmployeeId").val(), TownId: $("#empCityId").val(), Gender: $("input[name='Entity.Gender']:checked").val(), HireDate: $("#empHireDate").val()
     };
-    
+
     //URL para agregar
     var url = "/Catalog/AddEmployee/";
 
@@ -219,17 +200,14 @@ function SaveEmployee(OnCompleate)
     if (parseInt(employee.PersonId) > 0)
         url = "/Catalog/UpdateEmployee/";
 
- 
-    ExecuteAjax(url, { employee: employee }, function (response)
-    {
+
+    ExecuteAjax(url, { employee: employee }, function (response) {
         if (OnCompleate != null)
             OnCompleate(response.Id);
 
-        $('#EditEmployeeModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
-        {
+        $('#EditEmployeeModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
             //muestro mensaje en basa al response, al ocultar la modal
-            ShowMessage(response.Header, response.Body, response.Result, null, function ()
-            {
+            ShowMessage(response.Header, response.Body, response.Result, null, function () {
                 //si no se completa la operación vuelvo a sacar la modal
                 if (response.Result != 'success')
                     $("#EditEmployeeModal").modal({ backdrop: 'static' });
@@ -245,27 +223,22 @@ function SaveEmployee(OnCompleate)
 }
 
 //Muestra la ventana de Creación o Edición (si se manda un Id) de proveedores
-function ShowSupplierModal(OnCompleate, CloseCallBack, id)
-{
+function ShowSupplierModal(OnCompleate, CloseCallBack, id) {
     ShowLoading('static');
 
     var param = {};
     var url = "/Catalog/BeginAddSupplier/";
     var text = '<span class="fa fa-handshake-o"></span> Agregar nuevo proveedor';
 
-    if (parseInt(id) > 0)
-    {
+    if (parseInt(id) > 0) {
         param = { id: id }
         url = "/Catalog/BeginUpdateSupplier/";
         text = '<span class="fa fa-handshake-o"></span> Editar datos del proveedor';
     }
 
-    ExecuteAjax(url, param, function (response)
-    {
-        HideLoading(function ()
-        {
-            if (!$.isPlainObject(response))
-            {
+    ExecuteAjax(url, param, function (response) {
+        HideLoading(function () {
+            if (!$.isPlainObject(response)) {
                 $("#divCatalogModal").html(response);
 
                 //coloco el header
@@ -280,14 +253,11 @@ function ShowSupplierModal(OnCompleate, CloseCallBack, id)
                 });
 
                 //evento del boton cancel
-                $("#EditSupplierCancel").unbind('click').click(function (e)
-                {
-                    $('#EditSupplierModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
-                    {
+                $("#EditSupplierCancel").unbind('click').click(function (e) {
+                    $('#EditSupplierModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
                         //si el se tiene un id, desbloqueo el registro para liberarlo
                         if (parseInt(id) > 0) {
-                            ExecuteAjax('/Catalog/UnLockPerson/', { id: id }, function (response)
-                            {
+                            ExecuteAjax('/Catalog/UnLockPerson/', { id: id }, function (response) {
                                 //no hago nada
                             });
                         }
@@ -314,8 +284,7 @@ function ShowSupplierModal(OnCompleate, CloseCallBack, id)
 }
 
 
-function SaveSupplier(OnCompleate)
-{
+function SaveSupplier(OnCompleate) {
     var form = $("#SupplierForm");
 
     if (!form.valid())
@@ -342,16 +311,13 @@ function SaveSupplier(OnCompleate)
         url = "/Catalog/UpdateSupplier/";
 
 
-    ExecuteAjax(url, { supplier: supplier }, function (response)
-    {
+    ExecuteAjax(url, { supplier: supplier }, function (response) {
         if (OnCompleate != null)
             OnCompleate(response.Id);
 
-        $('#EditSupplierModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
-        {
+        $('#EditSupplierModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
             //muestro mensaje en basa al response, al ocultar la modal
-            ShowMessage(response.Header, response.Body, response.Result, null, function ()
-            {
+            ShowMessage(response.Header, response.Body, response.Result, null, function () {
                 //si no se completa la operación vuelvo a sacar la modal
                 if (response.Result != 'success')
                     $("#EditSupplierModal").modal({ backdrop: 'static' });
@@ -366,9 +332,8 @@ function SaveSupplier(OnCompleate)
     });
 }
 
-/***********************************************************
-********** MUESTRA LA VENTANA DE CAPTURA DE PRODUCTO *******
-***********************************************************/
+
+//MUESTRA LA VENTANA DE CAPTURA DE PRODUCTO
 function ShowProductModal(OnCompleate, CloseCallBack, id)
 {
     ShowLoading('static');
@@ -377,8 +342,7 @@ function ShowProductModal(OnCompleate, CloseCallBack, id)
     var url = "/Catalog/BeginAddProduct/";
     var text = '<span class="fa fa-users"></span> Agregar nuevo Producto';
 
-    if (parseInt(id) > 0)
-    {
+    if (parseInt(id) > 0) {
         param = { id: id }
         url = "/Catalog/BeginUpdateProduct/";
         text = '<span class="fa fa-users"></span> Editar datos del Producto';
@@ -392,7 +356,7 @@ function ShowProductModal(OnCompleate, CloseCallBack, id)
             {
                 $("#divCatalogModal").html(response);
 
-                $("#divCatalogModal").on("documentReady",OnCompleate);
+                SubmitProduct(OnCompleate);
 
                 //coloco el header
                 $("#EditProductHeader").html(text);
@@ -400,12 +364,6 @@ function ShowProductModal(OnCompleate, CloseCallBack, id)
                 //oculto el loading de la modal
                 $("#EditProductLoading").children().hide();
 
-             
-                $("#btnProductHidden").off('click').click(function (e,data)
-                {
-                    console.log(data);
-                    OnCompleate(data);
-                });
 
                 //evento del boton cancel
                 $("#EditProductCancel").off('click').click(function (e)
@@ -417,7 +375,8 @@ function ShowProductModal(OnCompleate, CloseCallBack, id)
                         {
                             ExecuteAjax('/Catalog/UnLockProduct/', { id: id }, function (response)
                             {
-                                //no hago nada
+                                if (response.Result != 'success')
+                                    alert("Ocurrio un error al desbloquear el producto");
                             });
                         }
 
@@ -441,4 +400,87 @@ function ShowProductModal(OnCompleate, CloseCallBack, id)
                 ShowMessage(response.Result, response.Message, null, null, 'static');
         });
     });
+
+    function SubmitProduct(SuccessCallBack)
+    {
+        $("#frmProducts").off('submit').on('submit', function (e)
+        {
+            e.preventDefault();
+
+            var $form = $(e.target),
+            formData = new FormData(),
+            params = $form.serializeArray(),
+            files = [];
+
+            $('#tbImages tr').each(function (index, row)
+            {
+                var input = $(row).find('[type="file"]');
+
+                if (input[0] != undefined)
+                {
+                    var f = input[0].files[0];
+                    files.push(f);
+                }
+            });
+
+            //ya que el tab container omite la validación del tab q no se muestra
+            //checo el tab activo y si es necesario habilito el que contine los campos a validar
+            if (needActivate)
+            {
+                $("#general").addClass("active");
+
+                if (!$form.valid())
+                {
+                    $("#general").removeClass("active");
+                    ShowNotify("Error de validación", "danger", "El formulario contiene errores, por favor verifica");
+                    return;
+                }
+            }
+            
+            if (!$form.valid())
+            {
+                ShowNotify("Error de validación", "danger", "El formulario contiene errores, por favor verifica",false);
+                return;
+            }
+                
+
+            $("#EditProductContent").hide();
+            $("#EditProductLoading").children().show();
+
+            //agrego todos los campos del formulario
+            $.each(params, function (i, val)
+            {
+                formData.append(val.name, val.value);
+            });
+
+            //agrego las imagenes nuevas
+            $.each(files, function (i, file)
+            {
+                formData.append('NewImages[' + i + ']', file);
+            });
+
+            //agrego los id, de las imagenes a borrar
+            $.each(ToDelete, function (i, id)
+            {
+                formData.append('ToDelete[' + i + ']', id);
+            });
+
+            $.ajax({
+                url: $form.attr('action'),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function (result)
+                {
+                    $("#EditProductModal").off("hidden.bs.modal").on("hidden.bs.modal", function ()
+                    {
+                        SuccessCallBack(result);
+                    });
+                    $("#EditProductModal").modal('hide');
+                }
+            });
+        });
+    }
 }

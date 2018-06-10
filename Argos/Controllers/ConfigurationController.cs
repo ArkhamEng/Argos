@@ -21,7 +21,7 @@ namespace Argos.Controllers
         [HttpPost]
         public JsonResult GetCities(string id)
         {
-            var cities = db.Towns.Where(c => c.StateId == id).ToSelectList();
+            var cities = db.Towns.Where(c => c.StateId == id).OrderBy(c => c.Name).ToSelectList();
 
            return Json(cities);
         }
@@ -29,7 +29,7 @@ namespace Argos.Controllers
         [HttpPost]
         public JsonResult GetSubCategories(int id)
         {
-            var cities = db.SubCategories.Where(c => c.CategoryId == id).ToSelectList();
+            var cities = db.SubCategories.Where(c => c.CategoryId == id).OrderBy(c => c.Name).ToSelectList();
 
             return Json(cities);
         }

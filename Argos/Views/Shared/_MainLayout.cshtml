@@ -1,47 +1,40 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Argos v.2.0.0</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
 
+    @Styles.Render("~/bundles/Styles")
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    
+    @Scripts.Render("~/bundles/Jquery")
+   
 
     @Scripts.Render("~/bundles/custom")
 
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    
+
+
+
     @RenderSection("scripts", required: false)
 
-    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-   
-    @*<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
-    <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>*@
+    <link href="" rel="stylesheet" />
+  
 </head>
-<body>
+<body class="nav-md">
     @RenderBody()
 </body>
 </html>
+@Scripts.Render("~/bundles/Scripts")
 
-<script>
-    
-
-    function ToggleMenu()
-    {
-        console.log("Togleando");
-
-        $('body').toggleClass('fixed-nav');
-        $('nav').toggleClass('fixed-top static-top');
-
-    }
+@Scripts.Render("~/bundles/DataTables")
 
 
-</script>
+
+
+@Scripts.Render("~/bundles/modernizr")

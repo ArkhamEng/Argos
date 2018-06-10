@@ -1,4 +1,5 @@
 ﻿using Argos.Models.BaseTypes;
+using Argos.Support;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,41 +11,41 @@ namespace Argos.ViewModels.Generic
     {
         protected AuditableCatalog Catalog;
 
-        public virtual bool ActionsAllowed
+
+        public virtual string EditButton
         {
             get
             {
-                return (HttpContext.Current.User.IsInRole("Capturista") ||
-                        HttpContext.Current.User.IsInRole("Supervisor"));
+                if (true || (HttpContext.Current.User.IsInRole("Capturista") && (this.Catalog != null && this.Catalog.IsActive)))
+                    return Styles.BtnEdit;
+                else
+                    return Styles.BtnEditDisabled;
             }
         }
 
-        public virtual bool CanEdit
+        public virtual string DeleteButton
         {
             get
             {
-                return (HttpContext.Current.User.IsInRole("Capturista") &&
-                        (this.Catalog != null && this.Catalog.IsActive));
+                if ((HttpContext.Current.User.IsInRole("Capturista") && (this.Catalog != null && this.Catalog.IsActive)))
+                    return Styles.BtnDelete;
+                else
+                    return Styles.BtnDeletetDisabled;
             }
         }
 
-        public virtual bool CanDelete
+
+        public virtual string ActivateButton
         {
             get
             {
-                return (HttpContext.Current.User.IsInRole("Capturista") &&
-                        (this.Catalog != null && this.Catalog.IsActive));
+                if ((HttpContext.Current.User.IsInRole("Supervisor") && (this.Catalog != null && !this.Catalog.IsActive)))
+                    return Styles.BtnActivate;
+                else
+                    return Styles.BtnActivateHidden;
             }
         }
 
-        public virtual bool CanActivate
-        {
-            get
-            {
-                return (HttpContext.Current.User.IsInRole("Supervisor") &&
-                        (this.Catalog != null && !this.Catalog.IsActive));
-            }
-        }
 
     }
 }

@@ -65,7 +65,7 @@ namespace Argos.Support
 
          public static int GetBranchId(this IIdentity user)
         {
-            return user.GetBranchSession().Id;
+            return 2;//user.GetBranchSession().Id;
         }
 
         public static JResponse GetBranchSession(this IIdentity user)

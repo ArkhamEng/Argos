@@ -42,12 +42,12 @@ namespace Argos.Models.HumanResources
 
         public string GenderClass
         {
-            get { return this.Gender == Cons.MaleChar ? Cons.MaleClass : Cons.FemaleClass; }
+            get { return this.Gender == Cons.MaleChar ? Icons.Male : Icons.Female; }
         }
 
         public string GenderName
         {
-            get { return this.Gender == Cons.MaleChar ? Cons.Male : Cons.Female; }
+            get { return this.Gender == Cons.MaleChar ? Cons.MaleLabel : Cons.FemaleLabel; }
         }
 
         #region Navigation Properties

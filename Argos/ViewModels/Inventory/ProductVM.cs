@@ -43,6 +43,9 @@ namespace Argos.ViewModels.Inventory
             }
         }
 
+        /// <summary>
+        /// indica la clase a aplicar sobre la fila en el catálogo
+        /// </summary>
         public string RowState
         {
             get
@@ -57,12 +60,42 @@ namespace Argos.ViewModels.Inventory
             }
         }
 
-        
+        /// <summary>
+        /// Espacios de imagenes disponibles
+        /// </summary>
+        public int Slots
+        {
+            get { return (Cons.ImagesPerProduct - this.Images.Count); }
+        }
+
+        /// <summary>
+        /// Imagenes guardadas en base de datos
+        /// </summary>
+        public List<ProductImage> Images
+        {
+            get
+            {
+                return (this.Product.ProductImages ?? new List<ProductImage>()).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Ids de imagenes a borrar de la base de datos
+        /// </summary>
+        public List<int> ToDelete { get; set; }
+
+        /// <summary>
+        /// Nuevas imagenes para guardar
+        /// </summary>
+        public List<HttpPostedFileBase> NewImages { get; set; }
+
         public ProductVM ()
         {
             this.Product        = new Product();
             this.Complement     = new ProductComplement();
-            this.Stock          = new ProductStock();            
+            this.Stock          = new ProductStock();
+            this.ToDelete       = new List<int>();
+            this.NewImages      = new List<HttpPostedFileBase>();
         }
 
         public ProductVM(ApplicationDbContext db)
@@ -70,6 +103,7 @@ namespace Argos.ViewModels.Inventory
             this.Product = new Product();
             this.Complement = new ProductComplement(db);
             this.Stock = new ProductStock();
+            this.Product.ProductImages = new List<ProductImage>();
         }
     }
 
@@ -99,9 +133,9 @@ namespace Argos.ViewModels.Inventory
 
         public ProductComplement(ApplicationDbContext db)
         {
-            this.Categories = db.Categories.ToSelectList();
-            this.Makers = db.Makers.ToSelectList();
-            this.Units = db.MeasureUnits.ToSelectList();
+            this.Categories = db.Categories.OrderBy(c=> c.Name).ToSelectList();
+            this.Makers     = db.Makers.OrderBy(c => c.Name).ToSelectList();
+            this.Units      = db.MeasureUnits.OrderBy(c => c.Name).ToSelectList();
 
             this.Models = new List<ISelectable>().ToSelectList();
             this.SubCategories = new List<ISelectable>().ToSelectList();

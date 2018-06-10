@@ -44,6 +44,7 @@ namespace Argos.Models.Inventory
         [Column(Order =6)]
         [MaxLength(30)]
         [Required]
+        [Display(Name = "Clave SAT")]
         public string SatCode { get; set; }
 
         [Column(Order = 7)]
@@ -120,5 +121,11 @@ namespace Argos.Models.Inventory
         public ICollection<ProductStock> ProductStocks { get; set; }
 
         #endregion
+
+        public Product()
+        {
+            this.ProductImages = new List<ProductImage>();
+            this.ProductStocks = new List<ProductStock>();
+        }
     }
 }

@@ -2,21 +2,23 @@
 @using Argos.Support
 
 
-<table id="tbProducts" class="table table-hover text-uppercase">
-    <thead class="panel-heading">
-        <tr hidden="hidden">
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+    <table id="tbProducts" class="table  text-uppercase">
+        <thead>
+            <tr hidden="hidden">
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
         @foreach (var items in Model)
         {
-            <tr class='@items.RowState'>
-                <td>
-                    <div class="col-md-2 col-xs-4" style="vertical-align:central">
+                <tr class='@items.RowState'>
+                    <td class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
                         <img src='@items.ImagePath' class="img-responsive" />
-                    </div>
-                    <div class='col-md-8  col-xs-6' onclick="Detail(@items.Product.ProductId,@items.Product.IsActive)" onmouseover="SetPointer(this)">
+                    </td>
+                    <td class="col-lg-9 col-md-9 col-xs-6 col-sm-6" onclick="Detail(@items.Product.ProductId,@items.Product.IsActive)" 
+                        onmouseover="SetPointer(this)">
                         <h4>
                             <label>@items.Product.Code</label>
                         </h4>
@@ -30,7 +32,7 @@
                             <span class="fa fa-registered"></span>
                         </h6>
 
-                        @if (items.Product.IsStockable)
+                        @if (items.Product.IsForSale)
                         {
                             <h4>
                                 <label>
@@ -41,6 +43,22 @@
                                     @Html.DisplayFor(model => items.Product.LowestPrice)
                                 </label>
                             </h4>
+                        }
+                        else
+                        {
+                           <label class="text-danger">No se aplica en venta</label><br />
+                        }
+
+                        @if(!items.Product.IsStockable)
+                        {
+                            <label class="text-warning">No Aplica Inventario</label><br />
+                            <h5>
+                                <span class="fa fa-cubes"></span>
+                                Unidad: @items.Product.MeasureUnitId
+                            </h5>
+                        }
+                        else
+                        {
                             <h5>
                                 <span class="badge bg-info">
                                     @items.Stock.Quantity
@@ -50,7 +68,7 @@
                                 Unidad: @items.Product.MeasureUnitId
                             </h5>
                             <h6>
-                                Estante @items.Stock.Shelf
+                                Estante  @items.Stock.Shelf
                                 <span class="fa fa-bars"></span>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -58,43 +76,28 @@
                                 <span class="fa fa-archive"></span>
                             </h6>
                         }
-                      
-                    </div>
+                    </td>
+                    <td class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                        <button class="@items.EditButton" title="Editar datos de producto"
+                                onclick="BeginUpdateProduct('@items.Product.ProductId')">
+                            <span class="@Icons.Edit"></span>
+                        </button>
 
-                    @if (!items.ActionsAllowed)
-                    {
-                        <div class="col-md-2 btn-group-vertical hidden-xs hidden-sm" style="vertical-align:central">
+                        <button class="@items.DeleteButton" title="Eliminar producto"
+                                onclick="BeginDelete('@items.Product.ProductId')">
+                            <span class="@Icons.Delete"></span>
+                        </button>
 
-                            @if (!items.CanEdit)
-                            {
-                                <button class="btn btn-warning" title="Editar datos de producto"
-                                        onclick="BeginUpdateProduct('@items.Product.ProductId')">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                </button>
-                            }
+                        <button class="@items.ActivateButton" title="Reactivar producto"
+                                onclick="BeginActivate('@items.Product.ProductId')">
+                            <span class="@Icons.Activate"></span>
+                        </button>
 
-                            @if (items.CanDelete)
-                            {
-                                <button class="btn btn-danger" title="Eliminar producto"
-                                        onclick="BeginDelete('@items.Product.ProductId')">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
-                            }
-
-                            @if (items.CanActivate)
-                            {
-                                <button class="btn btn-success" title="Reactivar producto"
-                                        onclick="BeginActivate('@items.Product.ProductId')">
-                                    <span class="fa fa-recycle"></span>
-                                </button>
-                            }
-                        </div>
-                    }
-                </td>
-            </tr>
+                    </td>
+                </tr>
         }
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
 
 
@@ -102,26 +105,23 @@
 <script>
     var idProduct = 0;
 
-    $(document).ready(function ()
-    {
-        //$.fn.dataTable.ext.classes.sPageButton = 'btn btn-primary';
-
+    $(document).ready(function () {
+       //$.fn.dataTable.ext.classes.sPageButton = 'btn btn-success';
+        
         Paginate("#tbProducts", 8, false)
 
-        //$("#tbProducts_previous").removeClass("btn btn-primary");
-        //$("#tbProducts_next").removeClass("btn btn-primary");
+        //$("#tbProducts_previous").removeClass("btn btn-success");
+        //$("#tbProducts_next").removeClass("btn btn-success");
     });
 
-    function BeginDelete(id, description)
-    {
+    function BeginDelete(id, description) {
         idProduct = id;
         var hdr = "Eliminar Producto!";
         var body = "Esta seguro que deseas eliminar el producto del catálogo " + description;
         ShowMessage(hdr, body, 'confirm', DeleteProduct, null, 'static');
     }
 
-    function DeleteProduct()
-    {
+    function DeleteProduct() {
         ExecuteAjax('@Url.Action("DeleteProduct","Catalog")', { id: idProduct }, function (response) {
             HideLoading(function () {
                 if (response.Result == '@Cons.ResponseSuccess') {

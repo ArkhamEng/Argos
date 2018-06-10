@@ -25,8 +25,8 @@
                                     @Html.LabelFor(model => model.Entity.Name, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                        @Html.EditorFor(model => model.Entity.Name, 
-                                       new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocompleate="off", id="empName" } })
+                                        @Html.EditorFor(model => model.Entity.Name,
+                                       new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocompleate = "off", id = "empName" } })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.Name, "", new { @class = "text-danger" })
                                 </div>
@@ -34,8 +34,8 @@
                                     @Html.LabelFor(model => model.Entity.FTR, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
-                                        @Html.EditorFor(model => model.Entity.FTR, 
-                                       new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocompleate = "off", id="empFTR" } })
+                                        @Html.EditorFor(model => model.Entity.FTR,
+                                       new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocompleate = "off", id = "empFTR" } })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.FTR, "", new { @class = "text-danger" })
                                 </div>
@@ -43,8 +43,8 @@
                                     @Html.LabelFor(model => model.Entity.JobPositionId, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-briefcase"></i></span>
-                                        @Html.DropDownListFor(model => model.Entity.JobPositionId, Model.JobPositions, "", 
-                                       htmlAttributes: new { @class = "form-control input-sm", id="empJobPositionId" })
+                                        @Html.DropDownListFor(model => model.Entity.JobPositionId, Model.JobPositions, "",
+                                       htmlAttributes: new { @class = "form-control input-sm", id = "empJobPositionId" })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.JobPositionId, "", new { @class = "text-danger" })
                                 </div>
@@ -53,8 +53,8 @@
                                     @Html.LabelFor(model => model.Entity.Commission, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-percent"></i></span>
-                                        @Html.EditorFor(model => model.Entity.Commission, 
-                                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off", id="empCommission" } })
+                                        @Html.EditorFor(model => model.Entity.Commission,
+                                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off", id = "empCommission" } })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.Commission, "", new { @class = "text-danger" })
                                 </div>
@@ -63,8 +63,8 @@
                                     @Html.LabelFor(model => model.Entity.SSN, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-medkit"></i></span>
-                                        @Html.EditorFor(model => model.Entity.SSN, 
-                                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off", id="empSSN" } })
+                                        @Html.EditorFor(model => model.Entity.SSN,
+                                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off", id = "empSSN" } })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.SSN, "", new { @class = "text-danger" })
                                 </div>
@@ -73,8 +73,8 @@
                                     @Html.LabelFor(model => model.Entity.Email, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-at"></i></span>
-                                        @Html.EditorFor(model => model.Entity.Email, 
-                                       new { htmlAttributes = new { @class = "form-control text-lowercase input-sm", autocompleate = "off", id="empEmail" } })
+                                        @Html.EditorFor(model => model.Entity.Email,
+                                       new { htmlAttributes = new { @class = "form-control text-lowercase input-sm", autocompleate = "off", id = "empEmail" } })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.Email, "", new { @class = "text-danger" })
                                 </div>
@@ -82,8 +82,8 @@
                                     @Html.LabelFor(model => model.Entity.Phone, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                                        @Html.EditorFor(model => model.Entity.Phone, 
-                                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off", id="empPhone" } })
+                                        @Html.EditorFor(model => model.Entity.Phone,
+                                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off", id = "empPhone" } })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.Phone, "", new { @class = "text-danger" })
                                 </div>
@@ -92,8 +92,8 @@
                                     @Html.LabelFor(model => model.Entity.BirthDate, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-birthday-cake"></i></span>
-                                        @Html.EditorFor(model => model.Entity.BirthDate, 
-                                       new { htmlAttributes = new { @class = "form-control input-sm", id="empBirthDate" } })
+                                        @Html.EditorFor(model => model.Entity.BirthDate,
+                                       new { htmlAttributes = new { @class = "form-control input-sm", id = "empBirthDate" } })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.BirthDate, "", new { @class = "text-danger" })
                                 </div>
@@ -146,8 +146,8 @@
                                     @Html.LabelFor(model => model.Entity.TownId, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-map"></i></span>
-                                        @Html.DropDownListFor(model => model.Entity.TownId, Model.Cities, "", 
-                                       htmlAttributes: new { @class = "form-control input-sm", id="empCityId" })
+                                        @Html.DropDownListFor(model => model.Entity.TownId, Model.Cities, "",
+                                       htmlAttributes: new { @class = "form-control input-sm", id = "empCityId" })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.Town.TownId, "", new { @class = "text-danger" })
                                 </div>
@@ -174,8 +174,8 @@
                                     @Html.LabelFor(model => model.Entity.Street, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
-                                        @Html.EditorFor(model => model.Entity.Street, 
-                                       new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocompleate = "off", id="empStreet" } })
+                                        @Html.EditorFor(model => model.Entity.Street,
+                                       new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocompleate = "off", id = "empStreet" } })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.Street, "", new { @class = "text-danger" })
                                 </div>
@@ -184,8 +184,8 @@
                                     @Html.LabelFor(model => model.Entity.OutNumber, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
-                                        @Html.EditorFor(model => model.Entity.OutNumber, 
-                                       new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocompleate = "off", id="empOutNumber" } })
+                                        @Html.EditorFor(model => model.Entity.OutNumber,
+                                       new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocompleate = "off", id = "empOutNumber" } })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.OutNumber, "", new { @class = "text-danger" })
                                 </div>
@@ -193,8 +193,8 @@
                                     @Html.LabelFor(model => model.Entity.InNumber, htmlAttributes: new { @class = "control-label" })
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
-                                        @Html.EditorFor(model => model.Entity.InNumber, 
-                                       new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocompleate = "off", id="empInNumber" } })
+                                        @Html.EditorFor(model => model.Entity.InNumber,
+                                       new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocompleate = "off", id = "empInNumber" } })
                                     </div>
                                     @Html.ValidationMessageFor(model => model.Entity.InNumber, "", new { @class = "text-danger" })
                                 </div>
@@ -214,8 +214,7 @@
 </form>
 
 <script>
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         SetCascade("#empStateId", "#empCityId", '@Url.Action("GetCities","Configuration")');
 
         Compleate("#empZipCode", "#ZipCodes", '@Url.Action("AutoCompleateZipCode", "Configuration")', OnEmpSettlement);
@@ -229,15 +228,13 @@
         $("#empSSN").mask("99999999999");
 
         $("#empFTR").mask("aaa*99999****");
-        
+
         var form = $("#EmployeeForm");
         form.validate();
     });
 
-    function OnEmpSettlement(id)
-    {
-        ExecuteAjax('@Url.Action("SettlementSelected","Configuration")', { id: id }, function (response)
-        {
+    function OnEmpSettlement(id) {
+        ExecuteAjax('@Url.Action("SettlementSelected","Configuration")', { id: id }, function (response) {
             $("#empLocation").val(response.Location);
             $("#empZipCode").val(response.ZipCode);
 

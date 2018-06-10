@@ -3,17 +3,13 @@
 }
 
 
-function Compleate(textbox,list,url,onSelected)
-{
+function Compleate(textbox, list, url, onSelected) {
     $(textbox).autocomplete(
       {
-          source: function (request, response) 
-          {
-              ExecuteAjax(url, { filter: request.term }, function (json) 
-              {
+          source: function (request, response) {
+              ExecuteAjax(url, { filter: request.term }, function (json) {
                   $(list).empty();
-                  for (var i = 0; i < json.length; i++)
-                  {
+                  for (var i = 0; i < json.length; i++) {
                       $(list).append($('<option data-id=' + json[i].Id + '></option>').val(json[i].Label).html(json[i].Value));
                   }
               });
@@ -22,63 +18,55 @@ function Compleate(textbox,list,url,onSelected)
       });
 
     //this is executed when an option from DataList is selected
-    $(textbox).off('input').bind('input', function ()
-    {
+    $(textbox).off('input').bind('input', function () {
         var val = this.value;
-       
-        if ($(list).find('option').filter(function ()
-        {
+
+        if ($(list).find('option').filter(function () {
             return this.value.toUpperCase() === val.toUpperCase();
-        }).length)
-        {
-            var option = $(list).find('option').filter(function ()
-            {
+        }).length) {
+            var option = $(list).find('option').filter(function () {
                 return this.value.toUpperCase() === val.toUpperCase();
             });
 
             var value = option.text();
             var id = option.data("id");
-          
-            if (onSelected != null)
-            {
-                onSelected(id,value);
+
+            if (onSelected != null) {
+                onSelected(id, value);
             }
         }
     });
 }
 
 //AJAX CALL
-function ExecuteAjax(url, parameters, callback) {
+function ExecuteAjax(url, parameters, callback)
+{
     $.ajax({
         url: url,
         type: "POST",
         data: parameters,
-        error: function (data) {
-            callback("Error al ejecutar Ajax")
+        error: function (data)
+        {
+            ShowNotify("Error de ejecución!!", "warning", "No fue posible ejcutar la acción solicitada, verfique si su sesión continua activa");
         },
-        success: function (data) {
+        success: function (data)
+        {
             callback(data);
         },
-        statusCode:
-        {
-            200: function (data) {
-                callback(data);
-            },
-            401: function (data) {
-                callback(data);
-            }
-        }
+       
     });
 }
 
-//DATA TABLE
-function Paginate(table, iniRecords, allowSearch)
+//Realiza paginación  sobre una tabla
+function Paginate(table, iniRecords, allowSearch,filter)
 {
     var oTable = $(table).DataTable(
        {
            destroy: true,
+           responsive:true,
            "lengthChange": false,
            "searching": allowSearch,
+           "order": [],
            "lengthMenu": [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
            "pageLength": iniRecords,
            "language": {
@@ -94,11 +82,15 @@ function Paginate(table, iniRecords, allowSearch)
                }
            }
        });
+
+    $(filter).keyup(function ()
+    {
+        oTable.data().search(this.value).draw();
+    });
 }
 
 //SHOWS MODAL WITH CUSTON FUNCTIONS AND CONTENT
-function ShowModal(header, html, confirmCallBack, cancelCallBack, backdrop, isRegularSize)
-{
+function ShowModal(header, html, confirmCallBack, cancelCallBack, backdrop, isRegularSize) {
     if (!isRegularSize)
         $("#ModalDialog").attr('class', 'modal-dialog modal-lg');
     else
@@ -121,8 +113,7 @@ function ShowModal(header, html, confirmCallBack, cancelCallBack, backdrop, isRe
 }
 
 //REPLACE MODAL CONTENT
-function ReplaceModal(header, html)
-{
+function ReplaceModal(header, html) {
     $("#SiteModalHeader").html(header);
 
     $("#SiteModalBody").html(html);
@@ -131,10 +122,8 @@ function ReplaceModal(header, html)
 }
 
 
-function HideModal(cleaUp, callback)
-{
-    $('#SiteModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
-    {
+function HideModal(cleaUp, callback) {
+    $('#SiteModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
         if (callback != null)
             callback();
 
@@ -152,32 +141,26 @@ function HideModal(cleaUp, callback)
 
 
 //Loading In Modal
-function ShowModLoading()
-{
+function ShowModLoading() {
     $("#ModalContent").children().hide();
     $("#ModalLoading").children().show();
 }
 
-function HideModLoading()
-{
+function HideModLoading() {
     $("#ModalLoading").children().hide();
     $("#ModalContent").children().show();
 }
 
 //DROP DOWN CASCADE
 function SetCascade(ddlParent, ddlChild, url) {
-    $(ddlParent).unbind('change').change(function (e)
-    {
-        if ($(ddlParent).val() != '')
-        {
+    $(ddlParent).unbind('change').change(function (e) {
+        if ($(ddlParent).val() != '') {
             var parentId = $(ddlParent).val();
 
-            ExecuteAjax(url, { id: parentId }, function (data)
-            {
+            ExecuteAjax(url, { id: parentId }, function (data) {
                 $(ddlChild).empty();
                 $(ddlChild).append($('<option></option>').val("").html(""));
-                for (var i = 0; i < data.length; i++)
-                {
+                for (var i = 0; i < data.length; i++) {
                     $(ddlChild).append($('<option></option>').val(data[i].Value).html(data[i].Text));
                 }
                 if (data.length > 0)
@@ -195,15 +178,12 @@ function SetCascade(ddlParent, ddlChild, url) {
 
 
 //LOADING CONTROL FUNCTIONS
-function ShowLoading(backdrop)
-{
+function ShowLoading(backdrop) {
     $("#Loading").modal({ backdrop: backdrop });
 }
 
-function HideLoading(callback)
-{
-    $("#Loading").off("hidden.bs.modal").on("hidden.bs.modal", function (e)
-    {
+function HideLoading(callback) {
+    $("#Loading").off("hidden.bs.modal").on("hidden.bs.modal", function (e) {
         if (callback != null)
             callback();
     });
@@ -213,8 +193,7 @@ function HideLoading(callback)
 
 
 //CONFIRM CONTROL FUNCTIONS
-function ShowMessage(textHeader, textBody, type, confirmCallBack, cancelCallBack, backdrop)
-{
+function ShowMessage(textHeader, textBody, type, confirmCallBack, cancelCallBack, backdrop) {
     //header and body text
     $("#MessageHeader").text(textHeader);
     $("#MessageBody").text(textBody);
@@ -223,20 +202,17 @@ function ShowMessage(textHeader, textBody, type, confirmCallBack, cancelCallBack
     $("#MessageOk").show();
 
     //setting Image and header color
-    if (type == 'success')
-    {
+    if (type == 'success') {
         $("#MessageContent").attr("class", 'modal-content panel panel-success');
         $("#MessageImage").attr("src", '/Images/success.png');
-        $("#MessageOk").attr('class','btn btn-success');
+        $("#MessageOk").attr('class', 'btn btn-success');
     }
-    else if (type == 'warning')
-    {
+    else if (type == 'warning') {
         $("#MessageContent").attr("class", 'modal-content panel panel-warning');
         $("#MessageImage").attr("src", '/Images/warning.png');
         $("#MessageOk").attr('class', 'btn btn-warning');
     }
-    else if (type == 'confirm')
-    {
+    else if (type == 'confirm') {
         $("#MessageContent").attr("class", 'modal-content panel panel-info');
         $("#MessageImage").attr("src", '/Images/question.png');
         $("#MessageGroup").children().show();
@@ -245,10 +221,8 @@ function ShowMessage(textHeader, textBody, type, confirmCallBack, cancelCallBack
 
 
     //binding button acctions
-    $("#MessageConfirm").unbind('click').click(function (e)
-    {
-        HideMessage(true, function ()
-        {
+    $("#MessageConfirm").unbind('click').click(function (e) {
+        HideMessage(true, function () {
             ShowLoading('static');
 
             if (confirmCallBack != null)
@@ -256,13 +230,11 @@ function ShowMessage(textHeader, textBody, type, confirmCallBack, cancelCallBack
         });
     });
 
-    $("#MessageCancel").unbind('click').click(function (e)
-    {
+    $("#MessageCancel").unbind('click').click(function (e) {
         HideMessage(true, cancelCallBack);
     });
 
-    $("#MessageOk").unbind('click').click(function (e)
-    {
+    $("#MessageOk").unbind('click').click(function (e) {
 
         HideMessage(true, cancelCallBack);
     });
@@ -277,7 +249,7 @@ function HideMessage(cleaUp, callback)
     {
         if (callback != null)
             callback();
-           
+
         if (cleaUp) {
             $("#MessageHeader").text('');
 
@@ -289,3 +261,25 @@ function HideMessage(cleaUp, callback)
     $("#ModalMessage").modal('hide');
 }
 
+function ShowNotify(title,type,message)
+{
+
+    if (typeof (PNotify) === 'undefined')
+    {
+        console.log("PNotify no definido");
+        return;
+    }
+
+    if (type == 'danger')
+        type = "error";
+  
+    new PNotify({
+        title: title,
+        type: type,
+        text: message,
+     
+        styling: 'bootstrap3',
+        delay: 2500,
+        hide: true,
+    });
+};

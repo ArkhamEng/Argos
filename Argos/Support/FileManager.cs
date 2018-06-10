@@ -15,6 +15,23 @@ namespace Argos.Support
     }
     public class FileManager
     {
+        public static bool DeleteImage(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    return true;
+                }
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
         public static string SaveFileDeprecated(HttpPostedFileBase file, string parentId, FileType type)
         {
             try

@@ -12,6 +12,20 @@ namespace Argos.Controllers
         {
             return View();
         }
+        public ActionResult Index2()
+        {
+            return View();
+        }
+
+        public ActionResult Index3()
+        {
+            return View();
+        }
+
+        public ActionResult FormValidation()
+        {
+            return View();
+        }
 
         public ActionResult About()
         {

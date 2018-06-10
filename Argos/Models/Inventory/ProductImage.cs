@@ -32,5 +32,10 @@ namespace Argos.Models.Inventory
         public int Size { get; set; }
 
         public virtual Product Product { get; set; }
+
+        public ProductImage()
+        {
+            this.Path = "/Images/sinimagen.jpg";
+        }
     }
 }
