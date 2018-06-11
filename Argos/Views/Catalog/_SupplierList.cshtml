@@ -1,26 +1,28 @@
 ﻿@model IEnumerable<Argos.Models.Operative.Supplier>
 @using Argos.Support
 
-<table id="TbSupplierList" class="table table-hover">
+<table id="TbSupplierList" class="table jambo_table dataTable table-hover">
     <thead>
-        <tr>
-            <th>
+        <tr class="heading">
+          
+            <th class="column-title">
                 @Html.DisplayName("Proveedor")
             </th>
-            <th>
+            <th class="column-title">
                 @Html.DisplayName("Dirección")
             </th>
-            <th>
+            <th class="column-title">
                 @Html.DisplayName("Contacto")
             </th>
 
-            <th></th>
+            <th/>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr ondblclick="BeginUpdateSupplier(@item.PersonId)">
+               
                 <td class="col-md-4">
                     <span class="fa fa-user control-label"></span>
                     <a class="text-capitalize">@Html.DisplayFor(modelItem => item.Name)</a><br />

@@ -2,11 +2,11 @@
 @using Argos.Support
 
 
-    <table id="tbProducts" class="table  text-uppercase">
+    <table id="tbProducts" class="table  dataTable no-footer  text-uppercase">
         <thead>
-            <tr hidden="hidden">
-                <th></th>
-                <th></th>
+            <tr class="hidden" >
+                <th>Imagen</th>
+                <th>Descripción</th>
                 <th></th>
             </tr>
         </thead>
@@ -14,6 +14,7 @@
         @foreach (var items in Model)
         {
                 <tr class='@items.RowState'>
+                  
                     <td class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
                         <img src='@items.ImagePath' class="img-responsive" />
                     </td>
@@ -105,10 +106,11 @@
 <script>
     var idProduct = 0;
 
-    $(document).ready(function () {
+    $(document).ready(function ()
+    {
        //$.fn.dataTable.ext.classes.sPageButton = 'btn btn-success';
         
-        Paginate("#tbProducts", 8, false)
+        Paginate("#tbProducts", 8, false, "#Filter_Text")
 
         //$("#tbProducts_previous").removeClass("btn btn-success");
         //$("#tbProducts_next").removeClass("btn btn-success");

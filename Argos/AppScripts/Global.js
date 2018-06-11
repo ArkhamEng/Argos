@@ -39,33 +39,64 @@ function Compleate(textbox, list, url, onSelected) {
 }
 
 //AJAX CALL
-function ExecuteAjax(url, parameters, callback)
-{
+function ExecuteAjax(url, parameters, callback) {
     $.ajax({
         url: url,
         type: "POST",
         data: parameters,
-        error: function (data)
-        {
-            ShowNotify("Error de ejecución!!", "warning", "No fue posible ejcutar la acción solicitada, verfique si su sesión continua activa");
-        },
         success: function (data)
         {
-            callback(data);
+            if (data.Error == "NotAuthorized")
+            {
+                ShowNotify("Error de ejecución!!", "dark", "No fue posible ejcutar la acción solicitada, verfique si su sesión continua activa");
+                window.location = data.LogOnUrl;
+            }
+            else
+            {
+                callback(data);
+            }
         },
-       
+        error: function (xhr)
+        {
+            console.log("Error");
+            console.log(xhr);
+            if (xhr.statusCode === 401) {
+                console.log("error 401");
+                ShowNotify("Error de ejecución!!", "dark", "No fue posible ejcutar la acción solicitada, verfique si su sesión continua activa");
+                //window.location.href=xhr.Data.LogOnUrl;
+                //return;
+            }
+            if (xhr.statusCode === 302) {
+                ShowNotify("Error de ejecución!!", "dark", "No fue posible ejcutar la acción solicitada, verfique si su sesión continua activa");
+                //window.location.href=xhr.Data.LogOnUrl;
+                //return;
+            }
+        },
+        statusCode: {
+            401: function ()
+            {
+                console.log("status code 401");
+                ShowNotify("Error de ejecución!!", "dark", "No fue posible ejcutar la acción solicitada, verfique si su sesión continua activa");
+            }
+        }
+        
     });
 }
 
 //Realiza paginación  sobre una tabla
-function Paginate(table, iniRecords, allowSearch,filter)
-{
+function Paginate(table, iniRecords, responsive, filter) {
+    var searching = false;
+
+    if (typeof (filter) != 'undefined')
+        searching = true;
+
     var oTable = $(table).DataTable(
        {
-           destroy: true,
-           responsive:true,
+           //destroy: true,
+           keys: true,
+           responsive: responsive,
            "lengthChange": false,
-           "searching": allowSearch,
+           "searching": searching,
            "order": [],
            "lengthMenu": [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
            "pageLength": iniRecords,
@@ -82,11 +113,14 @@ function Paginate(table, iniRecords, allowSearch,filter)
                }
            }
        });
+    if (typeof (filter) != 'undefined') {
+        console.log(filter);
+        $(filter).keyup(function () {
+            oTable.data().search(this.value).draw();
+        });
 
-    $(filter).keyup(function ()
-    {
-        oTable.data().search(this.value).draw();
-    });
+        $(table + "_filter").addClass("hidden");
+    }
 }
 
 //SHOWS MODAL WITH CUSTON FUNCTIONS AND CONTENT
@@ -243,10 +277,8 @@ function ShowMessage(textHeader, textBody, type, confirmCallBack, cancelCallBack
     $("#ModalMessage").modal({ backdrop: backdrop });
 }
 
-function HideMessage(cleaUp, callback)
-{
-    $('#ModalMessage').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
-    {
+function HideMessage(cleaUp, callback) {
+    $('#ModalMessage').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
         if (callback != null)
             callback();
 
@@ -261,25 +293,36 @@ function HideMessage(cleaUp, callback)
     $("#ModalMessage").modal('hide');
 }
 
-function ShowNotify(title,type,message)
-{
+function ShowNotify(title, type, message) {
 
-    if (typeof (PNotify) === 'undefined')
-    {
+    if (typeof (PNotify) === 'undefined') {
         console.log("PNotify no definido");
         return;
     }
 
     if (type == 'danger')
         type = "error";
-  
+
     new PNotify({
         title: title,
         type: type,
         text: message,
-     
+
         styling: 'bootstrap3',
         delay: 2500,
         hide: true,
     });
 };
+
+
+
+function iCheckInit() {
+    if ($("input.flat")[0]) {
+        $(document).ready(function () {
+            $('input.flat').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+            });
+        });
+    }
+}

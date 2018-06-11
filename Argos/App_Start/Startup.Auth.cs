@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using Argos.Models;
+using Argos.Support;
 
 namespace Argos
 {
@@ -25,8 +26,9 @@ namespace Argos
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
-                ExpireTimeSpan = TimeSpan.FromMinutes(15),
+                LoginPath = new PathString(Cons.LoginUrl),
+                LogoutPath= new PathString(Cons.LoginUrl),
+                ExpireTimeSpan = TimeSpan.FromMinutes(1),
                 Provider = new CookieAuthenticationProvider
                 {
                     // Enables the application to validate the security stamp when the user logs in.

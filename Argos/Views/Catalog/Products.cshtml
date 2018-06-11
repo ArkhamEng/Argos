@@ -1,21 +1,28 @@
 ﻿@model Argos.ViewModels.Inventory.SearchProductsVM
 
 @{
-    ViewBag.Title = "Catálogo de Productos";
-    ViewBag.Class = "fa fa-cubes";
+    ViewBag.Title = "Productos";
+    ViewBag.Class = "fa fa-cubes hidden-xs";
+    ViewBag.SubTitle = "Filtros";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="page-title">
-    <div class="title_left">
-        <h3><span class="@ViewBag.Class"></span>@ViewBag.Title</h3>
+    <div class="title_left col-xs-12">
+        <h3>
+            <a class="@ViewBag.Class"></a>
+
+            @ViewBag.Title
+        </h3>
     </div>
-    <div class="title_right">
-        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+    <div class="title_right col-xs-12">
+        <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 form-group pull-right top_search">
             <div class="input-group">
-                <input id="filter" type="text" class="form-control" placeholder="Filtrar por...">
+                @Html.TextBoxFor(m => m.Filter.Text, "", htmlAttributes: new { @class = "form-control text-uppercase", placeholder = "Búsqueda por..", type = "text" })
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Buscar!</button>
+                    <button class="btn btn-default " type="button" title="Buscar productos" onclick="SearchProducts()">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
                 </span>
             </div>
         </div>
@@ -28,66 +35,65 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>@ViewBag.Title <small>@ViewBag.SubTitle</small></h2>
+                <div class="hidden-xs">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        @Html.DropDownListFor(m => m.Filter.CategoryId, Model.Lists.Categories, "Categoría", new { @class = "form-control col-md-6  has-feedback-left text-uppercase" })
+                        <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+
+                        @Html.DropDownListFor(m => m.Filter.SubCategoryId, Model.Lists.SubCategories, "Sub Categoría", new { @class = "form-control col-md-6  has-feedback-left text-uppercase" })
+                        <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                </div>
                 <ul class="nav navbar-right panel_toolbox">
+
+                    <li class="dropdown">
+                        @*<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#">Settings 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Settings 2</a>
+                                </li>
+                            </ul>*@
+                        <button class="btn btn-default" type="button" id="btnClear" title="Recargar">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-success" title="Registrar nuevo producto" onclick="BeginAddProduct()">
+                            <i class="fa  fa-plus"></i>
+                        </button>
+                        @*<a class="close-link"><i class="fa fa-close"></i></a>*@
+                    </li>
                     <li>
                         <a class="collapse-link collapsed"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="#">Settings 1</a>
-                            </li>
-                            <li>
-                                <a href="#">Settings 2</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="close-link"><i class="fa fa-close"></i></a>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
 
             <div class="x_content">
-                <div class="col-md-11 input-group">
-                    @Html.DropDownListFor(m => m.Filter.CategoryId, Model.Lists.Categories, "Categoría", new { @class = "form-control text-uppercase", style = "width:20% !important" })
-                    @Html.DropDownListFor(m => m.Filter.SubCategoryId, Model.Lists.SubCategories, "Sub Categoría", new { @class = "form-control text-uppercase", style = "width:20% !important" })
-                    @Html.TextBoxFor(m => m.Filter.Text, "", htmlAttributes: new { @class = "form-control text-uppercase", placeholder = "Búsqueda por código o descripción", style = "width:60% !important" })
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary " type="button" title="Buscar productos" onclick="SearchProducts()">
-                            <span class="glyphicon glyphicon-search"></span>
-                            Buscar
-                        </button>
-                        <button type="button" class="btn btn-success hidden-xs hidden-sm" title="Registrar nuevo producto" onclick="BeginAddProduct()">
-                            <span class="glyphicon  glyphicon-file"></span>
-                            Nuevo
-                        </button>
+
+                @*<div class="col-lg-2 col-md-4">
+                        <span class="fa fa-registered form-control-feedback left" aria-hidden="true"></span>
+                        @Html.DropDownListFor(m => m.Filter.MakerId, Model.Lists.Makers, "Armadora", new { @class = "form-control has-feedback-left text-capitalize" })
                     </div>
-                </div>
+                    <div class="col-lg-2 col-md-4">
+                        <span class="fa fa-car form-control-feedback left" aria-hidden="true"></span>
+                        @Html.DropDownListFor(m => m.Filter.ModelId, Model.Lists.Models, "Modelo", new { @class = "form-control has-feedback-left text-capitalize" })
+                    </div>
 
-                <div class="input-group col-md-10 hidden-sm hidden-xs" style="margin-top:10px">
-                    <span class="input-group-addon"><i class="fa fa-registered"></i></span>
-                    @Html.DropDownListFor(m => m.Filter.MakerId, Model.Lists.Makers, "Armadora", new { @class = "form-control text-capitalize" })
-                    <span class="input-group-addon"><i class="fa fa-car"></i></span>
-                    @Html.DropDownListFor(m => m.Filter.ModelId, Model.Lists.Models, "Modelo", new { @class = "form-control text-capitalize" })
-                    <span class="input-group-addon"><i class="fa fa-calendar-check-o"></i></span>
-                    @Html.DropDownListFor(m => m.Filter.Year, Model.Lists.Models, "Año", new { @class = "form-control text-capitalize" })
-                    <span class="input-group-btn">
-                        <button class="btn btn-info" type="button" id="btnClear" title="Recargar">
-                            <span class="glyphicon glyphicon-refresh"></span>
-                            Limpiar
-                        </button>
-                    </span>
+                    <div class="col-lg-2 col-md-4">
 
+                        <span class="fa fa-calendar-check-o form-control-feedback left" aria-hidden="true"></span>
+                        @Html.DropDownListFor(m => m.Filter.Year, Model.Lists.Models, "Año", new { @class = "form-control has-feedback-left text-capitalize" })
+                    </div>*@
+                <div id="divProductList" class="panel-body" style="min-height:300px">
+                    @Html.Partial("_ProductList", Model.Products)
                 </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div id="divProductList" class="panel-body" style="min-height:300px">
-                @Html.Partial("_ProductList", Model.Products)
             </div>
         </div>
 
@@ -103,30 +109,25 @@
         SetCascade('#Filter_CategoryId', '#Filter_SubCategoryId', '@Url.Action("GetProductSubCategories", "Configuration")');
     });
 
-    function BeginAddProduct()
-    {
+    function BeginAddProduct() {
         ShowProductModal(CompleateSave, null);
     }
 
-    function BeginUpdateProduct(id)
-    {
+    function BeginUpdateProduct(id) {
         ShowProductModal(CompleateSave, null, id);
     }
 
-    function CompleateSave(response)
-    {
+    function CompleateSave(response) {
         var filter = { ProductId: response.Id };
 
         ShowNotify(response.Header, response.Result, response.Body);
-       
-        ExecuteAjax('@Url.Action("SearchProducts")', filter, function (view)
-        {
+
+        ExecuteAjax('@Url.Action("SearchProducts")', filter, function (view) {
             $("#divProductList").html(view);
         });
     }
 
-    function SearchProducts()
-    {
+    function SearchProducts() {
         ShowLoading('static');
 
         var filter = {
@@ -134,8 +135,7 @@
             MakerId: $("#Filter_MakerId").val(), ModelId: $("#Filter_ModelId").val(), Year: $("#Filter_Year").val()
         };
 
-        ExecuteAjax('@Url.Action("SearchProducts","Catalog")', { filter: filter }, function (response)
-        {
+        ExecuteAjax('@Url.Action("SearchProducts","Catalog")', { filter: filter }, function (response) {
             HideLoading(function () {
                 $("#divProductList").html(response);
             });

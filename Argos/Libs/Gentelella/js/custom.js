@@ -52,7 +52,8 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
 
 
 // Sidebar
-function init_sidebar() {
+function init_sidebar()
+{
     // TODO: This is some kind of easy fix, maybe we can improve this
     var setContentHeight = function () {
         // reset height
@@ -69,7 +70,8 @@ function init_sidebar() {
         $RIGHT_COL.css('min-height', contentHeight);
     };
 
-    $SIDEBAR_MENU.find('a').on('click', function (ev) {
+    $SIDEBAR_MENU.find('a').on('click', function (ev)
+    {
         console.log('clicked - sidebar_menu');
         var $li = $(this).parent();
 
@@ -98,7 +100,8 @@ function init_sidebar() {
     });
 
     // toggle small or large menu 
-    $MENU_TOGGLE.on('click', function () {
+    $MENU_TOGGLE.on('click', function ()
+    {
         console.log('clicked - menu toggle');
 
         if ($BODY.hasClass('nav-md')) {
@@ -147,8 +150,10 @@ var randNum = function () {
 
 
 // Panel toolbox
-$(document).ready(function () {
-    $('.collapse-link').on('click', function () {
+$(document).ready(function ()
+{
+    $('.collapse-link').on('click', function ()
+    {
         var $BOX_PANEL = $(this).closest('.x_panel'),
             $ICON = $(this).find('i'),
             $BOX_CONTENT = $BOX_PANEL.find('.x_content');
@@ -166,11 +171,15 @@ $(document).ready(function () {
         $ICON.toggleClass('fa-chevron-up fa-chevron-down');
     });
 
-    $('.close-link').click(function () {
+    $('.close-link').click(function ()
+    {
         var $BOX_PANEL = $(this).closest('.x_panel');
-
         $BOX_PANEL.remove();
     });
+
+    var $BOX_PANEL = $(this).closest('.x_panel'),
+    $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+    $BOX_CONTENT.toggle();
 });
 // /Panel toolbox
 
@@ -183,17 +192,20 @@ $(document).ready(function () {
 // /Tooltip
 
 // Progressbar
-if ($(".progress .progress-bar")[0]) {
+if ($(".progress .progress-bar")[0])
+{
     $('.progress .progress-bar').progressbar();
 }
 // /Progressbar
 
 // Switchery
-$(document).ready(function () {
+$(document).ready(function ()
+{
     if ($(".js-switch")[0]) {
         var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
         elems.forEach(function (html) {
-            var switchery = new Switchery(html, {
+            var switchery = new Switchery(html,
+                {
                 color: '#26B99A'
             });
         });
@@ -203,7 +215,8 @@ $(document).ready(function () {
 
 
 // iCheck
-$(document).ready(function () {
+$(document).ready(function ()
+{
     if ($("input.flat")[0]) {
         $(document).ready(function () {
             $('input.flat').iCheck({

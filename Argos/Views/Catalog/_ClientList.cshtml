@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<Argos.Models.Operative.Client>
 
 
-<table id="TbClientList" class="table table-hover table-responsive">
+<table id="TbClientList" class="table table-hover table-responsive jambo_table">
     <thead>
-        <tr>
+        <tr class="heading">
             <th>
                 @Html.DisplayName("Cliente")
             </th>
@@ -51,7 +51,7 @@
 
     $(document).ready(function()
     {
-        Paginate("#TbClientList", 5,false)
+        Paginate("#TbClientList", 5,true, "#txtName")
     });
 
     function BeginDelete(id,name)

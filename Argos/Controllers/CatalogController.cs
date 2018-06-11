@@ -14,7 +14,7 @@ using Argos.Models.BusinessEntity;
 
 namespace Argos.Controllers
 {
-    [Authorize]
+    [CustomAuthorize]
     public partial class CatalogController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

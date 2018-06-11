@@ -15,6 +15,8 @@ namespace Argos.Support
 
         #endregion
 
+        public const string LoginUrl = "/Account/Login";
+
         #region File Paths
         public const string UserPicturePath = "/Files/ProfilePictures";
 
