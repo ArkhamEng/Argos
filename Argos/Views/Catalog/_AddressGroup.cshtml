@@ -1,0 +1,225 @@
+﻿@model  ICollection<Argos.ViewModels.Generic.AddressVm>
+@using Argos.Support
+
+
+<div id="divAddress"></div>
+<table id="tbAddress" class="table  table-bordered">
+    @{var index = 0; var rowId = ""; }
+    @foreach (var item in Model)
+    {
+        rowId = "row" + index;
+        var name = (index + 1);
+
+        <tr id="@rowId">
+            <td>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h4 id="addTitle">
+                            Dirección  @name
+                        </h4>
+                    </div>
+                    <div class="x_content">
+                        @Html.HiddenFor(model => item.Address.AddressId)
+                        @Html.HiddenFor(model => item.Address.PersonId)
+
+                        <div class="form-group col-md-9">
+                            @Html.LabelFor(model => item.Address.Street, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
+                                @Html.EditorFor(model => item.Address.Street, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocompleate = "off" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => item.Address.Street, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            @Html.LabelFor(model => item.Address.AddressTypeId, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                                @Html.DropDownListFor(model => item.Address.AddressTypeId, item.Types, "",
+                       htmlAttributes: new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => item.Address.AddressTypeId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => item.SelectedStateId, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                                @Html.DropDownListFor(model => item.SelectedStateId, item.States, "",
+                       htmlAttributes: new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => item.SelectedStateId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => item.Address.TownId, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                                @Html.DropDownListFor(model => item.Address.TownId, item.Towns, "",
+                       htmlAttributes: new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => item.Address.TownId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-9">
+                            @Html.LabelFor(model => item.Address.Location, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                                @Html.EditorFor(model => item.Address.Location,
+                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => item.Address.Location, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            @Html.LabelFor(model => item.Address.ZipCode, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+                                @Html.EditorFor(model => item.Address.ZipCode,
+                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => item.Address.ZipCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td>
+
+                <button class="@item.RemoveButton" type="button" onclick="DropAddress(this)" id="btnRemoveAddress">
+                    <span class="@Icons.Delete"></span>
+                </button>
+                <button class="@item.AddButton" type="button" onclick="AddAddress()" id="btnAddAddress">
+                    <span class="fa fa-plus"></span>
+                </button>
+            </td>
+        </tr>
+
+        index++;
+    }
+
+</table>
+
+<script>
+    $(document).ready(function ()
+    {
+        $('#tbAddress tr').each(function (i, row) {
+            SetEvents(row);
+        });
+    });
+
+    function SetEvents(row) {
+        var state = $(row).find('[id="item_SelectedStateId"]');
+        var town = $(row).find('[id="item_Address_TownId"]');
+        var isBusy = false;
+
+        SetCascade(state, town, '@Url.Action("GetCities","Configuration")');
+
+        var zipCode = $(row).find('[id="item_Address_ZipCode"]');
+        var location = $(row).find('[id="item_Address_Location"]');
+
+        var id = $(state).val();
+
+        $(location).off('devbridgeAutocomplete').devbridgeAutocomplete({
+            minChars: 4,
+            lookup: function (query, done) {
+                if (isBusy)
+                    return;
+
+                ExecuteAjax('@Url.Action("CompleateAddress", "Configuration")', { filter: query, stateId: id }, function (result) {
+                    isBusy = false;
+                    done(result);
+
+                });
+            },
+            groupBy: "category",
+            onSelect: function (suggestion) {
+                $(location).val(suggestion.value);
+
+                ExecuteAjax('@Url.Action("SettlementSelected","Configuration")', { id: suggestion.Id }, function (response) {
+                    zipCode.val(response.ZipCode);
+                    state.val(response.StateId);
+
+                    town.empty();
+                    town.append($('<option></option>').val("").html(""));
+
+                    for (var i = 0; i < response.Towns.length; i++) {
+                        town.append($('<option></option>').val(response.Towns[i].Value).html(response.Towns[i].Text));
+                    }
+
+                    town.val(response.TownId);
+                });
+            }
+        });
+    }
+
+    function DropAddress(button) {
+        var row = $(button).parent().parent();
+        row.remove();
+
+        $('#tbAddress tr').each(function (i, row) {
+            var title = $(row).find('[id="addTitle"]');
+            title.text("Dirección " + (i + 1));
+        });
+    }
+
+    function AddAddressTest()
+    {
+        ExecuteAjax('@Url.Action("AddAddress","Catalog")', {}, function (response)
+        {
+            $("#divAddress").html(response);
+        });
+    }
+
+    function AddAddress() {
+        //clono la primera fila, ya que considero siempre tener minimo una dirección
+        var newRow = $("#row0").clone().removeAttr('id');
+
+        //encuentro los botones para mostrar/ocultar
+        var btnAdd = $(newRow).find('[id="btnAddAddress"]');
+        var btnRemove = $(newRow).find('[id="btnRemoveAddress"]');
+
+        btnAdd.removeClass('@Argos.Support.Styles.BtnEdit');
+        btnAdd.addClass('@Argos.Support.Styles.BtnEditHidden');
+
+        btnRemove.removeClass('@Argos.Support.Styles.BtnDeletetHidden');
+        btnRemove.addClass('@Argos.Support.Styles.BtnDelete');
+
+        ClearControls(newRow);
+        //agrego la nueva fila a la tabla
+        $('#tbAddress').append(newRow);
+
+        //vuelvo a agregar los eventos
+        $('#tbAddress tr').each(function (i, row)
+        {
+            var title = $(row).find('[id="addTitle"]');
+            title.text("Dirección " + (i + 1));
+
+            SetEvents(row);
+        });
+    }
+
+    function ClearControls(row) {
+        var state = $(row).find('[id="item_SelectedStateId"]');
+        var town = $(row).find('[id="item_Address_TownId"]');
+
+        state.val("");
+        town.empty();
+
+        var location = $(row).find('[id="item_Address_Location"]');
+        var zipCode = $(row).find('[id="item_Address_ZipCode"]');
+
+        location.val("");
+        zipCode.val("");
+
+        //var personId = $(row).find('[id="item_Address_PersonId"]');
+        var addressId = $(row).find('[id="item_Address_AddressId"]');
+        var street = $(row).find('[id="item_Address_Street"]');
+        var typeId = $(row).find('[id="item_Address_AddressTypeId"]');
+
+        //personId.val("");
+        addressId.val("");
+        street.val("");
+        typeId.val("");
+    }
+
+</script>

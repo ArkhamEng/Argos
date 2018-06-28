@@ -51,9 +51,9 @@ namespace Argos.Models.Operative
         #region Navigation Properties
         public virtual Branch Branch { get; set; }
 
-        public ICollection<OperationDetail> OperationDetails { get; set; }
+        public virtual Person Person { get; set; }
 
-        public ICollection<Transaction> Transactions { get; set; }
+        public ICollection<Detail> Details { get; set; }
 
         #endregion
     }

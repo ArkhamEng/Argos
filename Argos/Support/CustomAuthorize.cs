@@ -14,13 +14,16 @@ namespace Argos.Support
         {
             if (context.HttpContext.Request.IsAjaxRequest())
             {
-                context.HttpContext.Response.StatusCode = 401;
+                context.HttpContext.Response.StatusCode = Codes.UnAuthorized;
                 context.Result = new JsonResult
                 {
                     Data = new
                     {
-                        Error = "NotAuthorized",
-                        LogOnUrl =  Cons.LoginUrl
+                        Header = "Acceso denegado!!",
+                        Body   = "Tu sesión ha expirado o te faltan permisos",
+                        Result = Cons.ResponseWarning,
+                        Code = Codes.UnAuthorized,
+                        Extra =  Cons.LoginUrl
                     },
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet
                 };

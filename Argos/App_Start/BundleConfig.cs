@@ -17,13 +17,13 @@ namespace Argos
                         "~/Scripts/DataTables/jquery.dataTables.min.js"));*/
 
             bundles.Add(new ScriptBundle("~/bundles/Jquery").Include(
-                 "~/Vendor/jquery/dist/jquery.min.js",
-                  "~/Scripts/_jquery-ui-1.12.1.min.js")); 
+                 "~/Vendor/jquery/dist/jquery.min.js")); 
 
                     
             //necesarios para el template
             bundles.Add(new ScriptBundle("~/bundles/Scripts").Include(
                        "~/Scripts/bootstrap.min.js",
+                       "~/Scripts/_jquery-ui-1.12.1.min.js",
                        "~/Scripts/jquery.maskedinput.min.js",
                        "~/Scripts/fastclick.js",
                        "~/Scripts/nprogress.min.js",
@@ -31,7 +31,7 @@ namespace Argos
                        "~/Vendor/bootstrap-progressbar/bootstrap-progressbar.min.js",
                        "~/Vendor/iCheck/icheck.min.js",
                       "~/Vendor/validator/validator.js",
-
+                      "~/Vendor/devbridge-autocomplete/dist/jquery.autocomplete.min.js",
                        "~/Vendor/pnotify/dist/pnotify.js",
                         "~/Vendor/pnotify/dist/pnotify.buttons.js",
                          "~/Vendor/pnotify/dist/pnotify.nonblock.js",

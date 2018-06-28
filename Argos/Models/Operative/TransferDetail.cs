@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Argos.Models.Operative
 {
     [Table("TransferDetail", Schema = "Operative")]
-    public class TransferDetail:OperationDetail
+    public class TransferDetail:Detail
     {
         [MaxLength(100)]
         public string Comment { get; set; }

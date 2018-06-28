@@ -11,6 +11,7 @@ using Argos.Models.BaseTypes;
 using Argos.ViewModels.Generic;
 using Argos.Models.Operative;
 using Argos.Models.BusinessEntity;
+using Argos.Models.Enums;
 
 namespace Argos.Controllers
 {
@@ -19,59 +20,51 @@ namespace Argos.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public ActionResult AddAddress()
+        {
+            var model = new AddressVm();
+            model.Address = new Address();
+
+            model.States = db.States.OrderBy(s => s.Name).ToSelectList();
+            model.Types = db.AddressTypes.OrderBy(t => t.Name).ToSelectList();
+            model.Towns = new List<Town>().ToSelectList();
+
+            return PartialView("_Address", model);
+        }
+
         #region Client Methods
         public ActionResult Clients()
         {
-            var model = new PersonFilterViewModel<Client>();
+            var model = new PersonFilterViewModel<ClientVm>();
+            model.Entities = db.Persons.OfType<Client>().OrderBy(c => c.Name).
+                                Select(c => new ClientVm { Client = c }).ToList();
+
             model.States = db.States.ToSelectList();
-           
+
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult SearchClients(string ftr, string name, string stateId, string townId,int? id)
+        public ActionResult SearchClients(string ftr, string name, string stateId, string townId, int? id)
         {
-            var model = db.Persons.OfType<Client>().Where(c=> (ftr == string.Empty || ftr == null || c.FTR == ftr) 
-            && (id==null || c.PersonId == id)
-            && (name == string.Empty || name == null || c.Name.Contains(name))
-            && (townId == null || townId == string.Empty || c.TownId == townId)
-            && (stateId == null || stateId == string.Empty || c.Town.StateId == stateId)
-            && c.IsActive).Include(c => c.Town).ToList();
+            var model = (from c in db.Persons.OfType<Client>()
+                         where
+                         (ftr == string.Empty || ftr == null || c.FTR == ftr)
+                         && (id == null || c.PersonId == id)
+                         && (name == string.Empty || name == null || c.Name.Contains(name))
+                         && c.IsActive
+                         select c).OrderBy(c => c.Name).Select(c => new ClientVm { Client = c }).ToList();
 
-            return PartialView("_ClientList",model);
+            return PartialView("_ClientList", model);
         }
+
 
         [HttpPost]
         public ActionResult BeginAddClient()
         {
-            var model = new PersonViewModel<Client>();
-
-            model.States = db.States.ToSelectList();
-            model.Cities = new List<Town>().ToSelectList();
-
-            return PartialView("_ClientEdit",model);
-        }
-
-        [HttpPost]
-        public ActionResult AddClient(Client client)
-        {
-            try
-            {
-                db.Persons.Add(client);
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return Json(new JResponse { Result = Cons.ResponseDanger, Header = "Error al guardar el cliente",
-                    Body = "Ocurrio un error al agregar el cliente " + ex.Message });
-            }
-            return Json(new JResponse
-            {
-                Result = Cons.ResponseSuccess,
-                Header = "Datos del cliente guardados",
-                Body = string.Format("El cliente {0} fue agregado al catálogo", client.Name),
-                Id = client.PersonId
-            });
+            var model = new ClientVm();
+            BeginAddPerson(model);
+            return PartialView("_ClientEdit", model);
         }
 
         [HttpPost]
@@ -79,33 +72,23 @@ namespace Argos.Controllers
         {
             try
             {
-                var model = new PersonViewModel<Client>();
-               
-                model.Entity = db.Persons.OfType<Client>().Include(c=> c.Town).
+                var model = new ClientVm();
+
+                model.Client = db.Persons.OfType<Client>().Include(c => c.Addresses).Include(c => c.Addresses.Select(a => a.Town.State)).
                     FirstOrDefault(c => c.PersonId == id && c.IsActive);
+
+                BeginUpdatePerson(model);
 
                 if (model != null)
                 {
-                    var json = EvalLock(model.Entity);
-
-                    if (json != null)
-                        return json;
-
-                    //bloqueo el registro
-                    db.Entry(model.Entity).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(model.Entity).Property(c => c.LockUser).IsModified = true;
-
-                    db.SaveChanges();
-
-                    model.States = new SelectList(db.States,nameof(State.StateId),nameof(State.Name), model.Entity.Town.StateId);
-                    model.Cities = db.Towns.Where(c => c.StateId == model.Entity.Town.StateId).ToSelectList();
-
+                    LockPerson(model);
                     return PartialView("_ClientEdit", model);
                 }
                 else
                 {
                     return Json(new JResponse
                     {
+                        Code = Codes.RecordNotFound,
                         Result = Cons.ResponseWarning,
                         Header = "Cliente inexistente!",
                         Body = string.Format("Este cliente ya no esta activo en el catálgo"),
@@ -117,48 +100,238 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
+                    Code = Codes.ServerError,
                     Result = Cons.ResponseDanger,
-                    Header = "Error al eliminar el cliente",
-                    Body = string.Format("Ocurrio un error al eliminar el cliente detalle del error:{0}", ex.Message),
+                    Header = "Error al obtener datos",
+                    Body = string.Format("Ocurrio un error obtener los datos del cliente, detalle del error:{0}", ex.Message),
                 });
             }
         }
 
 
         [HttpPost]
-        public ActionResult UpdateClient(Client client)
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveClient(ClientVm clientVm)
         {
             try
             {
-                client.UpdDate = DateTime.Now.ToLocal();
-                client.UpdUser = User.Identity.Name;
-                client.LockEndDate  = null;
-                client.LockUser     = null;
+                //update
+                if (clientVm.Client.PersonId > Cons.Zero)
+                {
+                    UpdatePerson(clientVm);
 
-                db.Entry(client).State = EntityState.Modified;
-                db.Entry(client).Property(c => c.InsDate).IsModified = false;
-                db.Entry(client).Property(c => c.InsUser).IsModified = false;
-                db.Entry(client).Property(c => c.IsActive).IsModified = false;
+                    return Json(new JResponse
+                    {
+                        Result = Cons.ResponseSuccess,
+                        Header = "Cliente Modificado",
+                        Code = Codes.Success,
+                        Body = "Se actualizaron los datos del cliente " + clientVm.Client.Name + " y se removio el bloqueo",
+                        Id = clientVm.Client.PersonId
+                    });
+                }
+                //insert
+                else
+                {
+                    InsertPerson(clientVm);
 
-                db.SaveChanges();
+                    return Json(new JResponse
+                    {
+                        Result = Cons.ResponseSuccess,
+                        Header = "Cliente Agregado",
+                        Body = "Se agrego el cliente " + clientVm.Client.Name,
+                        Id = clientVm.Client.PersonId,
+                        Code = Codes.Success
+                    });
+                }
             }
             catch (Exception ex)
             {
                 return Json(new JResponse
                 {
                     Result = Cons.ResponseDanger,
-                    Header = "Error al modificar el cliente",
-                    Body = string.Format("Ocurrio un error al guardar los cambios del cliente {0},  detalle del error {1}",
-                                        client.Name, ex.Message),
+                    Header = "Error Al guardar",
+                    Body = "Ocurrio un error al guardar os datos del cliente " + ex.Message,
+                    Code = Codes.ServerError
                 });
             }
-            return Json(new JResponse
+        }
+
+        #endregion
+
+        #region Person Methods
+
+        private void BeginAddPerson(PersonVM model)
+        {
+            model.Addresses.Add(new AddressVm
             {
-                Result = Cons.ResponseSuccess,
-                Header = "Datos del cliente guardados",
-                Body = string.Format("Los datos del cliente {0} fueron modificados", client.Name),
-                Id = client.PersonId
+                Address = new Address(),
+                States = db.States.ToSelectList(AddressTypes.Home),
+                Types = db.AddressTypes.ToSelectList(),
+                Towns = new SelectList(new List<Town>()),
+                AddButton = Styles.BtnEdit,
+                RemoveButton = Styles.BtnDeletetHidden
             });
+        }
+
+        private bool InsertPerson(PersonVM personVm)
+        {
+            try
+            {
+                db.Persons.Add(personVm.Person);
+                db.SaveChanges();
+
+                //si hay imagen, la guardo y guardo la ruta
+                if (personVm.NewImages.Count > Cons.Zero)
+                {
+                    var file = personVm.NewImages.FirstOrDefault();
+                    var path = Support.FileManager.SaveFile(file, personVm.Person.PersonId.ToString(), FileType.PersonImage);
+                    personVm.Person.ImagePath = path;
+
+                    db.Entry(personVm.Person).Property(c => c.ImagePath).IsModified = true;
+                    db.SaveChanges();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private bool UpdatePerson(PersonVM personVm)
+        {
+            try
+            {
+                foreach (var address in personVm.Person.Addresses)
+                {
+                    //si es nuevo registro lo agrego
+                    if (address.AddressId == Cons.Zero)
+                        db.Addresses.Add(address);
+                    else
+                    {
+                        //de lo contrario actualizo
+                        address.UnLock();
+                        db.Entry(address).State = EntityState.Modified;
+                        db.Entry(address).Property(c => c.InsDate).IsModified = false;
+                        db.Entry(address).Property(c => c.InsUser).IsModified = false;
+                    }
+                }
+
+                bool modifyImage = false;
+
+                //si la imagen fue eliminada, la borro del disco
+                if (personVm.DropImage && personVm.Person.ImagePath!= string.Empty)
+                {
+                    FileManager.DeleteImage(personVm.Person.ImagePath);
+                    personVm.Person.ImagePath = null;
+                    modifyImage = true;
+                }
+
+
+                //si hay imagen, la guardo y guardo la ruta
+                if (personVm.NewImages.Count > Cons.Zero && personVm.NewImages.First()!=null)
+                {
+                    var file = personVm.NewImages.FirstOrDefault();
+                    var path = Support.FileManager.SaveFile(file, personVm.Person.PersonId.ToString(), FileType.PersonImage);
+                    personVm.Person.ImagePath = path;
+                    modifyImage = true;
+                }
+
+                personVm.Person.UnLock();
+                db.Entry(personVm.Person).State = EntityState.Modified;
+                db.Entry(personVm.Person).Property(c => c.InsDate).IsModified = false;
+                db.Entry(personVm.Person).Property(c => c.InsUser).IsModified = false;
+                db.Entry(personVm.Person).Property(c => c.ImagePath).IsModified = modifyImage;
+
+
+                db.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        private JsonResult LockPerson(PersonVM model)
+        {
+            try
+            {
+                if (model.Person.IsLocked)
+                {
+                    var time = (model.Person.LockEndDate.Value - DateTime.Now.ToLocal()).ToString("mm:ss");
+                    return Json(new JResponse
+                    {
+                        Code = Codes.RecordLocked,
+                        Result = Cons.ResponseWarning,
+                        Header = "Resistro bloqueado!",
+                        Body = string.Format("Este registro ha sido bloqueado por  el usuario {0}, tiempo restante del bloqueo {1}", model.Person.LockUser, time),
+                    });
+                }
+
+                //bloqueo el registro
+                db.Entry(model.Person).Property(c => c.LockEndDate).IsModified = true;
+                db.Entry(model.Person).Property(c => c.LockUser).IsModified = true;
+
+                model.Addresses.ForEach(av =>
+                {
+                    av.Address.Lock();
+                    db.Entry(av.Address).Property(c => c.LockEndDate).IsModified = true;
+                    db.Entry(av.Address).Property(c => c.LockUser).IsModified = true;
+                });
+
+                db.SaveChanges();
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private bool BeginUpdatePerson(PersonVM model)
+        {
+            try
+            {
+                var states = db.States.ToSelectList();
+                var types = db.AddressTypes.ToSelectList();
+
+                int index = 0;
+
+                foreach (var a in model.Person.Addresses)
+                {
+                    AddressVm avm = new AddressVm { Address = a };
+
+                    if (index == Cons.Zero)
+                    {
+                        avm.AddButton = Styles.BtnEdit;
+                        avm.RemoveButton = Styles.BtnDeletetHidden;
+                    }
+                    else
+                    {
+                        avm.AddButton = Styles.BtnEditHidden;
+                        avm.RemoveButton = Styles.BtnDelete;
+                    }
+
+                    avm.SelectedStateId = a.Town.StateId;
+                    avm.States = states.ToSelectList(avm.SelectedStateId);
+                    avm.Towns = db.Towns.Where(t => t.StateId == avm.SelectedStateId).ToSelectList(a.TownId);
+                    avm.Types = types.ToSelectList((int)a.AddressTypeId);
+
+                    model.Addresses.Add(avm);
+                    index++;
+                }
+
+                
+             
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpPost]
@@ -166,21 +339,29 @@ namespace Argos.Controllers
         {
             try
             {
-                var person = db.Persons.Find(id);
+                var person = db.Persons.Include(p => p.Addresses).FirstOrDefault(p => p.PersonId == id);
 
-                if(!person.IsLocked)
+                if (!person.IsLocked)
                 {
-                    person.LockUser = null;
-                    person.LockEndDate = null;
+                    person.UnLock();
                     db.Entry(person).Property(c => c.LockEndDate).IsModified = true;
                     db.Entry(person).Property(c => c.LockUser).IsModified = true;
+
+                    //desbloqueo las direcciones
+                    foreach (var address in person.Addresses)
+                    {
+                        address.UnLock();
+                        db.Entry(address).Property(c => c.LockEndDate).IsModified = true;
+                        db.Entry(address).Property(c => c.LockUser).IsModified = true;
+                    }
 
                     db.SaveChanges();
                 }
 
                 return Json(new JResponse
                 {
-                    Result = Cons.ResponseSuccess,
+                    Code = Codes.Success,
+                    Result = Cons.ResponseInfo,
                     Header = "Registro desbloqueado",
                     Body = string.Format("El registro ha sido desbloqueado")
                 });
@@ -190,6 +371,7 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
+                    Code = Codes.ServerError,
                     Result = Cons.ResponseDanger,
                     Header = "Error al desbloquear el resgistro",
                     Body = string.Format("Ocurrio un error al eliminar el cliente detalle del error:{0}", ex.Message)
@@ -203,9 +385,9 @@ namespace Argos.Controllers
             Person person = null;
             try
             {
-                person = db.Persons.FirstOrDefault(c=> c.PersonId == id && c.IsActive);
+                person = db.Persons.FirstOrDefault(c => c.PersonId == id && c.IsActive);
 
-                if(person!=null)
+                if (person != null)
                 {
                     person.UnLock();
                     person.IsActive = false;
@@ -222,10 +404,10 @@ namespace Argos.Controllers
                     {
                         Result = Cons.ResponseWarning,
                         Header = "No existe el registro a eliminar!",
-                        Body = string.Format("Este registro ya no esta activo en el catálgo")                        
+                        Body = string.Format("Este registro ya no esta activo en el catálgo")
                     });
                 }
-              
+
             }
             catch (Exception ex)
             {
@@ -259,21 +441,29 @@ namespace Argos.Controllers
         #region Employee Methods
         public ActionResult Employees()
         {
-            var model = new PersonFilterViewModel<Employee>();
+            var model = new PersonFilterViewModel<EmployeeVm>();
+
+            model.Entities = db.Persons.OfType<Employee>().OrderBy(e => e.Name).
+                                Select(c => new EmployeeVm { Employee = c }).ToList();
+
             model.States = db.States.ToSelectList();
 
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult SearchEmployees(string ftr, string name, string stateId,string townId, int? id)
+        public ActionResult SearchEmployees(string ftr, string name, string stateId, string townId, int? id)
         {
-            var model = db.Persons.OfType<Employee>().Include(e=> e.JobPosition).Where(e => (ftr == string.Empty || ftr == null || e.FTR == ftr)
-            && (id == null || e.PersonId == id)
-            && (name == string.Empty || name == null || e.Name.Contains(name))
-            && (townId == null || townId == string.Empty || e.TownId == townId)
-            && (stateId == null || stateId == string.Empty || e.Town.StateId == stateId)
-            && e.IsActive).Include(c => c.Town).Include(e=> e.SystemUser).ToList();
+            var model = (from e in db.Persons.OfType<Employee>().Include(e => e.JobPosition).
+                         Include(e => e.SystemUser).Include(e => e.Addresses.Select(a => a.Town))
+
+                         where (ftr == string.Empty || ftr == null || e.FTR == ftr)
+                         &&    (id == null || e.PersonId == id)
+                         &&    (name == string.Empty || name == null || e.Name.Contains(name))
+                         &&    (stateId == null || stateId == string.Empty || e.Addresses.Any(a=> a.Town.StateId == stateId))
+
+                         &&    e.IsActive select e ).OrderBy(e=> e.Name).
+                         Select(e=> new EmployeeVm { Employee = e }).ToList();
 
             return PartialView("_EmployeeList", model);
         }
@@ -281,73 +471,38 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult BeginAddEmployee()
         {
-            var model = new PersonViewModel<Employee>();
-            model.Entity = new Employee { Gender = Cons.MaleChar, HireDate=DateTime.Now.TodayLocal() };
-
-            model.States = db.States.ToSelectList();
+            var model = new EmployeeVm();
+            model.Employee = new Employee { Gender = Cons.MaleChar, HireDate = DateTime.Now.TodayLocal() };
             model.JobPositions = db.JobPositions.ToSelectList();
+
+            BeginAddPerson(model);
 
             return PartialView("_EmployeeEdit", model);
         }
 
         [HttpPost]
-        public ActionResult AddEmployee(Employee employee)
-        {
-            try
-            {
-                db.Persons.Add(employee);
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return Json(new JResponse
-                {
-                    Result = Cons.ResponseDanger,
-                    Header = "Error al guardar el empleado",
-                    Body = "Ocurrio un error al agregar el empleado " + ex.Message
-                });
-            }
-            return Json(new JResponse
-            {
-                Result = Cons.ResponseSuccess,
-                Header = "Datos del empleado guardados",
-                Body = string.Format("El empleado {0} fue agregado al catálogo", employee.Name),
-                Id = employee.PersonId
-            });
-        }
-        [HttpPost]
         public ActionResult BeginUpdateEmployee(int id)
         {
             try
             {
-                var model = new PersonViewModel<Employee>();
+                var model = new EmployeeVm();
+                model.JobPositions = db.JobPositions.ToSelectList();
 
-                model.Entity = db.Persons.OfType<Employee>().Include(e => e.Town).Include(e=>e.JobPosition).
-                                            FirstOrDefault(e => e.PersonId == id && e.IsActive);
+                model.Employee = db.Persons.OfType<Employee>().Include(c => c.Addresses).Include(c => c.Addresses.Select(a => a.Town.State)).
+                    FirstOrDefault(c => c.PersonId == id && c.IsActive);
+
+                BeginUpdatePerson(model);
 
                 if (model != null)
                 {
-                    var json = EvalLock(model.Entity);
-
-                    if (json != null)
-                        return json;
-
-                    //bloqueo el registro
-                    db.Entry(model.Entity).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(model.Entity).Property(c => c.LockUser).IsModified = true;
-
-                    db.SaveChanges();
-                
-                    model.States    = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.Entity.Town.StateId);
-                    model.Cities    = db.Towns.Where(c => c.StateId == model.Entity.Town.StateId).ToSelectList();
-                    model.JobPositions = db.JobPositions.ToSelectList();
-
+                    LockPerson(model);
                     return PartialView("_EmployeeEdit", model);
                 }
                 else
                 {
                     return Json(new JResponse
                     {
+                        Code = Codes.RecordNotFound,
                         Result = Cons.ResponseWarning,
                         Header = "Empleado inexistente!",
                         Body = string.Format("Este empleado ya no esta activo en el catálgo"),
@@ -359,55 +514,70 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
+                    Code = Codes.ServerError,
                     Result = Cons.ResponseDanger,
-                    Header = "Error al obtener el empleado",
-                    Body = string.Format("Ocurrio un error al ontener los datos del empleado, detalle del error:{0}", ex.Message),
+                    Header = "Error al obtener datos",
+                    Body = string.Format("Ocurrio un error obtener los datos del empleado, detalle del error:{0}", ex.Message),
                 });
             }
         }
 
 
         [HttpPost]
-        public ActionResult UpdateEmployee(Employee employee)
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveEmployee(EmployeeVm model)
         {
             try
             {
-                employee.UpdDate = DateTime.Now.ToLocal();
-                employee.UpdUser = User.Identity.Name;
+                //update
+                if (model.Employee.PersonId > Cons.Zero)
+                {
+                    UpdatePerson(model);
 
-                db.Entry(employee).State = EntityState.Modified;
-                db.Entry(employee).Property(c => c.InsUser).IsModified = false;
-                db.Entry(employee).Property(c => c.InsDate).IsModified = false;
-                db.Entry(employee).Property(c => c.IsActive).IsModified = false;
+                    return Json(new JResponse
+                    {
+                        Result = Cons.ResponseSuccess,
+                        Header = "Empleado Modificado",
+                        Code = Codes.Success,
+                        Body = "Se actualizaron los datos del empleado " + model.Employee.Name + " y se removio el bloqueo",
+                        Id = model.Employee.PersonId
+                    });
+                }
+                //insert
+                else
+                {
+                    InsertPerson(model);
 
-                db.SaveChanges();
+                    return Json(new JResponse
+                    {
+                        Result = Cons.ResponseSuccess,
+                        Header = "Empleado Agregado",
+                        Code = Codes.Success,
+                        Body = "Se agrego el empleado " + model.Employee.Name,
+                        Id = model.Employee.PersonId
+                    });
+                }
             }
             catch (Exception ex)
             {
                 return Json(new JResponse
                 {
                     Result = Cons.ResponseDanger,
-                    Header = "Error al modificar el empleado",
-                    Body = string.Format("Ocurrio un error al guardar los cambios del empleado {0}  detalle del error {1}",
-                                        employee.Name, ex.Message),
+                    Header = "Error Al guardar",
+                    Body = "Ocurrio un error al guardar os datos del cliente " + ex.Message,
+                    Code = Codes.ServerError
                 });
             }
-            return Json(new JResponse
-            {
-                Result = Cons.ResponseSuccess,
-                Header = "Datos del empleado guardados",
-                Body = string.Format("Los datos del empleado {0} fueron modificados", employee.Name),
-                Id = employee.PersonId
-            });
         }
-
-     
         #endregion
 
         #region Supplier Methods
         public ActionResult Suppliers()
         {
-            var model = new PersonFilterViewModel<Supplier>();
+            var model = new PersonFilterViewModel<SupplierVm>();
+            model.Entities = db.Persons.OfType<Supplier>().OrderBy(s => s.Name).
+                                Select(s => new SupplierVm { Supplier = s }).ToList();
+
             model.States = db.States.ToSelectList();
 
             return View(model);
@@ -416,87 +586,56 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult SearchSuppliers(string ftr, string name, string stateId, string townId, int? id)
         {
-            var model = db.Persons.OfType<Supplier>().Where(c => (ftr == string.Empty || ftr == null || c.FTR == ftr)
-            && (id == null || c.PersonId == id)
-            && (name == string.Empty || name == null || c.Name.Contains(name))
-            && (townId == null || townId == string.Empty || c.TownId == townId) 
-            && (stateId == null || stateId == string.Empty || c.Town.StateId == stateId)
-            && c.IsActive).Include(c => c.Town).ToList();
+            var model = (from s in db.Persons.OfType<Supplier>().Include(s => s.SystemUser).
+                         Include(s => s.Addresses.Select(a => a.Town))
+
+                         where (ftr == string.Empty || ftr == null || s.FTR == ftr)
+                         && (id == null || s.PersonId == id)
+                         && (name == string.Empty || name == null || s.Name.Contains(name))
+                         && (stateId == null || stateId == string.Empty || s.Addresses.Any(a => a.Town.StateId == stateId))
+
+                         && s.IsActive
+                         select s).OrderBy(e => e.Name).
+                        Select(e => new SupplierVm { Supplier = e }).ToList();
 
             return PartialView("_SupplierList", model);
         }
 
+
         [HttpPost]
         public ActionResult BeginAddSupplier()
         {
-            var model = new PersonViewModel<Supplier>();
-
-            model.States = db.States.ToSelectList();
-
+            var model = new SupplierVm();
+            model.Supplier = new Supplier();
+            BeginAddPerson(model);
             return PartialView("_SupplierEdit", model);
         }
-
-        [HttpPost]
-        public ActionResult AddSupplier(Supplier supplier)
-        {
-            try
-            {
-                db.Persons.Add(supplier);
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return Json(new JResponse
-                {
-                    Result = Cons.ResponseDanger,
-                    Header = "Error al guardar el proveedor",
-                    Body = "Ocurrio un error al agregar el proveedor " + ex.Message
-                });
-            }
-            return Json(new JResponse
-            {
-                Result = Cons.ResponseSuccess,
-                Header = "Datos del proveedor guardados",
-                Body = string.Format("El proveedor {0} fue agregado al catálogo", supplier.Name),
-                Id = supplier.PersonId
-            });
-        }
-
 
         [HttpPost]
         public ActionResult BeginUpdateSupplier(int id)
         {
             try
             {
-                var model = new PersonViewModel<Supplier>();
-                    
-                 model.Entity =  db.Persons.OfType<Supplier>().Include(s => s.Town).FirstOrDefault(s => s.PersonId == id && s.IsActive);
+                var model = new SupplierVm();
+
+                model.Supplier = db.Persons.OfType<Supplier>().Include(c => c.Addresses).
+                    Include(c => c.Addresses.Select(a => a.Town.State)).FirstOrDefault(c => c.PersonId == id && c.IsActive);
+
+                BeginUpdatePerson(model);
 
                 if (model != null)
                 {
-                    var json = EvalLock(model.Entity);
-
-                    if (json != null)
-                        return json;
-
-                    //bloqueo el registro
-                    db.Entry(model.Entity).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(model.Entity).Property(c => c.LockUser).IsModified = true;
-
-                    db.SaveChanges();
-
-                    model.States = new SelectList(db.States, nameof(State.StateId), nameof(State.Name), model.Entity.Town.StateId);
-                    model.Cities = db.Towns.Where(c => c.StateId == model.Entity.Town.StateId).ToSelectList();
-
+                    LockPerson(model);
                     return PartialView("_SupplierEdit", model);
                 }
                 else
                 {
                     return Json(new JResponse
                     {
+                        Code = Codes.RecordNotFound,
                         Result = Cons.ResponseWarning,
-                        Header = "Proveedor inexistente!",
-                        Body = string.Format("Este proveedor ya no esta activo en el catálgo"),
+                        Header = "Cliente inexistente!",
+                        Body = string.Format("Este cliente ya no esta activo en el catálgo"),
                     });
                 }
 
@@ -505,120 +644,64 @@ namespace Argos.Controllers
             {
                 return Json(new JResponse
                 {
+                    Code = Codes.ServerError,
                     Result = Cons.ResponseDanger,
-                    Header = "Error al eliminar el proveedor",
-                    Body = string.Format("Ocurrio un error al eliminar el proveedor detalle del error:{0}", ex.Message),
+                    Header = "Error al obtener datos",
+                    Body = string.Format("Ocurrio un error obtener los datos del cliente, detalle del error:{0}", ex.Message),
                 });
             }
         }
 
 
         [HttpPost]
-        public ActionResult UpdateSupplier(Supplier supplier)
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveSupplier(SupplierVm supplierVm)
         {
             try
             {
-                supplier.UnLock();
-
-                db.Entry(supplier).State = EntityState.Modified;
-                db.Entry(supplier).Property(c => c.InsDate).IsModified = false;
-                db.Entry(supplier).Property(c => c.InsUser).IsModified = false;
-                db.Entry(supplier).Property(c => c.IsActive).IsModified = false;
-
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return Json(new JResponse
+                //update
+                if (supplierVm.Supplier.PersonId > Cons.Zero)
                 {
-                    Result = Cons.ResponseDanger,
-                    Header = "Error al modificar el proveedor",
-                    Body = string.Format("Ocurrio un error al guardar los cambios del proveedor {0}  detalle del error {1}",
-                                        supplier.Name, ex.Message),
-                });
-            }
-            return Json(new JResponse
-            {
-                Result = Cons.ResponseSuccess,
-                Header = "Datos del proveedor guardados",
-                Body = string.Format("Los datos del proveedor {0} fueron modificados", supplier.Name),
-                Id = supplier.PersonId
-            });
-        }
+                    UpdatePerson(supplierVm);
 
-
-        [HttpPost]
-        public ActionResult DeleteSupplier(int id)
-        {
-            Supplier provider = new Supplier();
-            try
-            {
-                provider = db.Persons.OfType<Supplier>().FirstOrDefault(c => c.PersonId == id && c.IsActive);
-
-                if (provider != null)
-                {
-                    provider.UpdUser = User.Identity.Name;
-                    provider.UpdDate = DateTime.Now.ToLocal();
-                    provider.IsActive = false;
-
-                    db.Entry(provider).Property(p => p.UpdDate).IsModified = true;
-                    db.Entry(provider).Property(p => p.UpdUser).IsModified = true;
-                    db.Entry(provider).Property(p => p.IsActive).IsModified = true;
-                    db.SaveChanges();
-                }
-                else
-                {
                     return Json(new JResponse
                     {
-                        Result = Cons.ResponseWarning,
-                        Header = "No existe el proveedor a eliminar!",
-                        Body = string.Format("Este proveedor ya no esta activo en el catálgo")
+                        Result = Cons.ResponseSuccess,
+                        Header = "Proveedor Modificado",
+                        Code = Codes.Success,
+                        Body = "Se actualizaron los datos del proveedor " + supplierVm.Supplier.Name + " y se removio el bloqueo",
+                        Id = supplierVm.Supplier.PersonId
+                    });
+                }
+                //insert
+                else
+                {
+                    InsertPerson(supplierVm);
+
+                    return Json(new JResponse
+                    {
+                        Result = Cons.ResponseSuccess,
+                        Header = "Proveedor Agregado",
+                        Body = "Se agrego el proveedor " + supplierVm.Supplier.Name,
+                        Id = supplierVm.Supplier.PersonId,
+                        Code = Codes.Success
                     });
                 }
             }
-
             catch (Exception ex)
             {
                 return Json(new JResponse
                 {
                     Result = Cons.ResponseDanger,
-                    Header = "Error al eliminar el proveedor",
-                    Body = string.Format("Ocurrio un error al eliminar el proveedor detalle del error:{0}", ex.Message)
+                    Header = "Error Al guardar",
+                    Body = "Ocurrio un error al guardar os datos del proveedor " + ex.Message,
+                    Code = Codes.ServerError
                 });
             }
-
-            return Json(new JResponse
-            {
-                Result = Cons.ResponseSuccess,
-                Header = "Proveedor eliminado!",
-                Body = string.Format("El proveedor {0} fue eliminado del catálogo", provider.Name),
-                Id = provider.PersonId
-            });
         }
-
 
         #endregion
 
-
-        private JsonResult EvalLock(AuditableCatalog model)
-        {
-            if (model.IsLocked)
-            {
-                var time = (model.LockEndDate.Value - DateTime.Now.ToLocal()).ToString("mm:ss");
-                return Json(new JResponse
-                {
-                    Result = Cons.ResponseWarning,
-                    Header = "Resistro bloqueado!",
-                    Body = string.Format("Este registro ha sido bloqueado por  el usuario {0}, tiempo restante del bloqueo {1}", model.LockUser, time),
-                });
-            }
-            else
-            {
-                model.Lock();
-                return null;
-            }
-              
-        }
 
         protected override void Dispose(bool disposing)
         {

@@ -55,10 +55,9 @@ namespace Argos.Models
 
         public DbSet<OperationType> OperationType { get; set; }
 
-     
         public DbSet<Operation> Operations { get; set; }
 
-        public DbSet<OperationDetail> OperationDetails { get; set; }
+        public DbSet<Detail> Details { get; set; }
 
 
         #endregion
@@ -74,26 +73,27 @@ namespace Argos.Models
         #endregion
 
         #region Inventory
-
-        public DbSet<Product> Products { get; set; }
-
-        public DbSet<ProductImage> ProductImages { get; set; }
-
-        public DbSet<ExternalProduct> ExternalProduct { get; set; }
-
-        public DbSet<PriceChange> PriceHistories { get; set; }
-
-        public DbSet<ProductStock> ProductStocks { get; set; }
-
         public DbSet<MeasureUnit> MeasureUnits { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<SubCategory> SubCategories { get; set; }
 
-        public DbSet<Serial> Serials { get; set; }
+        public DbSet<Product> Products { get; set; }
 
-        public DbSet<StockMovement> StockMovements { get; set; }
+        public DbSet<PriceChange> PriceChanges { get; set; }
+
+        public DbSet<ProductImage> ProductImages { get; set; }
+
+        public DbSet<Item> Items { get; set; }
+
+        public DbSet<Location> Locations { get; set; }
+
+        public DbSet<ItemLocation> ItemLocations { get; set; }
+
+        public DbSet<Movement> ItemHistories { get; set; }
+
+        public DbSet<SupplierProduct> SupplierProducts { get; set; }
 
         #endregion
 
@@ -123,9 +123,9 @@ namespace Argos.Models
 
         public DbSet<Service> Activity { get; set; }
 
-        public DbSet<AccountLocation> Locations { get; set; }
+        public DbSet<AccountLocation> AccountLocations { get; set; }
 
-        public DbSet<Production.OperativeStatus> OperativeStatus { get; set; }
+        public DbSet<OperativeStatus> OperativeStatus { get; set; }
 
         #endregion
 

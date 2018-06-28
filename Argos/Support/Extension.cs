@@ -51,6 +51,11 @@ namespace Argos.Support
             return new SelectList(data, nameof(ISelectable.Value), nameof(ISelectable.Text));
         }
 
+        public static SelectList ToSelectList(this IEnumerable data,object selectedValue)
+        {
+            return new SelectList(data, nameof(ISelectable.Value), nameof(ISelectable.Text),selectedValue);
+        }
+
 
         public static string GetCode(string serviceCode, DateTime beginDate, int sequential)
         {

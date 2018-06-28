@@ -1,57 +1,65 @@
-﻿@model IEnumerable<Argos.Models.Operative.Supplier>
+﻿@model IEnumerable<Argos.ViewModels.Generic.SupplierVm>
 @using Argos.Support
 
 <table id="TbSupplierList" class="table jambo_table dataTable table-hover">
     <thead>
         <tr class="heading">
-          
-            <th class="column-title">
+
+            <th>
+                <span class="fa fa-camera control-label"></span>
+            </th>
+            <th>
+                <span class="fa fa-user control-label"></span>
                 @Html.DisplayName("Proveedor")
             </th>
-            <th class="column-title">
-                @Html.DisplayName("Dirección")
+            <th>
+                <span class="fa fa-id-badge control-label"></span>
+                @Html.DisplayName("RFC")
             </th>
-            <th class="column-title">
-                @Html.DisplayName("Contacto")
+            <th>
+                <span class="fa fa-black-tie control-label"></span>
+                @Html.DisplayName("Razón Social")
             </th>
-
-            <th/>
+            <th>
+                <span class="fa fa-phone control-label"></span>
+                @Html.DisplayName("Teléfono")
+            </th>
+            <th>
+                <span class="fa fa-envelope control-label"></span>
+                @Html.DisplayName("Email")
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr ondblclick="BeginUpdateSupplier(@item.PersonId)">
-               
-                <td class="col-md-4">
-                    <span class="fa fa-user control-label"></span>
-                    <a class="text-capitalize">@Html.DisplayFor(modelItem => item.Name)</a><br />
-                    <span class="fa fa-black-tie control-label"></span>
-                    <a class="text-capitalize">@Html.DisplayFor(modelItem => item.BusinessName)</a><br />
-                    <span class="fa fa-id-badge control-label"></span>
-                    <a class="text-uppercase">@item.FTR</a>
+            <tr>
+                <td>
+                    <img src="@item.Image" class="img-responsive img-rounded" style="max-height:50px" />
                 </td>
-                <td class="col-md-4 text-capitalize">
-                    <span class="fa fa-street-view control-label"></span>
-                    @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
-                    @Html.DisplayFor(modelItem => item.Location)  @Html.DisplayFor(modelItem => item.ZipCode) <br />
-                    @Html.DisplayFor(modelItem => item.Town.State.Name), @Html.DisplayFor(modelItem => item.Town.Name)
+                <td class="text-capitalize">
+                    @Html.DisplayFor(modelItem => item.Supplier.Name)
                 </td>
-
-                <td class="col-md-3 text-lowercase">
-                    <span class="fa fa-phone"></span>
-                    @Html.DisplayFor(modelItem => item.Phone)<br />
-
-                    <span class="fa fa-envelope"></span>
-                    @Html.DisplayFor(modelItem => item.Email)<br />
-
-                    <span class="fa fa-globe"></span>
-                    @Html.DisplayFor(modelItem => item.WebSite)
+                <td class="text-uppercase">
+                    @Html.DisplayFor(modelItem => item.Supplier.FTR)
+                </td>
+                <td class="text-capitalize">
+                    @Html.DisplayFor(modelItem => item.Supplier.BusinessName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supplier.Phone)
+                </td>
+                <td class="text-lowercase">
+                    @Html.DisplayFor(modelItem => item.Supplier.Email)
                 </td>
 
-                <td class="col-md-1">
-                    <button class="btn btn-danger" type="button" onclick="BeginDelete('@item.PersonId','@item.Name')">
-                        <span class="fa fa-trash"></span>
+                <td>
+                    <button class="@item.EditButton" type="button" onclick="BeginUpdateSupplier(@item.Supplier.PersonId)">
+                        <span class="@Icons.Edit"></span>
+                    </button>
+                    <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Supplier.PersonId','@item.Supplier.Name')">
+                        <span class="@Icons.Delete"></span>
                     </button>
                 </td>
             </tr>
@@ -63,30 +71,26 @@
 
     $(document).ready(function ()
     {
-        Paginate("#TbSupplierList", 5, false)
+        Paginate("#TbSupplierList", 5, true, "#txtName");
     });
 
-    function BeginDelete(id, name) {
+    function BeginDelete(id, name)
+    {
         idSupplier = id;
-        var hdr = "Eliminar Proveedor!";
+        var hdr = "Eliminar Supplier!";
         var body = "¿Esta seguro que deseas eliminar el proveedor " + name + "?";
-        ShowMessage(hdr, body, 'confirm', DeleteSupplier, null, 'static')
-
+        ShowMessage(hdr, body, 'confirm', DeleteSupplier, null, 'static');
     }
 
-    function DeleteSupplier() {
-        ExecuteAjax('@Url.Action("DeleteSupplier","Catalog")', { id: idSupplier }, function (response) {
-            HideLoading(function () {
-                if (response.Result == '@Cons.ResponseSuccess') {
-                    ShowMessage(response.Header, response.Body, response.Result, null, SearchProviders, 'static');
-                }
-                else {
-                    ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
-                }
+    function DeleteSupplier()
+    {
+        ExecuteAjax('@Url.Action("DeleteSupplier","Catalog")', { id: idSupplier }, function (response)
+        {
+            HideLoading(function ()
+            {
+                ShowNotify(response.Header, response.Result, response.Body, 2500);
             });
         });
     }
-
-
 
 </script>

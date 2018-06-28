@@ -1,5 +1,5 @@
-﻿@model Argos.ViewModels.Generic.PersonFilterViewModel<Client>
-@using Argos.Models.Operative
+﻿@model Argos.ViewModels.Generic.PersonFilterViewModel<ClientVm>
+@using Argos.ViewModels.Generic
 
 @{
     ViewBag.Title = "Clientes";
@@ -78,7 +78,6 @@
     $(document).ready(function ()
     {
         SetCascade('#ddlStateId', '#ddlCityId', '@Url.Action("GetCities","Configuration")');
-        $("#liClients").addClass("active")
     });
 
    

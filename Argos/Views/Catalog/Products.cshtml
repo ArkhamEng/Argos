@@ -36,13 +36,14 @@
         <div class="x_panel">
             <div class="x_title">
                 <div class="hidden-xs">
+                    
                     <div class="col-lg-4 col-md-4 col-sm-4">
-                        @Html.DropDownListFor(m => m.Filter.CategoryId, Model.Lists.Categories, "Categoría", new { @class = "form-control col-md-6  has-feedback-left text-uppercase" })
+                        @Html.DropDownListFor(m => m.Filter.CategoryId, Model.Lists.Categories, "Categoría", new { @class = "form-control col-md-6  has-feedback-left text-uppercase", style= "border-radius:10% /150% !important" })
                         <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
 
-                        @Html.DropDownListFor(m => m.Filter.SubCategoryId, Model.Lists.SubCategories, "Sub Categoría", new { @class = "form-control col-md-6  has-feedback-left text-uppercase" })
+                        @Html.DropDownListFor(m => m.Filter.SubCategoryId, Model.Lists.SubCategories, "Sub Categoría", new { @class = "form-control col-md-6  has-feedback-left text-uppercase", style = "border-radius:10% /150% !important" })
                         <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
                     </div>
                 </div>
@@ -76,7 +77,7 @@
             </div>
 
             <div class="x_content">
-
+                
                 @*<div class="col-lg-2 col-md-4">
                         <span class="fa fa-registered form-control-feedback left" aria-hidden="true"></span>
                         @Html.DropDownListFor(m => m.Filter.MakerId, Model.Lists.Makers, "Armadora", new { @class = "form-control has-feedback-left text-capitalize" })
@@ -91,7 +92,7 @@
                         <span class="fa fa-calendar-check-o form-control-feedback left" aria-hidden="true"></span>
                         @Html.DropDownListFor(m => m.Filter.Year, Model.Lists.Models, "Año", new { @class = "form-control has-feedback-left text-capitalize" })
                     </div>*@
-                <div id="divProductList" class="panel-body" style="min-height:300px">
+                <div id="divProductList" style="min-height:300px">
                     @Html.Partial("_ProductList", Model.Products)
                 </div>
             </div>
@@ -101,33 +102,33 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        SetCascade('#Filter_MakerId', '#Filter_ModelId', '@Url.Action("GetModels","Configuration")');
-
-        SetCascade('#Filter_ModelId', '#Filter_Year', '@Url.Action("GetYears", "Configuration")');
-
+    $(document).ready(function ()
+    {
         SetCascade('#Filter_CategoryId', '#Filter_SubCategoryId', '@Url.Action("GetProductSubCategories", "Configuration")');
     });
 
-    function BeginAddProduct() {
+    function BeginAddProduct()
+    {
         ShowProductModal(CompleateSave, null);
     }
 
-    function BeginUpdateProduct(id) {
+    function BeginUpdateProduct(id)
+    {
         ShowProductModal(CompleateSave, null, id);
     }
 
-    function CompleateSave(response) {
+    function CompleateSave(response)
+    {
         var filter = { ProductId: response.Id };
 
-        ShowNotify(response.Header, response.Result, response.Body);
-
-        ExecuteAjax('@Url.Action("SearchProducts")', filter, function (view) {
+        ExecuteAjax('@Url.Action("SearchProducts")', filter, function (view)
+        {
             $("#divProductList").html(view);
         });
     }
 
-    function SearchProducts() {
+    function SearchProducts()
+    {
         ShowLoading('static');
 
         var filter = {
@@ -135,14 +136,17 @@
             MakerId: $("#Filter_MakerId").val(), ModelId: $("#Filter_ModelId").val(), Year: $("#Filter_Year").val()
         };
 
-        ExecuteAjax('@Url.Action("SearchProducts","Catalog")', { filter: filter }, function (response) {
-            HideLoading(function () {
+        ExecuteAjax('@Url.Action("SearchProducts","Catalog")', { filter: filter }, function (response)
+        {
+            HideLoading(function ()
+            {
                 $("#divProductList").html(response);
             });
         });
     }
 
-    function Clear() {
+    function Clear()
+    {
         window.location = window.location;
     }
 </script>

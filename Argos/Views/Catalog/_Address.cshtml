@@ -1,0 +1,66 @@
+﻿@model  Argos.ViewModels.Generic.AddressVm
+
+
+<div id="AddressModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.SelectedStateId, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                                @Html.DropDownListFor(model => model.SelectedStateId, Model.States, "", htmlAttributes: new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SelectedStateId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.Address.TownId, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                                @Html.DropDownListFor(model => model.Address.TownId, Model.Towns, "", htmlAttributes: new { @class = "form-control input-sm" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Address.TownId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            @Html.LabelFor(model => model.Address.Location, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                                @Html.EditorFor(model => model.Address.Location, new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Address.Location, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Address.ZipCode, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+                                @Html.EditorFor(model => model.Address.ZipCode, new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Address.ZipCode, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            @Html.LabelFor(model => model.Address.Street, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
+                                @Html.EditorFor(model => model.Address.Street, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocompleate = "off" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Address.Street, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function ()
+    {
+        $("#AddressModal").modal('show');
+    });
+</script>

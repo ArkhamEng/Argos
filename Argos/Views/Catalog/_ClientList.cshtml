@@ -1,17 +1,31 @@
-﻿@model IEnumerable<Argos.Models.Operative.Client>
+﻿@model IEnumerable<Argos.ViewModels.Generic.ClientVm>
+@using Argos.Support
 
-
-<table id="TbClientList" class="table table-hover table-responsive jambo_table">
+<table id="TbClientList" class="table table-responsive jambo_table">
     <thead>
         <tr class="heading">
             <th>
+                <span class="fa fa-camera control-label"></span>
+            </th>
+            <th>
+                <span class="fa fa-user control-label"></span>
                 @Html.DisplayName("Cliente")
             </th>
             <th>
-                @Html.DisplayName("Dirección")
+                <span class="fa fa-id-badge control-label"></span>
+                @Html.DisplayName("RFC")
             </th>
             <th>
-                @Html.DisplayName("Contacto")
+                <span class="fa fa-black-tie control-label"></span>
+                @Html.DisplayName("Razón Social")
+            </th>
+            <th>
+                <span class="fa fa-phone control-label"></span>
+                @Html.DisplayName("Teléfono")
+            </th>
+            <th>
+                <span class="fa fa-envelope control-label"></span>
+                @Html.DisplayName("Email")
             </th>
 
             <th></th>
@@ -20,26 +34,34 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr ondblclick="BeginUpdateClient(@item.PersonId)">
-                <td class="col-md-4">
-                    <span class="fa fa-user control-label"></span>   @Html.DisplayFor(modelItem => item.Name)<br />
-                    <span class="fa fa-black-tie control-label"></span>   @Html.DisplayFor(modelItem => item.BusinessName)<br />
-                    <span class="fa fa-id-badge control-label"></span>   @Html.DisplayFor(modelItem => item.FTR)
+            <tr>
+                <td>
+                    <img src="@item.Image" class="img-responsive img-rounded" style="max-height:50px" />
                 </td>
-                <td class="col-md-4">
-                    <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
-                    @Html.DisplayFor(modelItem => item.Location)  @Html.DisplayFor(modelItem => item.ZipCode) <br />
-                    @Html.DisplayFor(modelItem => item.Town.State.Name), @Html.DisplayFor(modelItem => item.Town.Name)
+                <td class="text-capitalize">
+                    @Html.DisplayFor(modelItem => item.Client.Name)
+                </td>
+                <td class="text-uppercase">
+                    @Html.DisplayFor(modelItem => item.Client.FTR)
+                </td>
+                <td class="text-capitalize">
+
+                    @Html.DisplayFor(modelItem => item.Client.BusinessName)
                 </td>
 
-                <td class="col-md-3">
-                    @Html.DisplayFor(modelItem => item.Phone)<br />
-                    @Html.DisplayFor(modelItem => item.Email)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client.Phone)
+                </td>
+                <td class="text-lowercase">
+                    @Html.DisplayFor(modelItem => item.Client.Email)
                 </td>
 
-                <td class="col-md-1">
-                    <button class="btn btn-danger" type="button" onclick="BeginDelete('@item.PersonId','@item.Name')">
-                        <span class="fa fa-trash"></span>
+                <td>
+                    <button class="@item.EditButton" type="button" onclick="BeginUpdateClient(@item.Client.PersonId)">
+                        <span class="@Icons.Edit"></span>
+                    </button>
+                    <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Client.PersonId','@item.Client.Name')">
+                        <span class="@Icons.Delete"></span>
                     </button>
                 </td>
             </tr>
@@ -49,38 +71,30 @@
 <script>
     var idClient = 0;
 
-    $(document).ready(function()
-    {
-        Paginate("#TbClientList", 5,true, "#txtName")
+    $(document).ready(function () {
+        Paginate("#TbClientList", 8, true, "#txtName")
     });
 
-    function BeginDelete(id,name)
+    function BeginDelete(id, name)
     {
         idClient = id;
-        var hdr ="Eliminar cliente!";
+        var hdr = "Eliminar cliente!";
         var body = "Esta seguro que deseas eliminar el cliente " + name;
         ShowMessage(hdr, body, 'confirm', DeleteClient, OnDeleteCanceled, 'static')
-        
     }
 
     function DeleteClient()
     {
-        ExecuteAjax('@Url.Action("DeleteClient","Catalog")', { id: idClient }, function (response)
+        ExecuteAjax('@Url.Action("DeletePerson","Catalog")', { id: idClient }, function (response)
         {
             HideLoading(function ()
             {
-                if (response.Result == 'success')
-                {
-                    ShowMessage(response.Header, response.Body, response.Result, null, SearchClients, 'static');
-                }
-                else {
-                    ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
-                }
+                ShowNotify(response.Header, response.Result, response.Body, 2500);
             });
         });
     }
 
-  
+
     function OnDeleteCanceled()
     {
         console.log("Confirm Cerrado");

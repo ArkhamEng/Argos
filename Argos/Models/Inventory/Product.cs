@@ -101,31 +101,28 @@ namespace Argos.Models.Inventory
         public bool IsForPurchase { get; set; }
 
         #region Navigation Properties
-        /// <summary>
-        /// Sub clasificación del producto
-        /// </summary>
+      
         public virtual SubCategory SubCategory { get; set; }
 
         public virtual MeasureUnit MeasureUnit { get; set; }
 
         public ICollection<PriceChange> PriceChanges { get; set; }
 
-        public ICollection<ExternalProduct> ExternalProducts { get; set; }
-
-        public ICollection<OperationDetail> OperationDetails { get; set; }
+        public ICollection<SupplierProduct> ExternalProducts { get; set; }
 
         public ICollection<ProductImage> ProductImages { get; set; }
 
         public ICollection<Compatibility> Compatibilities { get; set; }
 
-        public ICollection<ProductStock> ProductStocks { get; set; }
+        public ICollection<Detail> Details { get; set; }
+
+        public ICollection<Item> Items { get; set; }
 
         #endregion
 
         public Product()
         {
             this.ProductImages = new List<ProductImage>();
-            this.ProductStocks = new List<ProductStock>();
         }
     }
 }

@@ -119,17 +119,6 @@ namespace Argos.Controllers
 
 
 
-        [HttpPost]
-        public ActionResult GetClientAddress(int clientId)
-        {
-            LocatableEntity model = db.Persons.Include(c => c.Town).FirstOrDefault(c => c.PersonId == clientId);
-            ViewBag.States = db.States.ToSelectList();
-            ViewBag.Cities = db.Towns.ToSelectList();
-
-            return PartialView("_AccountAddress", model);
-        }
-
-
         // GET: Service/Details/5
         public ActionResult Details(int id)
         {

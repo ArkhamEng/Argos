@@ -8,10 +8,9 @@ namespace Argos.Support
 {
     public enum FileType
     {
-        ProfilePicture,
+        ProfileImage,
         ProductImage,
-        EmployeeCard,
-        SupplierLogo
+        PersonImage
     }
     public class FileManager
     {
@@ -19,9 +18,10 @@ namespace Argos.Support
         {
             try
             {
-                if (File.Exists(filePath))
+                var serverPath = HttpContext.Current.Server.MapPath(filePath);
+                if (File.Exists(serverPath))
                 {
-                    File.Delete(filePath);
+                    File.Delete(serverPath);
                     return true;
                 }
                 return true;
@@ -32,7 +32,7 @@ namespace Argos.Support
             }
         }
 
-        public static string SaveFileDeprecated(HttpPostedFileBase file, string parentId, FileType type)
+        public static string SaveFile(HttpPostedFileBase file, string parentId, FileType type)
         {
             try
             {
@@ -43,11 +43,14 @@ namespace Argos.Support
 
                 switch (type)
                 {
-                    case FileType.ProfilePicture:
-                        serverUrl = Cons.UserPicturePath + "/" + parentId.ToString();
+                    case FileType.ProfileImage:
+                        serverUrl = Cons.ProfileImagePath + "/" + parentId.ToString();
                         break;
                     case FileType.ProductImage:
                         serverUrl = Cons.ProductImagePath + "/" + parentId.ToString();
+                        break;
+                    case FileType.PersonImage:
+                        serverUrl = Cons.PersonImagePath + "/" + parentId.ToString();
                         break;
                 }
 
@@ -55,7 +58,7 @@ namespace Argos.Support
 
                 //si el archivo es una foto de perfil y ya existe un directorio, lo borro y lo vuelvo a crear
                 //ya que solo se permite una foto de perfil por usuario
-                if (type == FileType.ProfilePicture && Directory.Exists(serverPath))
+                if (type == FileType.ProfileImage && Directory.Exists(serverPath))
                     Directory.Delete(serverPath, true);
 
                 Directory.CreateDirectory(serverPath);
@@ -83,8 +86,8 @@ namespace Argos.Support
 
                 switch (type)
                 {
-                    case FileType.ProfilePicture:
-                        serverUrl = Cons.UserPicturePath + "/" + parentId.ToString();
+                    case FileType.ProfileImage:
+                        serverUrl = Cons.ProfileImagePath + "/" + parentId.ToString();
                         break;
                     case FileType.ProductImage:
                         serverUrl = Cons.ProductImagePath + "/" + parentId.ToString();
@@ -93,7 +96,7 @@ namespace Argos.Support
 
                 var serverPath = HttpContext.Current.Server.MapPath(serverUrl);
 
-                if (type == FileType.ProfilePicture && Directory.Exists(serverPath))
+                if (type == FileType.ProfileImage && Directory.Exists(serverPath))
                     Directory.Delete(serverPath, true);
 
                 Directory.CreateDirectory(serverPath);

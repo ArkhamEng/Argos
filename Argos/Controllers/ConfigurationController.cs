@@ -35,14 +35,32 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
-        public ActionResult AutoCompleateSettlemnt(string filter)
-        {
-            var clients = db.Settlements.Include(s=> s.Town).
+        public ActionResult CompleateSettlement(string filter)
+       {
+            var Settlements = db.Settlements.Include(s=> s.Town).
                 Where(c =>  (c.Type +" "+ c.Name).Contains(filter)).
-                OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
-                Select(c => new { Label = "CP " + c.Code + " "  + c.Type + " " + c.Name, Id = c.SettlementId, Value = c.Town.Name});
+                OrderBy(c => c.Town.Name).Take(Cons.AutoCompleateRows).Take(50).
+                Select(c => new { Label =  c.Type + " " + c.Name,
+                    Id = c.SettlementId, Category = c.Town.State.Name+", "+ c.Town.Name, value= c.Type + " " + c.Name });
 
-            return Json(clients);
+            return Json(Settlements);
+        }
+
+        [HttpPost]
+        public ActionResult CompleateAddress(string filter)
+        {
+            var Settlements = db.Settlements.Include(s => s.Town).
+                Where(c => (c.Type + " " + c.Name).Contains(filter)).
+                OrderBy(c => c.Town.Name).Take(Cons.AutoCompleateRows).Take(50).
+                Select(c => new {
+                    value = c.Type + " " + c.Name,
+                    Id = c.SettlementId,
+                    data =new { category = c.Town.State.Name + ", " + c.Town.Name },
+                }).ToList();
+
+            var result = new { suggestions =  Settlements };
+
+            return Json(result);
         }
 
         [HttpPost]
@@ -51,7 +69,7 @@ namespace Argos.Controllers
             var clients = db.Settlements.Include(s => s.Town).
                 Where(c => c.Code.Contains(filter)).
                 OrderBy(c => c.Name).Take(Cons.AutoCompleateRows).
-                Select(c => new { Label = "CP " + c.Code + " " + c.Type + " " + c.Name, Id = c.SettlementId, Value = c.Town.Name });
+                Select(c => new { Label =  c.Type + " " + c.Name, Id = c.SettlementId, Value = c.Code });
 
 
             return Json(clients);

@@ -6,17 +6,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Argos.Models.Operative
 {
-    [Table("OperationDetail", Schema = "Operative")]
-    public abstract class OperationDetail
+    [Table("Detail", Schema = "Operative")]
+    public abstract class Detail
     {
-        public int OperationDetailId { get; set; }
+        public int DetailId { get; set; }
 
-        [ForeignKey("Operation")]
         public int OperationId { get; set; }
 
-        [ForeignKey("Product")]
         public int ProductId { get; set; }
 
+        /// <summary>
+        /// Cantidad que afecta al inventario
+        /// </summary>
         public double Quantity { get; set; }
 
         #region Navigation Properties
@@ -24,7 +25,8 @@ namespace Argos.Models.Operative
 
         public virtual Operation Operation { get; set; }
 
-        public ICollection<StockMovement> StockMovements { get; set; }
+        public ICollection<Movement> Movements { get; set; }
+
         #endregion
     }
 

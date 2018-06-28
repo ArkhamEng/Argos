@@ -232,6 +232,18 @@
     <Compile Include="Migrations\201805221622105_IndexSettlement.Designer.cs">
       <DependentUpon>201805221622105_IndexSettlement.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806140906095_personRemoveLocation.cs" />
+    <Compile Include="Migrations\201806140906095_personRemoveLocation.Designer.cs">
+      <DependentUpon>201806140906095_personRemoveLocation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806191309583_AddressChanges.cs" />
+    <Compile Include="Migrations\201806191309583_AddressChanges.Designer.cs">
+      <DependentUpon>201806191309583_AddressChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806200934107_PersonImage.cs" />
+    <Compile Include="Migrations\201806200934107_PersonImage.Designer.cs">
+      <DependentUpon>201806200934107_PersonImage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseTypes\AuditableCatalog.cs" />
     <Compile Include="Models\BusinessEntity\Address.cs" />
@@ -244,8 +256,11 @@
     <Compile Include="Models\Enums\PhoneTypes.cs" />
     <Compile Include="Models\Finance\Transaction.cs" />
     <Compile Include="Models\Finance\CashMoment.cs" />
-    <Compile Include="Models\Inventory\Serial.cs" />
-    <Compile Include="Models\Operative\OperationDetail.cs" />
+    <Compile Include="Models\Inventory\ItemHistory.cs" />
+    <Compile Include="Models\Inventory\Item.cs" />
+    <Compile Include="Models\Inventory\ItemLocation.cs" />
+    <Compile Include="Models\Inventory\Movement.cs" />
+    <Compile Include="Models\Operative\Detail.cs" />
     <Compile Include="Models\Operative\Operation.cs" />
     <Compile Include="Models\Config\Town.cs" />
     <Compile Include="Models\Config\Compatibility.cs" />
@@ -259,15 +274,14 @@
     <Compile Include="Models\Finance\CreditNote.cs" />
     <Compile Include="Models\Finance\PayMethod.cs" />
     <Compile Include="Models\HumanResources\EmployeeBranch.cs" />
-    <Compile Include="Models\Inventory\ExternalProduct.cs" />
+    <Compile Include="Models\Inventory\SupplierProduct.cs" />
     <Compile Include="Models\Config\Maker.cs" />
     <Compile Include="Models\Inventory\PriceChange.cs" />
     <Compile Include="Models\Inventory\ProductImage.cs" />
-    <Compile Include="Models\Inventory\StockMovement.cs" />
     <Compile Include="Models\Inventory\SubCategory.cs" />
     <Compile Include="Models\Inventory\MeasureUnit.cs" />
     <Compile Include="Models\Enums\OperationStatuses.cs" />
-    <Compile Include="Models\Inventory\ProductStock.cs" />
+    <Compile Include="Models\Inventory\Location.cs" />
     <Compile Include="Models\Operative\Transfer.cs" />
     <Compile Include="Models\Operative\TransferDetail.cs" />
     <Compile Include="Models\Production\AccountType.cs" />
@@ -303,8 +317,10 @@
     <Compile Include="Models\HumanResources\JobPosition.cs" />
     <Compile Include="Models\Operative\Supplier.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="ViewModels\Generic\AddressVm.cs" />
     <Compile Include="ViewModels\Generic\AuthEntity.cs" />
-    <Compile Include="ViewModels\Generic\PersonFilterViewModel.cs" />
+    <Compile Include="ViewModels\Generic\PersonFilterVm.cs" />
+    <Compile Include="ViewModels\Generic\PersonVM.cs" />
     <Compile Include="ViewModels\Inventory\SearchProductsVM.cs" />
     <Compile Include="ViewModels\Inventory\ProductVM.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
@@ -572,7 +588,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Models\Finance\Finance.cd" />
-    <Content Include="Models\Inventory\StockMovement.cd" />
+    <Content Include="Models\Inventory\Inventory.cd" />
     <Content Include="Models\BusinessEntity\BusinessEntity.cd" />
     <Content Include="Models\Config\Address.cd" />
     <Content Include="Models\Security\ClassDiagram1.cd" />
@@ -707,6 +723,7 @@
     <Content Include="Vendor\datatables.net-scroller-bs\css\scroller.bootstrap.min.css" />
     <Content Include="Vendor\datatables.net-scroller\js\dataTables.scroller.min.js" />
     <Content Include="Vendor\datatables.net\js\jquery.dataTables.min.js" />
+    <Content Include="Vendor\devbridge-autocomplete\dist\jquery.autocomplete.min.js" />
     <Content Include="Vendor\fastclick\lib\fastclick.js" />
     <Content Include="Vendor\gauge.js\dist\gauge.min.js" />
     <Content Include="Vendor\google-code-prettify\bin\prettify.min.css" />
@@ -795,6 +812,8 @@
     <Content Include="Views\Home\FormValidation.cshtml" />
     <Content Include="Views\Home\Index2.cshtml" />
     <Content Include="Views\Home\Index3.cshtml" />
+    <Content Include="Views\Catalog\_Address.cshtml" />
+    <Content Include="Views\Catalog\_AddressGroup.cshtml" />
     <None Include="Views\Operative\Accounts.cshtml" />
     <Content Include="Views\Operative\_AccountList.cshtml" />
     <Content Include="Views\Operative\_BeginAccount.cshtml" />
@@ -826,6 +845,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805221622105_IndexSettlement.resx">
       <DependentUpon>201805221622105_IndexSettlement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806140906095_personRemoveLocation.resx">
+      <DependentUpon>201806140906095_personRemoveLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806191309583_AddressChanges.resx">
+      <DependentUpon>201806191309583_AddressChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806200934107_PersonImage.resx">
+      <DependentUpon>201806200934107_PersonImage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

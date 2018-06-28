@@ -3,14 +3,18 @@
 }
 
 
-function Compleate(textbox, list, url, onSelected) {
-    $(textbox).autocomplete(
+function Compleate(textbox, list, url, onSelected)
+{
+    textbox.autocomplete(
       {
-          source: function (request, response) {
-              ExecuteAjax(url, { filter: request.term }, function (json) {
-                  $(list).empty();
-                  for (var i = 0; i < json.length; i++) {
-                      $(list).append($('<option data-id=' + json[i].Id + '></option>').val(json[i].Label).html(json[i].Value));
+          source: function (request, response)
+          {
+              ExecuteAjax(url, { filter: request.term }, function (json)
+              {
+                  list.empty();
+                  for (var i = 0; i < json.length; i++)
+                  {
+                      list.append($('<option data-id=' + json[i].Id + '></option>').val(json[i].Label).html(json[i].Value));
                   }
               });
           },
@@ -18,20 +22,25 @@ function Compleate(textbox, list, url, onSelected) {
       });
 
     //this is executed when an option from DataList is selected
-    $(textbox).off('input').bind('input', function () {
+    textbox.off('input').bind('input', function ()
+    {
         var val = this.value;
-
-        if ($(list).find('option').filter(function () {
+      
+        if (list.find('option').filter(function ()
+        {
             return this.value.toUpperCase() === val.toUpperCase();
-        }).length) {
-            var option = $(list).find('option').filter(function () {
+        }).length)
+        {
+            var option = list.find('option').filter(function ()
+            {
                 return this.value.toUpperCase() === val.toUpperCase();
             });
 
             var value = option.text();
             var id = option.data("id");
 
-            if (onSelected != null) {
+            if (onSelected != null)
+            {
                 onSelected(id, value);
             }
         }
@@ -39,52 +48,40 @@ function Compleate(textbox, list, url, onSelected) {
 }
 
 //AJAX CALL
-function ExecuteAjax(url, parameters, callback) {
+function ExecuteAjax(url, parameters, callback)
+{
     $.ajax({
         url: url,
         type: "POST",
         data: parameters,
-        success: function (data)
+        success: function (response)
         {
-            if (data.Error == "NotAuthorized")
+            if ($.isPlainObject(response) && typeof (response.Code) != "undefined" && response.Code != 200)
             {
-                ShowNotify("Error de ejecución!!", "dark", "No fue posible ejcutar la acción solicitada, verfique si su sesión continua activa");
-                window.location = data.LogOnUrl;
+                ShowNotify(response.Header, response.Result, response.Body, 3500);
+
+                switch (response.Code)
+                {
+                    case 401:
+                        window.location = response.LogOnUrl;
+                        break;
+                }
             }
             else
             {
-                callback(data);
+                callback(response);
             }
         },
-        error: function (xhr)
+        error: function ()
         {
-            console.log("Error");
-            console.log(xhr);
-            if (xhr.statusCode === 401) {
-                console.log("error 401");
-                ShowNotify("Error de ejecución!!", "dark", "No fue posible ejcutar la acción solicitada, verfique si su sesión continua activa");
-                //window.location.href=xhr.Data.LogOnUrl;
-                //return;
-            }
-            if (xhr.statusCode === 302) {
-                ShowNotify("Error de ejecución!!", "dark", "No fue posible ejcutar la acción solicitada, verfique si su sesión continua activa");
-                //window.location.href=xhr.Data.LogOnUrl;
-                //return;
-            }
-        },
-        statusCode: {
-            401: function ()
-            {
-                console.log("status code 401");
-                ShowNotify("Error de ejecución!!", "dark", "No fue posible ejcutar la acción solicitada, verfique si su sesión continua activa");
-            }
+            ShowNotify("Error Inesperado!","dark", "Ocurror, quiza has perdido la conexion a internet!", 3500);
         }
-        
     });
 }
 
 //Realiza paginación  sobre una tabla
-function Paginate(table, iniRecords, responsive, filter) {
+function Paginate(table, iniRecords, responsive, filter)
+{
     var searching = false;
 
     if (typeof (filter) != 'undefined')
@@ -113,9 +110,10 @@ function Paginate(table, iniRecords, responsive, filter) {
                }
            }
        });
-    if (typeof (filter) != 'undefined') {
-        console.log(filter);
-        $(filter).keyup(function () {
+    if (typeof (filter) != 'undefined')
+    {
+        $(filter).keyup(function ()
+        {
             oTable.data().search(this.value).draw();
         });
 
@@ -124,58 +122,41 @@ function Paginate(table, iniRecords, responsive, filter) {
 }
 
 //SHOWS MODAL WITH CUSTON FUNCTIONS AND CONTENT
-function ShowModal(header, html, confirmCallBack, cancelCallBack, backdrop, isRegularSize) {
-    if (!isRegularSize)
-        $("#ModalDialog").attr('class', 'modal-dialog modal-lg');
-    else
-        $("#ModalDialog").attr('class', 'modal-dialog');
+function ShowModal(html, backdrop, size)
+{
+    if (size == 'lg')
+        $("#ModalDialog").addClass('modal-lg');
 
+    if (size == 'sm')
+        $("#ModalDialog").addClass('modal-sm');
+   
     $("#ModalLoading").children().hide();
-    $("#SiteModalHeader").html(header);
-
-    $("#SiteModalBody").html(html);
-
-    $("#SiteModalConfirm").unbind('click').click(function (e) {
-        confirmCallBack();
-    });
-
-    $("#SiteModalCancel").unbind('click').click(function (e) {
-        HideModal(true, cancelCallBack);
-    });
+  
+    $("#ModalContent").html(html);
 
     $("#SiteModal").modal({ backdrop: backdrop });
 }
 
-//REPLACE MODAL CONTENT
-function ReplaceModal(header, html) {
-    $("#SiteModalHeader").html(header);
 
-    $("#SiteModalBody").html(html);
-
-    HideModLoading();
-}
-
-
-function HideModal(cleaUp, callback) {
-    $('#SiteModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
+function HideModal(callback,removeContent)
+{
+    $('#SiteModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
+    {
         if (callback != null)
             callback();
 
-        if (cleaUp) {
-            $("#SiteModalHeader").html('');
-
-            $("#SiteModalBody").html('');
-        }
+        if (removeContent)
+            $("#SiteModalContent").html('');
     });
 
-    HideModLoading();
     $("#SiteModal").modal('hide');
 
 }
 
 
 //Loading In Modal
-function ShowModLoading() {
+function ShowModLoading()
+{
     $("#ModalContent").children().hide();
     $("#ModalLoading").children().show();
 }
@@ -293,9 +274,15 @@ function HideMessage(cleaUp, callback) {
     $("#ModalMessage").modal('hide');
 }
 
-function ShowNotify(title, type, message) {
+function ShowNotify(title, type, message, delay)
+{
+    var dly = 2500;
 
-    if (typeof (PNotify) === 'undefined') {
+    if (isNaN("") || typeof (delay) != 'undefined')
+        dly = delay;
+
+    if (typeof (PNotify) === 'undefined')
+    {
         console.log("PNotify no definido");
         return;
     }
@@ -307,9 +294,8 @@ function ShowNotify(title, type, message) {
         title: title,
         type: type,
         text: message,
-
         styling: 'bootstrap3',
-        delay: 2500,
+        delay: dly,
         hide: true,
     });
 };

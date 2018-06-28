@@ -2,9 +2,9 @@
 @using Argos.Support
 
 
-    <table id="tbProducts" class="table  dataTable no-footer  text-uppercase">
+    <table id="tbProducts" class="table  dataTable no-footer jambo_table">
         <thead>
-            <tr class="hidden" >
+            <tr class="heading2" >
                 <th>Imagen</th>
                 <th>Descripción</th>
                 <th></th>
@@ -16,7 +16,7 @@
                 <tr class='@items.RowState'>
                   
                     <td class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
-                        <img src='@items.ImagePath' class="img-responsive" />
+                        <img src='@items.ImagePath' class="img-responsive" style="max-height:100px"/>
                     </td>
                     <td class="col-lg-9 col-md-9 col-xs-6 col-sm-6" onclick="Detail(@items.Product.ProductId,@items.Product.IsActive)" 
                         onmouseover="SetPointer(this)">
@@ -110,7 +110,7 @@
     {
        //$.fn.dataTable.ext.classes.sPageButton = 'btn btn-success';
         
-        Paginate("#tbProducts", 8, false, "#Filter_Text")
+        Paginate("#tbProducts", 8, true, "#Filter_Text")
 
         //$("#tbProducts_previous").removeClass("btn btn-success");
         //$("#tbProducts_next").removeClass("btn btn-success");

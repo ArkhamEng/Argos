@@ -16,15 +16,6 @@ namespace Argos.Models.BaseTypes
         [MaxLength(80, ErrorMessage = "Solo se permiten 80 caractéres para la calle")]
         public  string Street { get; set; }
 
-        [Display(Name = "Num Ext")]
-        [Required(ErrorMessage = "El número exterior es requerido")]
-        [MaxLength(6, ErrorMessage = "Solo se permiten 6 caractéres número")]
-        public string OutNumber { get; set; }
-
-        [Display(Name = "Num Int")]
-        [MaxLength(6, ErrorMessage = "Solo se permiten 6 caractéres")]
-        public string InNumber { get; set; }
-
         [Display(Name = "Localidad/Colonia")]
         [Required(ErrorMessage = "Se requiere la localidad o colonia")]
         [MaxLength(50, ErrorMessage = "Solo se permiten 80 caractéres para la localidad")]

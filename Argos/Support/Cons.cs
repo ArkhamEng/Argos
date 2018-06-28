@@ -11,6 +11,8 @@ namespace Argos.Support
 
         public const string ResponseDanger = "danger";
 
+        public const string ResponseInfo = "info";
+
         public const string DefaultPassword = "default";
 
         #endregion
@@ -18,9 +20,11 @@ namespace Argos.Support
         public const string LoginUrl = "/Account/Login";
 
         #region File Paths
-        public const string UserPicturePath = "/Files/ProfilePictures";
+        public const string ProfileImagePath = "/Files/ProfileImages";
 
         public const string ProductImagePath = "/Files/ProductImages";
+
+        public const string PersonImagePath = "/Files/PersonImages";
 
         #endregion
 
@@ -52,7 +56,7 @@ namespace Argos.Support
 
         public const int AutoCompleateRows = 20;
 
-        public const int MaxSearchRows = 400;
+        public const int MaxSearchRows = 1000;
 
         public const int LockDuration = 10;
 
@@ -111,7 +115,11 @@ namespace Argos.Support
 
         public const string BtnActivateDisabled = "btn btn-danger disabled";
 
-        public const string BtnActivateHidden   = "btn btn-danger hidden";       
+        public const string BtnActivateHidden   = "btn btn-danger hidden";
+
+        public const string BtnDropImage = "btn btn-danger";
+
+        public const string BtnDropImageDisabled = "btn btn-danger disabled";
     }
 
     public class Icons
@@ -128,5 +136,14 @@ namespace Argos.Support
         public const string Save     = "fa fa-save";
 
         public const string Activate = "fa fa-recycle";
+    }
+
+    public class Codes
+    {
+        public const int RecordNotFound = -2;
+        public const int RecordLocked   = -1;
+        public const int Success        = 200;
+        public const int ServerError    = 500;
+        public const int UnAuthorized   = 401;
     }
 }

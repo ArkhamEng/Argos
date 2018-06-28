@@ -28,7 +28,7 @@ namespace Argos
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString(Cons.LoginUrl),
                 LogoutPath= new PathString(Cons.LoginUrl),
-                ExpireTimeSpan = TimeSpan.FromMinutes(1),
+                ExpireTimeSpan = TimeSpan.FromMinutes(15),
                 Provider = new CookieAuthenticationProvider
                 {
                     // Enables the application to validate the security stamp when the user logs in.

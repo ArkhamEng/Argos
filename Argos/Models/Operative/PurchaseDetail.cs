@@ -8,11 +8,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Argos.Models.Operative
 {
     [Table("PurchaseDetail", Schema = "Operative")]
-    public class PurchaseDetail:OperationDetail
+    public class PurchaseDetail:Detail
     {
+        public double OrderQty { get; set; }
+
         [Display(Name = "Precio")]
         [DataType(DataType.Currency)]
         public double UnitPrice { get; set; }
+
+        public double LineTotal { get; set; }
 
         public double ReceivedQty { get; set; }
 

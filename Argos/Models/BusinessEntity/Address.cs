@@ -14,6 +14,7 @@ namespace Argos.Models.BusinessEntity
     {
         public int AddressId { get; set; }
 
+        [Display(Name ="Tipo")]
         public AddressTypes AddressTypeId { get; set; }
 
         public int PersonId { get; set; }

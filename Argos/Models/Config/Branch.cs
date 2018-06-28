@@ -24,7 +24,7 @@ namespace Argos.Models.Config
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Se requiere un nombre abreviado de 3 caractéres")]
-        [MaxLength(3, ErrorMessage = "El nombre corto no debe exceder de 3 caractéres")]
+        [MaxLength(4, ErrorMessage = "El nombre corto no debe exceder de 3 caractéres")]
         [Display(Name = "Abreviado")]
         public string ShortName { get; set; }
 
@@ -34,12 +34,12 @@ namespace Argos.Models.Config
         [Index("Unq_Phone", IsUnique = true)]
         public string Phone { get; set; }
 
-     
+
         #region Navigation Properties
 
         public ICollection<Operation> Operation { get; set; }
 
-        public ICollection<ProductStock> ProductStocks { get; set; }
+        public ICollection<Location> Locations { get; set; }
 
         public ICollection<CashRegister> CashRegisters { get; set; }
 

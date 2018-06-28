@@ -3,12 +3,6 @@
 }
 
 
-
-@Html.Partial("_Modal")
-@Html.Partial("_Loading")
-@Html.Partial("_Message")
-
-
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col">
@@ -34,29 +28,31 @@
                     </div>
                     <div class="clearfix"></div>
                 </div>
-                <!-- /menu profile quick info -->
+              
                 <br />
-                <!-- sidebar menu -->
+             
                 @Html.Partial("_SideMenu")
-                <!-- /sidebar menu -->
-                <!-- /menu footer buttons -->
+            
                 @Html.Partial("_SideFooter")
-                <!-- /menu footer buttons -->
             </div>
         </div>
-        <!-- top navigation -->
+        
         @Html.Partial("_TopNav")
-        <!-- /top navigation -->
-        <!-- page content -->
+       
         <div class="right_col" role="main">
+
+            @Html.Partial("_Modal")
+            @Html.Partial("_Loading")
+            @Html.Partial("_Message")
+
+
             @RenderBody()
 
             <div id="divCatalogModal"></div>
         </div>
-        <!-- /page content -->
-        <!-- footer content -->
+      
         @Html.Partial("_Footer")
-        <!-- /footer content -->
+        
     </div>
 </div>
 

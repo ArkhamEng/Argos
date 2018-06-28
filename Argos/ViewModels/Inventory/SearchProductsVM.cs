@@ -1,4 +1,5 @@
 ﻿using Argos.Models;
+using Argos.Support;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +18,8 @@ namespace Argos.ViewModels.Inventory
 
         public SearchProductsVM(ApplicationDbContext db)
         {
-            this.Products = new List<ProductVM>();
+            this.Products = db.Products.OrderBy(p=> p.Description).
+                            Select(p=> new ProductVM { Product =p}).Take(Cons.MaxSearchRows).ToList();
             this.Lists = new ProductComplement(db);
             this.Filter = new ProductFilters();
         }

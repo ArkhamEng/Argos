@@ -3,232 +3,228 @@
 
 @Scripts.Render("~/bundles/jqueryval")
 
-<div class="divSome"></div>
 
 @using (Html.BeginForm("SaveProduct", "Catalog", FormMethod.Post, new { id = "frmProducts" }))
 {
     @Html.AntiForgeryToken()
     <div id="EditProductModal" class="modal fade in  small" role="dialog">
         <div id="EditProductDialog" class="modal-dialog modal-lg ui-widget-content">
-            <div id="EditProductContent" class="modal-content">
-                @*<div class="modal-header">
-                    <div id="EditProductHeader" class="col-md-6"></div>
-                   
-                </div>*@
+            <div id="EditProductContent" class="modal-body">
 
-                <div id="EditProductBody" class="modal-body">
-                  
-                    <ul class="nav nav-tabs clearfix">
-                        <li class="active">
-                            <a data-toggle="tab" href="#general" id="tabMainProduct">
-                                <span class="fa fa-columns"></span>
-                                Datos generales
-                            </a>
-                        </li>
+                <ul class="nav nav-tabs clearfix">
+                    <li class="active">
+                        <a data-toggle="tab" href="#general" id="tabMainProduct" style="background-color:whitesmoke !important">
+                            <span class="fa fa-columns"></span>
+                            Datos generales
+                        </a>
+                    </li>
 
-                        <li>
-                            <a data-toggle="tab" href="#images">
-                                <span class="fa fa-image"></span> Imagenes
-                                <span id="imgCount" class="bg-danger badge">
-                                    @Model.Images.Count
-                                </span>
-                            </a>
-                        </li>
-                        <li class="pull-right">
-                            <div class="pull-right">
-                                <button type="submit" class="btn btn-success  btn-round" title="Guardar cambios en producto">
-                                    <span class="fa fa-save"></span>
+                    <li>
+                        <a data-toggle="tab" href="#images" style="background-color:whitesmoke !important">
+                            <span class="fa fa-image"></span> Imagenes
+                            <span id="imgCount" class="bg-danger badge">
+                                @Model.Images.Count
+                            </span>
+                        </a>
+                    </li>
+                    <li class="pull-right">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-success  btn-round" title="Guardar cambios en producto">
+                                <span class="fa fa-save"></span>
 
-                                </button>
-                                <button type="button" id="EditProductCancel" class="btn btn-default btn-round" title="Cerrar ventana de captura">
-                                    <span class="fa fa-times"></span>
-                                </button>
-                            </div>
-                        </li>
-                    </ul>
-                  
-                    <div class="tab-content row">
-                       
-                        <div id="general" class="tab-pane fade in active panel-body">
-                            <div class="row">
-                                <div class="col-md-3 form-group">
-                                    @Html.LabelFor(m => m.Product.Code, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                                        @Html.EditorFor(model => model.Product.Code, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm BlockEdit" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Product.Code, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="form-group col-md-4">
-                                    @Html.LabelFor(m => m.Complement.CategoryId, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
-                                        @Html.DropDownListFor(m => m.Complement.CategoryId, Model.Complement.Categories, "", new { @class = "form-control text-capitalize input-sm", required = "true" })
-                                    </div>
-                                    @Html.ValidationMessageFor(m => m.Complement.CategoryId, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="form-group col-md-5">
-                                    @Html.LabelFor(m => m.Product.SubCategoryId, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
-                                        @Html.DropDownListFor(m => m.Product.SubCategoryId, Model.Complement.SubCategories, "",
-                                                new { @class = "form-control text-capitalize input-sm", required = "true" })
-                                    </div>
-                                    @Html.ValidationMessageFor(m => m.Product.SubCategoryId, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 form-group">
-                                    @Html.LabelFor(model => model.Product.Description, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-comment-o"></i></span>
-                                        @Html.TextAreaFor(model => model.Product.Description, 4, 1, htmlAttributes: new { @class = "form-control text-capitalize input-sm" })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Product.Description, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="col-md-4 form-group">
-                                    @Html.LabelFor(model => model.Product.TradeMark, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-registration-mark"></i></span>
-                                        @Html.EditorFor(model => model.Product.TradeMark, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", required = "true" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Product.TradeMark, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="col-md-4 form-group">
-                                    @Html.LabelFor(model => model.Product.MeasureUnitId, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
-                                        @Html.DropDownListFor(model => model.Product.MeasureUnitId, Model.Complement.Units, new { @class = "form-control text-capitalize input-sm" })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Product.MeasureUnitId, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-3 form-group">
-                                    @Html.LabelFor(m => m.Product.SatCode, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                                        @Html.EditorFor(model => model.Product.SatCode, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Product.SatCode, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="col-md-8 col-md-offset-1" style="padding-top:25px">
-
-                                    <div class="form-group col-md-3">
-                                        <div class="checkbox-inline">
-                                            @Html.EditorFor(model => model.Product.IsForPurchase, new { htmlAttributes = new { @class = "flat" } })
-                                            @Html.LabelFor(m => m.Product.IsForPurchase, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <div class="checkbox-inline">
-                                            @Html.EditorFor(model => model.Product.IsForSale, new { htmlAttributes = new { @class = "flat" } })
-                                            @Html.LabelFor(m => m.Product.IsForSale, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <div class="checkbox-inline">
-                                            @Html.EditorFor(model => model.Product.IsStockable, new { htmlAttributes = new { @class = "BlockEdit flat" } })
-                                            @Html.LabelFor(m => m.Product.IsStockable, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group col-md-3">
-                                        <div class="checkbox-inline">
-                                            @Html.EditorFor(model => model.Product.IsTrackable, new { htmlAttributes = new { @class = "flat" } })
-                                            @Html.LabelFor(m => m.Product.IsTrackable, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-3 form-group">
-                                    @Html.LabelFor(model => model.Product.BuyPrice, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                        @Html.EditorFor(model => model.Product.BuyPrice, new { htmlAttributes = new { @class = "form-control input-sm", required = "true" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Product.BuyPrice, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="col-md-4 col-md-offset-1 col-sm-6 form-group">
-                                    @Html.LabelFor(model => model.Product.LowestPrice, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-percent"></i></span>
-                                        @Html.EditorFor(model => model.Product.LowestProfit, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                        <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                        @Html.EditorFor(model => model.Product.LowestPrice, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Product.LowestProfit, "", new { @class = "text-danger" })
-                                    @Html.ValidationMessageFor(model => model.Product.LowestPrice, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="col-md-4 col-sm-6 form-group">
-                                    @Html.LabelFor(model => model.Product.Price, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-percent"></i></span>
-                                        @Html.EditorFor(model => model.Product.Profit, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                        <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
-                                        @Html.EditorFor(model => model.Product.Price, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Product.Profit, "", new { @class = "text-danger" })
-                                    @Html.ValidationMessageFor(model => model.Product.Price, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div id="divProductStock" class="row">
-                                <div class="col-md-3 col-sm-3 col-xs-6 form-group">
-                                    @Html.LabelFor(m => m.Stock.Shelf, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                                        @Html.EditorFor(model => model.Stock.Shelf, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Stock.Shelf, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="col-md-3 col-md-offset-1 col-sm-3 col-xs-6 form-group">
-                                    @Html.LabelFor(m => m.Stock.Bin, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                                        @Html.EditorFor(model => model.Stock.Bin, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Stock.Bin, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="col-md-2 col-md-offset-1 col-sm-3 col-xs-6 form-group">
-                                    @Html.LabelFor(m => m.Stock.MinQuantity, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-cube"></i></span>
-                                        @Html.EditorFor(model => model.Stock.MinQuantity, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Stock.MinQuantity, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="col-md-2 col-sm-3 col-xs-6 form-group">
-                                    @Html.LabelFor(m => m.Stock.MaxQuantity, htmlAttributes: new { @class = "control-label" })
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
-                                        @Html.EditorFor(model => model.Stock.MaxQuantity, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
-                                    </div>
-                                    @Html.ValidationMessageFor(model => model.Stock.MaxQuantity, "", new { @class = "text-danger" })
-                                </div>
-
-
-                            </div>
-
-                            @Html.HiddenFor(model => model.Product.ProductId)
+                            </button>
+                            <button type="button" id="EditProductCancel" class="btn btn-default btn-round" title="Cerrar ventana de captura">
+                                <span class="fa fa-times"></span>
+                            </button>
                         </div>
+                    </li>
+                </ul>
 
-                        <div id="images" class="tab-pane fade">
-                            <table id="tbImages" class="table table-bordered">
-                               
+                <div class="tab-content row">
+                    <div id="general" class="tab-pane fade in active">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-3 form-group">
+                                        @Html.LabelFor(m => m.Product.Code, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                                            @Html.EditorFor(model => model.Product.Code, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm BlockEdit" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Product.Code, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        @Html.LabelFor(m => m.Complement.CategoryId, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
+                                            @Html.DropDownListFor(m => m.Complement.CategoryId, Model.Complement.Categories, "", new { @class = "form-control text-capitalize input-sm", required = "true" })
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.Complement.CategoryId, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group col-md-5">
+                                        @Html.LabelFor(m => m.Product.SubCategoryId, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
+                                            @Html.DropDownListFor(m => m.Product.SubCategoryId, Model.Complement.SubCategories, "",
+                                                new { @class = "form-control text-capitalize input-sm", required = "true" })
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.Product.SubCategoryId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-8 form-group">
+                                        @Html.LabelFor(model => model.Product.Description, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-comment-o"></i></span>
+                                            @Html.TextAreaFor(model => model.Product.Description, 4, 1, htmlAttributes: new { @class = "form-control text-capitalize input-sm" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Product.Description, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="col-md-4 form-group">
+                                        @Html.LabelFor(model => model.Product.TradeMark, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-registration-mark"></i></span>
+                                            @Html.EditorFor(model => model.Product.TradeMark, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", required = "true" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Product.TradeMark, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="col-md-4 form-group">
+                                        @Html.LabelFor(model => model.Product.MeasureUnitId, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span>
+                                            @Html.DropDownListFor(model => model.Product.MeasureUnitId, Model.Complement.Units, new { @class = "form-control text-capitalize input-sm" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Product.MeasureUnitId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3 form-group">
+                                        @Html.LabelFor(m => m.Product.SatCode, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                                            @Html.EditorFor(model => model.Product.SatCode, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Product.SatCode, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="col-md-8 col-md-offset-1" style="padding-top:25px">
+
+                                        <div class="form-group col-md-3">
+                                            <div class="checkbox-inline">
+                                                @Html.EditorFor(model => model.Product.IsForPurchase, new { htmlAttributes = new { @class = "flat" } })
+                                                @Html.LabelFor(m => m.Product.IsForPurchase, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <div class="checkbox-inline">
+                                                @Html.EditorFor(model => model.Product.IsForSale, new { htmlAttributes = new { @class = "flat" } })
+                                                @Html.LabelFor(m => m.Product.IsForSale, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <div class="checkbox-inline">
+                                                @Html.EditorFor(model => model.Product.IsStockable, new { htmlAttributes = new { @class = "BlockEdit flat" } })
+                                                @Html.LabelFor(m => m.Product.IsStockable, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <div class="checkbox-inline">
+                                                @Html.EditorFor(model => model.Product.IsTrackable, new { htmlAttributes = new { @class = "flat" } })
+                                                @Html.LabelFor(m => m.Product.IsTrackable, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 form-group">
+                                        @Html.LabelFor(model => model.Product.BuyPrice, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                            @Html.EditorFor(model => model.Product.BuyPrice, new { htmlAttributes = new { @class = "form-control input-sm", required = "true" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Product.BuyPrice, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="col-md-4 col-md-offset-1 col-sm-6 form-group">
+                                        @Html.LabelFor(model => model.Product.LowestPrice, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-percent"></i></span>
+                                            @Html.EditorFor(model => model.Product.LowestProfit, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                            @Html.EditorFor(model => model.Product.LowestPrice, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Product.LowestProfit, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.Product.LowestPrice, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-6 form-group">
+                                        @Html.LabelFor(model => model.Product.Price, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-percent"></i></span>
+                                            @Html.EditorFor(model => model.Product.Profit, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                            @Html.EditorFor(model => model.Product.Price, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Product.Profit, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.Product.Price, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div id="divProductStock" class="row">
+                                    <div class="col-md-3 col-sm-3 col-xs-6 form-group">
+                                        @Html.LabelFor(m => m.Stock.Shelf, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                                            @Html.EditorFor(model => model.Stock.Shelf, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Stock.Shelf, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="col-md-3 col-md-offset-1 col-sm-3 col-xs-6 form-group">
+                                        @Html.LabelFor(m => m.Stock.Bin, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                                            @Html.EditorFor(model => model.Stock.Bin, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Stock.Bin, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-2 col-md-offset-1 col-sm-3 col-xs-6 form-group">
+                                        @Html.LabelFor(m => m.Stock.MinQuantity, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                                            @Html.EditorFor(model => model.Stock.MinQuantity, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Stock.MinQuantity, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-3 col-xs-6 form-group">
+                                        @Html.LabelFor(m => m.Stock.MaxQuantity, htmlAttributes: new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
+                                            @Html.EditorFor(model => model.Stock.MaxQuantity, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Stock.MaxQuantity, "", new { @class = "text-danger" })
+                                    </div>
+
+
+                                </div>
+
+                                @Html.HiddenFor(model => model.Product.ProductId)
+                            </div>
+                        </div>
+                    </div>
+                    <div id="images" class="tab-pane fade">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <table id="tbImages" class="table table-bordered">
                                     <tr id="mainRow" hidden>
                                         <td class="col-md-3 col-sm-3 col-xs-3">
                                             <img src="~/Images/sinimagen.jpg" class="img-responsive" />
@@ -256,9 +252,9 @@
                                         </td>
                                     </tr>
                                     @for (int i = Cons.Zero; i < Cons.ImagesPerProduct; i++)
-                                    {
-                                        if (Model.Images.Count > i)
-                                        {
+                            {
+                                if (Model.Images.Count > i)
+                                {
                                             <tr>
                                                 <td class="col-md-2">
                                                     @Html.HiddenFor(m => Model.Images[i].ProductImageId, new { id = "ProductImageId" })
@@ -283,17 +279,19 @@
                                                     </button>
                                                 </td>
                                             </tr>
-                                        }
-                                    }
-                            </table>
+                                }
+                            }
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-               
-                <div id="EditProductLoading">
-                    <img class="img-responsive col-md-6 col-md-offset-3" src="~/Images/loading.gif" />
-                </div>
             </div>
+
+            <div id="EditProductLoading">
+                <img class="img-responsive col-md-6 col-md-offset-3" src="~/Images/loading.gif" />
+            </div>
+
         </div>
     </div>
     @Html.HiddenFor(m => m.Slots)
@@ -303,14 +301,12 @@
     var ToDelete = [];
     var needActivate = false;
 
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         var productId = parseInt($("#Product_ProductId").val());
         iCheckInit();
 
         //un producto guardado no puede cambiar sus propiedades de stock
-        if (productId > 0)
-        {
+        if (productId > 0) {
             $("#Product_Code").prop("readonly", true);
 
             //utilizo la función iCheck para cambiar los valores del checkbox
@@ -326,15 +322,13 @@
         LoadSlots();
 
         $("#EditProductModal").draggable();
-        
+
     });
 
-    function ProdEvalStockable()
-    {
+    function ProdEvalStockable() {
         var isStockable = $("#Product_IsStockable").is(':checked');
 
-        if (isStockable)
-        {
+        if (isStockable) {
             $("#Product_IsTrackable").iCheck("enable");
             $("#divProductStock *").children().prop("disabled", false);
         }
@@ -345,8 +339,7 @@
         }
     }
 
-    function ProdEvalForSale()
-    {
+    function ProdEvalForSale() {
         var isForSale = $("#Product_IsForSale").prop('checked');
         var isForPurchase = $("#Product_IsForPurchase").prop('checked');
 
@@ -396,24 +389,20 @@
         }
     }
 
-    
-    function ProdSetEvents()
-    {
+
+    function ProdSetEvents() {
         SetCascade("#Complement_CategoryId", "#Product_SubCategoryId", '@Url.Action("GetSubCategories", "Configuration")');
 
         //evento change del plugin iCheck (el evento nativo no funciona con el plugin)
-        $("#Product_IsForSale").off('ifChanged').on('ifChanged', function ()
-        {
+        $("#Product_IsForSale").off('ifChanged').on('ifChanged', function () {
             ProdEvalForSale();
         });
 
-        $("#Product_IsForPurchase").off('ifChanged').on('ifChanged', function ()
-        {
+        $("#Product_IsForPurchase").off('ifChanged').on('ifChanged', function () {
             ProdEvalForSale();
         });
 
-        $("#Product_BuyPrice").off('keyup').on('keyup', function ()
-        {
+        $("#Product_BuyPrice").off('keyup').on('keyup', function () {
             ProdCalculatePrice();
         });
 
@@ -425,8 +414,7 @@
             ProdCalculatePrice();
         });
 
-        $("#Product_IsStockable").off('ifChanged').on('ifChanged', function ()
-        {
+        $("#Product_IsStockable").off('ifChanged').on('ifChanged', function () {
             ProdEvalStockable();
         });
 
@@ -441,8 +429,7 @@
     }
 
     //Carga los slots de carga de imagenes  a la vista
-    function LoadSlots()
-    {
+    function LoadSlots() {
         var s = $("#Slots").val();
 
         for (i = 0; i < s; i++) {
@@ -454,8 +441,7 @@
 
 
     //Remueve la fila de una imagen en cache
-    function RemoveImage(button)
-    {
+    function RemoveImage(button) {
         //busco y elimino la fila
         var row = $(button).parent().parent();
         row.remove();
@@ -470,7 +456,7 @@
     }
 
 
-    //Remueve la fila de ina imagen que sera eliminada de la BD
+    //Remueve la fila de una imagen que sera eliminada de la BD
     function RemoveEnque(button) {
         //busco y elimino la fila
         var row = $(button).parent().parent();
@@ -519,8 +505,7 @@
         reader.readAsDataURL(files[0]);
     }
 
-    function RemoveImageDiscontinued(button) 
-    {
+    function RemoveImageDiscontinued(button) {
         var image = $(button).parent().parent().find('img');
         var input = $(button).parent().parent().find('[name="images"]');
         // var name = $(button).parent().parent().find('[name="FileName"]');

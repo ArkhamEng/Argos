@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Argos.Support;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,5 +17,8 @@ namespace Argos.Models.BaseTypes
         public string Body { get; set; }
 
         public string Extra { get; set; }
+
+        public int Code { get; set; }
+
     }
 }

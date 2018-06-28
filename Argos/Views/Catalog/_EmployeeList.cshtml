@@ -1,83 +1,67 @@
-﻿@model IEnumerable<Argos.Models.HumanResources.Employee>
+﻿@model IEnumerable<Argos.ViewModels.Generic.EmployeeVm>
 @using Argos.Support
 
-<table id="TbEmployeeList" class="table table-hover">
+<table id="TbEmployeeList" class="table table-hover jambo_table dataTable">
     <thead>
-        <tr>
+        <tr class="heading">
             <th>
+                <span class="fa fa-camera control-label"></span>
+            </th>
+            <th>
+                <span class="fa fa-user control-label"></span>
                 @Html.DisplayName("Empleado")
             </th>
             <th>
-                @Html.DisplayName("Dirección")
+                <span class="fa fa-id-badge control-label"></span>
+                @Html.DisplayName("RFC")
             </th>
             <th>
-                @Html.DisplayName("Contacto")
+                <span class="fa fa-medkit control-label"></span>
+                @Html.DisplayName("Razón Social")
             </th>
-
+            <th>
+                <span class="fa fa-phone control-label"></span>
+                @Html.DisplayName("Teléfono")
+            </th>
+            <th>
+                <span class="fa fa-envelope control-label"></span>
+                @Html.DisplayName("Email")
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr ondblclick="BeginUpdateEmployee(@item.PersonId)">
-                <td class="col-md-4">
-                    <a title="Nombre" class="text-capitalize">
-                        <span class="fa fa-user control-label"></span>   @Html.DisplayFor(modelItem => item.Name)<br />
-                    </a>
-                    <a title="Puesto" class="text-capitalize">
-                        <span class="fa fa-briefcase control-label"></span>   @Html.DisplayFor(modelItem => item.JobPosition.Name) |
-                        <span class="fa fa-percent control-label"></span>   @Html.DisplayFor(modelItem => item.Commission)
-                    </a>
-                    <br />
-                    <a title="NSS">
-                        <span class="fa fa-medkit control-label"></span>   @Html.DisplayFor(modelItem => item.SSN)
-                    </a>
-                    |
-                    <a title="RFC" class="text-uppercase">
-                        <span class="fa fa-id-badge control-label"></span>   @Html.DisplayFor(modelItem => item.FTR)
-                    </a>
-                    <br />
-
-
+            <tr>
+                <td>
+                    <img src="@item.Image" class="img-responsive img-rounded" style="max-height:50px" />
                 </td>
-                <td class="col-md-4 text-capitalize">
-                    <span class="fa fa-street-view control-label"></span>  @Html.DisplayFor(modelItem => item.Street) No. @Html.DisplayFor(modelItem => item.OutNumber) Int @Html.DisplayFor(modelItem => item.InNumber) <br />
-                    @Html.DisplayFor(modelItem => item.Location)   CP @Html.DisplayFor(modelItem => item.ZipCode)<br />
-                    @Html.DisplayFor(modelItem => item.Town.Name), @Html.DisplayFor(modelItem => item.Town.State.Name)
+                <td class="text-capitalize">
+                    @Html.DisplayFor(modelItem => item.Employee.Name)
+                </td>
+                <td class="text-uppercase">
+                    @Html.DisplayFor(modelItem => item.Employee.FTR)
+                </td>
+                <td class="text-capitalize">
+
+                    @Html.DisplayFor(modelItem => item.Employee.SSN)
                 </td>
 
-                <td class="col-md-3">
-                    <span class="fa fa-user-circle-o control-label"></span>
-                    @item.UserName <br />
-                    <a title="Sexo" class="text-capitalize">
-                        <span class="@item.GenderClass"></span>
-                        @item.GenderName
-                    </a> |
-                    <a title="Fecha de nacimiento">
-                        <span class="fa fa-birthday-cake"></span>@item.BirthDate.ToString("dd/MM/yyyy")
-                    </a>
-                    <br />
-
-                    <span class="fa fa-phone control-label"></span> @Html.DisplayFor(modelItem => item.Phone)<br />
-                    <span class="fa fa-envelope control-label"></span>
-                    <a class="text-lowercase">
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </a><br />
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.Phone)
+                </td>
+                <td class="text-lowercase">
+                    @Html.DisplayFor(modelItem => item.Employee.Email)
                 </td>
 
-                <td class="col-md-1 btn-group-vertical">
-
-                    <button class="btn btn-danger" type="button" onclick="BeginDelete('@item.PersonId','@item.Name')">
-                        <span class="fa fa-trash"></span>
+                <td>
+                    <button class="@item.EditButton" type="button" onclick="BeginUpdateEmployee(@item.Employee.PersonId)">
+                        <span class="@Icons.Edit"></span>
                     </button>
-                   
-                     @if (item.CanCreateUser)
-                    {
-                        <button class="btn btn-primary" type="button" onclick="BeginCreateUser('@item.PersonId')" title="Crear usuario">
-                            <span class="fa fa-user-circle-o"></span>
-                        </button>
-                    }
+                    <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Employee.PersonId','@item.Employee.Name')">
+                        <span class="@Icons.Delete"></span>
+                    </button>
                 </td>
             </tr>
         }
@@ -90,35 +74,27 @@
 
     $(document).ready(function ()
     {
-        Paginate("#TbEmployeeList", 5, false)
+        Paginate("#TbEmployeeList", 8, true, "#txtName")
     });
 
     function BeginDelete(id, name)
     {
         idEmployee = id;
-        var hdr = "Eliminar cliente!";
+        var hdr = "Eliminar empleado!";
         var body = "Esta seguro que deseas eliminar el empleado " + name;
         ShowMessage(hdr, body, 'confirm', DeleteEmployee, null, 'static')
     }
 
     function DeleteEmployee()
     {
-        ExecuteAjax('@Url.Action("DeleteEmployee", "Catalog")', { id: idEmployee }, function (response)
+        ExecuteAjax('@Url.Action("DeletePerson","Catalog")', { id: idEmployee }, function (response)
         {
             HideLoading(function ()
             {
-                if (response.Result == 'success')
-                {
-                    ShowMessage(response.Header, response.Body, response.Result, null, SearchEmployees, 'static');
-                }
-                else
-                {
-                    ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
-                }
+                ShowNotify(response.Header, response.Result, response.Body, 2500);
             });
         });
     }
-
 
     function BeginCreateUser(id)
     {

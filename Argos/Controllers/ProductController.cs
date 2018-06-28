@@ -18,6 +18,7 @@ namespace Argos.Controllers
         public ActionResult Products()
         {
             var model = new SearchProductsVM(db);
+
             return View(model);
         }
 
@@ -42,17 +43,10 @@ namespace Argos.Controllers
         {
             try
             {
-
                 if (productVm.Product.ProductId == Cons.Zero)
                 {
                     var branchId = User.Identity.GetBranchId();
 
-                    //si el producto requiere ser almacenado, se crea stock en la sucursal
-                    if (productVm.Product.IsStockable)
-                    {
-                        productVm.Stock.BranchId = branchId;
-                        productVm.Product.ProductStocks.Add(productVm.Stock);
-                    }
                     db.Products.Add(productVm.Product);
                 }
                 else
@@ -65,10 +59,7 @@ namespace Argos.Controllers
 
                         foreach(var image in toDelete)
                         {
-                            //obtengo la ruta fisica del archivo
-                            var filePath = Request.MapPath(image.Path);
-
-                            if (FileManager.DeleteImage(filePath))
+                            if (FileManager.DeleteImage(image.Path))
                                 db.ProductImages.Remove(image);
                         }
                     }
@@ -113,17 +104,22 @@ namespace Argos.Controllers
             {
                 var model = new ProductVM(db);
 
-                model.Product = db.Products.Include(p => p.ProductImages).Include(p => p.ProductImages).Include(p => p.SubCategory).
-                                Include(p => p.ProductStocks).FirstOrDefault(p => p.ProductId == id);
-
+                model.Product = db.Products.Include(p => p.ProductImages).Include(p => p.ProductImages).
+                                Include(p => p.SubCategory).FirstOrDefault(p => p.ProductId == id);
 
                 if (model != null)
                 {
-                    var json = EvalLock(model.Product);
-
-                    if (json != null)
-                        return json;
-
+                    if (model.Product.IsLocked)
+                    {
+                        var time = (model.Product.LockEndDate.Value - DateTime.Now.ToLocal()).ToString("mm:ss");
+                        return Json(new JResponse
+                        {
+                            Code = Codes.RecordLocked,
+                            Result = Cons.ResponseWarning,
+                            Header = "Resistro bloqueado!",
+                            Body = string.Format("Este registro ha sido bloqueado por  el usuario {0}, tiempo restante del bloqueo {1}", model.Product.LockUser, time),
+                        });
+                    }
                     //bloqueo el registro
                     db.Entry(model.Product).Property(c => c.LockEndDate).IsModified = true;
                     db.Entry(model.Product).Property(c => c.LockUser).IsModified = true;
@@ -136,8 +132,6 @@ namespace Argos.Controllers
                         Where(sc => sc.CategoryId == model.Product.SubCategory.CategoryId).OrderBy(c => c.Name).ToSelectList();
 
                     model.Complement.CategoryId = model.Product.SubCategory.CategoryId;
-
-                    model.Stock = model.Product.ProductStocks.FirstOrDefault(s => s.BranchId == branchId);
 
                     return PartialView("_ProductEdit", model);
                 }
@@ -262,11 +256,18 @@ namespace Argos.Controllers
 
                 db.SaveChanges();
 
-                return Json(new JResponse { Result = Cons.ResponseSuccess, Id = id });
+                return Json(new JResponse
+                {
+                    Code = Codes.Success,
+                    Result = Cons.ResponseSuccess,
+                    Header = "Registro desbloqueado",
+                    Body = string.Format("El registro ha sido desbloqueado")
+                });
+
             }
             catch (Exception ex)
             {
-                return Json(new JResponse { Result = Cons.ResponseWarning, Id = id,
+                return Json(new JResponse { Result = Cons.ResponseWarning, Id = id, Code=Codes.ServerError,
                     Header ="Error al desbloquear!", Body="Ocurrio un error al remover el bloqueo del producto! "+ex.Message });
             }
         }
@@ -290,7 +291,7 @@ namespace Argos.Controllers
             {
                 if (img != null)
                 {
-                    var path = FileManager.SaveFileDeprecated(img, productId.ToString(), FileType.ProductImage);
+                    var path = FileManager.SaveFile(img, productId.ToString(), FileType.ProductImage);
 
                     ProductImage image = new ProductImage
                     {
@@ -311,7 +312,7 @@ namespace Argos.Controllers
 
         private List<ProductVM> LookFor(ProductFilters filter)
         {
-            //obtengo la sucursa en sesión
+            //obtengo la sucursal en sesión
             var branchId = User.Identity.GetBranchId();
 
             //configuro variables auxiliares
@@ -324,7 +325,7 @@ namespace Argos.Controllers
                 arr = filter.Text.Trim().Split(' ');
             }
 
-            var products = (from p in db.Products.Include(p => p.ProductImages).Include(p => p.ProductStocks).
+            var products = (from p in db.Products.Include(p => p.ProductImages).
                             Include(p => p.SubCategory).Include(p => p.SubCategory.Category).Include(p => p.Compatibilities).
                             Include(p => p.Compatibilities.Select(c => c.Model))
 
@@ -337,18 +338,9 @@ namespace Argos.Controllers
                             && (filter.ModelId == null || p.Compatibilities.Where(c => c.ModelId == filter.ModelId).ToList().Count > Cons.Zero)
                             && (filter.MakerId == null || p.Compatibilities.Where(c => c.Model.MakerId == filter.MakerId).ToList().Count > Cons.Zero)
 
-                            select p).OrderBy(s => s.Description).Take(Cons.MaxSearchRows).ToList();
+                            select new ProductVM { Product = p }).OrderBy(s => s.Product.Description).Take(Cons.MaxSearchRows).ToList();
 
             List<ProductVM> model = new List<ProductVM>();
-
-            products.ForEach(p =>
-            {
-                ProductVM vm = new ProductVM(db);
-                vm.Product = p;
-                vm.Stock = p.ProductStocks.FirstOrDefault(s => s.BranchId == branchId) ?? new ProductStock();
-
-                model.Add(vm);
-            });
 
             return model;
         }

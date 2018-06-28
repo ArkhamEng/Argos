@@ -1,52 +1,27 @@
-﻿@model Argos.ViewModels.Generic.PersonFilterViewModel<Employee>
+﻿@model Argos.ViewModels.Generic.PersonFilterViewModel<EmployeeVm>
 @using Argos.Models.HumanResources
+@using Argos.ViewModels.Generic
 @{
-    ViewBag.Title = "Catálogo de Empleados";
+    ViewBag.Title = "Empleados";
     ViewBag.Class = "fa fa-black-tie";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-
-<div class="panel panel-danger">
-    <div class="panel-body">
-        <div class="col-md-11">
-            <div class="input-group ">
-                @Html.TextBox("txtFtr", "", htmlAttributes: new
-           {
-               @class = "form-control",
-               placeholder = "RFC",
-               style = "width:30%"
-           })
-                @Html.TextBox("txtName", "", htmlAttributes: new
-           {
-               @class = "form-control",
-               placeholder = "Clave o nombre del empleado",
-               style = "width:70%"
-           })
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button" id="btnSearch" onclick="SearchEmployees()">
-                        <span class="glyphicon glyphicon-search"></span>
-                        <u>B</u>uscar
-                    </button>
-                    <button type="button" class="btn btn-success" id="btnCreate" onclick="BeginAddEmployee()">
-                        <span class="glyphicon  glyphicon-file"></span>
-                        <u>N</u>uevo
-                    </button>
-                </span>
-            </div>
-        </div>
-        
-        <div class="col-md-10" style="margin-top:10px">
+<div class="page-title">
+    <div class="title_left col-xs-12">
+        <h3>
+            <a class="@ViewBag.Class"></a>
+            @ViewBag.Title
+        </h3>
+    </div>
+    <div class="title_right col-xs-12">
+        <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 form-group pull-right top_search">
             <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-                @Html.DropDownList("ddlStateId", Model.States, "Estado / Entidad", new { @class = "form-control" })
-                <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-                @Html.DropDownList("ddlCityId", Model.Cities, "Ciudad / Municipio", new { @class = "form-control" })
+                @Html.TextBox("txtName", "", htmlAttributes: new { @class = "form-control text-uppercase", placeholder = "Búsqueda por..", type = "text" })
                 <span class="input-group-btn">
-                    <button class="btn btn-info" type="button" id="btnClear" onclick="Clear()">
-                        <span class="glyphicon glyphicon-refresh"></span>
-                        <u>L</u>impiar
+                    <button class="btn btn-default " type="button" title="Buscar empleados" onclick="SearchEmployees()">
+                        <span class="glyphicon glyphicon-search"></span>
                     </button>
                 </span>
             </div>
@@ -54,18 +29,56 @@
     </div>
 </div>
 
-<div class="panel panel-default">
-    <div id="divEmployeeList" class="panel-body" style="min-height:300px">
-        @Html.Partial("_EmployeeList", Model.Entities)
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <div class="hidden-xs">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        @Html.DropDownList("ddlStateId", Model.States, "Estado / Entidad", new { @class = "form-control col-md-6  has-feedback-left  text-capitalize" })
+                        <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        @Html.DropDownList("ddlCityId", Model.Cities, "Ciudad / Municipio", new { @class = "form-control col-md-6  has-feedback-left  text-capitalize" })
+                        <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                </div>
+                <ul class="nav navbar-right panel_toolbox">
+
+                    <li class="dropdown">
+                        <button class="btn btn-default" type="button" id="btnClear" title="Recargar" onclick="Clear()">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-success" title="Registrar nuevo producto" onclick="BeginAddEmployee()">
+                            <i class="fa  fa-plus"></i>
+                        </button>
+                    </li>
+                    <li>
+                        <a class="collapse-link collapsed"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+                <div id="divEmployeeList"  style="min-height:300px">
+                    @Html.Partial("_EmployeeList", Model.Entities)
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
+
+
 
 <script>
     $(document).ready(function ()
     {
         SetCascade('#ddlStateId', '#ddlCityId', '@Url.Action("GetCities","Configuration")');
-
-        $("#liEmployees").addClass("active");
     });
 
     function BeginAddEmployee()
@@ -96,7 +109,8 @@
             stateId: $("#ddlStateId").val(), cityId: $("#ddlCityId").val()
         };
 
-        ExecuteAjax('@Url.Action("SearchEmployees")', data, function (response) {
+        ExecuteAjax('@Url.Action("SearchEmployees")', data, function (response)
+        {
             HideLoading(function ()
             {
                 $("#divEmployeeList").html(response);

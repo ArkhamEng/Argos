@@ -11,7 +11,7 @@ using Argos.Models.Operative;
 namespace Argos.Models.BusinessEntity
 {
     [Table("Person", Schema = "BusinessEntity")]
-    public abstract class Person:LocatableEntity
+    public abstract class Person : AuditableCatalog
     {
         public int PersonId { get; set; }
 
@@ -40,6 +40,8 @@ namespace Argos.Models.BusinessEntity
         public string Phone { get; set; }
 
 
+        public string ImagePath { get; set; }
+
         public string UserName
         {
             get { return SystemUser != null ? SystemUser.User.UserName : Cons.NoUser; }
@@ -56,6 +58,8 @@ namespace Argos.Models.BusinessEntity
         public ICollection<Address> Addresses { get; set; }
 
         public virtual SystemUser SystemUser { get; set; }
+
+        public ICollection<Operation> Operations { get; set; }
 
         #endregion
     }
