@@ -1,20 +1,19 @@
 ﻿using Argos.Models.HumanResources;
 using Argos.Models.Config;
 using Argos.Models.Inventory;
-using Argos.Models.Production;
 using Argos.Models.Security;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 using Argos.Models.Operative;
-using Argos.Models.BusinessEntity;
-using Argos.Models.Finance;
+using Argos.Models.Business;
+using Argos.Models.Transaction;
 
 namespace Argos.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         #region BussinessEntity
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<Entity> Entities { get; set; }
 
         public DbSet<Address> Addresses { get; set; }
 
@@ -47,26 +46,18 @@ namespace Argos.Models
 
         #region Operative
 
-        public DbSet<ShipMethod> ShipMethods { get; set; }
-
-        public DbSet<Shipping> Shippings { get; set; }
-
-        public DbSet<OperationStatus> OperationStatus { get; set; }
-
-        public DbSet<OperationType> OperationType { get; set; }
-
-        public DbSet<Operation> Operations { get; set; }
-
         public DbSet<Detail> Details { get; set; }
 
+        public DbSet<Purchase> Purchases { get; set; }
+
+        public DbSet<Sale> Sales { get; set; }
 
         #endregion
 
-        #region HumanResources
-      
-        public DbSet<JobPosition> JobPositions { get; set; }
 
-        public DbSet<Commission> Commissions { get; set; }
+        #region HumanResources
+
+        public DbSet<JobPosition> JobPositions { get; set; }
 
         public DbSet<EmployeeBranch> EmployeeBranches { get; set; }
 
@@ -81,53 +72,22 @@ namespace Argos.Models
 
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<PriceChange> PriceChanges { get; set; }
+        public DbSet<ProductChange> ProductChanges { get; set; }
 
         public DbSet<ProductImage> ProductImages { get; set; }
 
         public DbSet<Item> Items { get; set; }
 
-        public DbSet<Location> Locations { get; set; }
+        public DbSet<Storage> Locations { get; set; }
 
-        public DbSet<ItemLocation> ItemLocations { get; set; }
+        public DbSet<ItemStorage> ItemLocations { get; set; }
 
-        public DbSet<Movement> ItemHistories { get; set; }
+        public DbSet<Flow> Flows { get; set; }
 
         public DbSet<SupplierProduct> SupplierProducts { get; set; }
 
         #endregion
 
-
-        #region Finance
-
-        public DbSet<CashRegister> CashRegisters { get; set; }
-
-        public DbSet<CashSession> CashSessions { get; set; }
-
-        public DbSet<PayMethod> PayMethodes { get; set; }
-        
-        public DbSet<CashMovement> CashMovement { get; set; }
-
-        public DbSet<CreditNote> CreditNotes { get; set; }
-
-
-        #endregion
-
-        #region Production
-
-        public DbSet<Account> Accounts { get; set; }
-
-        public DbSet<AccountFile> AccountFiles { get; set; }
-
-        public DbSet<AccountType> AccountTypes { get; set; }
-
-        public DbSet<Service> Activity { get; set; }
-
-        public DbSet<AccountLocation> AccountLocations { get; set; }
-
-        public DbSet<OperativeStatus> OperativeStatus { get; set; }
-
-        #endregion
 
         #region Security
         

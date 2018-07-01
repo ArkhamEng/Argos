@@ -1,7 +1,6 @@
 ﻿using Argos.Models.BaseTypes;
 using Argos.Models.Config;
 using Argos.Models.Operative;
-using Argos.Models.Production;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -106,9 +105,9 @@ namespace Argos.Models.Inventory
 
         public virtual MeasureUnit MeasureUnit { get; set; }
 
-        public ICollection<PriceChange> PriceChanges { get; set; }
+        public ICollection<ProductChange> ProductChanges { get; set; }
 
-        public ICollection<SupplierProduct> ExternalProducts { get; set; }
+        public ICollection<SupplierProduct> SupplierProducts { get; set; }
 
         public ICollection<ProductImage> ProductImages { get; set; }
 

@@ -1,0 +1,33 @@
+﻿using Argos.Models.Operative;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+
+namespace Argos.Models.Transaction
+{
+    [Table("Purchase", Schema = "Transaction")]
+    public class Purchase : Transaction
+    {
+        public int PurchaseId { get; set; }
+
+        [ForeignKey("Supplier")]
+        [Index("IDX_Supplier_Bill",0,IsUnique =true)]
+        public int SupplierId { get; set; }
+
+        [Index("IDX_Supplier_Bill", 1, IsUnique = true)]
+        [MaxLength(10)]
+        [Required]
+        public string Bill { get; set; }
+
+   
+        #region Navigation Properties
+
+        public Supplier Supplier { get; set; }
+
+        public ICollection<PurchaseDetail> PurchaseDetails { get; set; }
+     
+        #endregion
+
+    }
+}

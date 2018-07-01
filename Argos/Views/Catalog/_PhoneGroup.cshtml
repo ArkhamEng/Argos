@@ -1,0 +1,70 @@
+﻿@model ICollection<Argos.ViewModels.Generic.PhoneVm>
+
+<table id="tbPhones" class="table jambo_table">
+    <thead>
+        <tr class="heading">
+            <td colspan="2">
+                @Html.DisplayName("Telefonos registrados")
+            </td>
+            <td>
+                <button type="button" class="btn btn-warning btn-xs pull-right" onclick="AddPhone()">
+                    <span class="fa fa-plus"></span>
+                </button>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @{ var phoneIndex = 0;}
+        @foreach (var item in Model)
+        {
+            var rowId = "trPhone" + phoneIndex;
+            <tr id="@rowId" class="@item.Style">
+                <td>
+                    <div class="item form-group">
+                        @Html.HiddenFor(model => item.PhoneNumber.PhoneNumberId)
+                        @Html.HiddenFor(model => item.PhoneNumber.EntityId)
+                        @Html.EditorFor(model => item.PhoneNumber.Phone, new { htmlAttributes = new { @class = "form-control input-sm", autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => item.PhoneNumber.Phone, "", new { @class = "text-danger" })
+                    </div>
+
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => item.PhoneNumber.PhoneTypeId, item.PhoneTypes, htmlAttributes: new { @class = "form-control input-sm" })
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-xs pull-right" type="button" onclick="DropPhone(this)">
+                        <span class="fa fa-trash"></span>
+                    </button>
+                    <div class="clearfix"></div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        SetPhoneEvents();
+    });
+
+    function SetPhoneEvents() {
+        $('#tbPhones tbody tr').each(function (i, row) {
+            var phone = $(row).find('[id="item_PhoneNumber_Phone"]');
+
+            $(phone).mask("(999) 999 99 99");
+        });
+    }
+
+    function AddPhone() {
+        var newPhoneRow = $("#trPhone0").clone().removeAttr('id').removeClass("hidden");
+
+        $('#tbPhones tbody').append(newPhoneRow);
+
+        SetPhoneEvents();
+    }
+
+    function DropPhone(button) {
+        var row = $(button).parent().parent();
+        row.remove();
+    }
+</script>

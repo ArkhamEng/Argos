@@ -20,6 +20,6 @@ namespace Argos.Models.Inventory
 
         public virtual Item Item { get; set; }
 
-        public virtual Location Location { get; set; }
+        public virtual Storage Storage { get; set; }
     }
 }

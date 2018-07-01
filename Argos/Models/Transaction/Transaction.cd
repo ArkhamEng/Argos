@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Argos.Models.Transaction.Purchase" Collapsed="true">
+    <Position X="8.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAABAAAAIBAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Models\Transaction\Purchase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Supplier" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="PurchaseDetails" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Transaction.PurchaseDetail" Collapsed="true">
+    <Position X="11.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQAAAAABAAAACAAgAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Transaction\PurchaseDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Transaction.Transaction" Collapsed="true">
+    <Position X="8.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAARMAAAAACAAAAARIAAAAAAAAAxAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Transaction\Transaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Transaction.Status" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="1" Width="1.5" />
+    <AssociationLine Name="Purchase" Type="Argos.Models.Transaction.Purchase">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.422" Y="1.227" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAIAAAgAAAAAAAABAQAAAAAAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Models\Transaction\Status.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Purchase" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Argos.Models.Transaction.ShipMethod" Collapsed="true">
+    <Position X="9.25" Y="1" Width="1.5" />
+    <AssociationLine Name="Purchases" Type="Argos.Models.Transaction.Purchase">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.443" Y="-1.752" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAgAAAAAAAABAQAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Transaction\ShipMethod.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Purchases" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Operative.Detail" Collapsed="true">
+    <Position X="11.25" Y="2.25" Width="1.5" />
+    <AssociationLine Name="Flows" Type="Argos.Models.Inventory.Flow">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.777" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EAQCAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Operative\Detail.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Flows" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Inventory.Flow" Collapsed="true">
+    <Position X="14.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgCAAAAAEQAAAEAAAAAAAgAAACAA=</HashCode>
+      <FileName>Models\Inventory\Flow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Inventory.Item" Collapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <AssociationLine Name="Flows" Type="Argos.Models.Inventory.Flow">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.659" Y="0.662" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EAQCAAAAAAAAAAAAgACAAAAAAAEAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Models\Inventory\Item.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Flows" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Operative.Supplier" Collapsed="true">
+    <Position X="5.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAIAAAAAAABAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Models\Operative\Supplier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Inventory.Product" Collapsed="true">
+    <Position X="11.25" Y="0.75" Width="1.5" />
+    <AssociationLine Name="Details" Type="Argos.Models.Operative.Detail" FixedFromPoint="true">
+      <Path>
+        <Point X="11.938" Y="1.441" />
+        <Point X="11.938" Y="2.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.023" Y="0.506" Height="0.182" Width="0.868" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>MCAIAAAAiQAhCYAAAAAgCAACCgAAEAQAEABBAIAAAIA=</HashCode>
+      <FileName>Models\Inventory\Product.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Details" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

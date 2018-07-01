@@ -1,12 +1,9 @@
-﻿using Argos.Models.Finance;
-using Argos.Models.Security;
+﻿using Argos.Models.Business;
+using Argos.Support;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Argos.Models.Operative;
-using Argos.Models.BusinessEntity;
-using Argos.Support;
 
 namespace Argos.Models.HumanResources
 {
@@ -53,14 +50,8 @@ namespace Argos.Models.HumanResources
         #region Navigation Properties
         public virtual JobPosition JobPosition { get; set; }
 
-        public ICollection<Commission> Commissions { get; set; }
-
+     
         public ICollection<EmployeeBranch> EmployeeBranches { get; set; }
-
-        public ICollection<CashSession> CashSessions { get; set; }
-
-        public ICollection<Sale> Sales { get; set; }
-
 
         #endregion
     }

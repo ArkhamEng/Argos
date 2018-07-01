@@ -20,7 +20,7 @@ namespace Argos.ViewModels.Inventory
             set { Catalog = value; }
         }
 
-        public ItemLocation Stock { get; set; }
+        public ItemStorage Stock { get; set; }
 
         public ProductComplement Complement { get; set; }
 
@@ -93,7 +93,7 @@ namespace Argos.ViewModels.Inventory
         {
             this.Product        = new Product();
             this.Complement     = new ProductComplement();
-            this.Stock          = new ItemLocation();
+            this.Stock          = new ItemStorage();
             this.ToDelete       = new List<int>();
             this.NewImages      = new List<HttpPostedFileBase>();
         }
@@ -102,7 +102,7 @@ namespace Argos.ViewModels.Inventory
         {
             this.Product = new Product();
             this.Complement = new ProductComplement(db);
-            this.Stock = new ItemLocation();
+            this.Stock = new ItemStorage();
             this.Product.ProductImages = new List<ProductImage>();
         }
     }

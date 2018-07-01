@@ -1,4 +1,4 @@
-﻿using Argos.Models.BusinessEntity;
+﻿
 using Argos.Models.Config;
 using System;
 using System.Collections.Generic;
@@ -15,12 +15,12 @@ namespace Argos.Models.HumanResources
     [Table("EmployeeBranch", Schema = "HumanResources")]
     public class EmployeeBranch
     {
-        [Column(Order = 0),Key, ForeignKey("Branch")]
+        [Column(Order = 0), Key, ForeignKey("Employee")]
+        public int EmployeeId { get; set; }
+
+        [Column(Order = 1),Key, ForeignKey("Branch")]
         public int BranchId { get; set; }
-
-        [Column(Order = 1), Key,ForeignKey("Employee")]
-        public int PersonId { get; set; }
-
+      
         [DataType(DataType.DateTime)]
         public DateTime InsDate { get; set; }
 

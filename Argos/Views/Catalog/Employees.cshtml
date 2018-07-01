@@ -1,6 +1,6 @@
-﻿@model Argos.ViewModels.Generic.PersonFilterViewModel<EmployeeVm>
+﻿@model Argos.ViewModels.Generic.PersonSearchVieModel<Employee>
 @using Argos.Models.HumanResources
-@using Argos.ViewModels.Generic
+
 @{
     ViewBag.Title = "Empleados";
     ViewBag.Class = "fa fa-black-tie";
@@ -83,12 +83,12 @@
 
     function BeginAddEmployee()
     {
-        ShowEmployeeModal(SearchById, null, null);
+        ShowPersonModal(SearchById, null,'Employee', null);
     }
 
     function BeginUpdateEmployee(id)
     {
-        ShowEmployeeModal(SearchById, null, id);
+        ShowPersonModal(SearchById, null,'Employee', id);
     }
 
 

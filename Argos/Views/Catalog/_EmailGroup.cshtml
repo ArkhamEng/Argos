@@ -1,0 +1,55 @@
+﻿
+@model ICollection<Argos.ViewModels.Generic.EmailVm>
+
+<table id="tbEmails" class="table jambo_table">
+    <thead>
+        <tr class="heading">
+            <td >
+                @Html.DisplayName("Cuentas de correo registradas")
+            </td>
+            <td>
+                <button class="btn btn-warning btn-xs pull-right" type="button" onclick="AddEmail(this)">
+                    <span class="fa fa-plus"></span>
+                </button>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @{ var phoneIndex = 0;}
+        @foreach (var item in Model)
+        {
+            var rowId = "trEmail" + phoneIndex;
+            <tr id="@rowId" class="@item.Style">
+                <td>
+                    @Html.HiddenFor(model => item.Email.EmailAddressId)
+                    @Html.HiddenFor(model => item.Email.EntityId)
+                    @Html.EditorFor(model => item.Email.Email, new { htmlAttributes = new { @class = "form-control input-sm", autocomplete = "off" } })
+                    @Html.ValidationMessageFor(model => item.Email.Email, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-xs pull-right" type="button" onclick="DropEmail(this)">
+                        <span class="fa fa-trash"></span>
+                    </button>
+                    <div class="clearfix"></div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+   
+    function AddEmail()
+    {
+        var newPhoneRow = $("#trEmail0").clone().removeAttr('id').removeClass("hidden");
+
+        $('#tbEmails').append(newPhoneRow);
+
+    }
+
+    function DropEmail(button)
+    {
+        var row = $(button).parent().parent();
+        row.remove();
+    }
+</script>

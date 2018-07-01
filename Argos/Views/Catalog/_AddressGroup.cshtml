@@ -20,7 +20,7 @@
                     </div>
                     <div class="x_content">
                         @Html.HiddenFor(model => item.Address.AddressId)
-                        @Html.HiddenFor(model => item.Address.PersonId)
+                        @Html.HiddenFor(model => item.Address.EntityId)
 
                         <div class="form-group col-md-9">
                             @Html.LabelFor(model => item.Address.Street, htmlAttributes: new { @class = "control-label" })
@@ -178,11 +178,11 @@
         var btnAdd = $(newRow).find('[id="btnAddAddress"]');
         var btnRemove = $(newRow).find('[id="btnRemoveAddress"]');
 
-        btnAdd.removeClass('@Argos.Support.Styles.BtnEdit');
-        btnAdd.addClass('@Argos.Support.Styles.BtnEditHidden');
+        btnAdd.removeClass('@Argos.Support.Styles.btnWarning');
+        btnAdd.addClass('@Argos.Support.Styles.btnWarningHidden');
 
-        btnRemove.removeClass('@Argos.Support.Styles.BtnDeletetHidden');
-        btnRemove.addClass('@Argos.Support.Styles.BtnDelete');
+        btnRemove.removeClass('@Argos.Support.Styles.btnDangerHidden');
+        btnRemove.addClass('@Argos.Support.Styles.btnDanger');
 
         ClearControls(newRow);
         //agrego la nueva fila a la tabla

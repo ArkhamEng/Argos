@@ -1,5 +1,6 @@
-﻿@model IEnumerable<Argos.ViewModels.Generic.ClientVm>
-@using Argos.Support
+﻿@model IEnumerable<Argos.ViewModels.Generic.PersonViewModel<Client>>
+@using Argos.Support;
+@using Argos.Models.Operative
 
 <table id="TbClientList" class="table table-responsive jambo_table">
     <thead>
@@ -39,28 +40,34 @@
                     <img src="@item.Image" class="img-responsive img-rounded" style="max-height:50px" />
                 </td>
                 <td class="text-capitalize">
-                    @Html.DisplayFor(modelItem => item.Client.Name)
+                    @Html.DisplayFor(modelItem => item.Person.Name)
                 </td>
                 <td class="text-uppercase">
-                    @Html.DisplayFor(modelItem => item.Client.FTR)
+                    @Html.DisplayFor(modelItem => item.Person.FTR)
                 </td>
                 <td class="text-capitalize">
 
-                    @Html.DisplayFor(modelItem => item.Client.BusinessName)
+                    @Html.DisplayFor(modelItem => item.Person.BusinessName)
                 </td>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.Client.Phone)
+                    @foreach (var phone in item.Person.PhoneNumbers)
+                    {
+                        @Html.DisplayFor(modelItem => phone.Phone)
+                    }
                 </td>
                 <td class="text-lowercase">
-                    @Html.DisplayFor(modelItem => item.Client.Email)
+                    @foreach (var email in item.Person.EmailAddresses)
+                    {
+                        @Html.DisplayFor(modelItem => email.Email)
+                    }
                 </td>
 
                 <td>
-                    <button class="@item.EditButton" type="button" onclick="BeginUpdateClient(@item.Client.PersonId)">
+                    <button class="@item.EditButton" type="button" onclick="BeginUpdateClient(@item.Person.EntityId)">
                         <span class="@Icons.Edit"></span>
                     </button>
-                    <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Client.PersonId','@item.Client.Name')">
+                    <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
                         <span class="@Icons.Delete"></span>
                     </button>
                 </td>

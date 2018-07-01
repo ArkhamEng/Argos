@@ -17,9 +17,9 @@ namespace Util
         {
             XDocument doc = XDocument.Load(@"C:\Users\Administrador\Downloads\CPdescarga.xml");
 
-            //SaveStates(doc);
+             SaveStates(doc);
 
-            //SaveTowns(doc);
+            SaveTowns(doc);
 
             SaveSettlements(doc);
         }

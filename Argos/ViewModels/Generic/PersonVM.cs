@@ -1,6 +1,6 @@
 ﻿using Argos.Models;
 using Argos.Models.BaseTypes;
-using Argos.Models.BusinessEntity;
+using Argos.Models.Business;
 using Argos.Models.HumanResources;
 using Argos.Models.Operative;
 using Argos.Support;
@@ -63,14 +63,19 @@ namespace Argos.ViewModels.Generic
 
         public List<AddressVm> Addresses { get; set; }
 
+        public List<PhoneVm> Phones { get; set; }
+
+        public List<EmailVm> Emails { get; set; }
+
+
         public virtual string EditButton
         {
             get
             {
                 if (true || (HttpContext.Current.User.IsInRole("Capturista") && (this.Person != null && this.Person.IsActive)))
-                    return Styles.BtnEdit;
+                    return Styles.btnWarning;
                 else
-                    return Styles.BtnEditDisabled;
+                    return Styles.btnWarningDisable;
             }
         }
 
@@ -79,9 +84,9 @@ namespace Argos.ViewModels.Generic
             get
             {
                 if ((HttpContext.Current.User.IsInRole("Capturista") && (this.Person != null && this.Person.IsActive)))
-                    return Styles.BtnDelete;
+                    return Styles.btnDanger;
                 else
-                    return Styles.BtnDeletetDisabled;
+                    return Styles.btnDangerDisable;
             }
         }
 
@@ -90,7 +95,7 @@ namespace Argos.ViewModels.Generic
             get
             {
                 return (this.Person.ImagePath != null && this.Person.ImagePath != string.Empty) ?
-                        Styles.BtnDropImage : Styles.BtnDropImageDisabled;
+                        Styles.btnDanger : Styles.btnDangerDisable;
             }
         }
 
@@ -122,6 +127,8 @@ namespace Argos.ViewModels.Generic
         {
             this.Addresses = new List<AddressVm>();
             this.NewImages = new List<HttpPostedFileBase>();
+            this.Phones = new List<PhoneVm>();
+            this.Emails = new List<EmailVm>();
         }
 
     }

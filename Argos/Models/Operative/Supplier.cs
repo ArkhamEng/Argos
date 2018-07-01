@@ -1,6 +1,6 @@
-﻿using Argos.Models.BaseTypes;
-using Argos.Models.BusinessEntity;
-using Argos.Models.Operative;
+﻿using Argos.Models.Business;
+using Argos.Models.Inventory;
+using Argos.Models.Transaction;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,5 +20,7 @@ namespace Argos.Models.Operative
         public string WebSite { get; set; }
 
         public ICollection<Purchase> Purchase { get; set; }
+
+        public ICollection<SupplierProduct> SupplierProducts { get; set; }
     }
 }

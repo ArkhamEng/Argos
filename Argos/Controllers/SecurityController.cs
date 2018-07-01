@@ -1,5 +1,6 @@
 ﻿using Argos.Models;
 using Argos.Models.BaseTypes;
+using Argos.Models.Business;
 using Argos.Models.Operative;
 using Argos.Support;
 using System;
@@ -26,7 +27,7 @@ namespace Argos.Controllers
         public ActionResult BeginAddUser(int id)
         {
             var model = new ApplicationUser();
-            ViewBag.Employees = db.Persons.Where(e => e.SystemUser == null).ToList();
+            ViewBag.Employees = db.Entities.OfType<Person>().Where(e => e.SystemUser == null).ToList();
             return View(model);
         }
 
@@ -37,14 +38,14 @@ namespace Argos.Controllers
             {
                 RegisterViewModel vm = null;
 
-                var person = db.Persons.Find(id);
+                var person = db.Entities.OfType<Person>().FirstOrDefault(p=> p.EntityId ==id);
                 vm = new RegisterViewModel
                 {
-                    Id = person.PersonId,
-                    Name = person.Name,
-                    Email = person.Email,
-                    Phone = person.Phone,
-                    UserName = person.Email != null ? person.Email.Split('@').First() : person.Name
+                    //Id = person.PersonId,
+                    //Name = person.Name,
+                    //Email = person.Email,
+                    //Phone = person.Phone,
+                    //UserName = person.Email != null ? person.Email.Split('@').First() : person.Name
                 };
 
                 return PartialView("_RegistUser", vm);

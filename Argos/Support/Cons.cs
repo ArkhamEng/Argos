@@ -30,7 +30,7 @@ namespace Argos.Support
 
         #region Formats
 
-        public const string AccoutMask ="{0}{1}-{2}";
+        public const string AccoutMask = "{0}{1}-{2}";
 
         public const string SeqFormat = "00000";
 
@@ -47,11 +47,11 @@ namespace Argos.Support
 
         #endregion
 
-      
+
 
         public const int ImagesPerProduct = 3;
 
-      
+
         public const int MoneyDecimals = 4; //se usa para el redondedo de dinero
 
         public const int AutoCompleateRows = 20;
@@ -66,16 +66,16 @@ namespace Argos.Support
         public const string NotApply = "No Aplica";
 
         //gender values
-        public const string MaleChar  = "M";
+        public const string MaleChar = "M";
 
         public const string MaleLabel = "Masculino";
 
-       
+
         public const string FemaleChar = "F";
 
         public const string FemaleLabel = "Femenino";
 
-       
+
 
         public const string NoUser = "Sin usuario asignado";
 
@@ -99,41 +99,47 @@ namespace Argos.Support
     /// </summary>
     public class Styles
     {
-        public const string BtnEdit             = "btn btn-warning";
+        public const string btnWarning          = "btn btn-warning";
 
-        public const string BtnEditDisabled     = "btn btn-warning disabled";
+        public const string btnWarningHidden    = "btn btn-warning hidden";
 
-        public const string BtnEditHidden       = "btn btn-warning hidden";
+        public const string btnWarningDisable   = "btn btn-warning disabled";
 
-        public const string BtnDelete           = "btn btn-danger";
+        public const string btnPrimary          = "btn btn-primary";
 
-        public const string BtnDeletetDisabled  = "btn btn-danger disabled";
+        public const string btnPrimaryHidden    = "btn btn-primary hidden";
 
-        public const string BtnDeletetHidden    = "btn btn-danger hidden";
+        public const string btnPrimaryDisable   = "btn btn-primary disabled";
 
-        public const string BtnActivate         = "btn btn-success";
 
-        public const string BtnActivateDisabled = "btn btn-danger disabled";
 
-        public const string BtnActivateHidden   = "btn btn-danger hidden";
+        public const string btnSuccess = "btn btn-success";
 
-        public const string BtnDropImage = "btn btn-danger";
+        public const string btnSuccessHidden = "btn btn-success hidden";
 
-        public const string BtnDropImageDisabled = "btn btn-danger disabled";
+        public const string btnSuccessDisable = "btn btn-success disabled";
+
+        public const string btnDanger = "btn btn-danger";
+
+        public const string btnDangerHidden = "btn btn-danger hidden";
+
+        public const string btnDangerDisable = "btn btn-danger disabled";
+
+        public const string Hidden = "hidden";
     }
 
     public class Icons
     {
 
-        public const string Male     = "fa fa-male";
+        public const string Male = "fa fa-male";
 
-        public const string Female   = "fa fa-female";
+        public const string Female = "fa fa-female";
 
-        public const string Edit     = "glyphicon glyphicon-pencil";
+        public const string Edit = "glyphicon glyphicon-pencil";
 
-        public const string Delete   = "glyphicon glyphicon-trash";
+        public const string Delete = "glyphicon glyphicon-trash";
 
-        public const string Save     = "fa fa-save";
+        public const string Save = "fa fa-save";
 
         public const string Activate = "fa fa-recycle";
     }
@@ -141,9 +147,9 @@ namespace Argos.Support
     public class Codes
     {
         public const int RecordNotFound = -2;
-        public const int RecordLocked   = -1;
-        public const int Success        = 200;
-        public const int ServerError    = 500;
-        public const int UnAuthorized   = 401;
+        public const int RecordLocked = -1;
+        public const int Success = 200;
+        public const int ServerError = 500;
+        public const int UnAuthorized = 401;
     }
 }

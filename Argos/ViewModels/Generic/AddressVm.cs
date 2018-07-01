@@ -1,4 +1,5 @@
-﻿using Argos.Models.BusinessEntity;
+﻿using Argos.Models.Business;
+using Argos.Support;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Argos.ViewModels.Generic
 {
-    [NotMapped]
+   
     public class AddressVm
     {
         [Display(Name ="Estado")]
@@ -26,6 +27,30 @@ namespace Argos.ViewModels.Generic
         public string AddButton { get; set; }
 
         public string RemoveButton { get; set; }
+    }
+
+   
+    public class PhoneVm
+    {
+        public SelectList PhoneTypes { get; set; }
+
+        public PhoneNumber PhoneNumber { get; set; }
+
+        public string Style
+        {
+            get { return PhoneNumber.PhoneNumberId == Cons.Zero ? Styles.Hidden : string.Empty; }
+        }
+
+    }
+
+    public class EmailVm
+    {
+        public EmailAddress Email { get; set; }
+
+        public string Style
+        {
+            get { return Email.EmailAddressId == Cons.Zero ? Styles.Hidden : string.Empty; }
+        }
 
     }
 }

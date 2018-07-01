@@ -1,4 +1,4 @@
-﻿@model Argos.ViewModels.Generic.SupplierVm
+﻿@model Argos.ViewModels.Generic.PersonViewModel<Supplier>
 @using Argos.Models.Operative
 
 @Scripts.Render("~/bundles/jqueryval")
@@ -57,54 +57,45 @@
                         </div>
 
                         <div class="form-group col-md-8">
-                            @Html.LabelFor(model => model.Supplier.Name, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Person.Name, htmlAttributes: new { @class = "control-label" })
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                @Html.EditorFor(model => model.Supplier.Name, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off" } })
+                                @Html.EditorFor(model => model.Person.Name, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off" } })
                             </div>
-                            @Html.ValidationMessageFor(model => model.Supplier.Name, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Person.Name, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-md-6">
-                            @Html.LabelFor(model => model.Supplier.FTR, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Person.FTR, htmlAttributes: new { @class = "control-label" })
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
-                                @Html.EditorFor(model => model.Supplier.FTR, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocomplete = "off" } })
+                                @Html.EditorFor(model => model.Person.FTR, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocomplete = "off" } })
                             </div>
-                            @Html.ValidationMessageFor(model => model.Supplier.FTR, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Person.FTR, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-md-8">
-                            @Html.LabelFor(model => model.Supplier.BusinessName, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Person.BusinessName, htmlAttributes: new { @class = "control-label" })
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-black-tie"></i></span>
-                                @Html.EditorFor(model => model.Supplier.BusinessName, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off" } })
+                                @Html.EditorFor(model => model.Person.BusinessName, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off" } })
                             </div>
-                            @Html.ValidationMessageFor(model => model.Supplier.BusinessName, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Person.BusinessName, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-md-7">
-                            @Html.LabelFor(model => model.Supplier.Email, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-at"></i></span>
-                                @Html.EditorFor(model => model.Supplier.Email, new { htmlAttributes = new { @class = "form-control text-lowercase input-sm", autocomplete = "off" } })
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Supplier.Email, "", new { @class = "text-danger" })
+                        <div class="col-md-6">
+                            @Html.Partial("_EmailGroup", Model.Emails)
                         </div>
-                        <div class="form-group col-md-5">
-                            @Html.LabelFor(model => model.Supplier.Phone, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                                @Html.EditorFor(model => model.Supplier.Phone, new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Supplier.Phone, "", new { @class = "text-danger" })
+
+                        <div class="col-md-6">
+                            @Html.Partial("_PhoneGroup", Model.Phones)
                         </div>
                     </div>
                 </div>
             </div>
 
-            @Html.HiddenFor(m => m.Supplier.PersonId)
-            @Html.HiddenFor(m => m.Supplier.ImagePath)
+            @Html.HiddenFor(m => m.Person.EntityId)
+            @Html.HiddenFor(m => m.Person.ImagePath)
             @Html.HiddenFor(m => m.DropImage)
         </div>
 
@@ -121,9 +112,7 @@
 <script>
     $(document).ready(function ()
     {
-        $("#Supplier_Phone").mask("(999) 999 99 99");
-
-        $("#Supplier_FTR").mask("aaa*99999****");
+        $("#Person_FTR").mask("aaa*99999****");
     });
 
 </script>

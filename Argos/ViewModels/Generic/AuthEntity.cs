@@ -17,9 +17,9 @@ namespace Argos.ViewModels.Generic
             get
             {
                 if (true || (HttpContext.Current.User.IsInRole("Capturista") && (this.Catalog != null && this.Catalog.IsActive)))
-                    return Styles.BtnEdit;
+                    return Styles.btnWarning;
                 else
-                    return Styles.BtnEditDisabled;
+                    return Styles.btnWarningDisable;
             }
         }
 
@@ -28,9 +28,9 @@ namespace Argos.ViewModels.Generic
             get
             {
                 if ((HttpContext.Current.User.IsInRole("Capturista") && (this.Catalog != null && this.Catalog.IsActive)))
-                    return Styles.BtnDelete;
+                    return Styles.btnDanger;
                 else
-                    return Styles.BtnDeletetDisabled;
+                    return Styles.btnDangerDisable;
             }
         }
 
@@ -40,9 +40,9 @@ namespace Argos.ViewModels.Generic
             get
             {
                 if ((HttpContext.Current.User.IsInRole("Supervisor") && (this.Catalog != null && !this.Catalog.IsActive)))
-                    return Styles.BtnActivate;
+                    return Styles.btnSuccess;
                 else
-                    return Styles.BtnActivateHidden;
+                    return Styles.btnDangerHidden;
             }
         }
 

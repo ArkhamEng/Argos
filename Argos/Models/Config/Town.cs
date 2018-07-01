@@ -1,6 +1,5 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.BusinessEntity;
-using Argos.Models.Production;
+using Argos.Models.Business;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,6 +23,8 @@ namespace Argos.Models.Config
         public virtual State State { get; set; }
 
         public ICollection<Settlement> Settlement { get; set; }
+
+        public ICollection<Address> Addresses { get; set; }
 
         #region Not Mapped
         public string Value

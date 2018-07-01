@@ -17,9 +17,9 @@ namespace Argos.Models.Inventory
 
         public virtual Product Product { get; set; }
 
-        public ICollection<ItemLocation> ItemLocations { get; set; }
+        public ICollection<ItemStorage> ItemLocations { get; set; }
 
-        public ICollection<Movement> Movements { get; set; }
+        public ICollection<Flow> Flows { get; set; }
 
         public ICollection<ItemHistory> ItemHistories { get; set; }
 

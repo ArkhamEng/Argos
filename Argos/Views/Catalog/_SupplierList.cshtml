@@ -1,5 +1,7 @@
-﻿@model IEnumerable<Argos.ViewModels.Generic.SupplierVm>
-@using Argos.Support
+﻿@model IEnumerable<Argos.ViewModels.Generic.PersonViewModel<Supplier>>
+@using Argos.Support;
+@using Argos.Models.Operative
+
 
 <table id="TbSupplierList" class="table jambo_table dataTable table-hover">
     <thead>
@@ -39,26 +41,32 @@
                     <img src="@item.Image" class="img-responsive img-rounded" style="max-height:50px" />
                 </td>
                 <td class="text-capitalize">
-                    @Html.DisplayFor(modelItem => item.Supplier.Name)
+                    @Html.DisplayFor(modelItem => item.Person.Name)
                 </td>
                 <td class="text-uppercase">
-                    @Html.DisplayFor(modelItem => item.Supplier.FTR)
+                    @Html.DisplayFor(modelItem => item.Person.FTR)
                 </td>
                 <td class="text-capitalize">
-                    @Html.DisplayFor(modelItem => item.Supplier.BusinessName)
+                    @Html.DisplayFor(modelItem => item.Person.BusinessName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Supplier.Phone)
+                    @foreach(var phone in item.Person.PhoneNumbers)
+                    {
+                        @Html.DisplayFor(modelItem => phone.Phone)
+                    }
                 </td>
                 <td class="text-lowercase">
-                    @Html.DisplayFor(modelItem => item.Supplier.Email)
+                    @foreach (var email in item.Person.EmailAddresses)
+                    {
+                        @Html.DisplayFor(modelItem => email.Email)
+                    }
                 </td>
 
                 <td>
-                    <button class="@item.EditButton" type="button" onclick="BeginUpdateSupplier(@item.Supplier.PersonId)">
+                    <button class="@item.EditButton" type="button" onclick="BeginUpdateSupplier(@item.Person.EntityId)">
                         <span class="@Icons.Edit"></span>
                     </button>
-                    <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Supplier.PersonId','@item.Supplier.Name')">
+                    <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
                         <span class="@Icons.Delete"></span>
                     </button>
                 </td>
@@ -77,7 +85,7 @@
     function BeginDelete(id, name)
     {
         idSupplier = id;
-        var hdr = "Eliminar Supplier!";
+        var hdr = "Eliminar Proveedor!";
         var body = "¿Esta seguro que deseas eliminar el proveedor " + name + "?";
         ShowMessage(hdr, body, 'confirm', DeleteSupplier, null, 'static');
     }

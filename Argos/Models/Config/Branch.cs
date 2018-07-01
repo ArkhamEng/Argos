@@ -1,9 +1,9 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Finance;
+using Argos.Models.Business;
 using Argos.Models.HumanResources;
 using Argos.Models.Inventory;
 using Argos.Models.Operative;
-using Argos.Models.Production;
+using Argos.Models.Transaction;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,10 +14,8 @@ namespace Argos.Models.Config
     /// Sucursales de la compañia
     /// </summary>
     [Table("Branch", Schema = "Config")]
-    public class Branch : LocatableEntity
+    public class Branch : Entity
     {
-        public int BranchId { get; set; }
-
         [Required(ErrorMessage = "Se requiere un nombre de sucursal")]
         [MaxLength(20, ErrorMessage = "El nombre de sucursal no debe exceder de 20 caractéres")]
         [Display(Name = "Nombre de Sucursal")]
@@ -28,20 +26,14 @@ namespace Argos.Models.Config
         [Display(Name = "Abreviado")]
         public string ShortName { get; set; }
 
-        [Display(Name = "Teléfono")]
-        [DataType(DataType.PhoneNumber)]
-        [MaxLength(15, ErrorMessage = "solo se permiten 15 caractérs para el teléfono")]
-        [Index("Unq_Phone", IsUnique = true)]
-        public string Phone { get; set; }
-
 
         #region Navigation Properties
 
-        public ICollection<Operation> Operation { get; set; }
+        public ICollection<Purchase> Purchases { get; set; }
 
-        public ICollection<Location> Locations { get; set; }
+        public ICollection<Sale> Sales { get; set; }
 
-        public ICollection<CashRegister> CashRegisters { get; set; }
+        public ICollection<Storage> Locations { get; set; }
 
         public ICollection<EmployeeBranch> EmployeeBranches { get; set; }
 

@@ -1,5 +1,5 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.BusinessEntity;
+using Argos.Models.Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

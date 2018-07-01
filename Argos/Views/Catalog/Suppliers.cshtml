@@ -1,6 +1,6 @@
-﻿@model Argos.ViewModels.Generic.PersonFilterViewModel<SupplierVm>
+﻿@model Argos.ViewModels.Generic.PersonSearchVieModel<Supplier>
 @using Argos.Models.Operative
-@using Argos.ViewModels.Generic
+
 @{
     ViewBag.Title = "Proveedores";
     ViewBag.Class = "fa fa-handshake-o";
@@ -82,12 +82,12 @@
 
     function BeginAddSupplier()
     {
-        ShowSupplierModal(SearchById, null, null);
+        ShowPersonModal(SearchById, null, 'Supplier', null);
     }
 
     function BeginUpdateSupplier(id)
     {
-        ShowSupplierModal(SearchById, null, id);
+        ShowPersonModal(SearchById, null, 'Supplier', id);
     }
 
 

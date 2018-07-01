@@ -1,5 +1,5 @@
-﻿@model Argos.ViewModels.Generic.PersonFilterViewModel<ClientVm>
-@using Argos.ViewModels.Generic
+﻿@model Argos.ViewModels.Generic.PersonSearchVieModel<Client>
+@using Argos.Models.Operative
 
 @{
     ViewBag.Title = "Clientes";
@@ -83,12 +83,12 @@
    
     function BeginAddClient()
     {
-        ShowClientModal(SearchById, null, null);
+        ShowPersonModal(SearchById, null, 'Client', null);
     }
 
     function BeginUpdateClient(id)
     {
-        ShowClientModal(SearchById,null, id)
+        ShowPersonModal(SearchById, null, 'Client', id);
     }
 
     function SearchById(id)
