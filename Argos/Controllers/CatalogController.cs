@@ -36,28 +36,14 @@ namespace Argos.Controllers
         #region Client Methods
         public ActionResult Clients()
         {
-            var model = new PersonSearchVieModel<Client>();
-            model.Entities = db.Entities.OfType<Client>().OrderBy(c => c.Name).
-                                Select(c => new PersonViewModel<Client> { Person = c }).ToList();
-
-            model.States = db.States.ToSelectList();
-
+            var model = GetPersons<Client>();
             return View(model);
         }
 
         [HttpPost]
         public ActionResult SearchClients(string ftr, string name, string stateId, string townId, int? id)
         {
-            var model = (from c in db.Entities.OfType<Client>().Include(c => c.SystemUser).
-                         Include(c => c.Addresses.Select(a => a.Town))
-
-                         where (ftr == string.Empty || ftr == null || c.FTR == ftr)
-                        && (id == null || c.EntityId == id)
-                        && (name == string.Empty || name == null || c.Name.Contains(name))
-                        && (stateId == null || stateId == string.Empty || c.Addresses.Any(a => a.Town.StateId == stateId))
-                        && c.IsActive
-                        select c).OrderBy(c => c.Name).Select(c => new PersonViewModel<Client> { Person = c }).ToList();
-
+            var model = SearchPersons<Client>(ftr, name, stateId, townId, id);
             return PartialView("_ClientList", model);
         }
 
@@ -154,7 +140,7 @@ namespace Argos.Controllers
                 {
                     Result = Cons.ResponseDanger,
                     Header = "Error Al guardar",
-                    Body = "Ocurrio un error al guardar os datos del cliente " + ex.Message,
+                    Body = "Ocurrio un error al guardar los datos del cliente " + ex.Message,
                     Code = Codes.ServerError
                 });
             }
@@ -167,31 +153,14 @@ namespace Argos.Controllers
         #region Employee Methods
         public ActionResult Employees()
         {
-            var model = new PersonSearchVieModel<Employee>();
-
-            model.Entities = db.Entities.OfType<Employee>().OrderBy(e => e.Name).
-                                Select(c => new PersonViewModel<Employee> { Person = c }).ToList();
-
-            model.States = db.States.ToSelectList();
-
+            var model = GetPersons<Employee>();
             return View(model);
         }
 
         [HttpPost]
         public ActionResult SearchEmployees(string ftr, string name, string stateId, string townId, int? id)
         {
-            var model = (from e in db.Entities.OfType<Employee>().Include(e => e.JobPosition).
-                         Include(e => e.SystemUser).Include(e => e.Addresses.Select(a => a.Town))
-
-                         where (ftr == string.Empty || ftr == null || e.FTR == ftr)
-                         && (id == null || e.EntityId == id)
-                         && (name == string.Empty || name == null || e.Name.Contains(name))
-                         && (stateId == null || stateId == string.Empty || e.Addresses.Any(a => a.Town.StateId == stateId))
-
-                         && e.IsActive
-                         select e).OrderBy(e => e.Name).
-                         Select(e => new PersonViewModel<Employee> { Person = e }).ToList();
-
+            var model = SearchPersons<Employee>(ftr, name, stateId, townId, id);
             return PartialView("_EmployeeList", model);
         }
 
@@ -309,18 +278,7 @@ namespace Argos.Controllers
         [HttpPost]
         public ActionResult SearchSuppliers(string ftr, string name, string stateId, string townId, int? id)
         {
-            var model = (from s in db.Entities.OfType<Supplier>().Include(s => s.SystemUser).
-                         Include(s => s.Addresses.Select(a => a.Town))
-
-                         where (ftr == string.Empty || ftr == null || s.FTR == ftr)
-                         && (id == null || s.EntityId == id)
-                         && (name == string.Empty || name == null || s.Name.Contains(name))
-                         && (stateId == null || stateId == string.Empty || s.Addresses.Any(a => a.Town.StateId == stateId))
-
-                         && s.IsActive
-                         select s).OrderBy(e => e.Name).
-                        Select(e => new PersonViewModel<Supplier> { Person = e }).ToList();
-
+            var model = SearchPersons<Supplier>(ftr, name, stateId, townId, id);
             return PartialView("_SupplierList", model);
         }
 
@@ -339,11 +297,6 @@ namespace Argos.Controllers
         {
             try
             {
-                //var model = new PersonViewModel<Supplier>();
-
-                //model.Person = db.Entities.OfType<Supplier>().Include(c => c.Addresses).Include(c => c.PhoneNumbers).Include(c => c.EmailAddresses).
-                //    Include(c => c.Addresses.Select(a => a.Town.State)).FirstOrDefault(c => c.EntityId == id && c.IsActive);
-
                var model = BeginUpdatePerson<Supplier>(id);
 
                 if (model != null)

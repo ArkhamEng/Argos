@@ -53,13 +53,13 @@
                 <td>
                     @foreach (var phone in item.Person.PhoneNumbers)
                     {
-                        @Html.DisplayFor(modelItem => phone.Phone)
+                        @Html.DisplayFor(modelItem => phone.Phone)<br />
                     }
                 </td>
                 <td class="text-lowercase">
                     @foreach (var email in item.Person.EmailAddresses)
                     {
-                        @Html.DisplayFor(modelItem => email.Email)
+                        @Html.DisplayFor(modelItem => email.Email)<br />
                     }
                 </td>
 

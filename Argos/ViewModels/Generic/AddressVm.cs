@@ -38,7 +38,7 @@ namespace Argos.ViewModels.Generic
 
         public string Style
         {
-            get { return PhoneNumber.PhoneNumberId == Cons.Zero ? Styles.Hidden : string.Empty; }
+            get { return (PhoneNumber.Phone == null) || (PhoneNumber.Phone == string.Empty) ? Styles.Hidden : string.Empty; }
         }
 
     }
@@ -49,7 +49,7 @@ namespace Argos.ViewModels.Generic
 
         public string Style
         {
-            get { return Email.EmailAddressId == Cons.Zero ? Styles.Hidden : string.Empty; }
+            get { return Email.Email == null || Email.Email == string.Empty ? Styles.Hidden : string.Empty; }
         }
 
     }

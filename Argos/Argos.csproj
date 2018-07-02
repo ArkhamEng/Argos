@@ -236,6 +236,14 @@
     <Compile Include="Migrations\201807010116204_PhoneMailRequired.Designer.cs">
       <DependentUpon>201807010116204_PhoneMailRequired.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807012234177_PhoneChanges.cs" />
+    <Compile Include="Migrations\201807012234177_PhoneChanges.Designer.cs">
+      <DependentUpon>201807012234177_PhoneChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807012309337_EmailChanges.cs" />
+    <Compile Include="Migrations\201807012309337_EmailChanges.Designer.cs">
+      <DependentUpon>201807012309337_EmailChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseTypes\AuditableCatalog.cs" />
     <Compile Include="Models\Business\Address.cs" />
@@ -825,6 +833,12 @@
     <EmbeddedResource Include="Migrations\201807010116204_PhoneMailRequired.resx">
       <DependentUpon>201807010116204_PhoneMailRequired.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807012234177_PhoneChanges.resx">
+      <DependentUpon>201807012234177_PhoneChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807012309337_EmailChanges.resx">
+      <DependentUpon>201807012309337_EmailChanges.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -845,7 +859,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1635</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1699</IISUrl>
+          <IISUrl>http://localhost:1691</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

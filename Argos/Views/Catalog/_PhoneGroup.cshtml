@@ -21,7 +21,6 @@
             <tr id="@rowId" class="@item.Style">
                 <td>
                     <div class="item form-group">
-                        @Html.HiddenFor(model => item.PhoneNumber.PhoneNumberId)
                         @Html.HiddenFor(model => item.PhoneNumber.EntityId)
                         @Html.EditorFor(model => item.PhoneNumber.Phone, new { htmlAttributes = new { @class = "form-control input-sm", autocomplete = "off" } })
                         @Html.ValidationMessageFor(model => item.PhoneNumber.Phone, "", new { @class = "text-danger" })
@@ -43,6 +42,8 @@
 </table>
 
 <script>
+    var DroppedPhones = [];
+
     $(document).ready(function () {
         SetPhoneEvents();
     });
@@ -63,8 +64,17 @@
         SetPhoneEvents();
     }
 
-    function DropPhone(button) {
+    function DropPhone(button)
+    {
         var row = $(button).parent().parent();
+        var phone = row.find('[id="item_PhoneNumber_Phone"]').val();
+        var id = row.find('[id="item_PhoneNumber_EntityId"]').val();
+
+        if(id>0)
+        {
+            console.log(phone);
+            DroppedPhones.push(phone);
+        }
         row.remove();
     }
 </script>

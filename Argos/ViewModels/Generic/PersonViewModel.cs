@@ -65,6 +65,10 @@ namespace Argos.ViewModels.Generic
 
         public bool DropImage { get; set; }
 
+        public List<string> DroppedPhones { get; set; }
+
+        public List<string> DroppedMails { get; set; }
+
         public List<HttpPostedFileBase> NewImages { get; set; }
 
         public string Image
@@ -82,6 +86,8 @@ namespace Argos.ViewModels.Generic
             this.NewImages  = new List<HttpPostedFileBase>();
             this.Phones     = new List<PhoneVm>();
             this.Emails     = new List<EmailVm>();
+            this.DroppedMails = new List<string>();
+            this.DroppedPhones = new List<string>();
         }
 
     }

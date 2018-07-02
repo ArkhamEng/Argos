@@ -11,16 +11,14 @@ namespace Argos.Models.Business
     [Table("EmailAddress", Schema = "Business")]
     public class EmailAddress:AuditableEntity
     {
-        public int EmailAddressId { get; set; }
-
-        [Index("Unq_Email", Order = 0, IsUnique = true)]
+        [Column(Order = 0),Key,ForeignKey("Entity")]
         public int EntityId { get; set; }
 
         [Display(Name = "E-mail")]
         [DataType(DataType.EmailAddress, ErrorMessage = "El e-mail no tiene un formato correcto")]
         [MaxLength(150)]
         [Required(ErrorMessage = "Se requiere un correo electrónico")]
-        [Index("Unq_Email",Order =1, IsUnique = true)]
+        [Column(Order = 1), Key]
         public string Email { get; set; }
 
         public virtual Entity Entity { get; set; }

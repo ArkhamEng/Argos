@@ -21,7 +21,6 @@
             var rowId = "trEmail" + phoneIndex;
             <tr id="@rowId" class="@item.Style">
                 <td>
-                    @Html.HiddenFor(model => item.Email.EmailAddressId)
                     @Html.HiddenFor(model => item.Email.EntityId)
                     @Html.EditorFor(model => item.Email.Email, new { htmlAttributes = new { @class = "form-control input-sm", autocomplete = "off" } })
                     @Html.ValidationMessageFor(model => item.Email.Email, "", new { @class = "text-danger" })
@@ -39,6 +38,8 @@
 
 <script>
    
+    var DroppedMails = [];
+
     function AddEmail()
     {
         var newPhoneRow = $("#trEmail0").clone().removeAttr('id').removeClass("hidden");
@@ -50,6 +51,14 @@
     function DropEmail(button)
     {
         var row = $(button).parent().parent();
+
+        var mail = row.find('[id="item_Email_Email"]').val();
+        var id = row.find('[id="item_Email_EntityId"]').val();
+
+        if (id > 0)
+        {
+            DroppedMails.push(mail);
+        }
         row.remove();
     }
 </script>

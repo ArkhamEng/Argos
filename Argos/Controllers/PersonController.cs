@@ -16,14 +16,30 @@ namespace Argos.Controllers
 {
     public partial class CatalogController : Controller
     {
-        public PersonSearchVieModel<T> GetPerson<T>() where T : Person
+        public PersonSearchVieModel<T> GetPersons<T>() where T : Person
         {
             var model = new PersonSearchVieModel<T>();
 
-            model.Entities = (from s in db.Entities.Include(s => s.PhoneNumbers).Include(s => s.EmailAddresses).ToList().OfType<T>()
+            model.Entities = (from s in db.Persons.OfType<T>().Include(s => s.PhoneNumbers).Include(s => s.EmailAddresses).ToList()
                               select new PersonViewModel<T> { Person = s }).OrderBy(s => s.Person.Name).ToList();
 
             model.States = db.States.ToSelectList();
+
+            return model;
+        }
+
+        public ICollection<PersonViewModel<T>> SearchPersons<T>(string ftr, string name, string stateId, string townId, int? id) where T : Person
+        {
+            var model = (from p in db.Persons.OfType<T>().Include(p => p.SystemUser).
+                        Include(s => s.PhoneNumbers).Include(s => s.EmailAddresses).ToList()
+
+                         where (ftr == string.Empty || ftr == null || p.FTR == ftr)
+                         && (id == null || p.EntityId == id)
+                         && (name == string.Empty || name == null || p.Name.Contains(name))
+                         && (stateId == null || stateId == string.Empty || p.Addresses.Any(a => a.Town.StateId == stateId))
+                         && p.IsActive
+                         select p).OrderBy(e => e.Name).
+                       Select(e => new PersonViewModel<T> { Person = e }).ToList();
 
             return model;
         }
@@ -200,7 +216,7 @@ namespace Argos.Controllers
                 }
 
 
-                PhoneVm ph = new PhoneVm { PhoneNumber = new PhoneNumber() };
+                PhoneVm ph    = new PhoneVm { PhoneNumber = new PhoneNumber() };
                 ph.PhoneTypes = phoneTypes;
                 model.Phones.Insert(Cons.Zero, ph);
 
@@ -212,7 +228,7 @@ namespace Argos.Controllers
                 }
 
                 EmailVm em = new EmailVm { Email = new EmailAddress() };
-                model.Emails.Add(em);
+                model.Emails.Insert(Cons.Zero, em);
 
                 return model;
             }
@@ -252,6 +268,17 @@ namespace Argos.Controllers
         {
             try
             {
+                foreach(var dPhone in personVm.DroppedPhones)
+                {
+                    var phone = new PhoneNumber { EntityId = personVm.Person.EntityId, Phone = dPhone };
+                    db.Entry(phone).State = EntityState.Deleted;
+                }
+
+                foreach (var dMail in personVm.DroppedMails)
+                {
+                    var email = new EmailAddress { EntityId = personVm.Person.EntityId, Email = dMail };
+                    db.Entry(email).State = EntityState.Deleted;
+                }
 
                 foreach (var address in personVm.Person.Addresses)
                 {
@@ -271,7 +298,7 @@ namespace Argos.Controllers
                 foreach (var phoneNumber in personVm.Person.PhoneNumbers)
                 {
                     //si es nuevo registro lo agrego
-                    if (phoneNumber.PhoneNumberId == Cons.Zero)
+                    if (phoneNumber.EntityId == Cons.Zero)
                     {
                         phoneNumber.EntityId = personVm.Person.EntityId;
                         db.PhoneNumbers.Add(phoneNumber);
@@ -288,11 +315,11 @@ namespace Argos.Controllers
                 foreach (var mail in personVm.Person.EmailAddresses)
                 {
                     //si es nuevo registro lo agrego
-                    if (mail.EmailAddressId == Cons.Zero)
+                    if (mail.EntityId == Cons.Zero)
                     {
                         mail.EntityId = personVm.Person.EntityId;
                         db.EmailAddresses.Add(mail);
-                    }
+                    }                
                     else
                     {
                         //de lo contrario actualizo
@@ -312,7 +339,6 @@ namespace Argos.Controllers
                     modifyImage = true;
                 }
 
-
                 //si hay imagen, la guardo y guardo la ruta
                 if (personVm.NewImages.Count > Cons.Zero && personVm.NewImages.First() != null)
                 {
@@ -327,7 +353,6 @@ namespace Argos.Controllers
                 db.Entry(personVm.Person).Property(c => c.InsDate).IsModified = false;
                 db.Entry(personVm.Person).Property(c => c.InsUser).IsModified = false;
                 db.Entry(personVm.Person).Property(c => c.ImagePath).IsModified = modifyImage;
-
 
                 db.SaveChanges();
 

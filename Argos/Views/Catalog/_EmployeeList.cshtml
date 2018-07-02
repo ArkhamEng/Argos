@@ -18,7 +18,7 @@
             </th>
             <th>
                 <span class="fa fa-medkit control-label"></span>
-                @Html.DisplayName("Razón Social")
+                @Html.DisplayName("NSS")
             </th>
             <th>
                 <span class="fa fa-phone control-label"></span>
@@ -39,26 +39,26 @@
                     <img src="@item.Image" class="img-responsive img-rounded" style="max-height:50px" />
                 </td>
                 <td class="text-capitalize">
-                    @Html.DisplayFor(modelItem => item.Person.Name)
+                    @Html.DisplayFor(modelItem => item.Person.Name)<br />
+                    @Html.DisplayFor(modelItem => item.Person.JobPosition.Name)
                 </td>
                 <td class="text-uppercase">
                     @Html.DisplayFor(modelItem => item.Person.FTR)
                 </td>
                 <td class="text-capitalize">
-
                     @Html.DisplayFor(modelItem => item.Person.SSN)
                 </td>
 
                 <td>
                     @foreach (var phone in item.Person.PhoneNumbers)
                     {
-                        @Html.DisplayFor(modelItem => phone.Phone)
+                        @Html.DisplayFor(modelItem => phone.Phone)<br />
                     }
                 </td>
                 <td class="text-lowercase">
                     @foreach (var email in item.Person.EmailAddresses)
                     {
-                        @Html.DisplayFor(modelItem => email.Email)
+                        @Html.DisplayFor(modelItem => email.Email)<br />
                     }
                 </td>
 

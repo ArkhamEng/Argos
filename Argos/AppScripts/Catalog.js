@@ -125,8 +125,10 @@ function SubmitProduct(SuccessCallBack) {
 }
 
 
-function SubmitPerson(SuccessCallBack, form) {
-    $(form).off('submit').on('submit', function (e) {
+function SubmitPerson(SuccessCallBack, form)
+{
+    $(form).off('submit').on('submit', function (e)
+    {
         e.preventDefault();
 
         var $form = $(e.target),
@@ -139,7 +141,8 @@ function SubmitPerson(SuccessCallBack, form) {
         if (!ValidateAddress($form))
             return;
 
-        if (!$form.valid()) {
+        if (!$form.valid())
+        {
             ShowNotify("Error de validación", "danger", "Existen errores en lo datos capturados, por favor verifica", 3500);
             return;
         }
@@ -160,6 +163,15 @@ function SubmitPerson(SuccessCallBack, form) {
             formData.append('NewImages[' + i + ']', file);
         });
 
+        $.each(DroppedPhones,function(i,phone)
+        {
+            formData.append('DroppedPhones[' + i + ']', phone);
+        });
+
+        $.each(DroppedMails, function (i, mail)
+        {
+            formData.append('DroppedMails[' + i + ']', mail);
+        });
 
         $("#tbAddress tr").each(function (index, row) {
             formData.append('Person.Addresses[' + index + '].AddressId', $(row).find('[id="item_Address_AddressId"]').val());
@@ -186,7 +198,7 @@ function SubmitPerson(SuccessCallBack, form) {
                     return false;
                 }
 
-                formData.append('Person.PhoneNumbers[' + phoneCount + '].PhoneNumberId', $(row).find('[id="item_PhoneNumber_PhoneNumberId"]').val());
+              //  formData.append('Person.PhoneNumbers[' + phoneCount + '].PhoneNumberId', $(row).find('[id="item_PhoneNumber_PhoneNumberId"]').val());
                 formData.append('Person.PhoneNumbers[' + phoneCount + '].PhoneTypeId', $(row).find('[id="item_PhoneNumber_PhoneTypeId"]').val());
                 formData.append('Person.PhoneNumbers[' + phoneCount + '].Phone', $(row).find('[id="item_PhoneNumber_Phone"]').val());
                 formData.append('Person.PhoneNumbers[' + phoneCount + '].EntityId', $(row).find('[id="item_PhoneNumber_EntityId"]').val());
