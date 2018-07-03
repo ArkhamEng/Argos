@@ -82,11 +82,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-xs-12 col-sm-12">
                             @Html.Partial("_EmailGroup", Model.Emails)
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-xs-12 col-sm-12">
                             @Html.Partial("_PhoneGroup", Model.Phones)
                         </div>
                     </div>
@@ -98,10 +98,10 @@
             @Html.HiddenFor(m => m.DropImage)
         </div>
 
-        <div id="addresses" class="tab-pane fade in  panel-group" style="overflow-y:auto; max-height:380px">
+        <div id="addresses" class="tab-pane fade in  panel-group">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    @Html.Partial("_AddressGroup", Model.Addresses)
+                    @Html.Partial("_AddressGroup", Model.AddressViewModel)
                 </div>
             </div>
         </div>

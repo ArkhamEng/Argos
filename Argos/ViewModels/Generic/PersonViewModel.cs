@@ -18,7 +18,7 @@ namespace Argos.ViewModels.Generic
 
         public List<EmailVm> Emails { get; set; }
 
-        public List<AddressVm> Addresses { get; set; }
+        public AddressVm AddressViewModel { get; set; }
 
         public virtual string EditButton
         {
@@ -82,7 +82,7 @@ namespace Argos.ViewModels.Generic
         public PersonViewModel()
         {
             this.Person     = (T)Activator.CreateInstance(typeof(T));
-            this.Addresses  = new List<AddressVm>();
+            this.AddressViewModel  = new AddressVm();
             this.NewImages  = new List<HttpPostedFileBase>();
             this.Phones     = new List<PhoneVm>();
             this.Emails     = new List<EmailVm>();

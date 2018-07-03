@@ -791,10 +791,10 @@
     <Content Include="Views\Home\FormValidation.cshtml" />
     <Content Include="Views\Home\Index2.cshtml" />
     <Content Include="Views\Home\Index3.cshtml" />
-    <Content Include="Views\Catalog\_Address.cshtml" />
     <Content Include="Views\Catalog\_AddressGroup.cshtml" />
     <Content Include="Views\Catalog\_PhoneGroup.cshtml" />
     <Content Include="Views\Catalog\_EmailGroup.cshtml" />
+    <Content Include="Views\Catalog\_Address.cshtml" />
     <None Include="Views\Operative\Accounts.cshtml" />
     <Content Include="Views\Operative\_AccountList.cshtml" />
     <Content Include="Views\Operative\_BeginAccount.cshtml" />
@@ -806,6 +806,7 @@
     <Content Include="Views\Shared\_SideMenu.cshtml" />
     <Content Include="Views\Shared\_TopNav.cshtml" />
     <Content Include="Views\Shared\_LayoutGentelella.cshtml" />
+    <Content Include="Views\Shared\_ChildModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

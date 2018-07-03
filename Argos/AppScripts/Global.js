@@ -63,7 +63,7 @@ function ExecuteAjax(url, parameters, callback)
                 switch (response.Code)
                 {
                     case 401:
-                        window.location = response.LogOnUrl;
+                        window.location = response.Extra;
                         break;
                 }
             }

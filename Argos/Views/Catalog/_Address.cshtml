@@ -1,66 +1,98 @@
-﻿@model  Argos.ViewModels.Generic.AddressVm
+﻿
+@model Argos.ViewModels.Generic.AddressVm
 
 
-<div id="AddressModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="form-group col-md-6">
-                            @Html.LabelFor(model => model.SelectedStateId, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map"></i></span>
-                                @Html.DropDownListFor(model => model.SelectedStateId, Model.States, "", htmlAttributes: new { @class = "form-control input-sm" })
-                            </div>
-                            @Html.ValidationMessageFor(model => model.SelectedStateId, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            @Html.LabelFor(model => model.Address.TownId, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map"></i></span>
-                                @Html.DropDownListFor(model => model.Address.TownId, Model.Towns, "", htmlAttributes: new { @class = "form-control input-sm" })
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Address.TownId, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-md-8">
-                            @Html.LabelFor(model => model.Address.Location, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
-                                @Html.EditorFor(model => model.Address.Location, new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Address.Location, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-md-4">
-                            @Html.LabelFor(model => model.Address.ZipCode, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
-                                @Html.EditorFor(model => model.Address.ZipCode, new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Address.ZipCode, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-md-8">
-                            @Html.LabelFor(model => model.Address.Street, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
-                                @Html.EditorFor(model => model.Address.Street, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocompleate = "off" } })
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Address.Street, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+    <div id="divTestAddress" class="x_panel">
+        <div class="x_content">
+            <div class="form-group col-md-9">
+                @Html.LabelFor(model => Model.Street, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
+                    @Html.EditorFor(model => Model.Street, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocompleate = "off" } })
                 </div>
+                @Html.ValidationMessageFor(model => Model.Street, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-md-3">
+                @Html.LabelFor(model => Model.AddressTypeId, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                    @Html.DropDownListFor(model => Model.AddressTypeId, Model.Types, htmlAttributes: new { @class = "form-control input-sm" })
+                </div>
+                @Html.ValidationMessageFor(model => Model.AddressTypeId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => Model.SelectedStateId, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                    @Html.DropDownListFor(model => Model.SelectedStateId, Model.States, "", htmlAttributes: new { @class = "form-control input-sm" })
+                </div>
+                @Html.ValidationMessageFor(model => Model.SelectedStateId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.LabelFor(model => Model.TownId, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-map"></i></span>
+                    @Html.DropDownListFor(model => Model.TownId, Model.Towns, "", htmlAttributes: new { @class = "form-control input-sm" })
+                </div>
+                @Html.ValidationMessageFor(model => Model.TownId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-md-9">
+                @Html.LabelFor(model => Model.Location, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                    @Html.EditorFor(model => Model.Location, new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
+                </div>
+                @Html.ValidationMessageFor(model => Model.Location, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-md-3">
+                @Html.LabelFor(model => Model.ZipCode, htmlAttributes: new { @class = "control-label" })
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+                    @Html.EditorFor(model => Model.ZipCode, new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
+                </div>
+                @Html.ValidationMessageFor(model => Model.ZipCode, "", new { @class = "text-danger" })
+            </div>
+            <div class="pull-right" id="EditAddressButtons">
+                <button class="btn btn-primary" type="button">
+                    <span class="fa fa-check"></span>
+                    Agregar
+                </button>
+                <button class="btn btn-danger" type="button" onclick="CancelAddress()">
+                    <span class="fa fa-times"></span>
+                    Cancelar
+                </button>
             </div>
         </div>
     </div>
-</div>
 
 <script>
-    $(document).ready(function ()
-    {
-        $("#AddressModal").modal('show');
+    $(document).ready(function () {
+        SetCascade("#SelectedStateId", "#TownId", '@Url.Action("GetCities","Configuration")');
+        SetAddressTypes();
     });
+
+    function SetAddressTypes() {
+        $('#tbAddress tr').each(function (i, row) {
+            var typeValue = $(row).find('[id="AddressTypeId"]').val();
+
+            if (typeof (typeValue) != 'undefined') {
+                console.log(typeValue);
+                var option = $('#AddressTypeId option[value="' + typeValue + '"]').hide();
+                $(option).unbind();
+            }
+        });
+
+        //$("#AddressTypeId > option").each(function()
+        //{
+        //    console.log(this.value);
+        //    console.log(this.text);
+        //});
+    }
+
+
 </script>

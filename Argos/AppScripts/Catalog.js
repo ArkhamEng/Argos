@@ -14,9 +14,12 @@ function ShowPersonModal(OnCompleate, CloseCallBack, Entity, id) {
     }
     var form = "#" + Entity + "Form";
 
-    ExecuteAjax(url, param, function (response) {
-        HideLoading(function () {
-            if (!$.isPlainObject(response)) {
+    ExecuteAjax(url, param, function (response)
+    {
+        HideLoading(function ()
+        {
+            if (!$.isPlainObject(response))
+            {
                 ShowModal(response, 'static', 'lg');
 
                 if (typeof (param.id) != 'undefined')
@@ -25,11 +28,15 @@ function ShowPersonModal(OnCompleate, CloseCallBack, Entity, id) {
                 SubmitPerson(OnCompleate, form);
 
                 //evento del boton cancel
-                $("#EditCancel").off('click').click(function (e) {
-                    HideModal(function () {
+                $("#EditCancel").off('click').click(function (e)
+                {
+                    HideModal(function ()
+                    {
                         //si el se tiene un id, desbloqueo el registro para liberarlo
-                        if (parseInt(param.id) > 0) {
-                            ExecuteAjax('/Catalog/UnLockPerson/', { id: param.id }, function (response) {
+                        if (parseInt(param.id) > 0)
+                        {
+                            ExecuteAjax('/Catalog/UnLockPerson/', { id: param.id }, function (response)
+                            {
                                 ShowNotify(response.Header, response.Result, response.Body);
                             });
                         }
@@ -275,9 +282,10 @@ function SubmitPerson(SuccessCallBack, form)
                     }
                 }
                 else {
-                    HideModal(function () {
+                    HideModal(function ()
+                    {
                         ShowNotify(response.Header, response.Result, response.Body);
-                        SuccessCallBack(response);
+                        SuccessCallBack(response.Id);
                     }, true);
                 }
             }

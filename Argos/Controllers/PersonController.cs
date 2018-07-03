@@ -30,13 +30,14 @@ namespace Argos.Controllers
 
         public ICollection<PersonViewModel<T>> SearchPersons<T>(string ftr, string name, string stateId, string townId, int? id) where T : Person
         {
-            var model = (from p in db.Persons.OfType<T>().Include(p => p.SystemUser).
+            var model = (from p in db.Persons.OfType<T>().Include(p => p.SystemUser).Include(p=> p.Addresses.Select(a=> a.Town)).
                         Include(s => s.PhoneNumbers).Include(s => s.EmailAddresses).ToList()
 
                          where (ftr == string.Empty || ftr == null || p.FTR == ftr)
                          && (id == null || p.EntityId == id)
                          && (name == string.Empty || name == null || p.Name.Contains(name))
                          && (stateId == null || stateId == string.Empty || p.Addresses.Any(a => a.Town.StateId == stateId))
+                         && (townId == null || townId == string.Empty || p.Addresses.Any(a=> a.TownId == townId))
                          && p.IsActive
                          select p).OrderBy(e => e.Name).
                        Select(e => new PersonViewModel<T> { Person = e }).ToList();
@@ -149,16 +150,10 @@ namespace Argos.Controllers
 
         private void BeginAddPerson<T>(PersonViewModel<T> model) where T : Person
         {
-            model.Addresses.Add(new AddressVm
-            {
-                Address = new Address(),
-                States = db.States.ToSelectList(AddressTypes.Home),
-                Types = db.AddressTypes.ToSelectList(),
-                Towns = new SelectList(new List<Town>()),
-                AddButton = Styles.btnWarning,
-                RemoveButton = Styles.btnDangerHidden
-            });
-
+            model.AddressViewModel.States = db.States.OrderBy(s => s.Name).ToSelectList();
+            model.AddressViewModel.Types  = db.AddressTypes.ToSelectList();
+            model.AddressViewModel.Towns  = new SelectList(new List<Town>());
+         
             model.Emails.Add(new EmailVm { Email = new EmailAddress() });
 
             model.Phones.Add(new PhoneVm
@@ -178,34 +173,14 @@ namespace Argos.Controllers
                 model.Person = db.Entities.OfType<T>().Include(c => c.Addresses).Include(c => c.PhoneNumbers).Include(c => c.EmailAddresses).
                     Include(c => c.Addresses.Select(a => a.Town.State)).FirstOrDefault(c => c.EntityId == id && c.IsActive);
 
-                var states = db.States.OrderBy(s => s.Name).ToSelectList();
-                var types = db.AddressTypes.OrderBy(at => at.Name).ToSelectList();
                 var phoneTypes = db.PhoneTypes.OrderBy(pt => pt.Name).ToSelectList();
 
-                int index = 0;
+                model.AddressViewModel.States = db.States.OrderBy(s => s.Name).ToSelectList();
+                model.AddressViewModel.Types  = db.AddressTypes.OrderBy(at => at.Name).ToSelectList();
 
                 foreach (var a in model.Person.Addresses)
                 {
-                    AddressVm avm = new AddressVm { Address = a };
-
-                    if (index == Cons.Zero)
-                    {
-                        avm.AddButton = Styles.btnDanger;
-                        avm.RemoveButton = Styles.btnDangerHidden;
-                    }
-                    else
-                    {
-                        avm.AddButton = Styles.btnWarningHidden;
-                        avm.RemoveButton = Styles.btnDanger;
-                    }
-
-                    avm.SelectedStateId = a.Town.StateId;
-                    avm.States = states.ToSelectList(avm.SelectedStateId);
-                    avm.Towns = db.Towns.Where(t => t.StateId == avm.SelectedStateId).ToSelectList(a.TownId);
-                    avm.Types = types.ToSelectList((int)a.AddressTypeId);
-
-                    model.Addresses.Add(avm);
-                    index++;
+                    model.AddressViewModel.Addresses.Add(a);
                 }
 
                 foreach (var p in model.Person.PhoneNumbers)
@@ -386,13 +361,7 @@ namespace Argos.Controllers
                 db.Entry(model.Person).Property(c => c.LockEndDate).IsModified = true;
                 db.Entry(model.Person).Property(c => c.LockUser).IsModified = true;
 
-                model.Addresses.ForEach(av =>
-                {
-                    av.Address.Lock();
-                    db.Entry(av.Address).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(av.Address).Property(c => c.LockUser).IsModified = true;
-                });
-
+            
                 db.SaveChanges();
                 return null;
             }

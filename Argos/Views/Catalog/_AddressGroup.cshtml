@@ -1,107 +1,87 @@
-﻿@model  ICollection<Argos.ViewModels.Generic.AddressVm>
+﻿@model  Argos.ViewModels.Generic.AddressVm
 @using Argos.Support
 
-
-<div id="divAddress"></div>
-<table id="tbAddress" class="table  table-bordered">
-    @{var index = 0; var rowId = ""; }
-    @foreach (var item in Model)
-    {
-        rowId = "row" + index;
-        var name = (index + 1);
-
-        <tr id="@rowId">
+<div class="hidden">
+    @Html.Partial("_Address", Model)
+</div>
+<table id="tbAddress" class="table  table-bordered jambo_table">
+    <thead>
+        <tr class="heading">
             <td>
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h4 id="addTitle">
-                            Dirección  @name
-                        </h4>
-                    </div>
-                    <div class="x_content">
-                        @Html.HiddenFor(model => item.Address.AddressId)
-                        @Html.HiddenFor(model => item.Address.EntityId)
-
-                        <div class="form-group col-md-9">
-                            @Html.LabelFor(model => item.Address.Street, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-street-view"></i></span>
-                                @Html.EditorFor(model => item.Address.Street, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocompleate = "off" } })
-                            </div>
-                            @Html.ValidationMessageFor(model => item.Address.Street, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            @Html.LabelFor(model => item.Address.AddressTypeId, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map"></i></span>
-                                @Html.DropDownListFor(model => item.Address.AddressTypeId, item.Types, "",
-                       htmlAttributes: new { @class = "form-control input-sm" })
-                            </div>
-                            @Html.ValidationMessageFor(model => item.Address.AddressTypeId, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            @Html.LabelFor(model => item.SelectedStateId, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map"></i></span>
-                                @Html.DropDownListFor(model => item.SelectedStateId, item.States, "",
-                       htmlAttributes: new { @class = "form-control input-sm" })
-                            </div>
-                            @Html.ValidationMessageFor(model => item.SelectedStateId, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            @Html.LabelFor(model => item.Address.TownId, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map"></i></span>
-                                @Html.DropDownListFor(model => item.Address.TownId, item.Towns, "",
-                       htmlAttributes: new { @class = "form-control input-sm" })
-                            </div>
-                            @Html.ValidationMessageFor(model => item.Address.TownId, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-md-9">
-                            @Html.LabelFor(model => item.Address.Location, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
-                                @Html.EditorFor(model => item.Address.Location,
-                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
-                            </div>
-                            @Html.ValidationMessageFor(model => item.Address.Location, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            @Html.LabelFor(model => item.Address.ZipCode, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
-                                @Html.EditorFor(model => item.Address.ZipCode,
-                       new { htmlAttributes = new { @class = "form-control input-sm", autocompleate = "off" } })
-                            </div>
-                            @Html.ValidationMessageFor(model => item.Address.ZipCode, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
+                @Html.DisplayNameFor(model => model.Addresses.First().Street)
             </td>
             <td>
-
-                <button class="@item.RemoveButton" type="button" onclick="DropAddress(this)" id="btnRemoveAddress">
-                    <span class="@Icons.Delete"></span>
-                </button>
-                <button class="@item.AddButton" type="button" onclick="AddAddress()" id="btnAddAddress">
+                @Html.DisplayNameFor(model => model.Addresses.First().Location)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Addresses.First().ZipCode)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Addresses.First().TownId)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Addresses.First().Town.StateId)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Addresses.First().AddressTypeId)
+            </td>
+            <td>
+                <button class="btn btn-success btn-sm pull-right" type="button" onclick="ShowAddAddress()" id="btnAddAddress">
                     <span class="fa fa-plus"></span>
                 </button>
             </td>
         </tr>
-
-        index++;
-    }
-
+        <tr id="NewAddressRow" class="hidden">
+            <td class="clStreet"></td>
+            <td class="clStreet"></td>
+            <td class="clLocation"></td>
+            <td class="clLTown"></td>
+            <td class="clState"></td>
+            <td class="clAddressType"></td>
+            <td>
+                <button class="btn btn-danger btn-sm"  onclick="DropAddress(this)"  type="button">
+                    <span class="@Icons.Delete"></span>
+                </button>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Addresses)
+        {
+            <tr>
+                <td class="clStreet">
+                    @Html.HiddenFor(m => item.AddressTypeId)
+                    @Html.DisplayFor(m => item.Street)
+                </td>
+                <td class="clStreet">
+                    @Html.DisplayFor(m => item.Location)
+                </td>
+                <td class="clLocation">
+                    @Html.DisplayFor(m => item.ZipCode)
+                </td>
+                <td class="clLTown">
+                    @Html.DisplayFor(m => item.Town.Name)
+                </td>
+                <td class="clState">
+                    @Html.DisplayFor(m => item.Town.State.Name)
+                </td>
+                <td class="clAddressType">
+                    @Html.DisplayFor(m => item.AddressType.Name)
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm" type="button" onclick="DropAddress(this)" id="btnRemoveAddress">
+                        <span class="@Icons.Delete"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 
+
+
 <script>
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         $('#tbAddress tr').each(function (i, row) {
             SetEvents(row);
         });
@@ -112,7 +92,6 @@
         var town = $(row).find('[id="item_Address_TownId"]');
         var isBusy = false;
 
-        SetCascade(state, town, '@Url.Action("GetCities","Configuration")');
 
         var zipCode = $(row).find('[id="item_Address_ZipCode"]');
         var location = $(row).find('[id="item_Address_Location"]');
@@ -125,17 +104,18 @@
                 if (isBusy)
                     return;
 
-                ExecuteAjax('@Url.Action("CompleateAddress", "Configuration")', { filter: query, stateId: id }, function (result) {
-                    isBusy = false;
-                    done(result);
+                isBusy = true;
 
+                ExecuteAjax('@Url.Action("CompleateAddress", "Configuration")', { filter: query, stateId: id }, function (result) {
+                    done(result);
+                    isBusy = false;
                 });
             },
             groupBy: "category",
             onSelect: function (suggestion) {
                 $(location).val(suggestion.value);
 
-                ExecuteAjax('@Url.Action("SettlementSelected","Configuration")', { id: suggestion.Id }, function (response) {
+                ExecuteAjax('@Url.Action("CompleateSettlement", "Configuration")', { id: suggestion.Id }, function (response) {
                     zipCode.val(response.ZipCode);
                     state.val(response.StateId);
 
@@ -162,13 +142,30 @@
         });
     }
 
-    function AddAddressTest()
+    function CancelAddress()
     {
-        ExecuteAjax('@Url.Action("AddAddress","Catalog")', {}, function (response)
-        {
-            $("#divAddress").html(response);
-        });
+        HideChildModal();
     }
+    function ShowAddAddress()
+    {
+        var divAddress = $("#divTestAddress").clone();
+     
+        ShowChildModal(divAddress);
+    }
+
+    function updateZIndex() {
+        var dialogCount = Object.keys(BootstrapDialog.dialogs).length;
+        if (dialogCount > 1)
+        {
+            var $modal = this.getModal();
+            var $backdrop = $modal.data('bs.modal').$backdrop;
+            $modal.css('z-index', BootstrapDialog.ZINDEX_MODAL + (dialogCount - 1) * 20);
+            $backdrop.css('z-index', BootstrapDialog.ZINDEX_BACKDROP + (dialogCount - 1) * 20);
+        }
+        return this;
+    }
+
+   
 
     function AddAddress() {
         //clono la primera fila, ya que considero siempre tener minimo una dirección
@@ -178,19 +175,15 @@
         var btnAdd = $(newRow).find('[id="btnAddAddress"]');
         var btnRemove = $(newRow).find('[id="btnRemoveAddress"]');
 
-        btnAdd.removeClass('@Argos.Support.Styles.btnWarning');
-        btnAdd.addClass('@Argos.Support.Styles.btnWarningHidden');
-
-        btnRemove.removeClass('@Argos.Support.Styles.btnDangerHidden');
-        btnRemove.addClass('@Argos.Support.Styles.btnDanger');
+        btnAdd.addClass('hidden');
+        btnRemove.removeClass('hidden');
 
         ClearControls(newRow);
         //agrego la nueva fila a la tabla
         $('#tbAddress').append(newRow);
 
         //vuelvo a agregar los eventos
-        $('#tbAddress tr').each(function (i, row)
-        {
+        $('#tbAddress tr').each(function (i, row) {
             var title = $(row).find('[id="addTitle"]');
             title.text("Dirección " + (i + 1));
 

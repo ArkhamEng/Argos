@@ -1,4 +1,5 @@
 ﻿using Argos.Models.Business;
+using Argos.Models.Config;
 using Argos.Support;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ using System.Web.Mvc;
 
 namespace Argos.ViewModels.Generic
 {
-   
-    public class AddressVm
+    [NotMapped]
+    public class AddressVm:Address
     {
         [Display(Name ="Estado")]
         public string SelectedStateId { get; set; }
@@ -22,11 +23,17 @@ namespace Argos.ViewModels.Generic
 
         public SelectList Towns { get; set; }
 
-        public Address Address { get; set; }
+        public List<Address> Addresses { get; set; }
 
         public string AddButton { get; set; }
 
         public string RemoveButton { get; set; }
+
+        public AddressVm()
+        {
+            this.Addresses = new List<Address>();
+            this.Towns = new List<Town>().ToSelectList();
+        }
     }
 
    

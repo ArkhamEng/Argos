@@ -6,7 +6,7 @@
     <thead>
         <tr class="heading">
             <th>
-                <span class="fa fa-camera control-label"></span>
+                <span class="fa fa-camera control-label text-center"></span>
             </th>
             <th>
                 <span class="fa fa-user control-label"></span>
@@ -35,7 +35,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td align="center">
                     <img src="@item.Image" class="img-responsive img-rounded" style="max-height:50px" />
                 </td>
                 <td class="text-capitalize">
@@ -63,12 +63,14 @@
                 </td>
 
                 <td>
-                    <button class="@item.EditButton" type="button" onclick="BeginUpdateEmployee(@item.Person.EntityId)">
-                        <span class="@Icons.Edit"></span>
-                    </button>
-                    <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
-                        <span class="@Icons.Delete"></span>
-                    </button>
+                    <div class="pull-right">
+                        <button class="@item.EditButton" type="button" onclick="BeginUpdateEmployee(@item.Person.EntityId)">
+                            <span class="@Icons.Edit"></span>
+                        </button>
+                        <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
+                            <span class="@Icons.Delete"></span>
+                        </button>
+                    </div>
                 </td>
             </tr>
         }

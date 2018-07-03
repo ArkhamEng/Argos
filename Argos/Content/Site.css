@@ -360,7 +360,8 @@ ul ul a {
   border-radius: 6px;
 }
 
-@media (max-width:760px) { 
+@media (max-width:760px) 
+{ 
     /* matches 'btn-xs' */
     .btn-responsive {
         padding: 1px 5px;
@@ -369,3 +370,5 @@ ul ul a {
         border-radius: 3px;
     }
 }
+
+.modal { overflow: auto !important; }
