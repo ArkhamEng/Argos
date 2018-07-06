@@ -1,6 +1,6 @@
 ﻿using Argos.Models.BaseTypes;
+using Argos.Models.Business;
 using Argos.Models.Config;
-using Argos.Models.Operative;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

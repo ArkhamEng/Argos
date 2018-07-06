@@ -131,11 +131,11 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            @Html.Partial("_EmailGroup", Model.Emails)
+                            @Html.Partial("_EmailGroup", Model.Person.EmailAddresses)
                         </div>
 
                         <div class="col-md-6">
-                            @Html.Partial("_PhoneGroup", Model.Phones)
+                            @Html.Partial("_PhoneGroup", Model.Person.PhoneNumbers)
                         </div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@
         <div id="addresses" class="tab-pane fade in  panel-group" style="overflow-y:auto; max-height:380px">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    @Html.Partial("_AddressGroup", Model.Addresses)
+                    @Html.Partial("_AddressGroup", Model.Person.Addresses)
                 </div>
             </div>
         </div>

@@ -1,18 +1,14 @@
-﻿using System.Linq;
-using Argos.Models;
-using System.Web.Mvc;
+﻿using Argos.Models;
+using Argos.Models.BaseTypes;
 using Argos.Models.HumanResources;
+using Argos.Models.Purchasing;
+using Argos.Models.Sales;
 using Argos.Support;
-using Argos.Models.Config;
-using System.Collections.Generic;
+using Argos.ViewModels.Generic;
 using System;
 using System.Data.Entity;
-using Argos.Models.BaseTypes;
-using Argos.ViewModels.Generic;
-using Argos.Models.Operative;
-using Argos.Models.Business;
-using Argos.Models.Enums;
-
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Argos.Controllers
 {
@@ -20,18 +16,6 @@ namespace Argos.Controllers
     public partial class CatalogController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
-        //public ActionResult AddAddress()
-        //{
-        //    var model = new AddressVm();
-        //    model.Address = new Address();
-
-        //    model.States = db.States.OrderBy(s => s.Name).ToSelectList();
-        //    model.Types = db.AddressTypes.OrderBy(t => t.Name).ToSelectList();
-        //    model.Towns = new List<Town>().ToSelectList();
-
-        //    return PartialView("_Address", model);
-        //}
 
         #region Client Methods
         public ActionResult Clients()
@@ -52,8 +36,6 @@ namespace Argos.Controllers
         public ActionResult BeginAddClient()
         {
             var model = new PersonViewModel<Client>();
-            BeginAddPerson(model);
-
             return PartialView("_ClientEdit", model);
         }
 
@@ -62,11 +44,6 @@ namespace Argos.Controllers
         {
             try
             {
-                //var model = new PersonViewModel<Client>();
-
-                //model.Person = db.Entities.OfType<Client>().Include(c => c.Addresses).Include(c => c.Addresses.Select(a => a.Town.State)).
-                //    FirstOrDefault(c => c.EntityId == id && c.IsActive);
-
                 var model = BeginUpdatePerson<Client>(id);
 
                 if (model != null)
@@ -170,8 +147,6 @@ namespace Argos.Controllers
             var model = new PersonViewModel<Employee>();
             model.Person = new Employee { Gender = Cons.MaleChar, HireDate = DateTime.Now.TodayLocal() };
             model.JobPositions = db.JobPositions.ToSelectList();
-
-            BeginAddPerson(model);
 
             return PartialView("_EmployeeEdit", model);
         }
@@ -288,7 +263,6 @@ namespace Argos.Controllers
         {
             var model = new PersonViewModel<Supplier>();
             
-            BeginAddPerson(model);
             return PartialView("_SupplierEdit", model);
         }
 
@@ -374,6 +348,14 @@ namespace Argos.Controllers
                     Code = Codes.ServerError
                 });
             }
+        }
+
+
+        [HttpPost]
+        public ActionResult GetSuppliers()
+        {
+            var model = db.Persons.OfType<Supplier>().ToList();
+            return PartialView("_AssingSupplier", model);
         }
 
         #endregion

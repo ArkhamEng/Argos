@@ -1,29 +1,26 @@
-﻿@model  Argos.ViewModels.Generic.AddressVm
+﻿@model  IEnumerable<Argos.Models.Business.Address>
 @using Argos.Support
 
-<div class="hidden">
-    @Html.Partial("_Address", Model)
-</div>
 <table id="tbAddress" class="table  table-bordered jambo_table">
     <thead>
         <tr class="heading">
             <td>
-                @Html.DisplayNameFor(model => model.Addresses.First().Street)
+                @Html.DisplayNameFor(model => model.Street)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.Addresses.First().Location)
+                @Html.DisplayNameFor(model => model.Location)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.Addresses.First().ZipCode)
+                @Html.DisplayNameFor(model => model.ZipCode)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.Addresses.First().TownId)
+                @Html.DisplayNameFor(model => model.TownId)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.Addresses.First().Town.StateId)
+                @Html.DisplayNameFor(model => model.Town.StateId)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.Addresses.First().AddressTypeId)
+                @Html.DisplayNameFor(model => model.AddressTypeId)
             </td>
             <td>
                 <button class="btn btn-success btn-sm pull-right" type="button" onclick="ShowAddAddress()" id="btnAddAddress">
@@ -32,44 +29,68 @@
             </td>
         </tr>
         <tr id="NewAddressRow" class="hidden">
-            <td class="clStreet"></td>
-            <td class="clStreet"></td>
-            <td class="clLocation"></td>
-            <td class="clLTown"></td>
-            <td class="clState"></td>
-            <td class="clAddressType"></td>
+            <td class="text-capitalize">
+                <input type="hidden" id="item_EntityId" />
+                <a id="lblStreet" class="text-capitalize"></a>
+                <input type="hidden"  id="item_Street"/>
+            </td>
+            <td class="text-capitalize">
+                <a id="lblLocation" class="text-capitalize"></a>
+                <input type="hidden" id="item_Location" />
+            </td>
+            <td class="text-uppercase">
+                <a id="lblZipCode" class="text-capitalize"></a>
+                <input type="hidden" id="item_ZipCode" />
+            </td>
+            <td class="text-capitalize">
+                <a id="lblTown" class="text-capitalize"></a>
+                <input type="hidden" id="item_TownId" />
+            </td>
+            <td class="text-capitalize">
+                <a id="lblState" class="text-capitalize"></a>
+            </td>
+            <td class="text-capitalize">
+                <a id="lblAddressType" class="text-capitalize"></a>
+                <input type="hidden" id="item_AddressTypeId" />
+            </td>
             <td>
-                <button class="btn btn-danger btn-sm"  onclick="DropAddress(this)"  type="button">
+                <button class="btn btn-danger btn-sm pull-right" onclick="DropAddress(this)" type="button">
                     <span class="@Icons.Delete"></span>
                 </button>
             </td>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Addresses)
+        @foreach (var item in Model)
         {
+            var typeId = (int)item.AddressTypeId;
             <tr>
-                <td class="clStreet">
-                    @Html.HiddenFor(m => item.AddressTypeId)
+                <td class="text-capitalize">
+                    @Html.HiddenFor(m => item.EntityId)
                     @Html.DisplayFor(m => item.Street)
+                    @Html.HiddenFor(m => item.Street)
                 </td>
-                <td class="clStreet">
+                <td class="text-capitalize">
                     @Html.DisplayFor(m => item.Location)
+                    @Html.HiddenFor(m => item.Location)
                 </td>
-                <td class="clLocation">
+                <td class="text-uppercase">
                     @Html.DisplayFor(m => item.ZipCode)
+                    @Html.HiddenFor(m => item.ZipCode)
                 </td>
-                <td class="clLTown">
+                <td class="text-capitalize">
                     @Html.DisplayFor(m => item.Town.Name)
+                    @Html.HiddenFor(m=> item.TownId)
                 </td>
-                <td class="clState">
+                <td class="text-capitalize">
                     @Html.DisplayFor(m => item.Town.State.Name)
                 </td>
-                <td class="clAddressType">
+                <td class="text-capitalize">
+                    <input type="hidden" value="@typeId" id="item_AddressTypeId" />
                     @Html.DisplayFor(m => item.AddressType.Name)
                 </td>
                 <td>
-                    <button class="btn btn-danger btn-sm" type="button" onclick="DropAddress(this)" id="btnRemoveAddress">
+                    <button class="btn btn-danger btn-sm pull-right" type="button" onclick="DropAddress(this)" id="btnRemoveAddress">
                         <span class="@Icons.Delete"></span>
                     </button>
                 </td>
@@ -81,138 +102,34 @@
 
 
 <script>
-    $(document).ready(function () {
-        $('#tbAddress tr').each(function (i, row) {
-            SetEvents(row);
-        });
+    var DroppedAddress = [];
+
+    $(document).ready(function ()
+    {
+        DroppedAddress = [];
     });
 
-    function SetEvents(row) {
-        var state = $(row).find('[id="item_SelectedStateId"]');
-        var town = $(row).find('[id="item_Address_TownId"]');
-        var isBusy = false;
-
-
-        var zipCode = $(row).find('[id="item_Address_ZipCode"]');
-        var location = $(row).find('[id="item_Address_Location"]');
-
-        var id = $(state).val();
-
-        $(location).off('devbridgeAutocomplete').devbridgeAutocomplete({
-            minChars: 4,
-            lookup: function (query, done) {
-                if (isBusy)
-                    return;
-
-                isBusy = true;
-
-                ExecuteAjax('@Url.Action("CompleateAddress", "Configuration")', { filter: query, stateId: id }, function (result) {
-                    done(result);
-                    isBusy = false;
-                });
-            },
-            groupBy: "category",
-            onSelect: function (suggestion) {
-                $(location).val(suggestion.value);
-
-                ExecuteAjax('@Url.Action("CompleateSettlement", "Configuration")', { id: suggestion.Id }, function (response) {
-                    zipCode.val(response.ZipCode);
-                    state.val(response.StateId);
-
-                    town.empty();
-                    town.append($('<option></option>').val("").html(""));
-
-                    for (var i = 0; i < response.Towns.length; i++) {
-                        town.append($('<option></option>').val(response.Towns[i].Value).html(response.Towns[i].Text));
-                    }
-
-                    town.val(response.TownId);
-                });
-            }
-        });
-    }
-
-    function DropAddress(button) {
-        var row = $(button).parent().parent();
-        row.remove();
-
-        $('#tbAddress tr').each(function (i, row) {
-            var title = $(row).find('[id="addTitle"]');
-            title.text("Dirección " + (i + 1));
-        });
-    }
-
-    function CancelAddress()
+    function DropAddress(button)
     {
-        HideChildModal();
+        var row = $(button).parent().parent();
+
+        var entityId = row.find("#item_EntityId").val();
+        
+        if (parseInt(entityId) > 0)
+        {
+            var typeId = row.find("#item_AddressTypeId").val();
+            DroppedAddress.push(typeId);
+        }
+
+        row.remove();
     }
+
     function ShowAddAddress()
     {
-        var divAddress = $("#divTestAddress").clone();
-     
-        ShowChildModal(divAddress);
-    }
-
-    function updateZIndex() {
-        var dialogCount = Object.keys(BootstrapDialog.dialogs).length;
-        if (dialogCount > 1)
+        ExecuteAjax('@Url.Action("AddAddress","Catalog")', {}, function (view)
         {
-            var $modal = this.getModal();
-            var $backdrop = $modal.data('bs.modal').$backdrop;
-            $modal.css('z-index', BootstrapDialog.ZINDEX_MODAL + (dialogCount - 1) * 20);
-            $backdrop.css('z-index', BootstrapDialog.ZINDEX_BACKDROP + (dialogCount - 1) * 20);
-        }
-        return this;
-    }
-
-   
-
-    function AddAddress() {
-        //clono la primera fila, ya que considero siempre tener minimo una dirección
-        var newRow = $("#row0").clone().removeAttr('id');
-
-        //encuentro los botones para mostrar/ocultar
-        var btnAdd = $(newRow).find('[id="btnAddAddress"]');
-        var btnRemove = $(newRow).find('[id="btnRemoveAddress"]');
-
-        btnAdd.addClass('hidden');
-        btnRemove.removeClass('hidden');
-
-        ClearControls(newRow);
-        //agrego la nueva fila a la tabla
-        $('#tbAddress').append(newRow);
-
-        //vuelvo a agregar los eventos
-        $('#tbAddress tr').each(function (i, row) {
-            var title = $(row).find('[id="addTitle"]');
-            title.text("Dirección " + (i + 1));
-
-            SetEvents(row);
+            ShowChildModal(view);
         });
-    }
-
-    function ClearControls(row) {
-        var state = $(row).find('[id="item_SelectedStateId"]');
-        var town = $(row).find('[id="item_Address_TownId"]');
-
-        state.val("");
-        town.empty();
-
-        var location = $(row).find('[id="item_Address_Location"]');
-        var zipCode = $(row).find('[id="item_Address_ZipCode"]');
-
-        location.val("");
-        zipCode.val("");
-
-        //var personId = $(row).find('[id="item_Address_PersonId"]');
-        var addressId = $(row).find('[id="item_Address_AddressId"]');
-        var street = $(row).find('[id="item_Address_Street"]');
-        var typeId = $(row).find('[id="item_Address_AddressTypeId"]');
-
-        //personId.val("");
-        addressId.val("");
-        street.val("");
-        typeId.val("");
     }
 
 </script>

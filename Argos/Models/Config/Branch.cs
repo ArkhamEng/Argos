@@ -1,9 +1,8 @@
-﻿using Argos.Models.BaseTypes;
-using Argos.Models.Business;
+﻿using Argos.Models.Business;
 using Argos.Models.HumanResources;
 using Argos.Models.Inventory;
-using Argos.Models.Operative;
-using Argos.Models.Transaction;
+using Argos.Models.Purchasing;
+using Argos.Models.Sales;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Argos.Models.Enums
 {
-    public enum AddressTypes:int
+    public enum AddressTypes: int
     {
         Billing = 1,
         Home    = 2,

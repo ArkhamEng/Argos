@@ -1,4 +1,5 @@
 ﻿using Argos.Models.Business;
+using Argos.Models.Enums;
 using Argos.Support;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,8 @@ namespace Argos.ViewModels.Generic
 
         public SelectList JobPositions { get; set; }
 
-        public List<PhoneVm> Phones { get; set; }
+        public SelectList CreditStatus { get; set; }
 
-        public List<EmailVm> Emails { get; set; }
-
-        public AddressVm AddressViewModel { get; set; }
 
         public virtual string EditButton
         {
@@ -67,6 +65,8 @@ namespace Argos.ViewModels.Generic
 
         public List<string> DroppedPhones { get; set; }
 
+        public List<AddressTypes> DroppedAddress { get; set; }
+
         public List<string> DroppedMails { get; set; }
 
         public List<HttpPostedFileBase> NewImages { get; set; }
@@ -82,12 +82,11 @@ namespace Argos.ViewModels.Generic
         public PersonViewModel()
         {
             this.Person     = (T)Activator.CreateInstance(typeof(T));
-            this.AddressViewModel  = new AddressVm();
             this.NewImages  = new List<HttpPostedFileBase>();
-            this.Phones     = new List<PhoneVm>();
-            this.Emails     = new List<EmailVm>();
             this.DroppedMails = new List<string>();
             this.DroppedPhones = new List<string>();
+            this.DroppedAddress = new List<AddressTypes>();
+            this.CreditStatus = AppCache.CreditStatus.ToSelectList();
         }
 
     }

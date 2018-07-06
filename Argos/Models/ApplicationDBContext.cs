@@ -1,12 +1,12 @@
-﻿using Argos.Models.HumanResources;
+﻿using Argos.Models.Business;
 using Argos.Models.Config;
+using Argos.Models.HumanResources;
 using Argos.Models.Inventory;
+using Argos.Models.Purchasing;
+using Argos.Models.Sales;
 using Argos.Models.Security;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
-using Argos.Models.Operative;
-using Argos.Models.Business;
-using Argos.Models.Transaction;
 
 namespace Argos.Models
 {
@@ -26,6 +26,8 @@ namespace Argos.Models
         public DbSet<PhoneType> PhoneTypes { get; set; }
 
         public DbSet<EmailAddress> EmailAddresses { get; set; }
+
+        public DbSet<EmailType> EmailTypes { get; set; }
         #endregion
 
         #region Config
@@ -43,14 +45,24 @@ namespace Argos.Models
 
         public DbSet<Configuration> Configurations { get; set; }
 
+        public DbSet<CreditStatus> CreditStatus { get; set; }
+
+        public DbSet<PayForm> PayForms { get; set; }
+
+        public DbSet<PayMethod> PayMethods { get; set; }
+
 
         #endregion
 
-        #region Operative
+        #region Purchasing & Sales
 
         public DbSet<Detail> Details { get; set; }
 
         public DbSet<Purchase> Purchases { get; set; }
+
+        public DbSet<Purchasing.PurchaseStatus> PurchaseStatus { get; set; }
+
+        public DbSet<Sales.SaleStatus> SaleStatus { get; set; }
 
         public DbSet<Sale> Sales { get; set; }
 
@@ -85,6 +97,8 @@ namespace Argos.Models
         public DbSet<ItemStorage> ItemLocations { get; set; }
 
         public DbSet<Flow> Flows { get; set; }
+
+        public DbSet<FlowDirection> FlowDirections { get; set; }
 
         public DbSet<SupplierProduct> SupplierProducts { get; set; }
 

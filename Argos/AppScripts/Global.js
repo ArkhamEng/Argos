@@ -137,7 +137,7 @@ function ShowModal(html, backdrop, size)
     $("#SiteModal").modal({ backdrop: backdrop });
 }
 
-
+//Hide Main Modal
 function HideModal(callback,removeContent)
 {
     $('#SiteModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
@@ -151,6 +151,34 @@ function HideModal(callback,removeContent)
 
     $("#SiteModal").modal('hide');
 
+}
+
+//Show Child Modal 
+function ShowChildModal(content)
+{
+    $("#ChildModal").off("shown.bs.modal").on('shown.bs.modal', function ()
+    {
+        $('#SiteModal').css('opacity', .7);
+        $('#SiteModal').unbind();
+    });
+
+    $("#ChildModalContent").html(content);
+    $("#ChildModal").css("margin-top", "100px");
+    $("#ChildModal").modal({ backdrop: 'static' });
+}
+
+//Hide Child Modal 
+function HideChildModal()
+{
+    $('#ChildModal').off('hidden.bs.modal').on('hidden.bs.modal', function ()
+    {
+        $('#SiteModal').css('opacity', 1);
+        $('#SiteModal').removeData("modal").modal({});
+        $('body').addClass("modal-open");
+        $("#ChildModalContent").html("");
+    });
+
+    $('#ChildModal').modal("hide");
 }
 
 
@@ -167,15 +195,20 @@ function HideModLoading() {
 }
 
 //DROP DOWN CASCADE
-function SetCascade(ddlParent, ddlChild, url) {
-    $(ddlParent).unbind('change').change(function (e) {
+function SetCascade(ddlParent, ddlChild, url)
+{
+    $(ddlParent).unbind('change').change(function (e)
+    {
         if ($(ddlParent).val() != '') {
             var parentId = $(ddlParent).val();
 
-            ExecuteAjax(url, { id: parentId }, function (data) {
+            ExecuteAjax(url, { id: parentId }, function (data)
+            {
                 $(ddlChild).empty();
                 $(ddlChild).append($('<option></option>').val("").html(""));
-                for (var i = 0; i < data.length; i++) {
+
+                for (var i = 0; i < data.length; i++)
+                {
                     $(ddlChild).append($('<option></option>').val(data[i].Value).html(data[i].Text));
                 }
                 if (data.length > 0)

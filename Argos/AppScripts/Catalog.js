@@ -14,12 +14,9 @@ function ShowPersonModal(OnCompleate, CloseCallBack, Entity, id) {
     }
     var form = "#" + Entity + "Form";
 
-    ExecuteAjax(url, param, function (response)
-    {
-        HideLoading(function ()
-        {
-            if (!$.isPlainObject(response))
-            {
+    ExecuteAjax(url, param, function (response) {
+        HideLoading(function () {
+            if (!$.isPlainObject(response)) {
                 ShowModal(response, 'static', 'lg');
 
                 if (typeof (param.id) != 'undefined')
@@ -28,15 +25,11 @@ function ShowPersonModal(OnCompleate, CloseCallBack, Entity, id) {
                 SubmitPerson(OnCompleate, form);
 
                 //evento del boton cancel
-                $("#EditCancel").off('click').click(function (e)
-                {
-                    HideModal(function ()
-                    {
+                $("#EditCancel").off('click').click(function (e) {
+                    HideModal(function () {
                         //si el se tiene un id, desbloqueo el registro para liberarlo
-                        if (parseInt(param.id) > 0)
-                        {
-                            ExecuteAjax('/Catalog/UnLockPerson/', { id: param.id }, function (response)
-                            {
+                        if (parseInt(param.id) > 0) {
+                            ExecuteAjax('/Catalog/UnLockPerson/', { id: param.id }, function (response) {
                                 ShowNotify(response.Header, response.Result, response.Body);
                             });
                         }
@@ -132,10 +125,8 @@ function SubmitProduct(SuccessCallBack) {
 }
 
 
-function SubmitPerson(SuccessCallBack, form)
-{
-    $(form).off('submit').on('submit', function (e)
-    {
+function SubmitPerson(SuccessCallBack, form) {
+    $(form).off('submit').on('submit', function (e) {
         e.preventDefault();
 
         var $form = $(e.target),
@@ -144,12 +135,8 @@ function SubmitPerson(SuccessCallBack, form)
         files = [],
         addresses = [];
 
-        //validacion de las direcciones
-        if (!ValidateAddress($form))
-            return;
 
-        if (!$form.valid())
-        {
+        if (!$form.valid()) {
             ShowNotify("Error de validación", "danger", "Existen errores en lo datos capturados, por favor verifica", 3500);
             return;
         }
@@ -170,95 +157,92 @@ function SubmitPerson(SuccessCallBack, form)
             formData.append('NewImages[' + i + ']', file);
         });
 
-        $.each(DroppedPhones,function(i,phone)
-        {
+        //agrego las direcciones a borrar
+        $.each(DroppedAddress, function (index, a) {
+            formData.append('DroppedAddress[' + index + ']', a);
+        });
+
+        //agrego los telefonos a borrar
+        $.each(DroppedPhones, function (i, phone) {
             formData.append('DroppedPhones[' + i + ']', phone);
         });
 
-        $.each(DroppedMails, function (i, mail)
-        {
+        //agrego los emails a borrar
+        $.each(DroppedMails, function (i, mail) {
             formData.append('DroppedMails[' + i + ']', mail);
         });
 
-        $("#tbAddress tr").each(function (index, row) {
-            formData.append('Person.Addresses[' + index + '].AddressId', $(row).find('[id="item_Address_AddressId"]').val());
-            formData.append('Person.Addresses[' + index + '].TownId', $(row).find('[id="item_Address_TownId"]').val());
-            formData.append('Person.Addresses[' + index + '].ZipCode', $(row).find('[id="item_Address_ZipCode"]').val());
-            formData.append('Person.Addresses[' + index + '].Location', $(row).find('[id="item_Address_Location"]').val());
-            formData.append('Person.Addresses[' + index + '].Street', $(row).find('[id="item_Address_Street"]').val());
-            formData.append('Person.Addresses[' + index + '].AddressTypeId', $(row).find('[id="item_Address_AddressTypeId"]').val());
-            formData.append('Person.Addresses[' + index + '].EntityId', $(row).find('[id="item_Address_EntityId"]').val());
+        var addressCount = 0;
+        var newAddress = 0;
+        //agrego las direcciones nueva
+        $("#tbAddress tbody tr").each(function (index, row) {
+            var entity = $(row).find('[id="item_EntityId"]').val();
+
+            if (entity == 0) {
+                formData.append('Person.Addresses[' + newAddress + '].AddressId', $(row).find('[id="item_AddressId"]').val());
+                formData.append('Person.Addresses[' + newAddress + '].TownId', $(row).find('[id="item_TownId"]').val());
+                formData.append('Person.Addresses[' + newAddress + '].ZipCode', $(row).find('[id="item_ZipCode"]').val());
+                formData.append('Person.Addresses[' + newAddress + '].Location', $(row).find('[id="item_Location"]').val());
+                formData.append('Person.Addresses[' + newAddress + '].Street', $(row).find('[id="item_Street"]').val());
+                formData.append('Person.Addresses[' + newAddress + '].AddressTypeId', $(row).find('[id="item_AddressTypeId"]').val());
+                formData.append('Person.Addresses[' + newAddress + '].EntityId', $(row).find('[id="item_EntityId"]').val());
+
+                newAddress++;
+            }
+            addressCount++;
         });
-        var phoneValid = false;
+
+
         var phoneCount = 0;
-        $("#tbPhones tbody tr").each(function (index, row)
-        {
-            if (index > 0)
-            {
-                var phone = $(row).find('[id="item_PhoneNumber_Phone"]');
+        var newPhone = 0;
+        $("#tbPhones tbody tr").each(function (index, row) {
+            var entity = $(row).find('[id="item_EntityId"]').val();
 
-                if ($form.data('validator').element(phone))
-                    phoneValid = true;
-                else
-                {
-                    phoneValid = false;
-                    return false;
-                }
-
-              //  formData.append('Person.PhoneNumbers[' + phoneCount + '].PhoneNumberId', $(row).find('[id="item_PhoneNumber_PhoneNumberId"]').val());
-                formData.append('Person.PhoneNumbers[' + phoneCount + '].PhoneTypeId', $(row).find('[id="item_PhoneNumber_PhoneTypeId"]').val());
-                formData.append('Person.PhoneNumbers[' + phoneCount + '].Phone', $(row).find('[id="item_PhoneNumber_Phone"]').val());
-                formData.append('Person.PhoneNumbers[' + phoneCount + '].EntityId', $(row).find('[id="item_PhoneNumber_EntityId"]').val());
-                phoneCount++;
+            if (isNaN(entity)) {
+                formData.append('Person.PhoneNumbers[' + newPhone + '].PhoneTypeId', $(row).find('[id="item_PhoneTypeId"]').val());
+                formData.append('Person.PhoneNumbers[' + newPhone + '].Phone', $(row).find('[id="item_Phone"]').val());
+                formData.append('Person.PhoneNumbers[' + newPhone + '].EntityId', $(row).find('[id="item_EntityId"]').val());
+                newPhone++;
             }
+            phoneCount++;
         });
-        if (phoneCount == 0)
-        {
-            ShowNotify("Se requieren datos", "danger", "Debes proporcionar al menos un teléfono", 3500);
-            return;
-        }
-            
-        if (!phoneValid)
-        {
-            ShowNotify("Error de validación", "danger", "Se encontraron errores en el teléfono " + phoneCount, 3500);
-            return;
-        }
-            
 
-        var mailValid = true;
+        var newMail = 0;
         var mailCount = 0;
-        $("#tbEmails tbody tr").each(function (index, row)
-        {
-            if (index > 0)
-            {
-                var mail = $(row).find('[id="item_Email_Email"]');
+        $("#tbEmails tbody tr").each(function (index, row) {
+            var entity = parseInt($(row).find('[id="item_EntityId"]').val())
 
-                if ($form.data('validator').element(mail))
-                    mailValid = true;
-                else
-                {
-                    mailValid = false;
-                    return false;
-                }
-
-                formData.append('Person.EmailAddresses[' + mailCount + '].EmailAddressId', $(row).find('[id="item_Email_EmailAddressId"]').val());
-                formData.append('Person.EmailAddresses[' + mailCount + '].Email', $(row).find('[id="item_Email_Email"]').val());
-                formData.append('Person.EmailAddresses[' + mailCount + '].EntityId', $(row).find('[id="item_Email_EntityId"]').val());
-
-                mailCount++;
+            if (isNaN(entity)) {
+                formData.append('Person.EmailAddresses[' + newMail + '].EmailTypeId', $(row).find('[id="item_EmailTypeId"]').val());
+                formData.append('Person.EmailAddresses[' + newMail + '].Email', $(row).find('[id="item_Email"]').val());
+                formData.append('Person.EmailAddresses[' + newMail + '].EntityId', $(row).find('[id="item_EntityId"]').val());
+                //conteo de nuevos registros
+                newMail++;
             }
+            //Conteo total
+            mailCount++;
         });
 
-        if (mailCount == 0)
-        {
-            ShowNotify("Se requieren datos", "danger", "Debes proporcionar al menos un correo electrónico", 3500);
-            return;
+        var allowSubmit = true;
+
+        if (addressCount == 0) {
+            ShowNotify("Dirección requerida <spans class='fa fa-street-view'/>", "warning", "Debes proporcionar al menos una dirección", 3500);
+            allowSubmit = false;
         }
-            
-        if (!mailValid) {
-            ShowNotify("Error de validación", "danger", "Se encontraron errores en el correo " + phoneCount, 3500);
-            return;
+
+        if (phoneCount == 0) {
+            ShowNotify("Teléfono requerido <spans class='fa fa-phone'/>", "warning", "Debes proporcionar al menos un teléfono", 3500);
+            allowSubmit = false;
         }
+
+        if (mailCount == 0) {
+            ShowNotify(" Correo requerido <spans class='fa fa-envelope' />", "warning", "Debes proporcionar al menos un correo electrónico", 3500);
+            allowSubmit = false;
+        }
+
+        if (!allowSubmit)
+            return;
+
 
         ShowModLoading();
 
@@ -282,8 +266,7 @@ function SubmitPerson(SuccessCallBack, form)
                     }
                 }
                 else {
-                    HideModal(function ()
-                    {
+                    HideModal(function () {
                         ShowNotify(response.Header, response.Result, response.Body);
                         SuccessCallBack(response.Id);
                     }, true);
@@ -422,4 +405,36 @@ function RemoveImage() {
 
     $("#fileUpl").val("");
     $("#imgPerson").attr("src", "../Images/sinimagen.jpg");
+}
+
+
+function ShowAssingSupplier(OnSelected)
+{
+    url = "/Catalog/GetSuppliers";
+
+    ShowLoading('static');
+
+    ExecuteAjax(url, {}, function (response)
+    {
+        HideLoading(function ()
+        {
+            if (!$.isPlainObject(response))
+            {
+                ShowModal(response,'static','lg');
+
+                $("#tbAssigSupplier tbody tr").each(function (index, row)
+                {
+                    $(row).find("#btnAssing").off("click").click(function ()
+                    {
+                        var id = $(row).find('[id="item_EntityId"]').val();
+                        var name = $(row).find('[id="item_Name"]').val();
+
+                        console.log("Id " + id + " Name" + name);
+                        OnSelected(id, name);
+                        HideModal(null, true);
+                    })
+                });
+            }
+        });
+    });
 }

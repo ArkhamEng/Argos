@@ -1,7 +1,6 @@
 ﻿using Argos.Models;
 using Argos.Models.BaseTypes;
 using Argos.Models.Business;
-using Argos.Models.Operative;
 using Argos.Support;
 using System;
 using System.Collections.Generic;

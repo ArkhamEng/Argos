@@ -7,8 +7,10 @@ namespace Argos.Models.Enums
 {
     public enum PhoneTypes:int
     { 
-        Cell   = 1,
-        Home   = 2,
-        Work   = 3
+        Main     = 1,
+        Mobile   = 2,
+        Home     = 3,
+        Work     = 4,
+        Fax      = 5
     }
 }

@@ -1,38 +1,7 @@
-﻿<div id="ChildModal" class="modal fade"  >
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id="ChildModalContent" class="modal-body">
+﻿
 
-            </div>
-        </div>
+<div id="ChildModal" class="modal fade">
+    <div id="ChildModalContent" class="modal-dialog">
+
     </div>
 </div>
-
-<script>
-
-    function ShowChildModal(content)
-    {
-        $(".modal").off("shown.bs.modal").on('shown.bs.modal', function ()
-        {
-            $('#SiteModal').css('opacity', .5);
-            $('#SiteModal').unbind();
-        });
-
-        $("#ChildModalContent").html(content);
-        $("#ChildModal").css("margin-top", "100px");
-        $("#ChildModal").modal({backdrop:'static'});
-    }
-
-    function HideChildModal(content)
-    {
-        $('#ChildModal').off('hidden.bs.modal').on('hidden.bs.modal', function ()
-        {
-            $('#SiteModal').css('opacity', 1);
-            $('#SiteModal').removeData("modal").modal({});
-            $('body').addClass("modal-open");
-
-        });
-
-        $('#ChildModal').modal("hide");
-    }
-</script>

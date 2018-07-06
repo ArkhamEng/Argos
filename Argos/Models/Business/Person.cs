@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 using Argos.Models.Security;
 using Argos.Support;
-using Argos.Models.Operative;
+
 
 namespace Argos.Models.Business
 {

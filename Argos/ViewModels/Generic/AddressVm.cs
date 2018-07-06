@@ -31,33 +31,33 @@ namespace Argos.ViewModels.Generic
 
         public AddressVm()
         {
+            this.States     = AppCache.States.ToSelectList();
+            this.Types      =  AppCache.AddressTypes.ToSelectList();
             this.Addresses = new List<Address>();
             this.Towns = new List<Town>().ToSelectList();
         }
     }
 
-   
-    public class PhoneVm
+   [NotMapped]
+    public class PhoneVm:PhoneNumber
     {
         public SelectList PhoneTypes { get; set; }
 
-        public PhoneNumber PhoneNumber { get; set; }
-
-        public string Style
+        public PhoneVm()
         {
-            get { return (PhoneNumber.Phone == null) || (PhoneNumber.Phone == string.Empty) ? Styles.Hidden : string.Empty; }
+            this.PhoneTypes = AppCache.PhoneTypes.ToSelectList();
         }
 
     }
 
-    public class EmailVm
+    [NotMapped]
+    public class EmailVm:EmailAddress
     {
-        public EmailAddress Email { get; set; }
+        public SelectList EmailTypes { get; set; }
 
-        public string Style
+        public EmailVm()
         {
-            get { return Email.Email == null || Email.Email == string.Empty ? Styles.Hidden : string.Empty; }
+            this.EmailTypes = AppCache.EmailTypes.ToSelectList();
         }
-
     }
 }

@@ -10,7 +10,6 @@ using System.Data.Entity;
 using Argos.Models.BaseTypes;
 using Argos.Models.Enums;
 using Argos.Models.Config;
-using Argos.Models.Operative;
 
 namespace Argos.Controllers
 {
@@ -23,7 +22,7 @@ namespace Argos.Controllers
             model.Entities = (from s in db.Persons.OfType<T>().Include(s => s.PhoneNumbers).Include(s => s.EmailAddresses).ToList()
                               select new PersonViewModel<T> { Person = s }).OrderBy(s => s.Person.Name).ToList();
 
-            model.States = db.States.ToSelectList();
+            model.States = AppCache.States.ToSelectList();
 
             return model;
         }
@@ -46,6 +45,27 @@ namespace Argos.Controllers
         }
 
         [HttpPost]
+        public ActionResult AddAddress()
+        {
+            var model       = new AddressVm();
+            return PartialView("_Address", model);
+        }
+
+        [HttpPost]
+        public ActionResult AddPhone()
+        {
+            var model = new PhoneVm();
+            return PartialView("_Phone", model);
+        }
+
+        [HttpPost]
+        public ActionResult AddEmail()
+        {
+            var model = new EmailVm();
+            return PartialView("_Email", model);
+        }
+
+        [HttpPost]
         public ActionResult UnLockPerson(int id)
         {
             try
@@ -57,14 +77,6 @@ namespace Argos.Controllers
                     person.UnLock();
                     db.Entry(person).Property(c => c.LockEndDate).IsModified = true;
                     db.Entry(person).Property(c => c.LockUser).IsModified = true;
-
-                    //desbloqueo las direcciones
-                    foreach (var address in person.Addresses)
-                    {
-                        address.UnLock();
-                        db.Entry(address).Property(c => c.LockEndDate).IsModified = true;
-                        db.Entry(address).Property(c => c.LockUser).IsModified = true;
-                    }
 
                     db.SaveChanges();
                 }
@@ -148,22 +160,7 @@ namespace Argos.Controllers
             return Json(clients);
         }
 
-        private void BeginAddPerson<T>(PersonViewModel<T> model) where T : Person
-        {
-            model.AddressViewModel.States = db.States.OrderBy(s => s.Name).ToSelectList();
-            model.AddressViewModel.Types  = db.AddressTypes.ToSelectList();
-            model.AddressViewModel.Towns  = new SelectList(new List<Town>());
-         
-            model.Emails.Add(new EmailVm { Email = new EmailAddress() });
-
-            model.Phones.Add(new PhoneVm
-            {
-                PhoneNumber = new PhoneNumber(),
-                PhoneTypes = db.PhoneTypes.OrderBy(pt => pt.Name).ToSelectList()
-            });
-
-        }
-
+    
         private PersonViewModel<T> BeginUpdatePerson<T>(int id) where T : Person
         {
             try
@@ -172,38 +169,6 @@ namespace Argos.Controllers
 
                 model.Person = db.Entities.OfType<T>().Include(c => c.Addresses).Include(c => c.PhoneNumbers).Include(c => c.EmailAddresses).
                     Include(c => c.Addresses.Select(a => a.Town.State)).FirstOrDefault(c => c.EntityId == id && c.IsActive);
-
-                var phoneTypes = db.PhoneTypes.OrderBy(pt => pt.Name).ToSelectList();
-
-                model.AddressViewModel.States = db.States.OrderBy(s => s.Name).ToSelectList();
-                model.AddressViewModel.Types  = db.AddressTypes.OrderBy(at => at.Name).ToSelectList();
-
-                foreach (var a in model.Person.Addresses)
-                {
-                    model.AddressViewModel.Addresses.Add(a);
-                }
-
-                foreach (var p in model.Person.PhoneNumbers)
-                {
-                    PhoneVm pvm = new PhoneVm { PhoneNumber = p };
-                    pvm.PhoneTypes = phoneTypes.ToSelectList((int)p.PhoneTypeId);
-                    model.Phones.Add(pvm);
-                }
-
-
-                PhoneVm ph    = new PhoneVm { PhoneNumber = new PhoneNumber() };
-                ph.PhoneTypes = phoneTypes;
-                model.Phones.Insert(Cons.Zero, ph);
-
-
-                foreach (var e in model.Person.EmailAddresses)
-                {
-                    EmailVm evm = new EmailVm { Email = e };
-                    model.Emails.Add(evm);
-                }
-
-                EmailVm em = new EmailVm { Email = new EmailAddress() };
-                model.Emails.Insert(Cons.Zero, em);
 
                 return model;
             }
@@ -243,65 +208,49 @@ namespace Argos.Controllers
         {
             try
             {
-                foreach(var dPhone in personVm.DroppedPhones)
+                //elimino direcciones
+                if(personVm.DroppedAddress.Count > Cons.Zero)
                 {
-                    var phone = new PhoneNumber { EntityId = personVm.Person.EntityId, Phone = dPhone };
-                    db.Entry(phone).State = EntityState.Deleted;
+                    var addresses = db.Addresses.
+                        Where(a => a.EntityId == personVm.Person.EntityId && personVm.DroppedAddress.Contains(a.AddressTypeId));
+
+                    db.Addresses.RemoveRange(addresses);
                 }
 
-                foreach (var dMail in personVm.DroppedMails)
+                //agrego las nuevas direcciones
+                foreach(var address in personVm.Person.Addresses)
                 {
-                    var email = new EmailAddress { EntityId = personVm.Person.EntityId, Email = dMail };
-                    db.Entry(email).State = EntityState.Deleted;
+                    address.EntityId = personVm.Person.EntityId;
+                    db.Addresses.Add(address);
+                }
+               
+                //elimino telefonos
+                if (personVm.DroppedPhones.Count > Cons.Zero)
+                {
+                    var phones = db.PhoneNumbers.Where(p => p.EntityId == personVm.Person.EntityId && personVm.DroppedPhones.Contains(p.Phone));
+                    db.PhoneNumbers.RemoveRange(phones);
                 }
 
-                foreach (var address in personVm.Person.Addresses)
-                {
-                    //si es nuevo registro lo agrego
-                    if (address.AddressId == Cons.Zero)
-                        db.Addresses.Add(address);
-                    else
-                    {
-                        //de lo contrario actualizo
-                        address.UnLock();
-                        db.Entry(address).State = EntityState.Modified;
-                        db.Entry(address).Property(c => c.InsDate).IsModified = false;
-                        db.Entry(address).Property(c => c.InsUser).IsModified = false;
-                    }
-                }
-
+                //agrego los nuevos teléfonos
                 foreach (var phoneNumber in personVm.Person.PhoneNumbers)
                 {
-                    //si es nuevo registro lo agrego
-                    if (phoneNumber.EntityId == Cons.Zero)
-                    {
-                        phoneNumber.EntityId = personVm.Person.EntityId;
-                        db.PhoneNumbers.Add(phoneNumber);
-                    }
-                    else
-                    {
-                        //de lo contrario actualizo
-                        db.Entry(phoneNumber).State = EntityState.Modified;
-                        db.Entry(phoneNumber).Property(c => c.InsDate).IsModified = false;
-                        db.Entry(phoneNumber).Property(c => c.InsUser).IsModified = false;
-                    }
+                    phoneNumber.EntityId = personVm.Person.EntityId;
+                    db.PhoneNumbers.Add(phoneNumber);
                 }
 
-                foreach (var mail in personVm.Person.EmailAddresses)
+
+                //elimino direcciones de correo
+                if (personVm.DroppedMails.Count > Cons.Zero)
                 {
-                    //si es nuevo registro lo agrego
-                    if (mail.EntityId == Cons.Zero)
-                    {
-                        mail.EntityId = personVm.Person.EntityId;
-                        db.EmailAddresses.Add(mail);
-                    }                
-                    else
-                    {
-                        //de lo contrario actualizo
-                        db.Entry(mail).State = EntityState.Modified;
-                        db.Entry(mail).Property(c => c.InsDate).IsModified = false;
-                        db.Entry(mail).Property(c => c.InsUser).IsModified = false;
-                    }
+                    var emails = db.EmailAddresses.Where(e => e.EntityId == personVm.Person.EntityId && personVm.DroppedMails.Contains(e.Email));
+                    db.EmailAddresses.RemoveRange(emails);
+                }
+
+                //agrego las nuevas direcciones de correo
+                foreach (var emailAddress in personVm.Person.EmailAddresses)
+                {
+                    emailAddress.EntityId = personVm.Person.EntityId;
+                    db.EmailAddresses.Add(emailAddress);
                 }
 
                 bool modifyImage = false;

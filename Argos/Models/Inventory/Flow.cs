@@ -1,6 +1,6 @@
 ﻿using Argos.Models.BaseTypes;
+using Argos.Models.Business;
 using Argos.Models.Enums;
-using Argos.Models.Operative;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +10,7 @@ using System.Web;
 namespace Argos.Models.Inventory
 {
     [Table("Flow", Schema = "Inventory")]
-    public class Flow:AuditableEntity
+    public class Flow:InsAudit
     {
         public int FlowId { get; set; }
 
@@ -18,14 +18,17 @@ namespace Argos.Models.Inventory
 
         public int DetailId { get; set; }
 
-        public double Quantity { get; set; }
+        [ForeignKey("FlowDirection")]
+        public FlowDirections Direction { get; set; }
 
-        public FlowDirections Direction  { get; set; }
+        public double Quantity { get; set; }
 
         #region Navigation Property
         public virtual Item Item { get; set; }
 
         public virtual Detail Detail { get; set; }
+
+        public virtual FlowDirection FlowDirection { get; set; }
         #endregion
 
     }

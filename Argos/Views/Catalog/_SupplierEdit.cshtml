@@ -1,5 +1,5 @@
 ﻿@model Argos.ViewModels.Generic.PersonViewModel<Supplier>
-@using Argos.Models.Operative
+@using Argos.Models.Purchasing
 
 @Scripts.Render("~/bundles/jqueryval")
 
@@ -35,12 +35,11 @@
     </ul>
 
     <div class="tab-content">
-
         <div id="general" class="tab-pane fade in active">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-body small">
                     <hr />
                     <div class="row">
                         <div class="col-md-3 btn-group-vertical">
@@ -83,12 +82,49 @@
                     </div>
 
                     <div class="row">
+                        <div class="form-group col-md-3">
+                            @Html.LabelFor(model => model.Person.Status, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-black-tie"></i></span>
+                                @Html.DropDownListFor(model => model.Person.Status, Model.CreditStatus,  htmlAttributes :new { @class = "form-control text-capitalize input-sm" } )
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Person.Status, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            @Html.LabelFor(model => model.Person.CreditDays, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                                @Html.EditorFor(model => model.Person.CreditDays, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Person.CreditDays, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            @Html.LabelFor(model => model.Person.CreditLimit, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-bullseye"></i></span>
+                                @Html.EditorFor(model => model.Person.CreditLimit, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Person.CreditLimit, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            @Html.LabelFor(model => model.Person.CreditBalance, htmlAttributes: new { @class = "control-label" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calculator"></i></span>
+                                @Html.EditorFor(model => model.Person.CreditBalance, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Person.CreditBalance, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-6">
-                            @Html.Partial("_EmailGroup", Model.Emails)
+                            @Html.Partial("_EmailGroup", Model.Person.EmailAddresses)
                         </div>
 
                         <div class="col-md-6">
-                            @Html.Partial("_PhoneGroup", Model.Phones)
+                            @Html.Partial("_PhoneGroup", Model.Person.PhoneNumbers)
                         </div>
                     </div>
                 </div>
@@ -102,7 +138,7 @@
         <div id="addresses" class="tab-pane fade in" style="overflow-y:auto; max-height:380px">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    @Html.Partial("_AddressGroup", Model.Addresses)
+                    @Html.Partial("_AddressGroup", Model.Person.Addresses)
                 </div>
             </div>
         </div>

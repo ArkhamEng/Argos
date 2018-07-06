@@ -11,12 +11,12 @@ using System.Web;
 namespace Argos.Models.Business
 {
     [Table("Address", Schema = "Business")]
-    public class Address:AuditableCatalog
+    public class Address:InsAudit
     {
-        public int AddressId { get; set; }
-
+        [Column(Order =0),Key, ForeignKey("Entity")]
         public int EntityId { get; set; }
 
+        [Column(Order = 1), Key,ForeignKey("AddressType")]
         [Display(Name ="Tipo")]
         public AddressTypes AddressTypeId { get; set; }
 

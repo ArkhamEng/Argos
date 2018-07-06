@@ -179,42 +179,40 @@
                                 </div>
 
                                 <div id="divProductStock" class="row">
-                                    <div class="col-md-3 col-sm-3 col-xs-6 form-group">
-                                        @Html.LabelFor(m => m.Stock.Shelf, htmlAttributes: new { @class = "control-label" })
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                                            @Html.EditorFor(model => model.Stock.Shelf, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                    @*<div class="col-md-3 col-sm-3 col-xs-6 form-group">
+                                            @Html.LabelFor(m => m.Stock.Shelf, htmlAttributes: new { @class = "control-label" })
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                                                @Html.EditorFor(model => model.Stock.Shelf, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Stock.Shelf, "", new { @class = "text-danger" })
                                         </div>
-                                        @Html.ValidationMessageFor(model => model.Stock.Shelf, "", new { @class = "text-danger" })
-                                    </div>
 
-                                    <div class="col-md-3 col-md-offset-1 col-sm-3 col-xs-6 form-group">
-                                        @Html.LabelFor(m => m.Stock.Bin, htmlAttributes: new { @class = "control-label" })
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
-                                            @Html.EditorFor(model => model.Stock.Bin, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                        <div class="col-md-3 col-md-offset-1 col-sm-3 col-xs-6 form-group">
+                                            @Html.LabelFor(m => m.Stock.Bin, htmlAttributes: new { @class = "control-label" })
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                                                @Html.EditorFor(model => model.Stock.Bin, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Stock.Bin, "", new { @class = "text-danger" })
                                         </div>
-                                        @Html.ValidationMessageFor(model => model.Stock.Bin, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="col-md-2 col-md-offset-1 col-sm-3 col-xs-6 form-group">
-                                        @Html.LabelFor(m => m.Stock.MinQuantity, htmlAttributes: new { @class = "control-label" })
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-cube"></i></span>
-                                            @Html.EditorFor(model => model.Stock.MinQuantity, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                        <div class="col-md-2 col-md-offset-1 col-sm-3 col-xs-6 form-group">
+                                            @Html.LabelFor(m => m.Product.MinQuantity, htmlAttributes: new { @class = "control-label" })
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-cube"></i></span>
+                                                @Html.EditorFor(model => model.Stock.MinQuantity, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Stock.MinQuantity, "", new { @class = "text-danger" })
                                         </div>
-                                        @Html.ValidationMessageFor(model => model.Stock.MinQuantity, "", new { @class = "text-danger" })
-                                    </div>
 
-                                    <div class="col-md-2 col-sm-3 col-xs-6 form-group">
-                                        @Html.LabelFor(m => m.Stock.MaxQuantity, htmlAttributes: new { @class = "control-label" })
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
-                                            @Html.EditorFor(model => model.Stock.MaxQuantity, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
-                                        </div>
-                                        @Html.ValidationMessageFor(model => model.Stock.MaxQuantity, "", new { @class = "text-danger" })
-                                    </div>
-
-
+                                        <div class="col-md-2 col-sm-3 col-xs-6 form-group">
+                                            @Html.LabelFor(m => m.Stock.MaxQuantity, htmlAttributes: new { @class = "control-label" })
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
+                                                @Html.EditorFor(model => model.Stock.MaxQuantity, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm" } })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Stock.MaxQuantity, "", new { @class = "text-danger" })
+                                        </div>*@
                                 </div>
 
                                 @Html.HiddenFor(model => model.Product.ProductId)
@@ -252,9 +250,9 @@
                                         </td>
                                     </tr>
                                     @for (int i = Cons.Zero; i < Cons.ImagesPerProduct; i++)
-                            {
-                                if (Model.Images.Count > i)
-                                {
+                                    {
+                                        if (Model.Images.Count > i)
+                                        {
                                             <tr>
                                                 <td class="col-md-2">
                                                     @Html.HiddenFor(m => Model.Images[i].ProductImageId, new { id = "ProductImageId" })
@@ -279,8 +277,8 @@
                                                     </button>
                                                 </td>
                                             </tr>
-                                }
-                            }
+                                        }
+                                    }
                                 </table>
                             </div>
                         </div>

@@ -1,5 +1,4 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Operative;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

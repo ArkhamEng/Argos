@@ -6,7 +6,13 @@
         <thead>
             <tr class="heading2" >
                 <th>Imagen</th>
+                <th>Código</th>
                 <th>Descripción</th>
+                <th>Marca</th>
+                <th>Unidad</th>
+                <th>Venta</th>
+                <th>Compra</th>
+                <th>Almacen</th>
                 <th></th>
             </tr>
         </thead>
@@ -18,66 +24,28 @@
                     <td class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
                         <img src='@items.ImagePath' class="img-responsive" style="max-height:100px"/>
                     </td>
-                    <td class="col-lg-9 col-md-9 col-xs-6 col-sm-6" onclick="Detail(@items.Product.ProductId,@items.Product.IsActive)" 
-                        onmouseover="SetPointer(this)">
-                        <h4>
-                            <label>@items.Product.Code</label>
-                        </h4>
-
-                        <h4>
-                            @Html.DisplayFor(model => items.Product.Description)
-                        </h4>
-
-                        <h6>
-                            Por @items.TradeMark
-                            <span class="fa fa-registered"></span>
-                        </h6>
-
-                        @if (items.Product.IsForSale)
-                        {
-                            <h4>
-                                <label>
-                                    @Html.DisplayFor(model => items.Product.Price)
-                                </label>
-                                |
-                                <label>
-                                    @Html.DisplayFor(model => items.Product.LowestPrice)
-                                </label>
-                            </h4>
-                        }
-                        else
-                        {
-                           <label class="text-danger">No se aplica en venta</label><br />
-                        }
-
-                        @if(!items.Product.IsStockable)
-                        {
-                            <label class="text-warning">No Aplica Inventario</label><br />
-                            <h5>
-                                <span class="fa fa-cubes"></span>
-                                Unidad: @items.Product.MeasureUnitId
-                            </h5>
-                        }
-                        else
-                        {
-                            <h5>
-                                <span class="badge bg-info">
-                                    @items.Stock.Quantity
-                                </span>
-                                disponibles
-                                <span class="fa fa-cubes"></span>
-                                Unidad: @items.Product.MeasureUnitId
-                            </h5>
-                            <h6>
-                                Estante  @items.Stock.Shelf
-                                <span class="fa fa-bars"></span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                Anaquel @items.Stock.Bin
-                                <span class="fa fa-archive"></span>
-                            </h6>
-                        }
+                    <td>
+                        @Html.DisplayFor(model=> items.Product.Code)
                     </td>
+                    <td>
+                        @Html.DisplayFor(model => items.Product.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => items.Product.TradeMark)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => items.Product.MeasureUnitId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => items.Product.IsForSale)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => items.Product.IsForPurchase)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => items.Product.IsStockable)
+                    </td>
+             
                     <td class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
                         <button class="@items.EditButton" title="Editar datos de producto"
                                 onclick="BeginUpdateProduct('@items.Product.ProductId')">

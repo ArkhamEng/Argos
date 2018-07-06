@@ -220,36 +220,37 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\PurchasingController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201806292041150_Initial.cs" />
-    <Compile Include="Migrations\201806292041150_Initial.Designer.cs">
-      <DependentUpon>201806292041150_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201807051846557_Initial.cs" />
+    <Compile Include="Migrations\201807051846557_Initial.Designer.cs">
+      <DependentUpon>201807051846557_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201806302153313_EntityUniques.cs" />
-    <Compile Include="Migrations\201806302153313_EntityUniques.Designer.cs">
-      <DependentUpon>201806302153313_EntityUniques.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807010116204_PhoneMailRequired.cs" />
-    <Compile Include="Migrations\201807010116204_PhoneMailRequired.Designer.cs">
-      <DependentUpon>201807010116204_PhoneMailRequired.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807012234177_PhoneChanges.cs" />
-    <Compile Include="Migrations\201807012234177_PhoneChanges.Designer.cs">
-      <DependentUpon>201807012234177_PhoneChanges.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807012309337_EmailChanges.cs" />
-    <Compile Include="Migrations\201807012309337_EmailChanges.Designer.cs">
-      <DependentUpon>201807012309337_EmailChanges.cs</DependentUpon>
+    <Compile Include="Migrations\201807051920020_PurchaseStatus.cs" />
+    <Compile Include="Migrations\201807051920020_PurchaseStatus.Designer.cs">
+      <DependentUpon>201807051920020_PurchaseStatus.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseTypes\AuditableCatalog.cs" />
+    <Compile Include="Models\BaseTypes\InsAudit.cs" />
     <Compile Include="Models\Business\Address.cs" />
     <Compile Include="Models\Business\AddressType.cs" />
     <Compile Include="Models\Business\EmailAddress.cs" />
+    <Compile Include="Models\Business\EmailType.cs" />
     <Compile Include="Models\Business\Entity.cs" />
+    <Compile Include="Models\Config\CreditStatus.cs" />
+    <Compile Include="Models\Config\PayForm.cs" />
+    <Compile Include="Models\Config\PayMethod.cs" />
+    <Compile Include="Models\Enums\StatusCredit.cs" />
+    <Compile Include="Models\Enums\EmailTypes.cs" />
+    <Compile Include="Models\Enums\PayForms.cs" />
+    <Compile Include="Models\Enums\StatusPurchase.cs" />
+    <Compile Include="Models\Inventory\FlowDirection.cs" />
+    <Compile Include="Models\Purchasing\PurchaseStatus.cs" />
+    <Compile Include="Support\AppCache.cs" />
     <Compile Include="ViewModels\Generic\PersonViewModel.cs" />
     <Compile Include="Models\Business\PhoneNumber.cs" />
     <Compile Include="Models\Business\PhoneType.cs" />
@@ -261,14 +262,13 @@
     <Compile Include="Models\Inventory\Item.cs" />
     <Compile Include="Models\Inventory\ItemStorage.cs" />
     <Compile Include="Models\Inventory\Flow.cs" />
-    <Compile Include="Models\Operative\Detail.cs" />
+    <Compile Include="Models\Business\Detail.cs" />
     <Compile Include="Models\Config\Town.cs" />
     <Compile Include="Models\Config\Compatibility.cs" />
     <Compile Include="Models\Config\Configuration.cs" />
     <Compile Include="Models\Config\Model.cs" />
     <Compile Include="Models\Config\State.cs" />
-    <Compile Include="Models\Enums\PayMethodes.cs" />
-    <Compile Include="Models\Enums\OpertionTypes.cs" />
+    <Compile Include="Models\Enums\PayMethods.cs" />
     <Compile Include="Models\HumanResources\EmployeeBranch.cs" />
     <Compile Include="Models\Inventory\SupplierProduct.cs" />
     <Compile Include="Models\Config\Maker.cs" />
@@ -276,16 +276,16 @@
     <Compile Include="Models\Inventory\ProductImage.cs" />
     <Compile Include="Models\Inventory\SubCategory.cs" />
     <Compile Include="Models\Inventory\MeasureUnit.cs" />
-    <Compile Include="Models\Enums\TransactionStatus.cs" />
+    <Compile Include="Models\Enums\StatusSale.cs" />
     <Compile Include="Models\Inventory\Storage.cs" />
-    <Compile Include="Models\Transaction\Sale.cs" />
-    <Compile Include="Models\Transaction\SaleDetail.cs" />
-    <Compile Include="Models\Transaction\ShipMethod.cs" />
-    <Compile Include="Models\Transaction\Purchase.cs" />
-    <Compile Include="Models\Transaction\PurchaseDetail.cs" />
+    <Compile Include="Models\Sales\Sale.cs" />
+    <Compile Include="Models\Sales\SaleDetail.cs" />
+    <Compile Include="Models\Sales\ShipMethod.cs" />
+    <Compile Include="Models\Purchasing\Purchase.cs" />
+    <Compile Include="Models\Purchasing\PurchaseDetail.cs" />
     <Compile Include="Models\Security\SystemUser.cs" />
-    <Compile Include="Models\Transaction\Transaction.cs" />
-    <Compile Include="Models\Transaction\Status.cs" />
+    <Compile Include="Models\BaseTypes\Transaction.cs" />
+    <Compile Include="Models\Sales\SaleStatus.cs" />
     <Compile Include="Support\CustomAuthorize.cs" />
     <Compile Include="Support\FileManager.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
@@ -296,17 +296,16 @@
     <Compile Include="Models\Inventory\Product.cs" />
     <Compile Include="Models\Inventory\Category.cs" />
     <Compile Include="Models\Config\Branch.cs" />
-    <Compile Include="Models\Operative\Client.cs" />
+    <Compile Include="Models\Sales\Client.cs" />
     <Compile Include="Models\HumanResources\Employee.cs" />
     <Compile Include="Models\Business\Person.cs" />
     <Compile Include="Models\BaseTypes\ISelectable.cs" />
     <Compile Include="Models\HumanResources\JobPosition.cs" />
-    <Compile Include="Models\Operative\Supplier.cs" />
+    <Compile Include="Models\Purchasing\Supplier.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="ViewModels\Generic\AddressVm.cs" />
     <Compile Include="ViewModels\Generic\AuthEntity.cs" />
     <Compile Include="ViewModels\Generic\PersonSearchViewModel.cs" />
-    <Compile Include="ViewModels\Generic\PersonVm.cs" />
     <Compile Include="ViewModels\Inventory\SearchProductsVM.cs" />
     <Compile Include="ViewModels\Inventory\ProductVM.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
@@ -578,7 +577,6 @@
     </Content>
     <Content Include="App_Readme\NProgressjs_README.md" />
     <Content Include="App_Readme\NProgressjs_LICENSE" />
-    <Content Include="Models\Transaction\Transaction.cd" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.2.1-vsdoc.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -795,6 +793,9 @@
     <Content Include="Views\Catalog\_PhoneGroup.cshtml" />
     <Content Include="Views\Catalog\_EmailGroup.cshtml" />
     <Content Include="Views\Catalog\_Address.cshtml" />
+    <Content Include="Views\Catalog\_Email.cshtml" />
+    <Content Include="Views\Catalog\_Phone.cshtml" />
+    <Content Include="Views\Catalog\_AssingSupplier.cshtml" />
     <None Include="Views\Operative\Accounts.cshtml" />
     <Content Include="Views\Operative\_AccountList.cshtml" />
     <Content Include="Views\Operative\_BeginAccount.cshtml" />
@@ -807,13 +808,17 @@
     <Content Include="Views\Shared\_TopNav.cshtml" />
     <Content Include="Views\Shared\_LayoutGentelella.cshtml" />
     <Content Include="Views\Shared\_ChildModal.cshtml" />
+    <Content Include="Views\Shared\test.cshtml" />
+    <Content Include="Views\Purchasing\Index.cshtml" />
+    <Content Include="Views\Purchasing\Create.cshtml" />
+    <Content Include="Views\Purchasing\_Create.cshtml" />
+    <Content Include="Views\Purchasing\_PurchaseDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Files\ProfilePictures\" />
     <Folder Include="Models\Finance\" />
-    <Folder Include="Models\Production\" />
-    <Folder Include="ViewModels\Operative\" />
+    <Folder Include="ViewModels\Purchasing\" />
     <Folder Include="Views\Configuration\" />
     <Folder Include="Views\Entity\" />
   </ItemGroup>
@@ -825,20 +830,11 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201806292041150_Initial.resx">
-      <DependentUpon>201806292041150_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201807051846557_Initial.resx">
+      <DependentUpon>201807051846557_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806302153313_EntityUniques.resx">
-      <DependentUpon>201806302153313_EntityUniques.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807010116204_PhoneMailRequired.resx">
-      <DependentUpon>201807010116204_PhoneMailRequired.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807012234177_PhoneChanges.resx">
-      <DependentUpon>201807012234177_PhoneChanges.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807012309337_EmailChanges.resx">
-      <DependentUpon>201807012309337_EmailChanges.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201807051920020_PurchaseStatus.resx">
+      <DependentUpon>201807051920020_PurchaseStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,5 +1,4 @@
 ﻿using Argos.Models.BaseTypes;
-using Argos.Models.Operative;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,6 +23,7 @@ namespace Argos.Models.Business
         {
             this.PhoneNumbers = new List<PhoneNumber>();
             this.EmailAddresses = new List<EmailAddress>();
+            this.Addresses = new List<Address>();
         }
 
     }

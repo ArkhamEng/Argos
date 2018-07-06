@@ -1,35 +1,54 @@
 ﻿
-@model ICollection<Argos.ViewModels.Generic.EmailVm>
+@model IEnumerable<Argos.Models.Business.EmailAddress>
 
 <table id="tbEmails" class="table jambo_table">
     <thead>
         <tr class="heading">
             <td >
-                @Html.DisplayName("Cuentas de correo registradas")
+                @Html.DisplayNameFor(model => model.Email)
             </td>
             <td>
-                <button class="btn btn-success btn-xs pull-right" type="button" onclick="AddEmail(this)">
+                @Html.DisplayNameFor(model => model.EmailTypeId)
+            </td>
+            <td>
+                <button class="btn btn-success btn-xs pull-right" type="button" onclick="ShowAddEmail()">
                     <span class="fa fa-plus"></span>
+                </button>
+            </td>
+        </tr>
+        <tr id="NewEmailRow" class="hidden">
+            <td class="text-lowercase">
+                <a id="lblEmail"></a>
+                <input type="hidden" id="item_Email" />
+                <input type="hidden" id="item_EntityId" />
+            </td>
+            <td>
+                <a id="lblEmailType"></a>
+                <input type="hidden" id="item_EmailTypeId" />
+            </td>
+            <td>
+                <button class="btn btn-danger btn-xs pull-right" type="button" onclick="DropEmail(this)">
+                    <span class="fa fa-trash"></span>
                 </button>
             </td>
         </tr>
     </thead>
     <tbody>
-        @{ var phoneIndex = 0;}
         @foreach (var item in Model)
         {
-            var rowId = "trEmail" + phoneIndex;
-            <tr id="@rowId" class="@item.Style">
+            <tr>
+                <td class="text-lowercase">                    
+                    @Html.DisplayFor(model=> item.Email)      
+                    @Html.HiddenFor(model => item.EntityId)  
+                    @Html.HiddenFor(model => item.Email)                
+                </td>
                 <td>
-                    @Html.HiddenFor(model => item.Email.EntityId)
-                    @Html.EditorFor(model => item.Email.Email, new { htmlAttributes = new { @class = "form-control input-sm", autocomplete = "off" } })
-                    @Html.ValidationMessageFor(model => item.Email.Email, "", new { @class = "text-danger" })
+                    @Html.DisplayFor(model => item.EmailType.Name)
                 </td>
                 <td>
                     <button class="btn btn-danger btn-xs pull-right" type="button" onclick="DropEmail(this)">
                         <span class="fa fa-trash"></span>
                     </button>
-                    <div class="clearfix"></div>
                 </td>
             </tr>
         }
@@ -40,25 +59,31 @@
    
     var DroppedMails = [];
 
-    function AddEmail()
+    $(document).ready(function ()
     {
-        var newPhoneRow = $("#trEmail0").clone().removeAttr('id').removeClass("hidden");
+        DroppedMails = [];
+    });
 
-        $('#tbEmails').append(newPhoneRow);
-
+    function ShowAddEmail()
+    {
+        ExecuteAjax('@Url.Action("AddEmail","Catalog")', {}, function (view)
+        {
+            ShowChildModal(view);
+        });
     }
 
     function DropEmail(button)
     {
         var row = $(button).parent().parent();
 
-        var mail = row.find('[id="item_Email_Email"]').val();
-        var id = row.find('[id="item_Email_EntityId"]').val();
+        var id = row.find("#item_EntityId").val();
 
-        if (id > 0)
+        if (parseInt(id) > 0)
         {
-            DroppedMails.push(mail);
+            var typeId = row.find("#item_Email").val();
+            DroppedMails.push(typeId);
         }
+
         row.remove();
     }
 </script>

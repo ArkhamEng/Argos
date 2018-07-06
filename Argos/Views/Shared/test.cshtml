@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Argos.Models.Business.Address>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.InsDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InsUser)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdUser)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LockEndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LockUser)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsLocked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TownId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Street)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ZipCode)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.InsDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InsUser)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdUser)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LockEndDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LockUser)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsLocked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TownId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Street)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ZipCode)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.EntityId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.EntityId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.EntityId })
+        </td>
+    </tr>
+}
+
+</table>

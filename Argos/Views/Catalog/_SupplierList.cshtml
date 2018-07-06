@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Argos.ViewModels.Generic.PersonViewModel<Supplier>>
 @using Argos.Support;
-@using Argos.Models.Operative
+@using Argos.Models.Purchasing
 
 
 <table id="TbSupplierList" class="table jambo_table dataTable table-hover">
@@ -79,7 +79,8 @@
 <script>
     var idSupplier = 0;
 
-    $(document).ready(function () {
+    $(document).ready(function ()
+    {
         Paginate("#TbSupplierList", 5, true, "#txtName");
     });
 
