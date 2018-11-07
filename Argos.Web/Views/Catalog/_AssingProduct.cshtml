@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Argos.Models.Inventory.Product>
+@using Argos.Support
+
+<div class="modal-content  col-md-12">
+    <div class="modal-header">
+        <div>
+            <h3 class="modal-title col-md-6">
+                <span class="fa fa-cubes"></span>
+                Productos
+            </h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6 top-search">
+                @Html.TextBox("ProductFilter", "", htmlAttributes: new { @class = "form-control text-uppercase input-sm", placeholder = "Búsqueda por..", type = "text" })
+            </div>
+            <table id="tbProducts" class="table table-bordered jambo_table small">
+                <thead>
+                    <tr class="heading2">
+                        <th>
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SubCategory.CategoryId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SubCategoryId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Code)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TradeMark)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MeasureUnit)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BuyPrice)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-capitalize"> 
+                                <img src="@item.Image" id="item_Image" class="img-responsive img-rounded" />
+                            </td>
+                            <td class="text-capitalize">
+                                @Html.DisplayFor(model => item.SubCategory.Category.Name)
+                            </td>
+                            <td class="text-capitalize">
+                                @Html.DisplayFor(model => item.SubCategory.Name)
+                            </td>
+                            <td class="text-uppercase">
+                                @Html.DisplayFor(model => item.Code)
+                                @Html.HiddenFor(model => item.Code)
+                                @Html.HiddenFor(model => item.ProductId)
+                            </td>
+                            <td class="text-capitalize">
+                                @Html.DisplayFor(model => item.Description)
+                                @Html.HiddenFor(model => item.Description)
+                            </td>
+                            <td class="text-uppercase">
+                                @Html.DisplayFor(model => item.TradeMark)
+                            </td>
+                            <td class="text-lowercase">
+                                @Html.DisplayFor(model => item.MeasureUnitId)
+                            </td>
+                            <td class="text-lowercase">
+                                @Html.DisplayFor(model => item.BuyPrice)
+                                @Html.HiddenFor(model => item.BuyPrice)
+                            </td>
+                            <td>
+                                <a class="btn btn-success btn-xs pull-right" role="button" id="btnAssing" title="seleccionar producto">
+                                    <span class="fa fa-check"></span>
+                                    seleccionar
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+    $(document).ready(function ()
+    {
+        $("#tbProducts tbody tr").each(function (index, row)
+        {
+            var id = $(row).find("#item_ProductId").val();
+            var res = $.inArray(id, products);
+
+            if (res > -1)
+            {
+                $(row).addClass("info");
+                $(row).find("#btnAssing").addClass("disabled");
+            }
+                
+        })
+
+
+        Paginate("#tbProducts", 10, false, "#ProductFilter",false);
+    });
+</script>

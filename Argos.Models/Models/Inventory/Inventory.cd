@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Argos.Models.Config.Branch" Collapsed="true">
+    <Position X="9.75" Y="3" Width="1.5" />
+    <AssociationLine Name="Locations" Type="Argos.Models.Inventory.Storage" FixedFromPoint="true">
+      <Path>
+        <Point X="10.562" Y="3.691" />
+        <Point X="10.562" Y="4.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.023" Y="0.549" Height="0.182" Width="0.93" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAIABAQAAEAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Config\Branch.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Locations" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Inventory.Product" Collapsed="true">
+    <Position X="6.5" Y="2.75" Width="1.5" />
+    <AssociationLine Name="Details" Type="Argos.Models.Business.Detail">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.692" Y="-1.03" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Items" Type="Argos.Models.Inventory.Item" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.312" Y="3.441" />
+        <Point X="7.312" Y="4.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.81" Y="0.561" Height="0.182" Width="0.764" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>MCAIAAAAiQAhCYAAAAAgCAACigAAEAQAEABBAIAAAoA=</HashCode>
+      <FileName>Models\Inventory\Product.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Details" />
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Inventory.Storage" Collapsed="true">
+    <Position X="9.75" Y="4.5" Width="1.5" />
+    <Members>
+      <Property Name="Branch" Hidden="true" />
+      <Property Name="ItemHistories" Hidden="true" />
+    </Members>
+    <AssociationLine Name="ItemLocations" Type="Argos.Models.Inventory.ItemStorage" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.5" Y="5.191" />
+        <Point X="10.5" Y="6.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.189" Y="1.312" Height="0.182" Width="1.087" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAACBAAQAAAAAAAgAgAAAAAAAAAA=</HashCode>
+      <FileName>Models\Inventory\Storage.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ItemLocations" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Inventory.ItemStorage" Collapsed="true">
+    <Position X="9.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAgAIAAAAEAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Models\Inventory\ItemStorage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Inventory.Item">
+    <Position X="6.5" Y="4.75" Width="1.5" />
+    <AssociationLine Name="ItemLocations" Type="Argos.Models.Inventory.ItemStorage">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.38" Y="-1.322" Height="0.182" Width="1.11" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EAQCAAAAAAAAAAAAgACAAAAAAAEAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Models\Inventory\Item.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ItemLocations" />
+      <Property Name="Flows" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Inventory.Flow" Collapsed="true">
+    <Position X="3.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgCAAAAAEQAAAEAAAAAAAgAAACIA=</HashCode>
+      <FileName>Models\Inventory\Flow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Business.Detail" Collapsed="true">
+    <Position X="4" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQCAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Business\Detail.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Flows" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

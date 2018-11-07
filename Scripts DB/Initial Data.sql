@@ -1,3 +1,58 @@
+/************************ CATEGORIES ***********************************************/
+
+INSERT INTO [Inventory].[Category]
+           ([Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           ('Servicios','Servicios no cuantificables',1,GETDATE(),'System',GETDATE(),'System')
+
+
+INSERT INTO [Inventory].[Category]
+           ([Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           ('Camaras','Camaras',1,GETDATE(),'System',GETDATE(),'System')
+
+
+GO
+/************************SUB CATEGORIES ***********************************************/
+
+INSERT INTO [Inventory].SubCategory
+           (CategoryId, [Name],[Description])
+     VALUES
+           (1,'Alarma Residencial','Alarma Residencial')
+
+
+INSERT INTO [Inventory].SubCategory
+           (CategoryId, [Name],[Description])
+     VALUES
+           (1,'Rastreo Satelital','Rastreo Satelital')
+
+
+INSERT INTO [Inventory].SubCategory
+           (CategoryId, [Name],[Description])
+     VALUES
+           (1,'Cercado Electrico','Alarma Residencial')
+
+
+
+INSERT INTO [Inventory].SubCategory
+           (CategoryId, [Name],[Description])
+     VALUES
+           (1,'Circuito Cerrado','Circuito Cerrado')
+
+INSERT INTO [Inventory].SubCategory
+           (CategoryId, [Name],[Description])
+     VALUES
+           (2,'Camaras IP','Camaras IP')
+
+
+
+INSERT INTO [Inventory].SubCategory
+           (CategoryId, [Name],[Description])
+     VALUES
+           (2,'Camaras Avanzadas','Camaras Avanzadas')
+
+GO
+
 /************************CREDIT STATUS ***********************************************/
 INSERT INTO [Config].[CreditStatus]
            ([CreditStatusId],[Name])

@@ -1,0 +1,117 @@
+﻿@model List<Argos.ViewModels.Inventory.ProductVM>
+@using Argos.Support
+
+
+    <table id="tbProducts" class="table  dataTable no-footer jambo_table">
+        <thead>
+            <tr class="heading2" >
+                @*<th><span class="fa fa-photo"></span></th>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Categoria</th>
+                <th>Sub Categoria</th>
+                <th>Marca</th>
+                <th>Unidad</th>*@
+                <th>Imagen</th>
+                <th>Detalle</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var items in Model)
+        {
+                <tr class='@items.RowState'>
+                  
+                    <td class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
+                        <img src='@items.ImagePath' class="img-responsive" style="max-height:100px"/>
+                    </td>
+                    <td>
+                        <h2>
+                            <i class="fa fa-tag"></i>
+                            @Html.DisplayFor(model => items.Product.Code)
+                        </h2>
+                        <h3 class="text-capitalize">                           
+                            @Html.DisplayFor(model => items.Product.Description)
+                        </h3>
+                        <h5>
+                            <u>
+                                @Html.DisplayFor(model => items.Product.SubCategory.Category.Name) / @Html.DisplayFor(model => items.Product.SubCategory.Name)
+                            </u>
+                        </h5>
+                        <h5>
+                            Por   <a class="text-uppercase"> @Html.DisplayFor(model => items.Product.TradeMark) </a>   <span class="fa fa-registered"></span>
+                            |     <i class="fa fa-balance-scale"></i> @Html.DisplayFor(model => items.Product.MeasureUnitId)
+                        </h5>
+                        
+                        <h2>
+                            @items.Product.TaxedMaxPrice.ToString("c")
+                          |
+                                                       
+                            @items.Product.TaxedMinPrice.ToString("c")
+                        </h2>
+                        
+                    </td>
+                  
+                    <td class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                        <button class="@items.EditButton" title="Editar datos de producto" 
+                                onclick="BeginUpdateProduct('@items.Product.ProductId')">
+                            <span class="@Argos.Common.Styles.Icons.Edit"></span>
+                        </button>
+
+                        <button class="@items.DeleteButton" title="Eliminar producto"
+                                onclick="BeginDelete('@items.Product.ProductId')">
+                            <span class="@Argos.Common.Styles.Icons.Delete"></span>
+                        </button>
+
+                        <button class="@items.ActivateButton" title="Reactivar producto"
+                                onclick="BeginActivate('@items.Product.ProductId')">
+                            <span class="@Argos.Common.Styles.Icons.Activate"></span>
+                        </button>
+
+                    </td>
+                </tr>
+        }
+        </tbody>
+    </table>
+
+
+
+
+<script>
+    var idProduct = 0;
+
+    $(document).ready(function ()
+    {
+       //$.fn.dataTable.ext.classes.sPageButton = 'btn btn-success';
+        
+        Paginate("#tbProducts", 8, true, "#Filter_Text")
+
+        //$("#tbProducts_previous").removeClass("btn btn-success");
+        //$("#tbProducts_next").removeClass("btn btn-success");
+    });
+
+    function BeginDelete(id, description) {
+        idProduct = id;
+        var hdr = "Eliminar Producto!";
+        var body = "Esta seguro que deseas eliminar el producto del catálogo " + description;
+        ShowMessage(hdr, body, 'confirm', DeleteProduct, null, 'static');
+    }
+
+    function DeleteProduct()
+    {
+        ExecuteAjax('@Url.Action("DeleteProduct","Catalog")', { id: idProduct }, function (response)
+        {
+            HideLoading(function ()
+            {
+                if (response.Result == '@Argos.Common.Constants.Responses.Success')
+                {
+                    ShowMessage(response.Header, response.Body, response.Result, null, SearchProducts, 'static');
+                }
+                else
+                {
+                    ShowMessage(response.Header, response.Body, response.Result, null, null, 'static');
+                }
+            });
+        });
+    }
+</script>

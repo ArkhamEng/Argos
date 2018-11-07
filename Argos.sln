@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Argos", "Argos\Argos.csproj", "{5FEC6D30-940A-4A41-B539-FDF7C8174644}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util", "Util\Util.csproj", "{5E992CD8-8DBD-404B-A8DF-685A5BE2A98C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Argos.Models", "Argos.Models\Argos.Models.csproj", "{BEB8B6E6-EB36-492F-B702-FDD85967D4EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Argos.Common", "Argos.Common\Argos.Common.csproj", "{EE277974-3F9A-4CAF-B217-9A3E0879B03A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Argos.Data", "Argos.Data\Argos.Data.csproj", "{AAB98D3D-F9EA-45F9-94F4-95869EF1AF76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Argos.Core", "Argos.Core\Argos.Core.csproj", "{79DC01F6-9A2D-43BB-B989-7565A5013AAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Argos.Web", "Argos.Web\Argos.Web.csproj", "{5FEC6D30-940A-4A41-B539-FDF7C8174644}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +21,30 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5FEC6D30-940A-4A41-B539-FDF7C8174644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5FEC6D30-940A-4A41-B539-FDF7C8174644}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5FEC6D30-940A-4A41-B539-FDF7C8174644}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5FEC6D30-940A-4A41-B539-FDF7C8174644}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E992CD8-8DBD-404B-A8DF-685A5BE2A98C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E992CD8-8DBD-404B-A8DF-685A5BE2A98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E992CD8-8DBD-404B-A8DF-685A5BE2A98C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E992CD8-8DBD-404B-A8DF-685A5BE2A98C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEB8B6E6-EB36-492F-B702-FDD85967D4EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEB8B6E6-EB36-492F-B702-FDD85967D4EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEB8B6E6-EB36-492F-B702-FDD85967D4EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEB8B6E6-EB36-492F-B702-FDD85967D4EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE277974-3F9A-4CAF-B217-9A3E0879B03A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE277974-3F9A-4CAF-B217-9A3E0879B03A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE277974-3F9A-4CAF-B217-9A3E0879B03A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE277974-3F9A-4CAF-B217-9A3E0879B03A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAB98D3D-F9EA-45F9-94F4-95869EF1AF76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAB98D3D-F9EA-45F9-94F4-95869EF1AF76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAB98D3D-F9EA-45F9-94F4-95869EF1AF76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAB98D3D-F9EA-45F9-94F4-95869EF1AF76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79DC01F6-9A2D-43BB-B989-7565A5013AAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79DC01F6-9A2D-43BB-B989-7565A5013AAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79DC01F6-9A2D-43BB-B989-7565A5013AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79DC01F6-9A2D-43BB-B989-7565A5013AAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FEC6D30-940A-4A41-B539-FDF7C8174644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FEC6D30-940A-4A41-B539-FDF7C8174644}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FEC6D30-940A-4A41-B539-FDF7C8174644}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FEC6D30-940A-4A41-B539-FDF7C8174644}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

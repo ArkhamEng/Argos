@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Argos.Models.Business.Entity" Collapsed="true">
+    <Position X="6.25" Y="1.5" Width="1.5" />
+    <AssociationLine Name="EmailAddresses" Type="Argos.Models.Business.EmailAddress" FixedToPoint="true">
+      <Path>
+        <Point X="7.75" Y="1.937" />
+        <Point X="9.25" Y="1.937" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.214" Y="0.102" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AABAAAAACAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Business\Entity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PhoneNumbers" />
+      <Property Name="EmailAddresses" />
+      <Property Name="Addresses" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Business.Person" Collapsed="true">
+    <Position X="5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAIQAAAAAAAAAAQCAAAAAAAA=</HashCode>
+      <FileName>Business\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Business.PhoneNumber" Collapsed="true">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAgAIAAAAAAAAABAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Business\PhoneNumber.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Business.PhoneType" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <AssociationLine Name="PhoneNumbers" Type="Argos.Models.Business.PhoneNumber">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.631" Y="0.102" Height="0.182" Width="1.285" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAgAAAAAAAAQAQAAAAAAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Business\PhoneType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PhoneNumbers" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.179" />
+  </Class>
+  <Class Name="Argos.Models.Business.Address" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAIAAAAAAAIAAAAAAAQAAAABAAIAAARAAAA=</HashCode>
+      <FileName>Business\Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Business.AddressType" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <AssociationLine Name="Addresses" Type="Argos.Models.Business.Address" FixedFromPoint="true">
+      <Path>
+        <Point X="4.75" Y="1.062" />
+        <Point X="4.75" Y="1.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-2.098" Y="1.039" Height="0.182" Width="1.451" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAgAAAAAAAAAAQAAAQAAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Business\AddressType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Addresses" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Argos.Models.Business.EmailAddress" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EBAAAAAAACIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Business\EmailAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Config.Branch" Collapsed="true">
+    <Position X="8.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAIABAQAAEAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Config\Branch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.HumanResources.Employee" Collapsed="true">
+    <Position X="2.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAABAAAABCAAgAAAQQAAGAAAQABAAAAAAAAAAA=</HashCode>
+      <FileName>HumanResources\Employee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Purchasing.Supplier" Collapsed="true">
+    <Position X="4.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAAEAAAABAAAAIAAAAEAABAAAAAAAAAAAAAAAYA=</HashCode>
+      <FileName>Purchasing\Supplier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Sales.Client" Collapsed="true">
+    <Position X="6.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABAAAAAAAAAEAABAAAAAAAAAIAAAAAQA=</HashCode>
+      <FileName>Sales\Client.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Config.Town" Collapsed="true">
+    <Position X="0.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAQAAAAAAAAAAAAAwAAAAAAAAAAAAgCABAAAA=</HashCode>
+      <FileName>Config\Town.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Addresses" />
+      <Property Name="Settlements" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Argos.Models.Config.State" Collapsed="true">
+    <Position X="1" Y="0.75" Width="1.5" />
+    <AssociationLine Name="Towns" Type="Argos.Models.Config.Town">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.867" Y="0.402" Height="0.182" Width="0.753" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAQAAAAAAIAAEAAgCAAAAAA=</HashCode>
+      <FileName>Config\State.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Towns" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Argos.Models.Config.Settlement" Collapsed="true">
+    <Position X="0.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAICAAAgAAAAAAABAgAAYAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Config\Settlement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Business.EmailType" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAgAAAAAAAAAAQAAAAAAAAAAAAgCAAAgAA=</HashCode>
+      <FileName>Business\EmailType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="EmailAddresses" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

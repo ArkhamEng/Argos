@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Argos.ViewModels.Generic.PersonViewModel<Supplier>>
+@using Argos.Support;
+@using Argos.Models.Purchasing
+
+
+<table id="TbSupplierList" class="table jambo_table dataTable table-hover">
+    <thead>
+        <tr class="heading">
+
+            <th>
+                <span class="fa fa-camera control-label"></span>
+            </th>
+            <th>
+                <span class="fa fa-user control-label"></span>
+                @Html.DisplayName("Proveedor")
+            </th>
+            <th>
+                <span class="fa fa-id-badge control-label"></span>
+                @Html.DisplayName("RFC")
+            </th>
+            <th>
+                <span class="fa fa-black-tie control-label"></span>
+                @Html.DisplayName("Razón Social")
+            </th>
+            <th>
+                <span class="fa fa-phone control-label"></span>
+                @Html.DisplayName("Teléfono")
+            </th>
+            <th>
+                <span class="fa fa-envelope control-label"></span>
+                @Html.DisplayName("Email")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@item.Image" class="img-responsive img-rounded" style="max-height:50px" />
+                </td>
+                <td class="text-capitalize">
+                    @Html.DisplayFor(modelItem => item.Person.Name)
+                </td>
+                <td class="text-uppercase">
+                    @Html.DisplayFor(modelItem => item.Person.FTR)
+                </td>
+                <td class="text-capitalize">
+                    @Html.DisplayFor(modelItem => item.Person.BusinessName)
+                </td>
+                <td>
+                    @foreach (var phone in item.Person.PhoneNumbers)
+                    {
+                        <div class="col-md-12">
+                            @Html.DisplayFor(modelItem => phone.Phone)
+                        </div>
+                    }
+                </td>
+                <td class="text-lowercase">
+                    @foreach (var email in item.Person.EmailAddresses)
+                    {
+                        @Html.DisplayFor(modelItem => email.Email)<br />
+                    }
+                </td>
+
+                <td>
+                    <button class="@item.EditButton" type="button" onclick="BeginUpdateSupplier(@item.Person.EntityId)">
+                        <span class="@Argos.Common.Styles.Icons.Edit"></span>
+                    </button>
+                    <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
+                        <span class="@Argos.Common.Styles.Icons.Delete"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    var idSupplier = 0;
+
+    $(document).ready(function ()
+    {
+        Paginate("#TbSupplierList", 5, true, "#txtName");
+    });
+
+    function BeginDelete(id, name) {
+        idSupplier = id;
+        var hdr = "Eliminar Proveedor!";
+        var body = "¿Esta seguro que deseas eliminar el proveedor " + name + "?";
+        ShowMessage(hdr, body, 'confirm', DeleteSupplier, null, 'static');
+    }
+
+    function DeleteSupplier() {
+        ExecuteAjax('@Url.Action("DeleteSupplier","Catalog")', { id: idSupplier }, function (response) {
+            HideLoading(function () {
+                ShowNotify(response.Header, response.Result, response.Body, 2500);
+            });
+        });
+    }
+
+</script>

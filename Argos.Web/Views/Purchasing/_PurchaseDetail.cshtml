@@ -1,0 +1,191 @@
+﻿@model IEnumerable<Argos.Models.Purchasing.PurchaseDetail>
+
+
+<table id="tbPurchaseDetails" class="table table-bordered jambo_table">
+    <thead>
+        <tr class="heading">
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.Code)
+            </th>
+         
+            <th>
+                @Html.DisplayNameFor(model => model.Product.Description)
+            </th>
+            <th class="col-md-1">
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th class="col-md-1">
+                @Html.DisplayNameFor(model => model.OrderQty)
+            </th>
+        
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivedQty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RejectedQty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockQty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LineTotal)
+            </th>
+            <th></th>
+        </tr>
+        <tr id="DetailRow" class="hidden">
+            <td class="col-md-1">
+                <img id="item_Image" class="img-responsive img-rounded"/>
+                <input type="hidden" id="item_DetailId" />
+                <input type="hidden" id="item_PurchaseId" />
+            </td>
+            <td>
+                <a id="lblCode"></a>
+                <input type="hidden" id="item_ProductId" />
+            </td>
+
+            <td>
+                <a id="lblDescription"></a>
+            </td>
+            <td style="padding:0">
+                <input type="text" id="item_UnitPrice" class="form-control input-sm" style="width:100%; text-align:center;"/>
+            </td>
+            <td style="padding:0">
+                <input type="number" id="item_OrderQty"  class="form-control input-sm"  value="1"  style="width:100%; text-align:center;"/>
+            </td>
+
+            <td>
+                0
+            </td>
+            <td>
+                0
+            </td>
+            <td>
+                0
+            </td>
+            <td>
+                <a id="lblLineTotal">0</a>
+                <input type="hidden" id="item_LineTotal" value="0" />
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-xs pull-right" id="btnDropDetail">
+                    <span class="fa fa-trash"></span>
+                </button>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                   <img src="@item.Product.Image" class="img-responsive img-rounded" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Description)
+                </td>
+                <td>
+                    @Html.EditorFor(model => item.UnitPrice, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocomplete = "off" } }))
+                </td>
+                <td>
+                    @Html.EditorFor(model => item.OrderQty, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocomplete = "off" } }))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceivedQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RejectedQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StockQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LineTotal)
+                </td>
+                <td>
+                  
+                </td>
+            </tr>
+        }
+    </tbody>
+  
+</table>
+
+<script>
+    var iva = parseFloat('@Argos.Support.AppCache.Instance.Iva');
+
+   
+    function SetDetailEvents()
+    {
+        $("#tbPurchaseDetails tbody tr").each(function (index, row)
+        {
+            var unitPrice = $(row).find("#item_UnitPrice");
+            var orderQty  = $(row).find("#item_OrderQty");
+            var lineTotal = $(row).find("#item_LineTotal");
+            var lblTotal  = $(row).find("#lblLineTotal");
+
+            unitPrice.off("keyup").keyup(function ()
+            {
+                SetTotal(unitPrice, orderQty, lblTotal, lineTotal);
+            });
+
+            orderQty.off("keyup").keyup(function ()
+            {
+                SetTotal(unitPrice, orderQty, lblTotal, lineTotal);
+            });
+
+            $(row).find("#btnDropDetail").off("click").click(function ()
+            {
+                var productId = $(row).find("#item_ProductId").val();
+
+
+                var idx = products.indexOf(productId);
+
+                console.log(idx);
+                products.splice(idx, 1);
+
+                $(row).remove();
+                CalculateTotal();
+            });
+        });
+    }
+
+    function CalculateTotal()
+    {
+        var total = 0;
+        $("#tbPurchaseDetails tbody tr").each(function (index, row)
+        {
+            var lblTotal = $(row).find("#lblLineTotal");
+            total += parseFloat($(row).find("#item_LineTotal").val());
+        });
+
+        var taxAmt = total * (iva / 100);
+
+        $("#SubTotal").val(total.toFixed(2));
+        $("#TaxAmt").val(taxAmt.toFixed(2));
+        $("#TotalDue").val((total + taxAmt).toFixed(2));
+    }
+
+    function SetTotal(price, qty, lblTotal, lineTotal)
+    {
+        var tot =  (parseFloat($(price).val()) * parseFloat($(qty).val())).toFixed(2);
+
+        $(lblTotal).text("$" + tot);
+        $(lineTotal).val(tot);
+
+        var total = 0;
+        $("#tbPurchaseDetails tbody tr").each(function (index, row)
+        {
+            total += parseFloat($(row).find("#item_LineTotal").val());
+        });
+
+        var taxAmt = total * (iva / 100);
+
+        $("#SubTotal").val(total.toFixed(2));
+        $("#TaxAmt").val(taxAmt.toFixed(2));
+        $("#TotalDue").val((total + taxAmt).toFixed(2));
+    }
+</script>
