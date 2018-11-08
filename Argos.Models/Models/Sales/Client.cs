@@ -14,9 +14,6 @@ namespace Argos.Models.Sales
         [Index("Unq_BusinessName", IsUnique = true)]
         public string BusinessName { get; set; }
 
-        //[Display(Name = "Nombre de la empresa")]
-        //[MaxLength(200)]
-        //public string Company { get; set; }
 
         [Display(Name = "Estado del crédito")]
         public StatusCredit CreditStatusId { get; set; }

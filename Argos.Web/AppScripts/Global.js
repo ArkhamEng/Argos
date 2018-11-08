@@ -81,7 +81,7 @@ function ExecuteAjax(url, parameters, callback)
 }
 
 //Realiza paginación  sobre una tabla
-function Paginate(table, iniRecords, responsive, filter,scrollX)
+function Paginate(table, iniRecords, responsive, filter,scrollX,buttonContainer)
 {
     var searching = false;
 
@@ -93,6 +93,7 @@ function Paginate(table, iniRecords, responsive, filter,scrollX)
            //destroy: true,
            keys: true,
            "scrollX": scrollX,
+           fixedColumns: true,
            responsive: responsive,
            "lengthChange": false,
            "searching": searching,
@@ -110,7 +111,7 @@ function Paginate(table, iniRecords, responsive, filter,scrollX)
                    "previous": "Anterior",
                    "next": "Siguiente"
                }
-           }
+           },
        });
     if (typeof (filter) != 'undefined')
     {
@@ -120,6 +121,34 @@ function Paginate(table, iniRecords, responsive, filter,scrollX)
         });
 
         $(table + "_filter").addClass("hidden");
+    }
+
+    if (typeof (buttonContainer) != 'undefined')
+    {
+        var buttons = new $.fn.dataTable.Buttons(oTable, {
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    text: '<i class="fa fa-files-o"></i> Copiar',
+                    titleAttr: 'Copy',
+                    className: "btn btn-primary"
+                },
+             {
+                 extend: 'excelHtml5',
+                 text: '<i class="fa fa-file-excel-o"></i> Excel',
+                 titleAttr: 'Excel',
+                 className:"btn btn-success"
+             },
+
+             {
+                 extend: 'pdfHtml5',
+                 text: '<i class="fa fa-file-pdf-o"></i> PDF' ,
+                 titleAttr: 'PDF',
+                 className: "btn btn-warning"
+             }
+            ]
+        }).container().appendTo($(buttonContainer));
+
     }
 }
 

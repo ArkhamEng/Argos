@@ -4,20 +4,46 @@
 @using Argos.ViewModels.Generic
 
 
-<table id="TbClientList" class="table table-responsive jambo_table">
+<table id="TbClientList" class="table table-responsive jambo_table table-bordered">
     <thead>
         <tr class="heading">
-            <th>
-                @Html.DisplayName("Foto")
+            <th style="min-width:50px">
+                
+            </th>
+            <th style="min-width:250px">
+                @Html.DisplayName("Nombre")
             </th>
             <th>
-                @Html.DisplayName("Nombre y dirección")
+                @Html.DisplayName("RFC")
             </th>
             <th>
-                @Html.DisplayName("Datos Fiscales y de contacto")
+                @Html.DisplayName("Credito")
             </th>
-        
             <th>
+                @Html.DisplayName("Saldo")
+            </th>
+            <th>
+                @Html.DisplayName("Teléfonos")
+            </th>
+            <th>
+                @Html.DisplayName("Emails")
+            </th>
+            <th>
+                @Html.DisplayName("Direcciones")
+            </th>
+            <th style="min-width:150px">
+                @Html.DisplayName("Fecha de alta")
+            </th>
+            <th style="min-width:150px">
+                @Html.DisplayName("Agregado por")
+            </th>
+            <th style="min-width:150px">
+                @Html.DisplayName("Fecha Modificación")
+            </th>
+            <th style="min-width:150px">
+                @Html.DisplayName("Modificado por")
+            </th>
+            <th style="min-width:100px">
                 Acciones
             </th>
         </tr>
@@ -27,46 +53,59 @@
         {
             <tr>
                 <td>
-                    <img src="@item.Image" class="img-responsive img-rounded" style="max-height:100px" />
+                    <img src="@item.Image" class="img-responsive img-rounded" />
                 </td>
                 <td>
-                    <h2 class="text-capitalize">
-                        @Html.DisplayFor(modelItem => item.Person.Name)
-                    </h2>
-                    <strong>
-                        <i class="fa fa-phone"></i>
-                        @item.Person.PhoneNumbers.First().Phone
-                        |
-                        <i class="fa fa-envelope-o"></i>
-                        @item.Person.EmailAddresses.First().Email.ToLower() 
-                    </strong><br />
                     <a class="text-capitalize">
-                        @item.Person.Addresses.First().Street -
-                        @item.Person.Addresses.First().Location<br />
-                        @item.Person.Addresses.First().Town.State.Name , @item.Person.Addresses.First().Town.Name 
-                        CP. @item.Person.Addresses.First().ZipCode
+                        @Html.DisplayFor(modelItem => item.Person.Name)
                     </a>
-                    
                 </td>
                 <td>
-                    <h2 class="text-uppercase">
-                        @Html.DisplayFor(modelItem => item.Person.BusinessName)
-                    </h2>
                     <a class="text-uppercase">
-                        <i class="fa fa-id-badge"></i>
                         @Html.DisplayFor(modelItem => item.Person.FTR)
-                    </a><br />
+                    </a>
                 </td>
-              
-                <td class="col-lg-1 col-md-1 col-sm-2 col-xs-2" >
-                    <button class="@item.EditButton" type="button" onclick="BeginUpdateClient(@item.Person.EntityId)">
-                        <span class="@Argos.Common.Styles.Icons.Edit"></span>
-                    </button> <br />
+                <td>
+                    <a class="text-capitalize">
+                        @Html.DisplayFor(modelItem => item.Person.CreditStatus.Name)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.CreditBalance)
+                </td>
+                <td>
+                    @item.Person.PhoneNumbers.Count
+                </td>
+                <td>
+                    @item.Person.EmailAddresses.Count
+                </td>
+                <td>
+                    @item.Person.Addresses.Count
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.InsDate)
+                </td>
+                <td>
+                    <a class="text-capitalize">
+                        @Html.DisplayFor(modelItem => item.Person.InsUser)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.UpdDate)
+                </td>
+                <td>
+                    <a class="text-capitalize">
+                        @Html.DisplayFor(modelItem => item.Person.UpdUser)
+                    </a>
+                </td>
+
+                <td>
+                    <button class="btn btn-primary" type="button" onclick="ShowDetail(@item.Person.EntityId)">
+                        <span class="@Argos.Common.Styles.Icons.Show"></span>
+                    </button>
                     <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
                         <span class="@Argos.Common.Styles.Icons.Delete"></span>
                     </button>
-
-                 
                 </td>
             </tr>
         }
@@ -76,31 +115,26 @@
     var idClient = 0;
 
     $(document).ready(function () {
-        Paginate("#TbClientList", 8, true, "#txtName")
+        Paginate("#TbClientList", 8, true, "#txtName", false)
     });
 
-    function BeginDelete(id, name)
-    {
+    function BeginDelete(id, name) {
         idClient = id;
         var hdr = "Eliminar cliente!";
         var body = "Esta seguro que deseas eliminar el cliente " + name;
         ShowMessage(hdr, body, 'confirm', DeleteClient, OnDeleteCanceled, 'static')
     }
 
-    function DeleteClient()
-    {
-        ExecuteAjax('@Url.Action("DeletePerson","Catalog")', { id: idClient }, function (response)
-        {
-            HideLoading(function ()
-            {
+    function DeleteClient() {
+        ExecuteAjax('@Url.Action("DeletePerson","Catalog")', { id: idClient }, function (response) {
+            HideLoading(function () {
                 ShowNotify(response.Header, response.Result, response.Body, 2500);
             });
         });
     }
 
 
-    function OnDeleteCanceled()
-    {
+    function OnDeleteCanceled() {
         console.log("Confirm Cerrado");
     }
 </script>

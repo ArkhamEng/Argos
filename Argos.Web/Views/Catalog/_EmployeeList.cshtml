@@ -6,28 +6,44 @@
 <table id="TbEmployeeList" class="table table-hover jambo_table dataTable">
     <thead>
         <tr class="heading">
-            <th>
-                <span class="fa fa-camera control-label text-center"></span>
+            <th style="min-width:50px">
+                
+            </th>
+            <th style="min-width:250px">
+                @Html.DisplayName("Nombre")
+            </th>
+            <th style="min-width:150px">
+                @Html.DisplayName("Puesto")
             </th>
             <th>
-                <span class="fa fa-user control-label"></span>
-                @Html.DisplayName("Empleado")
-            </th>
-            <th>
-                <span class="fa fa-id-badge control-label"></span>
                 @Html.DisplayName("RFC")
             </th>
             <th>
-                <span class="fa fa-medkit control-label"></span>
                 @Html.DisplayName("NSS")
             </th>
             <th>
-                <span class="fa fa-phone control-label"></span>
-                @Html.DisplayName("Teléfono")
+                @Html.DisplayName("Usuario")
             </th>
             <th>
-                <span class="fa fa-envelope control-label"></span>
-                @Html.DisplayName("Email")
+                @Html.DisplayName("Teléfonos")
+            </th>
+            <th>
+                @Html.DisplayName("Emails")
+            </th>
+            <th>
+                @Html.DisplayName("Direcciones")
+            </th>
+            <th style="min-width:150px">
+                @Html.DisplayName("Fecha de alta")
+            </th>
+            <th style="min-width:150px">
+                @Html.DisplayName("Agregado por")
+            </th>
+            <th style="min-width:150px">
+                @Html.DisplayName("Fecha Modificación")
+            </th>
+            <th style="min-width:150px">
+                @Html.DisplayName("Modificado por")
             </th>
             <th></th>
         </tr>
@@ -36,39 +52,66 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td align="center">
-                    <img src="@item.Image" class="img-responsive img-rounded" style="max-height:50px" />
+                <td>
+                    <img src="@item.Image" class="img-responsive img-rounded" />
                 </td>
-                <td class="text-capitalize">
-                    @Html.DisplayFor(modelItem => item.Person.Name)<br />
-                    @Html.DisplayFor(modelItem => item.Person.JobPosition.Name)
+                <td>
+                    <a class="text-capitalize">
+                        @Html.DisplayFor(modelItem => item.Person.Name)
+                    </a>
                 </td>
-                <td class="text-uppercase">
-                    @Html.DisplayFor(modelItem => item.Person.FTR)
+                <td>
+                    <a class="text-capitalize">
+                        @item.Person.JobPosition.Name.ToLower()
+                    </a>
                 </td>
+                <td>
+                    <a class="text-uppercase">
+                        @Html.DisplayFor(modelItem => item.Person.FTR)
+                    </a>
+                </td>
+            
                 <td class="text-capitalize">
                     @Html.DisplayFor(modelItem => item.Person.SSN)
                 </td>
+                <td>
+                    <a class="text-uppercase">
+                        @Html.DisplayFor(modelItem => item.Person.SystemUser.User.UserName)
+                    </a>
+                </td>
 
                 <td>
-                    @foreach (var phone in item.Person.PhoneNumbers)
-                    {
-                        @Html.DisplayFor(modelItem => phone.Phone)<br />
-                    }
+                    @item.Person.PhoneNumbers.Count
                 </td>
                 <td class="text-lowercase">
-                    @foreach (var email in item.Person.EmailAddresses)
-                    {
-                        @Html.DisplayFor(modelItem => email.Email)<br />
-                    }
+                    @item.Person.EmailAddresses.Count
+                </td>
+                <td class="text-lowercase">
+                    @item.Person.Addresses.Count
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.InsDate)
+                </td>
+                <td>
+                    <a class="text-capitalize">
+                        @Html.DisplayFor(modelItem => item.Person.InsUser)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.UpdDate)
+                </td>
+                <td>
+                    <a class="text-capitalize">
+                        @Html.DisplayFor(modelItem => item.Person.UpdUser)
+                    </a>
                 </td>
 
                 <td>
                     <div class="pull-right">
-                        <button class="@item.EditButton" type="button" onclick="BeginUpdateEmployee(@item.Person.EntityId)">
-                            <span class="@Argos.Common.Styles.Icons.Edit"></span>
+                        <button class="btn btn-primary" type="button" onclick="ShowDetail(@item.Person.EntityId)">
+                            <span class="@Argos.Common.Styles.Icons.Show"></span>
                         </button>
-                        <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
+                        <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')" disabled="@true">
                             <span class="@Argos.Common.Styles.Icons.Delete"></span>
                         </button>
                     </div>
@@ -77,14 +120,14 @@
         }
     </tbody>
 </table>
-
+<div id="divButtons"></div>
 
 <script>
     var idEmployee = 0;
 
     $(document).ready(function ()
     {
-        Paginate("#TbEmployeeList", 8, true, "#txtName")
+        Paginate("#TbEmployeeList", 8, true, "#txtName", false, "#divButtons")
     });
 
     function BeginDelete(id, name)

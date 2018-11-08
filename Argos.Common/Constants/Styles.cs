@@ -69,6 +69,10 @@ namespace Argos.Common
             public const string Save = "fa fa-save";
 
             public const string Activate = "fa fa-recycle";
+
+            public const string Open = "fa fa-folder-open";
+
+            public const string Show = "fa fa-eye";
         }
 
     }

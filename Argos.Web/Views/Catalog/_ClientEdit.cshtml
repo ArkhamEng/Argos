@@ -25,7 +25,11 @@
 
         <li class="pull-right">
             <div>
-                <button type="submit" id="EditClientSave" title="Guardar datos del cliente" class="btn btn-success  btn-round">
+                <button type="button" id="BeginEditClient" title="Editar registro" class="btn btn-warning  btn-round hidden" onclick="BeginUpdate()">
+                    <span class="fa fa-edit"></span>
+                    Editar
+                </button>
+                <button type="submit" id="EditClientSave" title="Guardar cambios" class="btn btn-success  btn-round">
                     <span class="fa fa-save"></span>
                     Guardar
                 </button>
@@ -57,69 +61,74 @@
                             </label>
                         </div>
 
-                        <div class="form-group col-md-8">
-                            @Html.LabelFor(model => model.Person.Name, htmlAttributes: new { @class = "control-label" })
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.Person.Name, htmlAttributes: new { @class = "control-label small" })
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                 @Html.EditorFor(model => model.Person.Name, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off" } })
                             </div>
                             @Html.ValidationMessageFor(model => model.Person.Name, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-md-6">
-                            @Html.LabelFor(model => model.Person.FTR, htmlAttributes: new { @class = "control-label" })
+                        <div class="form-group col-md-3">
+                            @Html.LabelFor(model => model.Person.FTR, htmlAttributes: new { @class = "control-label small" })
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
                                 @Html.EditorFor(model => model.Person.FTR, new { htmlAttributes = new { @class = "form-control text-uppercase input-sm", autocomplete = "off" } })
                             </div>
                             @Html.ValidationMessageFor(model => model.Person.FTR, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-md-8">
-                            @Html.LabelFor(model => model.Person.BusinessName, htmlAttributes: new { @class = "control-label" })
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.Person.BusinessName, htmlAttributes: new { @class = "control-label small" })
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-black-tie"></i></span>
                                 @Html.EditorFor(model => model.Person.BusinessName, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off" } })
                             </div>
                             @Html.ValidationMessageFor(model => model.Person.BusinessName, "", new { @class = "text-danger" })
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-3">
-                            @Html.LabelFor(model => model.Person.CreditStatusId, htmlAttributes: new { @class = "control-label" })
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-black-tie"></i></span>
-                                @Html.DropDownListFor(model => model.Person.CreditStatusId, Model.CreditStatus, htmlAttributes: new { @class = "form-control text-capitalize input-sm" })
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Person.CreditStatusId, "", new { @class = "text-danger" })
-                        </div>
+
 
                         <div class="form-group col-md-3">
-                            @Html.LabelFor(model => model.Person.CreditDays, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Person.CreditStatusId, htmlAttributes: new { @class = "control-label small" })
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-black-tie"></i></span>
+                                @Html.DropDownListFor(model => model.Person.CreditStatusId,Model.CreditStatus, htmlAttributes: new { @class = "form-control text-capitalize input-sm" }  )
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            @Html.LabelFor(model => model.Person.CreditDays, htmlAttributes: new { @class = "control-label small" })
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
-                                @Html.EditorFor(model => model.Person.CreditDays, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm" } })
+                                @Html.EditorFor(model => model.Person.CreditDays,
+                               new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", @readonly = true } })
                             </div>
                             @Html.ValidationMessageFor(model => model.Person.CreditDays, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group col-md-3">
-                            @Html.LabelFor(model => model.Person.CreditLimit, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Person.CreditLimit, htmlAttributes: new { @class = "control-label small" })
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-bullseye"></i></span>
-                                @Html.EditorFor(model => model.Person.CreditLimit, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off" } })
+                                @Html.EditorFor(model => model.Person.CreditLimit,
+                               new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off", @readonly=true  } })
                             </div>
                             @Html.ValidationMessageFor(model => model.Person.CreditLimit, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-md-3">
-                            @Html.LabelFor(model => model.Person.CreditBalance, htmlAttributes: new { @class = "control-label" })
+
+                        <div class="form-group col-md-3 col-md-offset-1">
+                            @Html.LabelFor(model => model.Person.CreditBalance, htmlAttributes: new { @class = "control-label small" })
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-calculator"></i></span>
-                                @Html.EditorFor(model => model.Person.CreditBalance, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", autocomplete = "off" } })
+                                @Html.EditorFor(model => model.Person.CreditBalance, new { htmlAttributes = new { @class = "form-control text-capitalize input-sm", disabled = true} })
                             </div>
                             @Html.ValidationMessageFor(model => model.Person.CreditBalance, "", new { @class = "text-danger" })
                         </div>
+
                     </div>
 
-                    <div class="row">
+                    <hr />
+
+                    <div class="row ">
                         <div class="col-md-6 col-xs-12 col-sm-12">
                             @Html.Partial("_EmailGroup", Model.Person.EmailAddresses)
                         </div>
@@ -127,6 +136,7 @@
                             @Html.Partial("_PhoneGroup", Model.Person.PhoneNumbers)
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -147,8 +157,7 @@
 
 
 <script>
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         $("#Person_Phone").mask("(999) 999 99 99");
 
         $("#Person_FTR").mask("aaa*99999****");

@@ -65,8 +65,8 @@
                 </td>
 
                 <td>
-                    <button class="@item.EditButton" type="button" onclick="BeginUpdateSupplier(@item.Person.EntityId)">
-                        <span class="@Argos.Common.Styles.Icons.Edit"></span>
+                    <button class="@Argos.Common.Styles.Buttons.Primary" type="button" onclick="ShowDetail(@item.Person.EntityId)">
+                        <span class="@Argos.Common.Styles.Icons.Show"></span>
                     </button>
                     <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
                         <span class="@Argos.Common.Styles.Icons.Delete"></span>

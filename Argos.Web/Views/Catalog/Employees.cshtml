@@ -81,14 +81,27 @@
         SetCascade('#ddlStateId', '#ddlCityId', '@Url.Action("GetCities","Configuration")');
     });
 
-    function BeginAddEmployee()
+    var editEmployeeId = 0;
+
+    function ShowDetail(id)
     {
-        ShowPersonModal(SearchById, null,'Employee', null);
+        ShowPersonModal(SearchById, null, 'Employee', id, function ()
+        {
+            editEmployeeId = id;
+            $('#general :input').attr('disabled', true);
+            $('#addresses :input').attr('disabled', true);
+            $("#EditEmployeeSave").addClass('hidden')
+            $("#BeginEditEmployee").removeClass('hidden')
+        });
     }
 
-    function BeginUpdateEmployee(id)
+    function BeginUpdate()
     {
-        ShowPersonModal(SearchById, null,'Employee', id);
+        HideModal(function ()
+        {
+            ShowPersonModal(SearchById, function () { ShowDetail(editEmployeeId); }, 'Employee', editEmployeeId);
+        }, true);
+
     }
 
 

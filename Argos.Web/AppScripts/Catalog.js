@@ -1,8 +1,9 @@
 ﻿
 
-//Muestra la ventada emergente de Edición /Captura de personas, dependindo del 
-//tipo dado en el parametro Entity (Client,Employee,Supplier)
-function ShowPersonModal(OnCompleate, CloseCallBack, Entity, id) {
+//Muestra la ventada emergente de Edición /Captura de personas, dependiendo del 
+//tipo dado en el parametro Entity (Client,Employee,Supplier), si se envía un disable call back
+//se considerara que la ventana no esta en modo de edición
+function ShowPersonModal(OnCompleate, CloseCallBack, Entity, id, disableCallBack) {
     ShowLoading('static');
 
     var param = {};
@@ -14,25 +15,32 @@ function ShowPersonModal(OnCompleate, CloseCallBack, Entity, id) {
     }
     var form = "#" + Entity + "Form";
 
-    ExecuteAjax(url, param, function (response)
-    {
-        HideLoading(function ()
-        {
-            if (!$.isPlainObject(response))
-            {
+    ExecuteAjax(url, param, function (response) {
+        HideLoading(function () {
+            if (!$.isPlainObject(response)) {
                 ShowModal(response, 'static', 'lg');
 
+                //si se recibe un id
                 if (typeof (param.id) != 'undefined')
-                    ShowNotify("Registro bloqueado!", "info", "Dispones de 5 min para realizar cambios, sobre este registro");
-
-                SubmitPerson(OnCompleate, form);
+                {
+                    //si se recibe un callback de deshabilitación.. entro a modo visualización
+                    if (typeof (disableCallBack) != 'undefined')
+                        disableCallBack();
+                        //de lo contrario, entro a modo edición y bloqueo el registro
+                    else
+                    {
+                        ShowNotify("Registro bloqueado!", "info", "Dispones de 5 min para realizar cambios, sobre este registro");
+                        SubmitPerson(OnCompleate, form);
+                    }
+                }
 
                 //evento del boton cancel
                 $("#EditCancel").off('click').click(function (e)
                 {
-                    HideModal(function () {
-                        //si el se tiene un id, desbloqueo el registro para liberarlo
-                        if (parseInt(param.id) > 0)
+                    HideModal(function ()
+                    {
+                        //si el se tiene un id y no hay callback de deshabilitación remuevo el bloqueo
+                        if (parseInt(param.id) > 0 && typeof (disableCallBack) == 'undefined')
                         {
                             ExecuteAjax('/Catalog/UnLockPerson/', { id: param.id }, function (response)
                             {
@@ -268,12 +276,9 @@ function ShowProductModal(OnCompleate, CloseCallBack, id) {
         text = '<span class="fa fa-users"></span> Editar datos del Producto';
     }
 
-    ExecuteAjax(url, param, function (response)
-    {
-        HideLoading(function ()
-        {
-            if (!$.isPlainObject(response))
-            {
+    ExecuteAjax(url, param, function (response) {
+        HideLoading(function () {
+            if (!$.isPlainObject(response)) {
                 // $("#divCatalogModal").html(response);
 
                 ShowModal(response, 'static', 'lg');
@@ -283,17 +288,13 @@ function ShowProductModal(OnCompleate, CloseCallBack, id) {
 
                 SubmitProduct(OnCompleate);
 
-                $("#EditCancel").off('click').click(function (e)
-                {
+                $("#EditCancel").off('click').click(function (e) {
                     console.log("Click en cerrar");
 
-                    HideModal(function ()
-                    {
+                    HideModal(function () {
                         //si el se tiene un id, desbloqueo el registro para liberarlo
-                        if (parseInt(param.id) > 0)
-                        {
-                            ExecuteAjax('/Catalog/UnLockProduct/', { id: param.id }, function (response)
-                            {
+                        if (parseInt(param.id) > 0) {
+                            ExecuteAjax('/Catalog/UnLockProduct/', { id: param.id }, function (response) {
                                 ShowNotify(response.Header, response.Result, response.Body);
                             });
                         }
@@ -311,10 +312,8 @@ function ShowProductModal(OnCompleate, CloseCallBack, id) {
 
 }
 
-function SubmitProduct(SuccessCallBack)
-{
-    $("#frmProducts").off('submit').on('submit', function (e)
-    {
+function SubmitProduct(SuccessCallBack) {
+    $("#frmProducts").off('submit').on('submit', function (e) {
         e.preventDefault();
 
         var $form = $(e.target),
@@ -322,8 +321,7 @@ function SubmitProduct(SuccessCallBack)
         params = $form.serializeArray(),
         files = [];
 
-        $('#tbImages tr').each(function (index, row)
-        {
+        $('#tbImages tr').each(function (index, row) {
             var input = $(row).find('[type="file"]');
 
             if (input[0] != undefined) {
@@ -334,8 +332,7 @@ function SubmitProduct(SuccessCallBack)
 
         //ya que el tab container omite la validación del tab q no se muestra
         //checo el tab activo y si es necesario habilito el que contine los campos a validar
-        if (needActivate)
-        {
+        if (needActivate) {
             $("#general").addClass("active");
 
             if (!$form.valid()) {
@@ -345,8 +342,7 @@ function SubmitProduct(SuccessCallBack)
             }
         }
 
-        if (!$form.valid())
-        {
+        if (!$form.valid()) {
             ShowNotify("Error de validación", "danger", "El formulario contiene errores, por favor verifica", false);
             return;
         }
@@ -376,19 +372,15 @@ function SubmitProduct(SuccessCallBack)
             contentType: false,
             processData: false,
             type: 'POST',
-            success: function (response)
-            {
+            success: function (response) {
                 console.log(response);
 
-                if ($.isPlainObject(response) && typeof (response.Code) == 401)
-                {
+                if ($.isPlainObject(response) && typeof (response.Code) == 401) {
                     ShowNotify(response.Header, response.Result, response.Body, 4500);
                     window.location = response.LogOnUrl;
                 }
-                else
-                {
-                    HideModal(function ()
-                    {
+                else {
+                    HideModal(function () {
                         ShowNotify(response.Header, response.Result, response.Body);
                         SuccessCallBack(response.Id);
                     }, true);
@@ -401,13 +393,11 @@ function SubmitProduct(SuccessCallBack)
 
 
 
-function OnImageLoaded(input)
-{
+function OnImageLoaded(input) {
     var files = input.files,
     reader = new FileReader();
 
-    reader.onload = function (e)
-    {
+    reader.onload = function (e) {
         $("#btnDropImage").removeClass("disabled");
         $("#imgPerson").attr("src", e.target.result);
     }
@@ -423,22 +413,18 @@ function RemoveImage() {
 }
 
 
-function ShowAssingSupplier(OnSelected)
-{
+function ShowAssingSupplier(OnSelected) {
     url = "/Catalog/GetSuppliers";
 
     ShowLoading('static');
 
-    ExecuteAjax(url, {}, function (response)
-    {
+    ExecuteAjax(url, {}, function (response) {
         HideLoading(function () {
             if (!$.isPlainObject(response)) {
                 ShowModal(response, 'static', 'lg');
 
-                $("#tbAssigSupplier tbody tr").each(function (index, row)
-                {
-                    $(row).find("#btnAssing").off("click").click(function ()
-                    {
+                $("#tbAssigSupplier tbody tr").each(function (index, row) {
+                    $(row).find("#btnAssing").off("click").click(function () {
                         var id = $(row).find('[id="item_EntityId"]').val();
                         var name = $(row).find('[id="item_Name"]').val();
 
@@ -459,21 +445,18 @@ function ShowAddProduct(OnSelected) {
 
     ExecuteAjax(url, {}, function (response) {
         HideLoading(function () {
-            if (!$.isPlainObject(response))
-            {
+            if (!$.isPlainObject(response)) {
                 ShowModal(response, 'static', 'lg');
 
-                $("#tbProducts tbody tr").each(function (index, row)
-                {
-                    $(row).find("#btnAssing").off("click").click(function ()
-                    {
+                $("#tbProducts tbody tr").each(function (index, row) {
+                    $(row).find("#btnAssing").off("click").click(function () {
 
                         var product = {
-                            ProductId:   $(row).find('[id="item_ProductId"]').val(),
-                            Code:        $(row).find('[id="item_Code"]').val(),
+                            ProductId: $(row).find('[id="item_ProductId"]').val(),
+                            Code: $(row).find('[id="item_Code"]').val(),
                             Description: $(row).find('[id="item_Description"]').val(),
-                            BuyPrice:    $(row).find('[id="item_BuyPrice"]').val(),
-                            Image:       $(row).find("#item_Image").attr('src')
+                            BuyPrice: $(row).find('[id="item_BuyPrice"]').val(),
+                            Image: $(row).find("#item_Image").attr('src')
                         }
                         console.log(product);
                         $(row).addClass("success");

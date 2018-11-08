@@ -90,6 +90,25 @@
         ShowPersonModal(SearchById, null, 'Supplier', id);
     }
 
+    var editSupplierId = 0;
+
+    function ShowDetail(id) {
+        ShowPersonModal(SearchById, null, 'Supplier', id, function () {
+            editSupplierId = id;
+            $('#general :input').attr('disabled', true);
+            $('#addresses :input').attr('disabled', true);
+            $("#EditSupplierSave").addClass('hidden')
+            $("#BeginEditSupplier").removeClass('hidden')
+        });
+    }
+
+
+    function BeginUpdate() {
+        HideModal(function () {
+            ShowPersonModal(SearchById, function () { ShowDetail(editSupplierId); }, 'Supplier', editSupplierId);
+        }, true);
+
+    }
 
     function SearchById(id)
     {

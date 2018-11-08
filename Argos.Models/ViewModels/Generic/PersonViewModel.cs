@@ -20,6 +20,8 @@ namespace Argos.ViewModels.Generic
         public SelectList CreditStatus { get; set; }
 
 
+        public bool  AllowEdit { get; set; }
+
         public virtual string EditButton
         {
             get
@@ -83,10 +85,10 @@ namespace Argos.ViewModels.Generic
 
         public PersonViewModel()
         {
-            this.Person = (T)Activator.CreateInstance(typeof(T));
-            this.NewImages = new List<HttpPostedFileBase>();
-            this.DroppedMails = new List<string>();
-            this.DroppedPhones = new List<string>();
+            this.Person         = (T)Activator.CreateInstance(typeof(T));
+            this.NewImages      = new List<HttpPostedFileBase>();
+            this.DroppedMails   = new List<string>();
+            this.DroppedPhones  = new List<string>();
             this.DroppedAddress = new List<AddressTypes>();
         }
 

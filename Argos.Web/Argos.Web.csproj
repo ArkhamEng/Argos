@@ -632,9 +632,12 @@
     <Content Include="Vendor\jquery\dist\jquery.min.js" />
     <Content Include="Vendor\jqvmap\dist\jquery.vmap.min.js" />
     <Content Include="Vendor\jqvmap\dist\jqvmap.min.css" />
+    <Content Include="Vendor\jszip\dist\jszip.min.js" />
     <Content Include="Vendor\moment\min\moment.min.js" />
     <Content Include="Vendor\nprogress\nprogress.css" />
     <Content Include="Vendor\nprogress\nprogress.js" />
+    <Content Include="Vendor\pdfmake\build\pdfmake.min.js" />
+    <Content Include="Vendor\pdfmake\build\vfs_fonts.js" />
     <Content Include="Vendor\pnotify\dist\pnotify.buttons.css" />
     <Content Include="Vendor\pnotify\dist\pnotify.buttons.js" />
     <Content Include="Vendor\pnotify\dist\pnotify.css" />

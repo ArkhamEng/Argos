@@ -86,9 +86,27 @@
         ShowPersonModal(SearchById, null, 'Client', null);
     }
 
-    function BeginUpdateClient(id)
+    var editClientId = 0;
+
+    function ShowDetail(id)
     {
-        ShowPersonModal(SearchById, null, 'Client', id);
+        ShowPersonModal(SearchById, null, 'Client', id, function ()
+        {
+            editClientId = id;
+            $('#general :input').attr('disabled', true);
+            $('#addresses :input').attr('disabled', true);
+            $("#EditClientSave").addClass('hidden')
+            $("#BeginEditClient").removeClass('hidden')
+        });
+    }
+
+    function BeginUpdate()
+    {
+        HideModal(function ()
+        {
+            ShowPersonModal(SearchById, function () { ShowDetail(editClientId); }, 'Client', editClientId);
+        }, true);
+       
     }
 
     function SearchById(id)

@@ -5,6 +5,7 @@ using Argos.Models.Inventory;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Argos.Models.Config;
 
 namespace Argos.Models.Purchasing
 {
@@ -37,6 +38,6 @@ namespace Argos.Models.Purchasing
 
         public virtual ICollection<SupplierProduct> SupplierProducts { get; set; }
 
-        public virtual Config.CreditStatus CreditStatus { get; set; }
+        public virtual CreditStatus CreditStatus { get; set; }
     }
 }
