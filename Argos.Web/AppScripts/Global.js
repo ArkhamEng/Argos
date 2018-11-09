@@ -75,9 +75,13 @@ function Paginate(table, iniRecords, responsive, filter, scrollX, buttonContaine
     var oTable = $(table).DataTable(
        {
            //destroy: true,
-           keys: true,
-           "scrollX": scrollX,
-           fixedColumns: true,
+          // keys: true,
+           scrollX: scrollX,
+           scrollCollapse: true,
+           fixedHeader:true,
+           //fixedColumns:{
+           //    leftColumns: 3,
+           //    rightColumns: 1 },
            responsive: responsive,
            "lengthChange": false,
            "searching": searching,
@@ -97,15 +101,21 @@ function Paginate(table, iniRecords, responsive, filter, scrollX, buttonContaine
                }
            },
        });
-    if (typeof (filter) != 'undefined') {
-        $(filter).keyup(function () {
+    if (typeof (filter) != 'undefined')
+    {
+        $(filter).keyup(function ()
+        {
             oTable.data().search(this.value).draw();
         });
 
         $(table + "_filter").addClass("hidden");
     }
+    
+    if (typeof (buttonContainer) != 'undefined')
+    {
 
-    if (typeof (buttonContainer) != 'undefined') {
+        $(buttonContainer).html("");
+
         new $.fn.dataTable.Buttons(oTable, {
             buttons: [
                 {

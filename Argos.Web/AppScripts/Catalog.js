@@ -26,9 +26,12 @@ function ShowCatalogModal(OnCompleate, CloseCallBack, Entity, id, disableCallBac
 
 
 
-    ExecuteAjax(url, param, function (response) {
-        HideLoading(function () {
-            if (!$.isPlainObject(response)) {
+    ExecuteAjax(url, param, function (response)
+    {
+        HideLoading(function ()
+        {
+            if (!$.isPlainObject(response))
+            {
                 ShowModal(response, 'static', 'lg');
 
                 //si se recibe un id
@@ -50,11 +53,14 @@ function ShowCatalogModal(OnCompleate, CloseCallBack, Entity, id, disableCallBac
                     SubmitPerson(OnCompleate, form);
 
                 //evento del boton cancel
-                $("#EditCancel").off('click').click(function (e) {
+                $("#EditCancel").off('click').click(function (e) 
+                {
                     HideModal(function () {
                         //si el se tiene un id y no hay callback de deshabilitación remuevo el bloqueo
-                        if (parseInt(param.id) > 0 && typeof (disableCallBack) == 'undefined') {
-                            ExecuteAjax(unlockUrl, { id: param.id }, function (response) {
+                        if (parseInt(param.id) > 0 && typeof (disableCallBack) == 'undefined')
+                        {
+                            ExecuteAjax(unlockUrl, { id: param.id }, function (response)
+                            {
                                 ShowNotify(response.Header, response.Result, response.Body);
                             });
                         }
@@ -322,7 +328,7 @@ function SubmitProduct(SuccessCallBack) {
         $.each(ToDelete, function (i, id) {
             formData.append('ToDelete[' + i + ']', id);
         });
-        console.log("Llegue hasta aqui");
+        
         $.ajax({
             url: $form.attr('action'),
             data: formData,

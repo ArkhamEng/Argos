@@ -94,9 +94,11 @@ namespace Argos.Web
 
             //DATA TABLE STYLE
             bundles.Add(new StyleBundle("~/bundles/DataTableStyles").Include(
+                      //"~/Vendor/datatables.net/css/jquery.dataTables.min.css",
                       "~/Vendor/datatables.net-bs/css/dataTables.bootstrap.min.css",
                       "~/Vendor/datatables.net-buttons-bs/css/buttons.bootstrap.min.css",
                       "~/Vendor/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css",
+                      "~/Vendor/datatables.net-fixedcolumns/css/fixedColumns.dataTables.min.css",
                       "~/Vendor/datatables.net-responsive-bs/css/responsive.bootstrap.min.css",
                       "~/Vendor/datatables.net-scroller-bs/css/scroller.bootstrap.min.css"));
 
@@ -104,6 +106,8 @@ namespace Argos.Web
             bundles.Add(new ScriptBundle("~/bundles/DataTableScripts").Include(
             "~/Vendor/datatables.net/js/jquery.dataTables.min.js",
             "~/Vendor/datatables.net-bs/js/dataTables.bootstrap.min.js",
+             "~/Vendor/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js",
+            "~/Vendor/datatables.net-fixedcolumns/js/dataTables.fixedColumns.min.js",
             "~/Vendor/pdfmake/build/pdfmake.min.js",
             "~/Vendor/pdfmake/build/vfs_fonts.js",
             "~/Vendor/jszip/dist/jszip.min.js",
@@ -113,7 +117,6 @@ namespace Argos.Web
             "~/Vendor/datatables.net-buttons/js/buttons.html5.min.js",
             "~/Vendor/datatables.net-buttons/js/buttons.colVis.min.js",
             "~/Vendor/datatables.net-buttons/js/buttons.print.min.js",
-            "~/Vendor/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js",
             "~/Vendor/datatables.net-keytable/js/dataTables.keyTable.min.js",
             "~/Vendor/datatables.net-responsive/js/dataTables.responsive.min.js",
             "~/Vendor/datatables.net-responsive-bs/js/responsive.bootstrap.js",

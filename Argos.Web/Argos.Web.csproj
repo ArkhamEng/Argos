@@ -449,13 +449,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\loading.gif" />
+    <Content Include="Images\loading4.gif" />
     <Content Include="Images\loading2.gif" />
     <Content Include="Images\loading3.gif" />
     <Content Include="Images\Logo.gif" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\img.jpg" />
-    <Content Include="Images\loading1.gif" />
+    <Content Include="Images\loading.gif" />
     <Content Include="Images\Logo.png" />
     <Content Include="Images\question.png" />
     <Content Include="Images\sinimagen.jpg" />
@@ -603,6 +603,11 @@
     <Content Include="Vendor\bootstrap-progressbar\css\bootstrap-progressbar-3.3.4.min.css" />
     <Content Include="Vendor\datatables.net-bs\css\dataTables.bootstrap.min.css" />
     <Content Include="Vendor\datatables.net-bs\js\dataTables.bootstrap.min.js" />
+    <Content Include="Vendor\datatables.net-fixedcolumns\css\fixedColumns.dataTables.min.css" />
+    <Content Include="Vendor\datatables.net-fixedcolumns\js\dataTables.fixedColumns.js" />
+    <Content Include="Vendor\datatables.net-fixedcolumns\js\dataTables.fixedColumns.min.js" />
+    <Content Include="Vendor\datatables.net-bs\css1.12\dataTables.bootstrap.min.css" />
+    <Content Include="Vendor\datatables.net-bs\js1.12\dataTables.bootstrap.min.js" />
     <Content Include="Vendor\datatables.net-buttons-bs\css\buttons.bootstrap.min.css" />
     <Content Include="Vendor\datatables.net-buttons-bs\js\buttons.bootstrap.min.js" />
     <Content Include="Vendor\datatables.net-buttons\js\buttons.colVis.min.js" />
@@ -618,6 +623,8 @@
     <Content Include="Vendor\datatables.net-responsive\js\dataTables.responsive.min.js" />
     <Content Include="Vendor\datatables.net-scroller-bs\css\scroller.bootstrap.min.css" />
     <Content Include="Vendor\datatables.net-scroller\js\dataTables.scroller.min.js" />
+    <Content Include="Vendor\datatables.net-fixedheader\jquery.dataTables.min.js" />
+    <Content Include="Vendor\datatables.net\css\jquery.dataTables.min.css" />
     <Content Include="Vendor\datatables.net\js\jquery.dataTables.min.js" />
     <Content Include="Vendor\devbridge-autocomplete\dist\jquery.autocomplete.min.js" />
     <Content Include="Vendor\fastclick\lib\fastclick.js" />
@@ -742,6 +749,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Files\ProfilePictures\" />
+    <Folder Include="Vendor\datatables.net\js.1.12\" />
     <Folder Include="Views\Configuration\" />
     <Folder Include="Views\Entity\" />
   </ItemGroup>

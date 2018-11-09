@@ -43,7 +43,7 @@
             <th style="min-width:150px">
                 @Html.DisplayName("Modificado por")
             </th>
-            <th style="min-width:100px">
+            <th style="min-width:200px">
                 Acciones
             </th>
         </tr>
@@ -99,7 +99,7 @@
                     </a>
                 </td>
 
-                <td>
+                <td class="btn-group">
                     <button class="@Argos.Common.Styles.Buttons.Primary" type="button" onclick="ShowDetail(@item.Person.EntityId)">
                         @Html.Raw(Argos.Common.Styles.ButtonContent.Detail)
                     </button>
