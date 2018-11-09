@@ -10,8 +10,8 @@
                 @Html.DisplayNameFor(model => model.PhoneTypeId)
             </td>
             <td>
-                <button type="button" class="btn btn-success btn-xs pull-right" onclick="ShowAddPhone()">
-                    <span class="fa fa-plus"></span>
+                <button type="button" class="@Argos.Common.Styles.Buttons.XSmall.Success" onclick="ShowAddPhone()">
+                    @Html.Raw(Argos.Common.Styles.ButtonContent.Add)
                 </button>
             </td>
         <tr id="NewPhoneRow" class="hidden">
@@ -24,8 +24,8 @@
                 <input type="hidden" id="item_PhoneTypeId" />
             </td>
             <td>
-                <button class="btn btn-danger btn-xs pull-right" type="button" onclick="DropPhone(this)">
-                    <span class="fa fa-trash"></span>
+                <button class="@Argos.Common.Styles.Buttons.XSmall.Danger" type="button" onclick="DropPhone(this)">
+                    @Html.Raw(Argos.Common.Styles.ButtonContent.Eliminate)
                 </button>
             </td>
         </tr>
@@ -46,8 +46,8 @@
                     @Html.DisplayFor(m => item.PhoneType.Name)
                 </td>
                 <td>
-                    <button class="btn btn-danger btn-xs pull-right" type="button" onclick="DropPhone(this)">
-                        <span class="fa fa-trash"></span>
+                    <button class="@Argos.Common.Styles.Buttons.XSmall.Danger" type="button" onclick="DropPhone(this)">
+                        @Html.Raw(Argos.Common.Styles.ButtonContent.Eliminate)
                     </button>
                 </td>
             </tr>

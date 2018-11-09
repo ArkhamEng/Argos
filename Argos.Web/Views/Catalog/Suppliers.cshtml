@@ -33,37 +33,26 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <div class="hidden-xs">
-                    <div class="col-lg-4 col-md-4 col-sm-4">
-                        @Html.DropDownList("ddlStateId", Model.States, "Estado / Entidad", new { @class = "form-control col-md-6  has-feedback-left text-uppercase" })
-                        <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        @Html.DropDownList("ddlCityId", Model.Cities, "Ciudad / Municipio", new { @class = "form-control col-md-6  has-feedback-left text-uppercase" })
-                        <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-                </div>
-                <ul class="nav navbar-right panel_toolbox">
+                <ul class="nav navbar-left  panel_toolbox">
+                    <li id="tbButtons">
 
-                    <li class="dropdown">
-                        <button class="btn btn-default" type="button" id="btnClear" title="Recargar" onclick="Clear()">
-                            <span class="glyphicon glyphicon-refresh"></span>
-                        </button>
                     </li>
-                    <li>
-                        <button type="button" class="btn btn-success" title="Registrar nuevo producto" onclick="BeginAddSupplier()">
-                            <i class="fa  fa-plus"></i>
+                </ul>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li class="group-btn">
+                        <button class="@Argos.Common.Styles.Buttons.Default" type="button" id="btnClear" title="Recarga la página" onclick="Clear()">
+                           @Html.Raw(Argos.Common.Styles.ButtonContent.Reload)
                         </button>
-                    </li>
-                    <li>
-                        <a class="collapse-link collapsed"><i class="fa fa-chevron-up"></i></a>
+                        <button type="button" class="@Argos.Common.Styles.Buttons.Success" title="Captura un nuevo proveedor" onclick="BeginAddSupplier()">
+                          @Html.Raw(Argos.Common.Styles.ButtonContent.Add)
+                        </button>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
 
             <div class="x_content">
-                <div id="divSupplierList"  style="min-height:300px">
+                <div id="divSupplierList" style="min-height:300px">
                     @Html.Partial("_SupplierList", Model.Entities)
                 </div>
             </div>
@@ -75,25 +64,22 @@
 
 
 <script>
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         SetCascade('#ddlStateId', '#ddlCityId', '@Url.Action("GetCities","Configuration")');
     });
 
     function BeginAddSupplier()
     {
-        ShowPersonModal(SearchById, null, 'Supplier', null);
+        ShowCatalogModal(SearchById, null, 'Supplier', null);
     }
 
-    function BeginUpdateSupplier(id)
-    {
-        ShowPersonModal(SearchById, null, 'Supplier', id);
-    }
 
     var editSupplierId = 0;
 
-    function ShowDetail(id) {
-        ShowPersonModal(SearchById, null, 'Supplier', id, function () {
+    function ShowDetail(id)
+    {
+        ShowCatalogModal(SearchById, null, 'Supplier', id, function ()
+        {
             editSupplierId = id;
             $('#general :input').attr('disabled', true);
             $('#addresses :input').attr('disabled', true);
@@ -103,23 +89,22 @@
     }
 
 
-    function BeginUpdate() {
+    function BeginUpdate()
+    {
         HideModal(function () {
-            ShowPersonModal(SearchById, function () { ShowDetail(editSupplierId); }, 'Supplier', editSupplierId);
+            ShowCatalogModal(SearchById, function () { ShowDetail(editSupplierId); }, 'Supplier', editSupplierId);
         }, true);
 
     }
 
     function SearchById(id)
     {
-        ExecuteAjax('@Url.Action("SearchSuppliers")', { id: id }, function (response)
-        {
+        ExecuteAjax('@Url.Action("SearchSuppliers")', { id: id }, function (response) {
             $("#divSupplierList").html(response);
         });
     }
 
-    function SearchSuppliers()
-    {
+    function SearchSuppliers() {
         ShowLoading('static');
 
         var data = {
@@ -127,17 +112,14 @@
             stateId: $("#ddlStateId").val(), townId: $("#ddlCityId").val()
         };
 
-        ExecuteAjax('@Url.Action("SearchSuppliers")', data, function (response)
-        {
-            HideLoading(function ()
-            {
+        ExecuteAjax('@Url.Action("SearchSuppliers")', data, function (response) {
+            HideLoading(function () {
                 $("#divSupplierList").html(response);
             });
         });
     }
 
-    function Clear()
-    {
+    function Clear() {
         window.location = window.location;
     }
 </script>

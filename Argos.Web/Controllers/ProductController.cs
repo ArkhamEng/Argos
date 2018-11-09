@@ -21,7 +21,7 @@ namespace Argos.Web.Controllers
         {
             var model = new SearchProductsVM(AppCache.Instance);
             model.Products = db.Products.OrderBy(p => p.Description).
-                            Select(p => new ProductVM { Product = p }).Take(Numbers.Config.MaxSearchRows).ToList();
+                            Select(p => new ProductViewModel { Product = p }).Take(Numbers.Config.MaxSearchRows).ToList();
             return View(model);
         }
 
@@ -43,14 +43,14 @@ namespace Argos.Web.Controllers
         [HttpPost]
         public ActionResult BeginAddProduct()
         {
-            var model = new ProductVM(AppCache.Instance);
+            var model = new ProductViewModel(AppCache.Instance);
 
             return PartialView("_ProductEdit", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveProduct(ProductVM productVm)
+        public ActionResult SaveProduct(ProductViewModel productVm)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Argos.Web.Controllers
         {
             try
             {
-                var model = new ProductVM(AppCache.Instance);
+                var model = new ProductViewModel(AppCache.Instance);
 
                 model.Product = db.Products.Include(p => p.ProductImages).Include(p => p.ProductImages).
                                 Include(p => p.SubCategory).FirstOrDefault(p => p.ProductId == id);
@@ -280,7 +280,7 @@ namespace Argos.Web.Controllers
                 return Json(new JResponse
                 {
                     Code = Responses.Codes.Success,
-                    Result = Responses.Success,
+                    Result = Responses.Info,
                     Header = "Registro desbloqueado",
                     Body = string.Format("El registro ha sido desbloqueado")
                 });
@@ -337,7 +337,7 @@ namespace Argos.Web.Controllers
         }
 
 
-        private List<ProductVM> LookFor(ProductFilters filter)
+        private List<ProductViewModel> LookFor(ProductFilters filter)
         {
             //obtengo la sucursal en sesión
             var branchId = User.Identity.GetBranchId();
@@ -357,7 +357,7 @@ namespace Argos.Web.Controllers
                             Where(p => (filter.CategoryId == null || p.SubCategory.CategoryId == filter.CategoryId)
                             && (filter.CategoryId == null || p.SubCategoryId == filter.SubCategoryId)
                             && (filter.Text == null || filter.Text == string.Empty || arr.All(s => (p.Code + " " + p.Description + " " + p.TradeMark).Contains(s)))
-                            && (filter.ProductId == null || p.ProductId == filter.ProductId)).Select(p => new ProductVM { Product = p }).ToList();
+                            && (filter.ProductId == null || p.ProductId == filter.ProductId)).Select(p => new ProductViewModel { Product = p }).ToList();
 
           
             return model;

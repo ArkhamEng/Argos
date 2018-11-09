@@ -3,17 +3,13 @@
 }
 
 
-function Compleate(textbox, list, url, onSelected)
-{
+function Compleate(textbox, list, url, onSelected) {
     textbox.autocomplete(
       {
-          source: function (request, response)
-          {
-              ExecuteAjax(url, { filter: request.term }, function (json)
-              {
+          source: function (request, response) {
+              ExecuteAjax(url, { filter: request.term }, function (json) {
                   list.empty();
-                  for (var i = 0; i < json.length; i++)
-                  {
+                  for (var i = 0; i < json.length; i++) {
                       list.append($('<option data-id=' + json[i].Id + '></option>').val(json[i].Label).html(json[i].Value));
                   }
               });
@@ -22,25 +18,20 @@ function Compleate(textbox, list, url, onSelected)
       });
 
     //this is executed when an option from DataList is selected
-    textbox.off('input').bind('input', function ()
-    {
+    textbox.off('input').bind('input', function () {
         var val = this.value;
-      
-        if (list.find('option').filter(function ()
-        {
+
+        if (list.find('option').filter(function () {
             return this.value.toUpperCase() === val.toUpperCase();
-        }).length)
-        {
-            var option = list.find('option').filter(function ()
-            {
+        }).length) {
+            var option = list.find('option').filter(function () {
                 return this.value.toUpperCase() === val.toUpperCase();
             });
 
             var value = option.text();
             var id = option.data("id");
 
-            if (onSelected != null)
-            {
+            if (onSelected != null) {
                 onSelected(id, value);
             }
         }
@@ -48,41 +39,34 @@ function Compleate(textbox, list, url, onSelected)
 }
 
 //AJAX CALL
-function ExecuteAjax(url, parameters, callback)
-{
+function ExecuteAjax(url, parameters, callback) {
     $.ajax({
         url: url,
         type: "POST",
         data: parameters,
-        success: function (response)
-        {
-            if ($.isPlainObject(response) && typeof (response.Code) != "undefined" && response.Code != 200)
-            {
+        success: function (response) {
+            if ($.isPlainObject(response) && typeof (response.Code) != "undefined" && response.Code != 200) {
                 ShowNotify(response.Header, response.Result, response.Body, 3500);
 
-                switch (response.Code)
-                {
+                switch (response.Code) {
                     case 401:
                         window.location = response.Extra;
                         break;
                 }
             }
-            else
-            {
+            else {
                 callback(response);
             }
         },
-        error: function ()
-        {
+        error: function () {
             HideLoading();
-            ShowNotify("Error Inesperado!","dark", "ocurrio un error, quiza has perdido la conexion a internet!", 3500);
+            ShowNotify("Error Inesperado!", "dark", "ocurrio un error, quiza has perdido la conexion a internet!", 3500);
         }
     });
 }
 
 //Realiza paginación  sobre una tabla
-function Paginate(table, iniRecords, responsive, filter,scrollX,buttonContainer)
-{
+function Paginate(table, iniRecords, responsive, filter, scrollX, buttonContainer) {
     var searching = false;
 
     if (typeof (filter) != 'undefined')
@@ -113,66 +97,58 @@ function Paginate(table, iniRecords, responsive, filter,scrollX,buttonContainer)
                }
            },
        });
-    if (typeof (filter) != 'undefined')
-    {
-        $(filter).keyup(function ()
-        {
+    if (typeof (filter) != 'undefined') {
+        $(filter).keyup(function () {
             oTable.data().search(this.value).draw();
         });
 
         $(table + "_filter").addClass("hidden");
     }
 
-    if (typeof (buttonContainer) != 'undefined')
-    {
-        var buttons = new $.fn.dataTable.Buttons(oTable, {
+    if (typeof (buttonContainer) != 'undefined') {
+        new $.fn.dataTable.Buttons(oTable, {
             buttons: [
                 {
                     extend: 'copyHtml5',
                     text: '<i class="fa fa-files-o"></i> Copiar',
                     titleAttr: 'Copy',
-                    className: "btn btn-primary"
+                    className: "btn btn-default"
                 },
-             {
-                 extend: 'excelHtml5',
-                 text: '<i class="fa fa-file-excel-o"></i> Excel',
-                 titleAttr: 'Excel',
-                 className:"btn btn-success"
-             },
-
-             {
-                 extend: 'pdfHtml5',
-                 text: '<i class="fa fa-file-pdf-o"></i> PDF' ,
-                 titleAttr: 'PDF',
-                 className: "btn btn-warning"
-             }
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i> Excel',
+                    titleAttr: 'Excel',
+                    className: "btn btn-default"
+                },
+                 {
+                     extend: 'pdfHtml5',
+                     text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                     titleAttr: 'PDF',
+                     className: "btn btn-default"
+                 }
             ]
         }).container().appendTo($(buttonContainer));
-
     }
 }
 
 //SHOWS MODAL WITH CUSTON FUNCTIONS AND CONTENT
-function ShowModal(html, backdrop, size)
-{
+function ShowModal(html, backdrop, size) {
     if (size == 'lg')
         $("#ModalDialog").addClass('modal-lg');
 
     if (size == 'sm')
         $("#ModalDialog").addClass('modal-sm');
-   
+
     $("#ModalLoading").children().hide();
-  
+
     $("#ModalContent").html(html);
 
     $("#SiteModal").modal({ backdrop: backdrop });
 }
 
 //Hide Main Modal
-function HideModal(callback,removeContent)
-{
-    $('#SiteModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e)
-    {
+function HideModal(callback, removeContent) {
+    $('#SiteModal').off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
         if (callback != null)
             callback();
 
@@ -185,10 +161,8 @@ function HideModal(callback,removeContent)
 }
 
 //Show Child Modal 
-function ShowChildModal(content)
-{
-    $("#ChildModal").off("shown.bs.modal").on('shown.bs.modal', function ()
-    {
+function ShowChildModal(content) {
+    $("#ChildModal").off("shown.bs.modal").on('shown.bs.modal', function () {
         $('#SiteModal').css('opacity', .7);
         $('#SiteModal').unbind();
     });
@@ -199,10 +173,8 @@ function ShowChildModal(content)
 }
 
 //Hide Child Modal 
-function HideChildModal()
-{
-    $('#ChildModal').off('hidden.bs.modal').on('hidden.bs.modal', function ()
-    {
+function HideChildModal() {
+    $('#ChildModal').off('hidden.bs.modal').on('hidden.bs.modal', function () {
         $('#SiteModal').css('opacity', 1);
         $('#SiteModal').removeData("modal").modal({});
         $('body').addClass("modal-open");
@@ -214,8 +186,7 @@ function HideChildModal()
 
 
 //Loading In Modal
-function ShowModLoading()
-{
+function ShowModLoading() {
     $("#ModalContent").children().hide();
     $("#ModalLoading").children().show();
 }
@@ -226,20 +197,16 @@ function HideModLoading() {
 }
 
 //DROP DOWN CASCADE
-function SetCascade(ddlParent, ddlChild, url)
-{
-    $(ddlParent).unbind('change').change(function (e)
-    {
+function SetCascade(ddlParent, ddlChild, url) {
+    $(ddlParent).unbind('change').change(function (e) {
         if ($(ddlParent).val() != '') {
             var parentId = $(ddlParent).val();
 
-            ExecuteAjax(url, { id: parentId }, function (data)
-            {
+            ExecuteAjax(url, { id: parentId }, function (data) {
                 $(ddlChild).empty();
                 $(ddlChild).append($('<option></option>').val("").html(""));
 
-                for (var i = 0; i < data.length; i++)
-                {
+                for (var i = 0; i < data.length; i++) {
                     $(ddlChild).append($('<option></option>').val(data[i].Value).html(data[i].Text));
                 }
                 if (data.length > 0)
@@ -338,15 +305,13 @@ function HideMessage(cleaUp, callback) {
     $("#ModalMessage").modal('hide');
 }
 
-function ShowNotify(title, type, message, delay)
-{
+function ShowNotify(title, type, message, delay) {
     var dly = 2500;
 
     if (isNaN("") || typeof (delay) != 'undefined')
         dly = delay;
 
-    if (typeof (PNotify) === 'undefined')
-    {
+    if (typeof (PNotify) === 'undefined') {
         console.log("PNotify no definido");
         return;
     }

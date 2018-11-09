@@ -25,17 +25,15 @@
 
         <li class="pull-right">
             <div>
-                <button type="button" id="BeginEditClient" title="Editar registro" class="btn btn-warning  btn-round hidden" onclick="BeginUpdate()">
-                    <span class="fa fa-edit"></span>
-                    Editar
+                <button type="button" id="BeginEditClient" title="Editar registro" class="btn btn-warning  btn-round hidden"  
+                        onclick="BeginUpdate()" disabled="@Model.EditDisabled">
+                   @Html.Raw(Argos.Common.Styles.ButtonContent.Edit)
                 </button>
                 <button type="submit" id="EditClientSave" title="Guardar cambios" class="btn btn-success  btn-round">
-                    <span class="fa fa-save"></span>
-                    Guardar
+                   @Html.Raw(Argos.Common.Styles.ButtonContent.Save)
                 </button>
                 <button type="button" class="btn btn-default btn-round" id="EditCancel">
-                    <span class="fa fa-times"></span>
-                    Cancelar
+                   @Html.Raw(Argos.Common.Styles.ButtonContent.Cancel)
                 </button>
             </div>
         </li>
@@ -51,7 +49,8 @@
                         <div class="col-md-3 btn-group-vertical">
                             <div style="position:relative">
                                 <img src="@Model.Image" id="imgPerson" class="img-responsive" style="min-height:100px" />
-                                <button type="button" id="btnDropImage" class="@Model.DropImageButton" style="position:absolute; top:0;" onclick="RemoveImage()">
+                                <button type="button" id="btnDropImage" class="@Argos.Common.Styles.Buttons.Danger" 
+                                        style="position:absolute; top:0;" onclick="RemoveImage()">
                                     <span class="fa fa-trash"></span>
                                 </button>
                             </div>

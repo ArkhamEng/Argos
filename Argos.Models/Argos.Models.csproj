@@ -156,10 +156,10 @@
     <Compile Include="Models\Security\SystemUser.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\Generic\AddressVm.cs" />
-    <Compile Include="ViewModels\Generic\AuthEntity.cs" />
+    <Compile Include="ViewModels\Generic\CatalogViewModel.cs" />
     <Compile Include="ViewModels\Generic\PersonSearchViewModel.cs" />
     <Compile Include="ViewModels\Generic\PersonViewModel.cs" />
-    <Compile Include="ViewModels\Inventory\ProductVM.cs" />
+    <Compile Include="ViewModels\Inventory\ProductViewModel.cs" />
     <Compile Include="ViewModels\Inventory\SearchProductsVM.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="ViewModels\Generic\SearchPerson.cs" />

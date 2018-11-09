@@ -11,58 +11,17 @@ using System.Web.Mvc;
 
 namespace Argos.ViewModels.Generic
 {
-    public class PersonViewModel<T> where T:Person
+    public class PersonViewModel<T> :CatalogViewModel<T> where T:Person
     {
-        public T Person { get; set; }
+        public T Person
+        {
+            get { return (T)this.catalog; }
+            set { this.catalog = value; }
+        }
 
         public SelectList JobPositions { get; set; }
 
         public SelectList CreditStatus { get; set; }
-
-
-        public bool  AllowEdit { get; set; }
-
-        public virtual string EditButton
-        {
-            get
-            {
-                if (true || (HttpContext.Current.User.IsInRole("Capturista") && (this.Person != null && this.Person.IsActive)))
-                    return Styles.Buttons.Warning;
-                else
-                    return Styles.Buttons.Disabled.Warning;
-            }
-        }
-
-        public virtual string DeleteButton
-        {
-            get
-            {
-                if ((HttpContext.Current.User.IsInRole("Capturista") && (this.Person != null && this.Person.IsActive)))
-                    return Styles.Buttons.Danger;
-                else
-                    return Styles.Buttons.Disabled.Danger;
-            }
-        }
-
-        public virtual string DropImageButton
-        {
-            get
-            {
-                return (this.Person.ImagePath != null && this.Person.ImagePath != string.Empty) ?
-                        Styles.Buttons.Danger : Styles.Buttons.Disabled.Danger;
-            }
-        }
-
-        public string ItemState
-        {
-            get
-            {
-                if (!this.Person.IsActive)
-                    return Responses.Danger;
-
-                return string.Empty;
-            }
-        }
 
 
         public bool DropImage { get; set; }

@@ -14,6 +14,7 @@ namespace Argos.ViewModels.Generic
 
         public ICollection<PersonViewModel<T>> Entities { get; set; }
 
+        public bool CanAddPerson  { get; set; }
 
         public PersonSearchVieModel()
         {

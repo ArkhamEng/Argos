@@ -14,12 +14,12 @@ using System.Web.Mvc;
 
 namespace Argos.ViewModels.Inventory
 {
-    public class ProductVM:AuthEntity
+    public class ProductViewModel :CatalogViewModel<Product> 
     {
         public Product Product
         {
-            get { return (Product)Catalog; } 
-            set { Catalog = value; }
+            get { return (Product)catalog; } 
+            set { catalog = value; }
         }
 
         public ItemStorage Stock { get; set; }
@@ -48,7 +48,7 @@ namespace Argos.ViewModels.Inventory
         /// <summary>
         /// indica la clase a aplicar sobre la fila en el catálogo
         /// </summary>
-        public string RowState
+        public override string RowState
         {
             get
             {
@@ -91,7 +91,7 @@ namespace Argos.ViewModels.Inventory
         /// </summary>
         public List<HttpPostedFileBase> NewImages { get; set; }
 
-        public ProductVM ()
+        public ProductViewModel ()
         {
             this.Product        = new Product();
             this.Complement     = new ProductComplement();
@@ -100,7 +100,7 @@ namespace Argos.ViewModels.Inventory
             this.NewImages      = new List<HttpPostedFileBase>();
         }
 
-        public ProductVM(IAppCache cache)
+        public ProductViewModel(IAppCache cache)
         {
             this.Product = new Product();
             this.Stock = new ItemStorage();

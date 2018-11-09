@@ -23,8 +23,8 @@
                 @Html.DisplayNameFor(model => model.AddressTypeId)
             </td>
             <td>
-                <button class="btn btn-success btn-sm pull-right" type="button" onclick="ShowAddAddress()" id="btnAddAddress">
-                    <span class="fa fa-plus"></span>
+                <button class="@Argos.Common.Styles.Buttons.XSmall.Success" type="button" onclick="ShowAddAddress()" id="btnAddAddress">
+                    @Html.Raw(Argos.Common.Styles.ButtonContent.Add)
                 </button>
             </td>
         </tr>
@@ -54,8 +54,8 @@
                 <input type="hidden" id="item_AddressTypeId" />
             </td>
             <td>
-                <button class="btn btn-danger btn-sm pull-right" onclick="DropAddress(this)" type="button">
-                    <span class="@Argos.Common.Styles.Icons.Delete"></span>
+                <button class="@Argos.Common.Styles.Buttons.XSmall.Danger" onclick="DropAddress(this)" type="button">
+                    @Html.Raw(Argos.Common.Styles.ButtonContent.Eliminate)
                 </button>
             </td>
         </tr>
@@ -64,7 +64,7 @@
         @foreach (var item in Model)
         {
             var typeId = (int)item.AddressTypeId;
-            <tr>
+            <tr >
                 <td class="text-capitalize">
                     @Html.HiddenFor(m => item.EntityId)
                     @Html.DisplayFor(m => item.Street)
@@ -90,8 +90,8 @@
                     @Html.DisplayFor(m => item.AddressType.Name)
                 </td>
                 <td>
-                    <button class="btn btn-danger btn-sm pull-right" type="button" onclick="DropAddress(this)" id="btnRemoveAddress">
-                        <span class="@Argos.Common.Styles.Icons.Delete"></span>
+                    <button class="@Argos.Common.Styles.Buttons.XSmall.Danger" type="button" onclick="DropAddress(this)" id="btnRemoveAddress">
+                        @Html.Raw(Argos.Common.Styles.ButtonContent.Eliminate)
                     </button>
                 </td>
             </tr>

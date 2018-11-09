@@ -1,9 +1,9 @@
 ﻿
 
-//Muestra la ventada emergente de Edición /Captura de personas, dependiendo del 
-//tipo dado en el parametro Entity (Client,Employee,Supplier), si se envía un disable call back
+//Muestra la ventada emergente de Edición /Captura de catalogos, dependiendo del 
+//tipo dado en el parametro Entity (Client,Employee,Supplier, Product, etc), si se envía un disable call back
 //se considerara que la ventana no esta en modo de edición
-function ShowPersonModal(OnCompleate, CloseCallBack, Entity, id, disableCallBack) {
+function ShowCatalogModal(OnCompleate, CloseCallBack, Entity, id, disableCallBack) {
     ShowLoading('static');
 
     var param = {};
@@ -14,6 +14,17 @@ function ShowPersonModal(OnCompleate, CloseCallBack, Entity, id, disableCallBack
         url = "/Catalog/BeginUpdate" + Entity;
     }
     var form = "#" + Entity + "Form";
+
+
+    var unlockUrl = "/Catalog/UnLockPerson/";
+
+    switch (Entity) {
+        case "Product":
+            unlockUrl = "/Catalog/UnLockProduct/";
+            break;
+    }
+
+
 
     ExecuteAjax(url, param, function (response) {
         HideLoading(function () {
@@ -29,21 +40,21 @@ function ShowPersonModal(OnCompleate, CloseCallBack, Entity, id, disableCallBack
                         //de lo contrario, entro a modo edición y bloqueo el registro
                     else
                     {
-                        ShowNotify("Registro bloqueado!", "info", "Dispones de 5 min para realizar cambios, sobre este registro");
-                        SubmitPerson(OnCompleate, form);
+                        ShowNotify("Registro bloqueado!", "warning", "Dispones de 5 min para realizar cambios, sobre este registro");
                     }
                 }
 
+                if (Entity == "Product")
+                    SubmitProduct(OnCompleate);
+                else
+                    SubmitPerson(OnCompleate, form);
+
                 //evento del boton cancel
-                $("#EditCancel").off('click').click(function (e)
-                {
-                    HideModal(function ()
-                    {
+                $("#EditCancel").off('click').click(function (e) {
+                    HideModal(function () {
                         //si el se tiene un id y no hay callback de deshabilitación remuevo el bloqueo
-                        if (parseInt(param.id) > 0 && typeof (disableCallBack) == 'undefined')
-                        {
-                            ExecuteAjax('/Catalog/UnLockPerson/', { id: param.id }, function (response)
-                            {
+                        if (parseInt(param.id) > 0 && typeof (disableCallBack) == 'undefined') {
+                            ExecuteAjax(unlockUrl, { id: param.id }, function (response) {
                                 ShowNotify(response.Header, response.Result, response.Body);
                             });
                         }
@@ -258,59 +269,6 @@ function ValidateAddress($form) {
     return true;
 }
 
-
-
-
-
-//MUESTRA LA VENTANA DE CAPTURA DE PRODUCTO
-function ShowProductModal(OnCompleate, CloseCallBack, id) {
-    ShowLoading('static');
-
-    var param = {};
-    var url = "/Catalog/BeginAddProduct";
-    var text = '<span class="fa fa-users"></span> Agregar nuevo Producto';
-
-    if (parseInt(id) > 0) {
-        param = { id: id }
-        url = "/Catalog/BeginUpdateProduct";
-        text = '<span class="fa fa-users"></span> Editar datos del Producto';
-    }
-
-    ExecuteAjax(url, param, function (response) {
-        HideLoading(function () {
-            if (!$.isPlainObject(response)) {
-                // $("#divCatalogModal").html(response);
-
-                ShowModal(response, 'static', 'lg');
-
-                if (typeof (param.id) != 'undefined')
-                    ShowNotify("Registro bloqueado!", "info", "Dispones de 5 min para realizar cambios, sobre este registro");
-
-                SubmitProduct(OnCompleate);
-
-                $("#EditCancel").off('click').click(function (e) {
-                    console.log("Click en cerrar");
-
-                    HideModal(function () {
-                        //si el se tiene un id, desbloqueo el registro para liberarlo
-                        if (parseInt(param.id) > 0) {
-                            ExecuteAjax('/Catalog/UnLockProduct/', { id: param.id }, function (response) {
-                                ShowNotify(response.Header, response.Result, response.Body);
-                            });
-                        }
-                        //si hay callback al cerrar lo ejecuto
-                        if (CloseCallBack != null)
-                            CloseCallBack();
-                    }, true);
-                });
-            }
-            else
-                ShowMessage(response.Result, response.Message, null, null, 'static');
-        });
-    });
-
-
-}
 
 function SubmitProduct(SuccessCallBack) {
     $("#frmProducts").off('submit').on('submit', function (e) {

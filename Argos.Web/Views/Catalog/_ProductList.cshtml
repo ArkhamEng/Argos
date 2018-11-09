@@ -1,20 +1,53 @@
-﻿@model List<Argos.ViewModels.Inventory.ProductVM>
+﻿@model List<Argos.ViewModels.Inventory.ProductViewModel>
 @using Argos.Support
 
 
     <table id="tbProducts" class="table  dataTable no-footer jambo_table">
         <thead>
-            <tr class="heading2" >
-                @*<th><span class="fa fa-photo"></span></th>
-                <th>Código</th>
-                <th>Descripción</th>
-                <th>Categoria</th>
-                <th>Sub Categoria</th>
-                <th>Marca</th>
-                <th>Unidad</th>*@
-                <th>Imagen</th>
-                <th>Detalle</th>
-                <th>Acciones</th>
+            <tr class="heading" >
+                <th style="min-width:50px">
+
+                </th>
+                <th>
+                    @Html.DisplayName("Código")
+                </th>
+             
+                <th style="min-width:250px">
+                    @Html.DisplayName("Descripción")
+                </th>
+                <th>
+                    @Html.DisplayName("Marca")
+                </th>
+                <th>
+                    @Html.DisplayName("Unidad")
+                </th>
+                <th>
+                    @Html.DisplayName("Costo")
+                </th>
+                <th>
+                    @Html.DisplayName("Compra")
+                </th>
+                <th>
+                    @Html.DisplayName("Venta")
+                </th>
+                <th>
+                    @Html.DisplayName("Imagenes")
+                </th>
+                <th style="min-width:150px">
+                    @Html.DisplayName("Fecha de alta")
+                </th>
+                <th style="min-width:150px">
+                    @Html.DisplayName("Agregado por")
+                </th>
+                <th style="min-width:150px">
+                    @Html.DisplayName("Fecha Modificación")
+                </th>
+                <th style="min-width:150px">
+                    @Html.DisplayName("Modificado por")
+                </th>
+                <th style="min-width:100px">
+                    Acciones
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -22,52 +55,65 @@
         {
                 <tr class='@items.RowState'>
                   
-                    <td class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
-                        <img src='@items.ImagePath' class="img-responsive" style="max-height:100px"/>
+                    <td>
+                        <img src='@items.ImagePath' class="img-responsive"/>
+                    </td>
+                    <td class="text-uppercase">
+                        @Html.DisplayFor(model => items.Product.Code)
+                    </td>
+                    <td class="text-capitalize">
+                        @Html.DisplayFor(model => items.Product.Description)
+                    </td>
+                    <td class="text-capitalize">
+                        @Html.DisplayFor(model => items.Product.TradeMark)
+                    </td>
+                    <td class="text-capitalize">
+                        @Html.DisplayFor(model => items.Product.MeasureUnit.Name)
                     </td>
                     <td>
-                        <h2>
-                            <i class="fa fa-tag"></i>
-                            @Html.DisplayFor(model => items.Product.Code)
-                        </h2>
-                        <h3 class="text-capitalize">                           
-                            @Html.DisplayFor(model => items.Product.Description)
-                        </h3>
-                        <h5>
-                            <u>
-                                @Html.DisplayFor(model => items.Product.SubCategory.Category.Name) / @Html.DisplayFor(model => items.Product.SubCategory.Name)
-                            </u>
-                        </h5>
-                        <h5>
-                            Por   <a class="text-uppercase"> @Html.DisplayFor(model => items.Product.TradeMark) </a>   <span class="fa fa-registered"></span>
-                            |     <i class="fa fa-balance-scale"></i> @Html.DisplayFor(model => items.Product.MeasureUnitId)
-                        </h5>
-                        
-                        <h2>
-                            @items.Product.TaxedMaxPrice.ToString("c")
-                          |
-                                                       
-                            @items.Product.TaxedMinPrice.ToString("c")
-                        </h2>
-                        
+                        @Html.DisplayFor(model => items.Product.BuyPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => items.Product.IsForPurchase)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => items.Product.IsForSale)
+                    </td>
+                    <td>
+                        @items.Product.ProductImages.Count
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => items.Product.InsDate)
+                    </td>
+                    <td>
+                        <a class="text-capitalize">
+                            @Html.DisplayFor(modelItem => items.Product.InsUser)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => items.Product.UpdDate)
+                    </td>
+                    <td>
+                        <a class="text-capitalize">
+                            @Html.DisplayFor(modelItem => items.Product.UpdUser)
+                        </a>
                     </td>
                   
-                    <td class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
-                        <button class="@items.EditButton" title="Editar datos de producto" 
-                                onclick="BeginUpdateProduct('@items.Product.ProductId')">
-                            <span class="@Argos.Common.Styles.Icons.Edit"></span>
+                    <td>
+                        <button class="@Argos.Common.Styles.Buttons.Primary" title="Ver detalle de producto" 
+                               onclick="ShowDetail(@items.Product.ProductId)">
+                            @Html.Raw(Argos.Common.Styles.ButtonContent.Detail)
                         </button>
 
-                        <button class="@items.DeleteButton" title="Eliminar producto"
-                                onclick="BeginDelete('@items.Product.ProductId')">
-                            <span class="@Argos.Common.Styles.Icons.Delete"></span>
+                        <button class="@Argos.Common.Styles.Buttons.Danger" title="Eliminar producto" disabled="@items.DeleteDisabled"
+                                onclick="BeginDelete('@items.Product.ProductId')" >
+                            @Html.Raw(Argos.Common.Styles.ButtonContent.Eliminate)
                         </button>
 
-                        <button class="@items.ActivateButton" title="Reactivar producto"
+                        <button class="@Argos.Common.Styles.Buttons.Success" title="Reactivar producto" disabled="@items.ActivateDisabled"
                                 onclick="BeginActivate('@items.Product.ProductId')">
-                            <span class="@Argos.Common.Styles.Icons.Activate"></span>
+                            @Html.Raw(Argos.Common.Styles.ButtonContent.Reactivate)
                         </button>
-
                     </td>
                 </tr>
         }

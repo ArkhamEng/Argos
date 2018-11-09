@@ -100,11 +100,12 @@
                 </td>
 
                 <td>
-                    <button class="btn btn-primary" type="button" onclick="ShowDetail(@item.Person.EntityId)">
-                        <span class="@Argos.Common.Styles.Icons.Show"></span>
+                    <button class="@Argos.Common.Styles.Buttons.Primary" type="button" onclick="ShowDetail(@item.Person.EntityId)">
+                        @Html.Raw(Argos.Common.Styles.ButtonContent.Detail)
                     </button>
-                    <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
-                        <span class="@Argos.Common.Styles.Icons.Delete"></span>
+                    <button class="@Argos.Common.Styles.Buttons.Danger" type="button" disabled="@item.DeleteDisabled"
+                            onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
+                       @Html.Raw(Argos.Common.Styles.ButtonContent.Eliminate)
                     </button>
                 </td>
             </tr>
@@ -115,7 +116,7 @@
     var idClient = 0;
 
     $(document).ready(function () {
-        Paginate("#TbClientList", 8, true, "#txtName", false)
+        Paginate("#TbClientList", 8, true, "#txtName", false, "#tbButtons")
     });
 
     function BeginDelete(id, name) {

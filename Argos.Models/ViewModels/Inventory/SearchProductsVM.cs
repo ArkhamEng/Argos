@@ -10,17 +10,17 @@ namespace Argos.ViewModels.Inventory
 
         public ProductComplement Lists { get; set; }
 
-        public ICollection<ProductVM> Products { get; set; }
+        public ICollection<ProductViewModel> Products { get; set; }
 
         public SearchProductsVM()
         {
-            this.Products = new List<ProductVM>();
+            this.Products = new List<ProductViewModel>();
             this.Filter   = new ProductFilters();
         }
 
         public SearchProductsVM(IAppCache cache)
         {
-            this.Products = new List<ProductVM>();
+            this.Products = new List<ProductViewModel>();
             this.Lists    = new ProductComplement(cache);
             this.Filter   = new ProductFilters();
         }

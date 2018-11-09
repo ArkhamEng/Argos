@@ -449,10 +449,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\loading.gif" />
+    <Content Include="Images\loading2.gif" />
+    <Content Include="Images\loading3.gif" />
     <Content Include="Images\Logo.gif" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\img.jpg" />
-    <Content Include="Images\loading.gif" />
+    <Content Include="Images\loading1.gif" />
     <Content Include="Images\Logo.png" />
     <Content Include="Images\question.png" />
     <Content Include="Images\sinimagen.jpg" />
@@ -782,7 +785,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1635</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1691</IISUrl>
+          <IISUrl>http://localhost:1695</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

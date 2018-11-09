@@ -32,16 +32,35 @@ namespace Argos.Common
                 public const string Danger = "btn btn-danger disabled";
             }
 
+            public struct XSmall
+            {
+                public const string Warning = "btn btn-warning btn-xs pull-right";
+
+                public const string Primary = "btn btn-primary btn-xs pull-right";
+
+                public const string Success = "btn btn-success btn-xs pull-right";
+
+                public const string Default = "btn btn-default btn-xs pull-right";
+
+                public const string Danger = "btn btn-danger btn-xs pull-right";
+
+                public const string Info = "btn btn-info btn-xs pull-right";
+            }
+
             public const string Warning = "btn btn-warning";
 
             public const string Primary = "btn btn-primary";
 
             public const string Success = "btn btn-success";
 
+            public const string Default = "btn btn-default";
+
             public const string Danger = "btn btn-danger";
+
+            public const string Info = "btn btn-info";
         }
 
-        public const string Hidden   = "hidden";
+        public const string Hidden = "hidden";
 
         public const string Disabled = "disabled";
 
@@ -49,11 +68,11 @@ namespace Argos.Common
         {
             public const string Success = "success";
 
-            public const string Danger  = "danger";
+            public const string Danger = "danger";
 
             public const string Warning = "warning";
 
-            public const string Info    = "info";
+            public const string Info = "info";
         }
 
         public struct Icons
@@ -75,5 +94,23 @@ namespace Argos.Common
             public const string Show = "fa fa-eye";
         }
 
+        public struct ButtonContent
+        {
+            public const string Detail = "<span class='fa fa-eye'></span> Detalle";
+
+            public const string Eliminate = "<span class='fa fa-trash'></span> Eliminar";
+
+            public const string Add = "<span class='fa fa-plus'></span> Agregar";
+
+            public const string Reload = "<span class='fa fa-refresh'></span> Recargar";
+
+            public const string Edit = "<span class='fa fa-edit'></span> Editar";
+
+            public const string Save = "<span class='fa fa-save'></span> Guardar";
+
+            public const string Cancel = "<span class='fa fa-times'></span> Cancelar";
+
+            public const string Reactivate = "<span class='fa fa-recycle'></span> Reactivar";
+        }
     }
 }

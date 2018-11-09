@@ -79,7 +79,6 @@
                         @Html.DisplayFor(modelItem => item.Person.SystemUser.User.UserName)
                     </a>
                 </td>
-
                 <td>
                     @item.Person.PhoneNumbers.Count
                 </td>
@@ -108,11 +107,12 @@
 
                 <td>
                     <div class="pull-right">
-                        <button class="btn btn-primary" type="button" onclick="ShowDetail(@item.Person.EntityId)">
-                            <span class="@Argos.Common.Styles.Icons.Show"></span>
+                        <button class="@Argos.Common.Styles.Buttons.Primary" type="button" onclick="ShowDetail(@item.Person.EntityId)">
+                            @Html.Raw(Argos.Common.Styles.ButtonContent.Detail)
                         </button>
-                        <button class="@item.DeleteButton" type="button" onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')" disabled="@true">
-                            <span class="@Argos.Common.Styles.Icons.Delete"></span>
+                        <button class="@Argos.Common.Styles.Buttons.Danger" type="button" disabled="@item.DeleteDisabled"
+                                onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')" >
+                            @Html.Raw(Argos.Common.Styles.ButtonContent.Eliminate)
                         </button>
                     </div>
                 </td>
@@ -127,7 +127,7 @@
 
     $(document).ready(function ()
     {
-        Paginate("#TbEmployeeList", 8, true, "#txtName", false, "#divButtons")
+        Paginate("#TbEmployeeList", 8, true, "#txtName", false, '#tbButtons')
     });
 
     function BeginDelete(id, name)

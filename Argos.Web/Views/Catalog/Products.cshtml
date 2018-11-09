@@ -35,63 +35,25 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <div class="hidden-xs">
-                    
-                    <div class="col-lg-4 col-md-4 col-sm-4">
-                        @Html.DropDownListFor(m => m.Filter.CategoryId, Model.Lists.Categories, "Categoría", new { @class = "form-control col-md-6  has-feedback-left text-uppercase", style= "border-radius:10% /150% !important" })
-                        <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
+                <ul class="nav navbar-left  panel_toolbox">
+                    <li id="tbButtons">
 
-                        @Html.DropDownListFor(m => m.Filter.SubCategoryId, Model.Lists.SubCategories, "Sub Categoría", new { @class = "form-control col-md-6  has-feedback-left text-uppercase", style = "border-radius:10% /150% !important" })
-                        <span class="fa fa-list form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-                </div>
+                    </li>
+                </ul>
                 <ul class="nav navbar-right panel_toolbox">
-
-                    <li class="dropdown">
-                        @*<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <a href="#">Settings 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Settings 2</a>
-                                </li>
-                            </ul>*@
-                        <button class="btn btn-default" type="button" id="btnClear" title="Recargar">
-                            <span class="glyphicon glyphicon-refresh"></span>
-                        </button>
-                    </li>
                     <li>
-                        <button type="button" class="btn btn-success" title="Registrar nuevo producto" onclick="BeginAddProduct()">
-                            <i class="fa  fa-plus"></i>
+                        <button class="@Argos.Common.Styles.Buttons.Default" type="button" id="btnClear" title="Recarga la página" onclick="Clear()">
+                            @Html.Raw(Argos.Common.Styles.ButtonContent.Reload)
                         </button>
-                        @*<a class="close-link"><i class="fa fa-close"></i></a>*@
-                    </li>
-                    <li>
-                        <a class="collapse-link collapsed"><i class="fa fa-chevron-up"></i></a>
+                        <button type="button" class="@Argos.Common.Styles.Buttons.Success" title="Captura un nuevo producto" onclick="BeginAddProduct()">
+                            @Html.Raw(Argos.Common.Styles.ButtonContent.Add)
+                        </button>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
 
             <div class="x_content">
-                
-                @*<div class="col-lg-2 col-md-4">
-                        <span class="fa fa-registered form-control-feedback left" aria-hidden="true"></span>
-                        @Html.DropDownListFor(m => m.Filter.MakerId, Model.Lists.Makers, "Armadora", new { @class = "form-control has-feedback-left text-capitalize" })
-                    </div>
-                    <div class="col-lg-2 col-md-4">
-                        <span class="fa fa-car form-control-feedback left" aria-hidden="true"></span>
-                        @Html.DropDownListFor(m => m.Filter.ModelId, Model.Lists.Models, "Modelo", new { @class = "form-control has-feedback-left text-capitalize" })
-                    </div>
-
-                    <div class="col-lg-2 col-md-4">
-
-                        <span class="fa fa-calendar-check-o form-control-feedback left" aria-hidden="true"></span>
-                        @Html.DropDownListFor(m => m.Filter.Year, Model.Lists.Models, "Año", new { @class = "form-control has-feedback-left text-capitalize" })
-                    </div>*@
                 <div id="divProductList" style="min-height:300px">
                     @Html.Partial("_ProductList", Model.Products)
                 </div>
@@ -109,19 +71,35 @@
 
     function BeginAddProduct()
     {
-        ShowProductModal(CompleateSave, null);
+        ShowCatalogModal(CompleateSave, null,"Product");
     }
 
-    function BeginUpdateProduct(id)
+    var editProductId = 0;
+
+    function ShowDetail(id)
     {
-        ShowProductModal(CompleateSave, null, id);
+        ShowCatalogModal(CompleateSave, null, 'Product', id, function ()
+        {
+            editProductId = id;
+            $('#general :input').attr('disabled', true);
+            $('#images :input').attr('disabled', true);
+            $("#EditProductSave").addClass('hidden')
+            $("#BeginEditProduct").removeClass('hidden')
+        });
+    }
+
+    function BeginUpdate()
+    {
+        HideModal(function ()
+        {
+            ShowCatalogModal(CompleateSave, function () { ShowDetail(editProductId); }, 'Product', editProductId);
+        }, true);
+
     }
 
     function CompleateSave(response)
     {
-        var filter = { ProductId: response.Id };
-
-        ExecuteAjax('@Url.Action("SearchProducts")', filter, function (view)
+        ExecuteAjax('@Url.Action("SearchProducts")', { ProductId: response.Id }, function (view)
         {
             $("#divProductList").html(view);
         });
