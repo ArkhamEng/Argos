@@ -10,6 +10,8 @@
 
         public const int OneHundred = 100;
 
+        public const int MilisecPerMinute = 60000;
+
         public struct Config
         {
             /// <summary>
@@ -43,6 +45,9 @@
             public const int SessionExpTime = 15;
 
             public const int SalePriceDecimals = 2;
+
+            public const int DaysToPay = 15;
+
         }
     }
 
@@ -70,7 +75,7 @@
 
     public struct Formats
     {
-        public const string AccoutMask = "{0}{1}-{2}";
+        public const string AccoutMask = "{0}-{1}";
 
         public const string Sequential = "00000";
     }

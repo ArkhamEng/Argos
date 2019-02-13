@@ -1,0 +1,191 @@
+﻿@model Account
+@using Argos.Models.Production
+
+@{
+    ViewBag.Title = "Cuenta";
+    ViewBag.Class = "fa fa-file-o";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Html.BeginForm("SaveAccount", "Production", FormMethod.Post, new { id = "AccountForm" }))
+{
+    @Html.AntiForgeryToken();
+    <div class="row">
+        <div class="x_panel">
+            <div class="x_title">
+                <div class="nav navbar-left">
+                    <h3>
+                        <a class="@ViewBag.Class"></a>
+                        @ViewBag.Title
+                    </h3>
+                </div>
+
+                <ul class="nav navbar-right panel_toolbox">
+                    <li class="btn-group">
+                        <button type="button" class="btn btn-default" title="Volver a la pagina anterior" onclick="Back()">
+                            <i class="fa fa-reply"></i>
+                            Volver
+                        </button>
+                        <button type="button" class="btn btn-success" title="Crear una nueva cuenta" onclick="CreateNew()">
+                            <i class="fa fa-file-o"></i>
+                            Nuevo
+                        </button>
+                        <button type="submit" class="btn btn-primary" title="Guardar datos de la cuenta">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    </li>
+                    <li>
+                        <a class="collapse-link collapsed"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+                @Html.Partial("_AccountEdit", Model)
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="x_panel">
+            <div class="x_content">
+                <div class="" id="AccountTabPanel" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul id="AccountTab" class="nav nav-tabs bar_tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Servicios</a>
+                        </li>
+                        <li role="presentation" class="">
+                            <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Cargos</a>
+                        </li>
+                        <li role="presentation" class="" >
+                            <a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Historial</a>
+                        </li>
+                    </ul>
+                    <div id="AccountTabContent" class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                            @Html.Partial("_AccountServices", Model.Occurences.OfType<Service>())
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab" >
+                            @Html.Partial("_AccountCharges", Model.Occurences.OfType<Charge>())
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                            @Html.Partial("_AccountHistories", Model.AccountHistories)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+@if (Model.Client != null)
+{
+    <script>
+        $("#ClientName").val('@Model.Client.Name');
+    </script>
+}
+
+<script>
+    $(document).ready(function ()
+    {
+
+        SubmitAccount();
+
+        $("#BeginDate").mask("99/99/9999");
+        $("#LastPaymentDate").mask("99/99/9999");
+        $("#LastMaintenanceDate").mask("99/99/9999");
+
+        SetControlAvailable();
+
+        $('#AccountTabPanel').tabs({
+            activate: ResizeDT,
+            create: ResizeDT
+        });
+    });
+
+    function CreateNew()
+    {
+        ShowLoading('static');
+        window.location = '@Url.Action("Account","Production",new { id = string.Empty})';
+
+    }
+
+    function Back()
+    {
+        ShowLoading('static');
+        parent.history.back();
+        return false;
+    }
+
+    function SetControlAvailable()
+    {
+        if ("@Model.AccountId" == "0")
+            return;
+
+        $("#ClientName").attr("readonly", true);
+
+        $("#BeginDate").attr("readonly", true);
+        $("#LastMaintenanceDate").attr("readonly", true);
+        $("#LastPaymentDate").attr("readonly", true);
+
+        $("#btnSearchClient").prop("disabled", true);
+        $("#AccountTypeId").prop("disabled", true);
+    }
+
+    function SubmitAccount()
+    {
+        $("#AccountForm").off('submit').on('submit', function (e)
+        {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            var $form = $(e.target),
+            formData = new FormData(),
+            params = $form.serializeArray(),
+            files = [];
+
+
+            if ($("#ClientId").val() == '0')
+            {
+                ShowNotify("Error de validación", "danger", "Necesitas agregar un cliente", 3500);
+                return;
+            }
+
+            if (!$form.valid())
+            {
+                ShowNotify("Error de validación", "danger", "El formulario contiene errores, por favor verifica", 3500);
+                return;
+            }
+
+
+            //agrego todos los campos del formulario
+            $.each(params, function (i, val) {
+                formData.append(val.name, val.value);
+            });
+
+            ShowLoading('static');
+
+            SumitAjax($form.attr('action'), formData, function (response)
+            {
+                ShowNotify(response.Header, response.Result, response.Body, 3000);
+
+                HideLoading(function ()
+                {
+                    if (response.Id != '0')
+                    {
+                        ShowLoading('static');
+                        window.location = '@Url.Action("Account","Production",new { id = string.Empty})' + '/' + response.Id;
+                    }
+                });
+
+            });
+        });
+    }
+
+</script>

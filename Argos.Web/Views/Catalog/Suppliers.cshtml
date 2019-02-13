@@ -34,14 +34,15 @@
         <div class="x_panel">
             <div class="x_title">
                 <ul class="nav navbar-left  panel_toolbox">
-                    <li id="tbButtons">
+                    <li id="tbButtons" class="hidden">
 
                     </li>
                 </ul>
                 <ul class="nav navbar-right panel_toolbox">
                     <li class="group-btn">
-                        <button class="@Argos.Common.Styles.Buttons.Default" type="button" id="btnClear" title="Recarga la página" onclick="Clear()">
-                           @Html.Raw(Argos.Common.Styles.ButtonContent.Reload)
+                        <button class="btn btn-default" type="button" title="Exportar" onclick="ExcelDT()">
+                            <i class="fa fa-file-excel-o"> </i>
+                            Exportar
                         </button>
                         <button type="button" class="@Argos.Common.Styles.Buttons.Success" title="Captura un nuevo proveedor" onclick="BeginAddSupplier()">
                           @Html.Raw(Argos.Common.Styles.ButtonContent.Add)

@@ -84,7 +84,8 @@ namespace Argos.Web
                       "~/Vendor/pnotify/dist/pnotify.css",
                       "~/Vendor/pnotify/dist/pnotify.buttons.css",
                       "~/Vendor/pnotify/dist/pnotify.nonblock.css",
-                      "~/Libs/Gentelella/css/custom.min.css"));
+                      "~/Libs/Gentelella/css/custom.min.css",
+                      "~/Content/Overrides.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                        "~/AppScripts/Global.js",

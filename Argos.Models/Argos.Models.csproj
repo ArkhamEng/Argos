@@ -7,7 +7,7 @@
     <ProjectGuid>{BEB8B6E6-EB36-492F-B702-FDD85967D4EA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Argos.Models</RootNamespace>
+    <RootNamespace>Argos</RootNamespace>
     <AssemblyName>Argos.Models</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -99,6 +99,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Config\ErrorLog.cs" />
+    <Compile Include="Models\Config\ExecutionTaskLog.cs" />
+    <Compile Include="Models\Production\AccountHistory.cs" />
+    <Compile Include="Models\Production\Charge.cs" />
+    <Compile Include="Models\Production\MaintPeriod.cs" />
+    <Compile Include="Models\Production\Occurence.cs" />
+    <Compile Include="Models\Production\PaymentPeriod.cs" />
+    <Compile Include="Models\Production\Service.cs" />
     <Compile Include="Models\BaseTypes\AuditableCatalog.cs" />
     <Compile Include="Models\BaseTypes\AuditableEntity.cs" />
     <Compile Include="Models\BaseTypes\InsAudit.cs" />
@@ -142,6 +150,10 @@
     <Compile Include="Models\Inventory\Storage.cs" />
     <Compile Include="Models\Inventory\SubCategory.cs" />
     <Compile Include="Models\Inventory\SupplierProduct.cs" />
+    <Compile Include="Models\Production\AccountType.cs" />
+    <Compile Include="Models\Production\Account.cs" />
+    <Compile Include="Models\Production\AccountStatus.cs" />
+    <Compile Include="Models\Production\ServiceType.cs" />
     <Compile Include="Models\Security\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Purchasing\Purchase.cs" />
@@ -168,6 +180,8 @@
     <None Include="App.config" />
     <Content Include="Models\Business\BusinessEntity.cd" />
     <Content Include="Models\Inventory\Inventory.cd" />
+    <None Include="Models\Production\Production.cd" />
+    <None Include="Models\Sales\Sales.cd" />
     <None Include="packages.config" />
     <Content Include="Models\Security\ClassDiagram1.cd" />
   </ItemGroup>

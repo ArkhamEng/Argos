@@ -91,11 +91,11 @@ namespace Argos.Web.Controllers
 
                     return Json(new JResponse
                     {
-                        Result  = Responses.Success,
-                        Header  = "Cliente Modificado",
-                        Code    = Responses.Codes.Success,
-                        Body    = "Se actualizaron los datos del cliente " + clientVm.Person.Name + " y se removio el bloqueo",
-                        Id      = clientVm.Person.EntityId
+                        Result = Responses.Success,
+                        Header = "Cliente Modificado",
+                        Code = Responses.Codes.Success,
+                        Body = "Se actualizaron los datos del cliente " + clientVm.Person.Name + " y se removio el bloqueo",
+                        Id = clientVm.Person.EntityId
                     });
                 }
                 //insert
@@ -107,9 +107,9 @@ namespace Argos.Web.Controllers
                     {
                         Result = Responses.Success,
                         Header = "Cliente Agregado",
-                        Body   = "Se agrego el cliente " + clientVm.Person.Name,
-                        Id      = clientVm.Person.EntityId,
-                        Code    = Responses.Codes.Success
+                        Body = "Se agrego el cliente " + clientVm.Person.Name,
+                        Id = clientVm.Person.EntityId,
+                        Code = Responses.Codes.Success
                     });
                 }
             }
@@ -127,7 +127,7 @@ namespace Argos.Web.Controllers
 
         #endregion
 
-      
+
 
         #region Employee Methods
         public ActionResult Employees()
@@ -206,9 +206,9 @@ namespace Argos.Web.Controllers
                     {
                         Result = Responses.Success,
                         Header = "Empleado Modificado",
-                        Code   = Responses.Codes.Success,
-                        Body   = "Se actualizaron los datos del empleado " + model.Person.Name + " y se removio el bloqueo",
-                        Id     = model.Person.EntityId
+                        Code = Responses.Codes.Success,
+                        Body = "Se actualizaron los datos del empleado " + model.Person.Name + " y se removio el bloqueo",
+                        Id = model.Person.EntityId
                     });
                 }
                 //insert
@@ -264,7 +264,7 @@ namespace Argos.Web.Controllers
         public ActionResult BeginAddSupplier()
         {
             var model = new PersonViewModel<Supplier>(AppCache.Instance);
-            
+
             return PartialView("_SupplierEdit", model);
         }
 
@@ -273,7 +273,7 @@ namespace Argos.Web.Controllers
         {
             try
             {
-               var model = BeginUpdatePerson<Supplier>(id);
+                var model = BeginUpdatePerson<Supplier>(id);
 
                 if (model != null)
                 {
@@ -284,10 +284,10 @@ namespace Argos.Web.Controllers
                 {
                     return Json(new JResponse
                     {
-                        Code   = Responses.Codes.RecordNotFound,
+                        Code = Responses.Codes.RecordNotFound,
                         Result = Responses.Warning,
                         Header = "Cliente inexistente!",
-                        Body   = string.Format("Este cliente ya no esta activo en el catálgo"),
+                        Body = string.Format("Este cliente ya no esta activo en el catálgo"),
                     });
                 }
 
@@ -296,7 +296,7 @@ namespace Argos.Web.Controllers
             {
                 return Json(new JResponse
                 {
-                    Code   = Responses.Codes.ServerError,
+                    Code = Responses.Codes.ServerError,
                     Result = Responses.Danger,
                     Header = "Error al obtener datos",
                     Body = string.Format("Ocurrio un error obtener los datos del cliente, detalle del error:{0}", ex.Message),
@@ -318,11 +318,11 @@ namespace Argos.Web.Controllers
 
                     return Json(new JResponse
                     {
-                        Result  = Responses.Success,
-                        Header  = "Proveedor Modificado",
-                        Code    = Responses.Codes.Success,
-                        Body    = "Se actualizaron los datos del proveedor " + supplierVm.Person.Name + " y se removio el bloqueo",
-                        Id      = supplierVm.Person.EntityId
+                        Result = Responses.Success,
+                        Header = "Proveedor Modificado",
+                        Code = Responses.Codes.Success,
+                        Body = "Se actualizaron los datos del proveedor " + supplierVm.Person.Name + " y se removio el bloqueo",
+                        Id = supplierVm.Person.EntityId
                     });
                 }
                 //insert
@@ -360,13 +360,39 @@ namespace Argos.Web.Controllers
             return PartialView("_AssingSupplier", model);
         }
 
+        [HttpPost]
+        public ActionResult SearchClient(string filter, int? id)
+        {
+            try
+            {
+                var model = (from c in db.Persons.OfType<Client>()
+                             where (string.IsNullOrEmpty(filter) || c.Name.Contains(filter)) &&
+                                   (id == null || c.EntityId == id)
+                             select c).Take(Common.Constants.Numbers.Config.AutoCompleateRows).ToList();
+
+                if (model.Count == Common.Constants.Numbers.One)
+                    return Json(model.Select(c=> new { Name = c.Name, EntityId = c.EntityId, FTR = c.FTR, c.UserName }).FirstOrDefault());
+                else
+                    return PartialView("_ClientQuickSearch", model);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+       
+        }
+
+
+        
+
         #endregion
 
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            { 
+            {
                 db.Dispose();
             }
             base.Dispose(disposing);

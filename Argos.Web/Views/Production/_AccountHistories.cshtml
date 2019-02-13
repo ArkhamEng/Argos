@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Argos.Models.Production.AccountHistory>
+
+
+<table id="tbHistories" class="table table-responsive table-striped jambo_table small" style="width:100%">
+    <thead>
+        <tr>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.PolicyCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.MaintenancePeriod)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.PaymentPeriod)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.HasPolicy)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.HasMaintenance)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.InsDate)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.InsUser)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td >
+                    @Html.DisplayFor(modelItem => item.PolicyCost)
+                </td>
+                <td style="min-width:250px"> 
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaintenancePeriod) meses
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentPeriod) meses
+                </td>
+                <td>
+                    <div class="checkbox-inline">
+                        @Html.EditorFor(modelItem => item.HasPolicy, new { htmlAttributes = new { @class = "BlockEdit flat", disabled = true } })
+                    </div>
+                </td>
+                <td>
+                    <div class="checkbox-inline">
+                        @Html.EditorFor(modelItem => item.HasMaintenance, new { htmlAttributes = new { @class = "BlockEdit flat", disabled = true } })
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsUser)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function ()
+    {
+        Paginate('#tbHistories', 8, true, null, false, null, function () { iCheckInit(); });
+    });
+</script>

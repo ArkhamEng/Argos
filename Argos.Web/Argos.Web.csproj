@@ -223,6 +223,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductionController.cs" />
     <Compile Include="Controllers\PurchasingController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Global.asax.cs">
@@ -234,6 +235,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Support\Extension.cs" />
+    <Compile Include="Support\TaskManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppScripts\Catalog.js" />
@@ -403,6 +405,7 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\nprogress.css" />
+    <Content Include="Content\Overrides.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -496,6 +499,7 @@
     </Content>
     <Content Include="App_Readme\NProgressjs_README.md" />
     <Content Include="App_Readme\NProgressjs_LICENSE" />
+    <None Include="Properties\PublishProfiles\ArgosSite.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.2.1-vsdoc.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -728,6 +732,7 @@
     <Content Include="Views\Catalog\_Phone.cshtml" />
     <Content Include="Views\Catalog\_AssingSupplier.cshtml" />
     <Content Include="Views\Catalog\_AssingProduct.cshtml" />
+    <Content Include="Views\Catalog\_ClientQuickSearch.cshtml" />
     <None Include="Views\Operative\Accounts.cshtml" />
     <Content Include="Views\Operative\_AccountList.cshtml" />
     <Content Include="Views\Operative\_BeginAccount.cshtml" />
@@ -745,6 +750,19 @@
     <Content Include="Views\Purchasing\Create.cshtml" />
     <Content Include="Views\Purchasing\_Create.cshtml" />
     <Content Include="Views\Purchasing\_PurchaseDetail.cshtml" />
+    <Content Include="Views\Production\Accounts.cshtml" />
+    <Content Include="Views\Production\_AccountList.cshtml" />
+    <Content Include="Views\Production\Account.cshtml" />
+    <Content Include="Views\Production\_AccountHistories.cshtml" />
+    <Content Include="Views\Production\Services.cshtml" />
+    <Content Include="Views\Production\Charges.cshtml" />
+    <None Include="Views\Production\_AccountServices.cshtml" />
+    <Content Include="Views\Production\_AccountEdit.cshtml" />
+    <Content Include="Views\Production\_AccountCharges.cshtml" />
+    <Content Include="Views\Production\_ServiceList.cshtml" />
+    <Content Include="Views\Production\_ChargeList.cshtml" />
+    <Content Include="Views\Production\_ChargeEdit.cshtml" />
+    <Content Include="Views\Production\_ServiceEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

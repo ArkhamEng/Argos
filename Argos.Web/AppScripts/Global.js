@@ -2,6 +2,10 @@
     $(element).css('cursor', 'pointer');
 }
 
+//Hace click en el boton del datatable
+function ExcelDT() {
+    $(".buttons-excel").click();
+}
 
 function Compleate(textbox, list, url, onSelected) {
     textbox.autocomplete(
@@ -44,11 +48,16 @@ function ExecuteAjax(url, parameters, callback) {
         url: url,
         type: "POST",
         data: parameters,
-        success: function (response) {
-            if ($.isPlainObject(response) && typeof (response.Code) != "undefined" && response.Code != 200) {
+        success: function (response)
+        {
+            if ($.isPlainObject(response) && typeof (response.Code) != "undefined" && response.Code != 200)
+            {
+                HideLoading();
+                HideModLoading();
                 ShowNotify(response.Header, response.Result, response.Body, 3500);
 
-                switch (response.Code) {
+                switch (response.Code)
+                {
                     case 401:
                         window.location = response.Extra;
                         break;
@@ -58,15 +67,68 @@ function ExecuteAjax(url, parameters, callback) {
                 callback(response);
             }
         },
-        error: function () {
+        error: function ()
+        {
             HideLoading();
+            HideModLoading();
             ShowNotify("Error Inesperado!", "dark", "ocurrio un error, quiza has perdido la conexion a internet!", 3500);
         }
     });
 }
 
+function SumitAjax(url, formData, callback, errorCallBack)
+{
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        success: function (response)
+        {
+            if ($.isPlainObject(response) && typeof (response.Code) != "undefined" && response.Code != 200)
+            {
+                HideLoading();
+                HideModLoading();
+                ShowNotify(response.Header, response.Result, response.Body, 3500);
+
+                switch (response.Code)
+                {
+                    case 401:
+                        window.location = response.Extra;
+                        break;
+                }
+            }
+            else
+            {
+                HideLoading();
+                HideModLoading();
+                callback(response);
+            }
+        },
+        error: function ()
+        {
+            HideLoading();
+            ShowNotify("Error Inesperado!", "dark", "ocurrio un error, quiza has perdido la conexion a internet!", 3500);
+
+            if (errorCallBack != null)
+                errorCallBack();
+        }
+    });
+}
+
+
+function ResizeDT() 
+{
+    $($.fn.dataTable.tables(true)).DataTable().responsive.recalc();
+}
+
+
+
 //Realiza paginación  sobre una tabla
-function Paginate(table, iniRecords, responsive, filter, scrollX, buttonContainer) {
+function Paginate(table, iniRecords, responsive, filter, scrollX, buttonContainer, onPagination)
+{
     var searching = false;
 
     if (typeof (filter) != 'undefined')
@@ -74,18 +136,26 @@ function Paginate(table, iniRecords, responsive, filter, scrollX, buttonContaine
 
     var oTable = $(table).DataTable(
        {
-           //destroy: true,
-          // keys: true,
+           destroy: true,
+           // keys: true,
            scrollX: scrollX,
            scrollCollapse: true,
-           fixedHeader:true,
+           fixedHeader: true,
            //fixedColumns:{
            //    leftColumns: 3,
            //    rightColumns: 1 },
            responsive: responsive,
+           "fnDrawCallback": function (oSettings)
+           {
+               if(onPagination != null && typeof(onPagination) != undefined)
+               {
+                   onPagination();
+               }
+           },
            "lengthChange": false,
            "searching": searching,
-           "order": [],
+           "order": [], //versiones mas nuevas
+           "aaSorting":[],
            "lengthMenu": [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
            "pageLength": iniRecords,
            "language": {
@@ -101,19 +171,18 @@ function Paginate(table, iniRecords, responsive, filter, scrollX, buttonContaine
                }
            },
        });
+
     if (typeof (filter) != 'undefined')
     {
-        $(filter).keyup(function ()
-        {
+        $(filter).keyup(function () {
             oTable.data().search(this.value).draw();
         });
 
         $(table + "_filter").addClass("hidden");
     }
-    
+
     if (typeof (buttonContainer) != 'undefined')
     {
-
         $(buttonContainer).html("");
 
         new $.fn.dataTable.Buttons(oTable, {

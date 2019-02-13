@@ -8,7 +8,7 @@ using Argos.Models.Interfaces;
 namespace Argos.Models.Inventory
 {
     [Table("MeasureUnit", Schema = "Inventory")]
-    public class MeasureUnit:AuditableEntity,ISelectable
+    public class MeasureUnit:ActivableAudit,ISelectable
     {
         [MaxLength(5)]
         [Column(Order = 0)]

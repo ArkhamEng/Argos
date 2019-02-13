@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Argos.Models.Production.Charge>
+
+<table id="tbCharges" class="table table-responsive table-striped jambo_table small" style="width:100%">
+    <thead>
+        <tr>
+
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.Account.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account.ClientId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.ScheduleDate)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayName("Pagado")
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.PaymentDate)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.InsDate)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.InsUser)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.UpdDate)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.UpdUser)
+            </th>
+            <th>
+                @Html.DisplayName("Acciones")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Account.Code)
+                </td>
+                <td style="min-width:250px">
+                    @Html.DisplayFor(modelItem => item.Account.Client.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ScheduleDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DueDate)
+                </td>
+                <td style="min-width:250px">
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @( item.IsDone ? "SI" : "NO")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsUser)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdUser)
+                </td>
+                <td>
+                    @if (!item.IsDone)
+                    {
+                        <button class="btn btn-primary btn-sm" type="button" onclick="GetCharge('@item.OccurenceId')">
+                            <span class="fa fa-check"></span>
+                            Registrar Pago
+                        </button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    $(document).ready(function ()
+    {
+        Paginate('#tbCharges', 8, true, null, false, "#tbButtons");
+    });
+
+    function GetCharge(id) {
+        ShowLoading('static');
+
+        ExecuteAjax('@Url.Action("GetCharge", "Production")', { id: id }, function (response) {
+            HideLoading(function () {
+                ShowModal(response, 'static');
+            });
+        });
+    }
+</script>

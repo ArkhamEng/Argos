@@ -3,7 +3,8 @@
 //Muestra la ventada emergente de Edición /Captura de catalogos, dependiendo del 
 //tipo dado en el parametro Entity (Client,Employee,Supplier, Product, etc), si se envía un disable call back
 //se considerara que la ventana no esta en modo de edición
-function ShowCatalogModal(OnCompleate, CloseCallBack, Entity, id, disableCallBack) {
+function ShowCatalogModal(OnCompleate, CloseCallBack, Entity, id, disableCallBack)
+{
     ShowLoading('static');
 
     var param = {};
@@ -76,8 +77,10 @@ function ShowCatalogModal(OnCompleate, CloseCallBack, Entity, id, disableCallBac
     });
 }
 
-function SubmitPerson(SuccessCallBack, form) {
-    $(form).off('submit').on('submit', function (e) {
+function SubmitPerson(SuccessCallBack, form)
+{
+    $(form).off('submit').on('submit', function (e) 
+    {
         e.preventDefault();
 
         var $form = $(e.target),
@@ -87,19 +90,22 @@ function SubmitPerson(SuccessCallBack, form) {
         addresses = [];
 
 
-        if (!$form.valid()) {
+        if (!$form.valid())
+        {
             ShowNotify("Error de validación", "danger", "Existen errores en lo datos capturados, por favor verifica", 3500);
             return;
         }
 
         input = $form.find('[type="file"]')[0];
 
-        if (typeof (input) != "undefined") {
+        if (typeof (input) != "undefined")
+        {
             files.push(input.files[0]);
         }
 
         //agrego todos los campos del formulario
-        $.each(params, function (i, val) {
+        $.each(params, function (i, val)
+        {
             formData.append(val.name, val.value);
         });
 
@@ -126,10 +132,12 @@ function SubmitPerson(SuccessCallBack, form) {
         var addressCount = 0;
         var newAddress = 0;
         //agrego las direcciones nueva
-        $("#tbAddress tbody tr").each(function (index, row) {
+        $("#tbAddress tbody tr").each(function (index, row)
+        {
             var entity = $(row).find('[id="item_EntityId"]').val();
 
-            if (entity == 0) {
+            if (entity == 0)
+            {
                 formData.append('Person.Addresses[' + newAddress + '].AddressId', $(row).find('[id="item_AddressId"]').val());
                 formData.append('Person.Addresses[' + newAddress + '].TownId', $(row).find('[id="item_TownId"]').val());
                 formData.append('Person.Addresses[' + newAddress + '].ZipCode', $(row).find('[id="item_ZipCode"]').val());
@@ -146,10 +154,13 @@ function SubmitPerson(SuccessCallBack, form) {
 
         var phoneCount = 0;
         var newPhone = 0;
-        $("#tbPhones tbody tr").each(function (index, row) {
+        $("#tbPhones tbody tr").each(function (index, row)
+        {
             var entity = $(row).find('[id="item_EntityId"]').val();
 
-            if (isNaN(entity)) {
+            if (isNaN(entity))
+            {
+                formData.append('Person.PhoneNumbers[' + newPhone + '].PhoneNumberId', $(row).find('[id="item_PhoneNumberId"]').val());
                 formData.append('Person.PhoneNumbers[' + newPhone + '].PhoneTypeId', $(row).find('[id="item_PhoneTypeId"]').val());
                 formData.append('Person.PhoneNumbers[' + newPhone + '].Phone', $(row).find('[id="item_Phone"]').val());
                 formData.append('Person.PhoneNumbers[' + newPhone + '].EntityId', $(row).find('[id="item_EntityId"]').val());
@@ -160,10 +171,13 @@ function SubmitPerson(SuccessCallBack, form) {
 
         var newMail = 0;
         var mailCount = 0;
-        $("#tbEmails tbody tr").each(function (index, row) {
+        $("#tbEmails tbody tr").each(function (index, row)
+        {
             var entity = parseInt($(row).find('[id="item_EntityId"]').val())
 
-            if (isNaN(entity)) {
+            if (isNaN(entity))
+            {
+                formData.append('Person.EmailAddresses[' + newMail + '].EmailAddressId', $(row).find('[id="item_EmailAddressId"]').val());
                 formData.append('Person.EmailAddresses[' + newMail + '].EmailTypeId', $(row).find('[id="item_EmailTypeId"]').val());
                 formData.append('Person.EmailAddresses[' + newMail + '].Email', $(row).find('[id="item_Email"]').val());
                 formData.append('Person.EmailAddresses[' + newMail + '].EntityId', $(row).find('[id="item_EntityId"]').val());
@@ -276,8 +290,10 @@ function ValidateAddress($form) {
 }
 
 
-function SubmitProduct(SuccessCallBack) {
-    $("#frmProducts").off('submit').on('submit', function (e) {
+function SubmitProduct(SuccessCallBack)
+{
+    $("#frmProducts").off('submit').on('submit', function (e)
+    {
         e.preventDefault();
 
         var $form = $(e.target),
@@ -285,7 +301,8 @@ function SubmitProduct(SuccessCallBack) {
         params = $form.serializeArray(),
         files = [];
 
-        $('#tbImages tr').each(function (index, row) {
+        $('#tbImages tr').each(function (index, row)
+        {
             var input = $(row).find('[type="file"]');
 
             if (input[0] != undefined) {
@@ -296,10 +313,12 @@ function SubmitProduct(SuccessCallBack) {
 
         //ya que el tab container omite la validación del tab q no se muestra
         //checo el tab activo y si es necesario habilito el que contine los campos a validar
-        if (needActivate) {
+        if (needActivate)
+        {
             $("#general").addClass("active");
 
-            if (!$form.valid()) {
+            if (!$form.valid()) 
+            {
                 $("#general").removeClass("active");
                 ShowNotify("Error de validación", "danger", "El formulario contiene errores, por favor verifica", 3500);
                 return;
@@ -315,7 +334,8 @@ function SubmitProduct(SuccessCallBack) {
         $("#EditLoading").children().show();
 
         //agrego todos los campos del formulario
-        $.each(params, function (i, val) {
+        $.each(params, function (i, val)
+        {
             formData.append(val.name, val.value);
         });
 
@@ -336,15 +356,18 @@ function SubmitProduct(SuccessCallBack) {
             contentType: false,
             processData: false,
             type: 'POST',
-            success: function (response) {
+            success: function (response)
+            {
                 console.log(response);
 
-                if ($.isPlainObject(response) && typeof (response.Code) == 401) {
+                if ($.isPlainObject(response) && typeof (response.Code) == 401)
+                {
                     ShowNotify(response.Header, response.Result, response.Body, 4500);
                     window.location = response.LogOnUrl;
                 }
                 else {
-                    HideModal(function () {
+                    HideModal(function () 
+                    {
                         ShowNotify(response.Header, response.Result, response.Body);
                         SuccessCallBack(response.Id);
                     }, true);
@@ -357,7 +380,8 @@ function SubmitProduct(SuccessCallBack) {
 
 
 
-function OnImageLoaded(input) {
+function OnImageLoaded(input)
+{
     var files = input.files,
     reader = new FileReader();
 
@@ -396,6 +420,67 @@ function ShowAssingSupplier(OnSelected) {
                         HideModal(null, true);
                     })
                 });
+            }
+        });
+    });
+}
+
+function SearchPerson(OnSelected,Entity, filter)
+{
+    ShowLoading('static');
+
+    var title = "";
+    url = "";
+
+    switch(Entity)
+    {
+        case 'Employee':
+            url = "/Catalog/SearchEmployee";
+            title = '<span class="fa fa-black-tie"></span>Buscar Empleado';
+            break;
+        case 'Client':
+            url = "/Catalog/SearchClient";
+            title = '';
+            break;
+        case 'Supplier':
+            url = "/Catalog/SearchSupplier";
+            title = '<span class="fa fa-black-tie"></span>Buscar Proveedor';
+            break;
+
+    }
+
+    
+
+    ExecuteAjax(url, {filter:filter}, function (response)
+    {
+        HideLoading(function ()
+        {
+            if (!$.isPlainObject(response))
+            {
+                ShowModal(response, 'static', 'lg');
+
+                $("#tbAssingClient tbody tr").each(function (index, row)
+                {
+                    $(row).find("#btnSelect").off("click").click(function ()
+                    {
+                        ShowModLoading();
+
+                        var id = $(row).find('[id="item_EntityId"]').val();
+                        
+                        ExecuteAjax(url, { id: id }, function (client)
+                        {
+                            OnSelected(client);
+                            HideModLoading();
+                            HideModal(null, true);
+                        })
+
+                        HideModal(null, true);
+                    })
+                });
+            }
+            else
+            {
+                OnSelected(response);
             }
         });
     });

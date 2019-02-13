@@ -19,7 +19,7 @@ namespace Argos.Support
                 context.HttpContext.Response.StatusCode = Responses.Codes.UnAuthorized;
                 context.Result = new JsonResult
                 {
-                    Data = new
+                    Data = new 
                     {
                         Header = "Acceso denegado!!",
                         Body   = "Tu sesión ha expirado o te faltan permisos",

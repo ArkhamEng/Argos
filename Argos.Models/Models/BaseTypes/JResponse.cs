@@ -13,5 +13,7 @@
         public string Extra { get; set; }
 
         public int Code { get; set; }
+
+        public object JObject { get; set; }
     }
 }

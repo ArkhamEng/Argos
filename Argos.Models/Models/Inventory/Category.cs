@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Argos.Models.Inventory
 {
     [Table("Category", Schema = "Inventory")]
-    public class Category : AuditableEntity, ISelectable
+    public class Category : ActivableAudit, ISelectable
     {
         [Column(Order =0)]
         public int CategoryId { get; set; }
@@ -20,10 +20,7 @@ namespace Argos.Models.Inventory
         [MaxLength(100)]
         public string Description { get; set; }
 
-        [Column(Order = 3)]
-        [Required]
-        [Display(Name = "Activo")]
-        public bool IsActive { get; set; }
+      
 
         #region Navigation Property
         public ICollection<SubCategory> ProductSubCategories { get; set; }

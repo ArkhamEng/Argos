@@ -112,7 +112,7 @@ INSERT INTO [Purchasing].[Status]
            (3,'Completado')
 GO
 
-/************************ PURCHASE STATUS ***********************************************/
+/************************ SALE STATUS ***********************************************/
 INSERT INTO [Sales].[Status]
            (SaleStatusId,[Name])
      VALUES
@@ -182,30 +182,26 @@ GO
 
 /*************************PHONE TYPES***************************************/
 
-INSERT INTO [Business].[PhoneType]
-           ([PhoneTypeId],[Name],[Description])
-     VALUES
-           (1,'Principal','Teléfono principal')
 
 INSERT INTO [Business].[PhoneType]
            ([PhoneTypeId],[Name],[Description])
      VALUES
-           (2,'Móvil','Teléfono móvil')
+           (1,'Móvil','Teléfono móvil')
 
 INSERT INTO [Business].[PhoneType]
            ([PhoneTypeId],[Name],[Description])
      VALUES
-           (3,'Casa','Teléfono de casa')
+           (2,'Casa','Teléfono de casa')
 
 INSERT INTO [Business].[PhoneType]
            ([PhoneTypeId],[Name],[Description])
      VALUES
-           (4,'Oficina','Teléfono de oficina')
+           (3,'Oficina','Teléfono de oficina')
 
 INSERT INTO [Business].[PhoneType]
            ([PhoneTypeId],[Name],[Description])
      VALUES
-           (5,'Fax','Número de Fax')
+           (4,'Fax','Número de Fax')
 GO
 /*************************PHONE TYPES***************************************/
 
@@ -224,6 +220,7 @@ INSERT INTO [Business].[EmailType]
            ([EmailTypeId],[Name],[Description])
      VALUES
            (3,'Personal','Correo personal')
+GO
 /********************MAIN USER**********************************************/
 
 
@@ -332,16 +329,6 @@ GO
 INSERT INTO [HumanResources].[JobPosition]
            ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
      VALUES
-           ('GERENTE OPERATIVO','GERENTE OPERATIVO',GETDATE(),GETDATE(),'System','System')
-GO
-INSERT INTO [HumanResources].[JobPosition]
-           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
-     VALUES
-           ('GERENTE DE VENTAS','GERENTE DE VENTAS',GETDATE(),GETDATE(),'System','System')
-GO
-INSERT INTO [HumanResources].[JobPosition]
-           ([Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
-     VALUES
            ('SUPERVISOR','GERENTE DE VENTAS',GETDATE(),GETDATE(),'System','System')
 GO
 INSERT INTO [HumanResources].[JobPosition]
@@ -355,33 +342,185 @@ INSERT INTO [HumanResources].[JobPosition]
            ('INSTALADOR','INSTALADOR',GETDATE(),GETDATE(),'System','System')
 
 
+
 /**********************   MESURE UNITS  ****************************/
 
 
 INSERT INTO [Inventory].[MeasureUnit]
-           ([MeasureUnitId],[Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
+           ([MeasureUnitId],[Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser], IsActive)
            
      VALUES
-           ('Mts','Metro','Metro',GETDATE(),GETDATE(),'System','System')
+           ('Mts','Metro','Metro',GETDATE(),GETDATE(),'System','System',1)
 GO
 
 INSERT INTO [Inventory].[MeasureUnit]
-           ([MeasureUnitId],[Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
+           ([MeasureUnitId],[Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser], IsActive)
            
      VALUES
-           ('Lto','Litro','Litro',GETDATE(),GETDATE(),'System','System')
+           ('Lto','Litro','Litro',GETDATE(),GETDATE(),'System','System',1)
 GO
 
 INSERT INTO [Inventory].[MeasureUnit]
-           ([MeasureUnitId],[Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
+           ([MeasureUnitId],[Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser], IsActive)
            
      VALUES
-           ('Kg','Kilo','Kilo',GETDATE(),GETDATE(),'System','System')
+           ('Kg','Kilo','Kilo',GETDATE(),GETDATE(),'System','System',1)
 GO
 
 INSERT INTO [Inventory].[MeasureUnit]
-           ([MeasureUnitId],[Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser])
+           ([MeasureUnitId],[Name],[Description],[InsDate],[UpdDate],[InsUser],[UpdUser], IsActive)
            
      VALUES
-           ('Pza','Pieza','Pieza',GETDATE(),GETDATE(),'System','System')
+           ('Pza','Pieza','Pieza',GETDATE(),GETDATE(),'System','System',1)
+GO
+
+/*********************ACCOUNT STATUS************************************/
+
+INSERT INTO [Production].[AccountStatus]
+          (AccountStatusId, Code, Name, [Description], IsActive, InsDate, InsUser, UpdDate, UpdUser)
+     VALUES
+          (-2,'Cancelled','Cancelado','Cuenta Cancelada',1,GETDATE(),'System',GETDATE(),'System') 
+GO
+
+INSERT INTO [Production].[AccountStatus]
+          (AccountStatusId, Code, Name, [Description], IsActive, InsDate, InsUser, UpdDate, UpdUser)
+     VALUES
+          (-1,'Suspended','Suspendido','Cuenta Suspendida',1,GETDATE(),'System',GETDATE(),'System') 
+GO
+
+INSERT INTO [Production].[AccountStatus]
+          (AccountStatusId, Code, Name, [Description], IsActive, InsDate, InsUser, UpdDate, UpdUser)
+     VALUES
+          (1,'Active','Activo','Cuenta Activa',1,GETDATE(),'System',GETDATE(),'System') 
+GO
+
+INSERT INTO [Production].[AccountStatus]
+          (AccountStatusId, Code, Name, [Description], IsActive, InsDate, InsUser, UpdDate, UpdUser)
+     VALUES
+          (2,'Finished','Finalizado','Cuenta Finalizada',1,GETDATE(),'System',GETDATE(),'System') 
+GO
+
+
+/*********************ACCOUNT TYPES ******************************/
+
+INSERT INTO [Production].[AccountType]
+           ([Code],[Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           ('ALR','Alarma Residencial','Alarma Residencial',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[AccountType]
+           ([Code],[Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           ('CRE','Cerco Eléctrico','Cerco Eléctrico',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[AccountType]
+           ([Code],[Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           ('CCTV','Circuito Cerrado','Circuito Cerrado',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[AccountType]
+           ([Code],[Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           ('GPS','Rastreo Satelital','Rastreo Satelital',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+/*********************SERVICE TYPE***************************/
+
+INSERT INTO [Production].[ServiceType]
+            ([ServiceTypeId],Code, [Name],[Descriptión],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+         (1,'Preventive','Preventivo','Mantenimiento Preventivo',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[ServiceType]
+            ([ServiceTypeId],Code, [Name],[Descriptión],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+         (2,'Corrective','Correctivo','Mantenimiento Correctivo',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[ServiceType]
+            ([ServiceTypeId],Code, [Name],[Descriptión],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+         (3,'Install','Instalación','Servicio de Instalación',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+/*************************Payment Periodes***********************************/
+
+INSERT INTO [Production].[PaymentPeriod]
+           (PaymentPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (1,'Mensual','Una vez cada mes',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[PaymentPeriod]
+           (PaymentPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (2,'Bimestral','Cada dos meses',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[PaymentPeriod]
+           (PaymentPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (3,'Trimestral','Cada tres meses',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[PaymentPeriod]
+           (PaymentPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (4,'Cuatrimestral','Cada cuatro meses',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[PaymentPeriod]
+           (PaymentPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (6,'Semestral','Cada seis meses',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+
+INSERT INTO [Production].[PaymentPeriod]
+           (PaymentPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (12,'Anual','Una vez al año',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+/*************************Maintenance Periodes***********************************/
+
+INSERT INTO [Production].[MaintPeriod]
+           (MaintPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (1,'Mensual','Una vez cada mes',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[MaintPeriod]
+           (MaintPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (2,'Bimestral','Cada dos meses',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[MaintPeriod]
+           (MaintPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (3,'Trimestral','Cada tres meses',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[MaintPeriod]
+           (MaintPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (4,'Cuatrimestral','Cada cuatro meses',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+INSERT INTO [Production].[MaintPeriod]
+           (MaintPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (6,'Semestral','Cada seis meses',1,GETDATE(),'System',GETDATE(),'System')
+GO
+
+
+INSERT INTO [Production].[MaintPeriod]
+           (MaintPeriodId, [Name],[Description],[IsActive],[InsDate],[InsUser],[UpdDate],[UpdUser])
+     VALUES
+           (12,'Anual','Una vez al año',1,GETDATE(),'System',GETDATE(),'System')
 GO

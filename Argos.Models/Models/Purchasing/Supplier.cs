@@ -14,7 +14,6 @@ namespace Argos.Models.Purchasing
     {
         [Display(Name = "Razón Social")]
         [MaxLength(200)]
-        [Index("Unq_BusinessName", IsUnique = true)]
         public string BusinessName { get; set; }
 
         [DataType(DataType.Url)]

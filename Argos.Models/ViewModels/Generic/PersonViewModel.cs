@@ -26,11 +26,11 @@ namespace Argos.ViewModels.Generic
 
         public bool DropImage { get; set; }
 
-        public List<string> DroppedPhones { get; set; }
+        public List<int> DroppedPhones { get; set; }
 
-        public List<AddressTypes> DroppedAddress { get; set; }
+        public List<int> DroppedAddress { get; set; }
 
-        public List<string> DroppedMails { get; set; }
+        public List<int> DroppedMails { get; set; }
 
         public List<HttpPostedFileBase> NewImages { get; set; }
 
@@ -46,18 +46,18 @@ namespace Argos.ViewModels.Generic
         {
             this.Person         = (T)Activator.CreateInstance(typeof(T));
             this.NewImages      = new List<HttpPostedFileBase>();
-            this.DroppedMails   = new List<string>();
-            this.DroppedPhones  = new List<string>();
-            this.DroppedAddress = new List<AddressTypes>();
+            this.DroppedMails   = new List<int>();
+            this.DroppedPhones  = new List<int>();
+            this.DroppedAddress = new List<int>();
         }
 
         public PersonViewModel(IAppCache cache)
         {
             this.Person     = (T)Activator.CreateInstance(typeof(T));
             this.NewImages  = new List<HttpPostedFileBase>();
-            this.DroppedMails = new List<string>();
-            this.DroppedPhones = new List<string>();
-            this.DroppedAddress = new List<AddressTypes>();
+            this.DroppedMails = new List<int>();
+            this.DroppedPhones = new List<int>();
+            this.DroppedAddress = new List<int>();
            this.CreditStatus    = cache.CreditStatus.ToSelectList();
         }
 

@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Argos.Models.Production.Charge>
+
+@{
+    ViewBag.Title = "Cargos y Cobros";
+    ViewBag.Class = "fa fa-credit-card";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="page-title">
+    <div class="title_left col-xs-12">
+        <h3>
+            <a class="@ViewBag.Class"></a>
+            @ViewBag.Title
+        </h3>
+    </div>
+    <div class="title_right col-xs-12">
+        <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+                @Html.TextBox("txtFilter", "", htmlAttributes: new { @class = "form-control text-uppercase", placeholder = "Búsqueda por..", type = "text" })
+                <span class="input-group-btn">
+                    <button class="btn btn-default " type="button" title="Buscar Cargos" onclick="SearchCharges()">
+                        <span class="glyphicon glyphicon-search"></span>
+                        Buscar
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <ul class="nav navbar-left  panel_toolbox">
+                    <li>
+                      
+                    </li>
+                </ul>
+                <ul class="nav navbar-right panel_toolbox">
+                    
+                    <li class="btn-group">
+                        <button class="btn btn-default" type="button" title="Exportar" onclick="ExcelDT()">
+                            <i class="fa fa-file-excel-o"> </i>
+                            Exportar
+                        </button>
+                      
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+                <div id="divCharges" style="min-height:300px">
+                    @Html.Partial("_ChargeList", Model)
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="tbButtons" class="hidden">
+
+</div>
+
+<script>
+
+   
+
+    function SearchCharges()
+    {
+        ShowLoading('static');
+
+        ExecuteAjax('@Url.Action("SearchCharges", "Production")', { filter: $("#txtFilter").val() }, function (response)
+        {
+            $("#divCharges").html(response);
+            HideLoading();
+        });
+    }
+</script>
+

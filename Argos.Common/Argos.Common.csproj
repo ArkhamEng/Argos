@@ -45,8 +45,10 @@
     <Compile Include="Enums\PayForms.cs" />
     <Compile Include="Enums\PayMethods.cs" />
     <Compile Include="Enums\PhoneTypes.cs" />
+    <Compile Include="Enums\ServiceTypes.cs" />
     <Compile Include="Enums\StatusCredit.cs" />
     <Compile Include="Enums\StatusPurchase.cs" />
+    <Compile Include="Enums\StatusAccount.cs" />
     <Compile Include="Enums\StatusSale.cs" />
     <Compile Include="Interfaces\IAppCaching.cs" />
     <Compile Include="Interfaces\ISecurityManager.cs" />

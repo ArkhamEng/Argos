@@ -13,10 +13,11 @@ namespace Argos.ViewModels.Generic
         {
             get
             {
-                if (true || (HttpContext.Current.User.IsInRole("Capturista") && (this.catalog != null && this.catalog.IsActive)))
-                    return false;
-                else
-                    return true;
+                //if (true || (HttpContext.Current.User.IsInRole("Capturista") && (this.catalog != null && this.catalog.IsActive)))
+                //    return false;
+                //else
+                //    return true;
+                return false;
             }
         }
 
@@ -24,10 +25,11 @@ namespace Argos.ViewModels.Generic
         {
             get
             {
-                if ((HttpContext.Current.User.IsInRole("Capturista") && (this.catalog != null && this.catalog.IsActive)))
-                    return false;
-                else
-                    return true;
+                //if ((HttpContext.Current.User.IsInRole("Capturista") && (this.catalog != null && this.catalog.IsActive)))
+                //    return false;
+                //else
+                //    return true;
+                return false;
             }
         }
 
@@ -36,10 +38,11 @@ namespace Argos.ViewModels.Generic
         {
             get
             {
-                if ((HttpContext.Current.User.IsInRole("Supervisor") && (this.catalog != null && !this.catalog.IsActive)))
-                    return false;
-                else
-                    return true;
+                //if ((HttpContext.Current.User.IsInRole("Supervisor") && (this.catalog != null && !this.catalog.IsActive)))
+                //    return false;
+                //else
+                //    return true;
+                return false;
             }
         }
 

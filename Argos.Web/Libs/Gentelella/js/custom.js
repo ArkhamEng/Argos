@@ -55,7 +55,8 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
 function init_sidebar()
 {
     // TODO: This is some kind of easy fix, maybe we can improve this
-    var setContentHeight = function () {
+    var setContentHeight = function ()
+    {
         // reset height
         $RIGHT_COL.css('min-height', $(window).height());
 
@@ -82,7 +83,8 @@ function init_sidebar()
             });
         } else {
             // prevent closing menu if we are on child menu
-            if (!$li.parent().is('.child_menu')) {
+            if (!$li.parent().is('.child_menu'))
+            {
                 $SIDEBAR_MENU.find('li').removeClass('active active-sm');
                 $SIDEBAR_MENU.find('li ul').slideUp();
             } else {
@@ -107,7 +109,8 @@ function init_sidebar()
         if ($BODY.hasClass('nav-md')) {
             $SIDEBAR_MENU.find('li.active ul').hide();
             $SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');
-        } else {
+        } else
+        {
             $SIDEBAR_MENU.find('li.active-sm ul').show();
             $SIDEBAR_MENU.find('li.active-sm').addClass('active').removeClass('active-sm');
         }

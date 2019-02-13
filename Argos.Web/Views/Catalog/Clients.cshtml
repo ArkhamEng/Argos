@@ -20,8 +20,9 @@
             <div class="input-group">
                 @Html.TextBox("txtName", "", htmlAttributes: new { @class = "form-control text-uppercase", placeholder = "Búsqueda por..", type = "text" })
                 <span class="input-group-btn">
-                    <button class="btn btn-default " type="button" title="Buscar productos" onclick="SearchClients()">
+                    <button class="btn btn-default" type="button" title="Buscar Clientes" onclick="SearchClients()">
                         <span class="glyphicon glyphicon-search"></span>
+                        Buscar
                     </button>
                 </span>
             </div>
@@ -35,17 +36,18 @@
         <div class="x_panel">
             <div class="x_title">
                 <ul class="nav navbar-left  panel_toolbox">
-                    <li id="tbButtons">
+                    <li id="tbButtons" class="hidden">
 
                     </li>
                 </ul>
                 <ul class="nav navbar-right panel_toolbox">
                     <li>
-                        <button class="@Argos.Common.Styles.Buttons.Default" type="button" id="btnClear" title="Recarga la página" onclick="Clear()">
-                           @Html.Raw(Argos.Common.Styles.ButtonContent.Reload)
+                        <button class="btn btn-default" type="button" title="Exportar" onclick="ExcelDT()">
+                            <i class="fa fa-file-excel-o"> </i>
+                            Exportar
                         </button>
                         <button type="button" class="@Argos.Common.Styles.Buttons.Success" title="Captura un nuevo cliente" onclick="BeginAddClient()">
-                            @Html.Raw(Argos.Common.Styles.ButtonContent.Add)
+                            @Html.Raw(Argos.Common.Styles.ButtonContent.New)
                         </button>
                     </li>
                 </ul>

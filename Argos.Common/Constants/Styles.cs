@@ -98,6 +98,8 @@ namespace Argos.Common
         {
             public const string Detail = "<span class='fa fa-eye'></span> Detalle";
 
+            public const string New = "<span class='fa fa-file-o'></span> Nuevo";
+
             public const string Eliminate = "<span class='fa fa-trash'></span> Eliminar";
 
             public const string Add = "<span class='fa fa-plus'></span> Agregar";

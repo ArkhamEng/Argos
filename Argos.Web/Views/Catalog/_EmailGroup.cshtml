@@ -40,6 +40,8 @@
                 <td class="text-lowercase">                    
                     @Html.DisplayFor(model=> item.Email)      
                     @Html.HiddenFor(model => item.EntityId)  
+                    @Html.HiddenFor(model => item.EmailAddressId)
+                    
                     @Html.HiddenFor(model => item.Email)                
                 </td>
                 <td>
@@ -76,12 +78,11 @@
     {
         var row = $(button).parent().parent();
 
-        var id = row.find("#item_EntityId").val();
+        var id = row.find("#item_EmailAddressId").val();
 
         if (parseInt(id) > 0)
         {
-            var typeId = row.find("#item_Email").val();
-            DroppedMails.push(typeId);
+            DroppedMails.push(id);
         }
 
         row.remove();

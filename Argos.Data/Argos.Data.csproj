@@ -58,18 +58,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\ApplicationDbContext.cs" />
-    <Compile Include="Context\HumanResources.cs" />
-    <Compile Include="Context\Config.cs" />
+    <Compile Include="Context\HumanResourcesContext.cs" />
+    <Compile Include="Context\ConfigContext.cs" />
     <Compile Include="Context\BusinessContext.cs" />
-    <Compile Include="Context\Inventory.cs" />
+    <Compile Include="Context\InventoryContext.cs" />
+    <Compile Include="Context\ProductionContext.cs" />
     <Compile Include="Context\PurchasingAndSale.cs" />
-    <Compile Include="Migrations\201811031934065_Initial.cs" />
-    <Compile Include="Migrations\201811031934065_Initial.Designer.cs">
-      <DependentUpon>201811031934065_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811032131166_ConfigValue.cs" />
-    <Compile Include="Migrations\201811032131166_ConfigValue.Designer.cs">
-      <DependentUpon>201811032131166_ConfigValue.cs</DependentUpon>
+    <Compile Include="Migrations\201902130803515_Initial.cs" />
+    <Compile Include="Migrations\201902130803515_Initial.Designer.cs">
+      <DependentUpon>201902130803515_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,11 +82,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201811031934065_Initial.resx">
-      <DependentUpon>201811031934065_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811032131166_ConfigValue.resx">
-      <DependentUpon>201811032131166_ConfigValue.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201902130803515_Initial.resx">
+      <DependentUpon>201902130803515_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,0 +1,150 @@
+﻿
+@model IEnumerable<Account>
+
+@using Argos.Models.Production
+
+
+
+<table id="tbAccounts" class="table table-responsive table-striped jambo_table small" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Clave")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClientId)
+            </th>
+            <th>
+                @Html.DisplayName("Tipo")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountStatusId)
+            </th>
+            <th>
+                @Html.DisplayName("Costo")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.BeginDate)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.MaintPeriodId)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.PaymentPeriodId)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.HasPolicy)
+            </th>
+            <th style="white-space:nowrap">
+                @Html.DisplayNameFor(model => model.HasMaintenance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InsDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InsUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdUser)
+            </th>
+            <th>
+                @Html.DisplayName("Acciones")
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="white-space:nowrap">
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td style="min-width:250px">
+                    @Html.DisplayFor(modelItem => item.Client.Name)
+                </td>
+
+                <td style="min-width:100px">
+                    @Html.DisplayFor(modelItem => item.AccountType.Name)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccountStatus.Name)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.PolicyCost)
+                </td>
+                <td style="min-width:250px">
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BeginDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaintPeriod.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentPeriod.Name)
+                </td>
+                <td>
+                    <div class="checkbox-inline">
+                        @Html.EditorFor(modelItem => item.HasPolicy, new { htmlAttributes = new { @class = "flat", disabled = true } })
+                    </div>
+                </td>
+                <td>
+                   
+                    <div class="checkbox-inline">
+                        @Html.EditorFor(modelItem => item.HasMaintenance, new { htmlAttributes = new { @class = "flat", disabled = true } })
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InsUser)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdUser)
+                </td>
+             
+                <td>
+                    <button class="btn btn-success btn-sm" type="button" onclick="GoToDetail('@item.AccountId')">
+                        @Html.Raw(Argos.Common.Styles.ButtonContent.Detail)
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+<script>
+    $(document).ready(function ()
+    {
+        Paginate("#tbAccounts", 8, true, "#txtFilter", false, "#tbButtons", function () { iCheckInit(); })
+    });
+
+    function GoToDetail(id)
+    {
+        ShowLoading('static');
+        window.location = '@Url.Action("Account","Production")' + "/" + id;
+    }
+
+</script>

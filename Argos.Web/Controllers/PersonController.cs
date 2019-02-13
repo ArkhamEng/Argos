@@ -4,12 +4,10 @@ using Argos.ViewModels.Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using Argos.Models.BaseTypes;
 using Argos.Common.Enums;
-using Argos.Models.Config;
 using Argos.Models;
 using Argos.Common.Constants;
 
@@ -22,8 +20,7 @@ namespace Argos.Web.Controllers
         {
             var model = new PersonSearchVieModel<T>();
 
-            model.Entities = (from s in db.Persons.OfType<T>().Include(s => s.PhoneNumbers).Include(s => s.EmailAddresses)
-                              select new PersonViewModel<T> { Person = s }).OrderBy(s => s.Person.Name).ToList();
+            model.Entities = SearchPersons<T>(null, null, null, null, null);
 
             model.States = AppCache.Instance.States.ToSelectList();
 
@@ -77,9 +74,10 @@ namespace Argos.Web.Controllers
 
                 if (person.IsLocked)
                 {
-                    db.Entry(person).Property(c => c.LockEndDate).IsModified = true;
-                    db.Entry(person).Property(c => c.LockUser).IsModified = true;
+                    person.LockEndDate = null;
+                    person.LockUser = null;
 
+                    db.Entry(person);
                     db.SaveChanges();
                 }
 
@@ -118,9 +116,7 @@ namespace Argos.Web.Controllers
                     person.LockUser = string.Empty;
                     person.IsActive = false;
 
-                    db.Entry(person).Property(c => c.UpdUser).IsModified = true;
-                    db.Entry(person).Property(c => c.UpdDate).IsModified = true;
-                    db.Entry(person).Property(c => c.IsActive).IsModified = true;
+                    db.Entry(person);
 
                     db.SaveChanges();
                 }
@@ -185,15 +181,7 @@ namespace Argos.Web.Controllers
         {
             try
             {
-                foreach (var a in personVm.Person.Addresses)
-                    a.InsUser = HttpContext.User.Identity.Name;
-
-                foreach (var e in personVm.Person.EmailAddresses)
-                    e.InsUser = HttpContext.User.Identity.Name;
-
-                foreach (var p in personVm.Person.PhoneNumbers)
-                    p.InsUser = HttpContext.User.Identity.Name;
-
+               
                 db.Entities.Add(personVm.Person);
                 db.SaveChanges();
 
@@ -204,7 +192,7 @@ namespace Argos.Web.Controllers
 
                     var fileT = GetFileType(personVm.Person);
 
-                    var path = Support.FileManager.SaveFile(file, personVm.Person.EntityId.ToString(), fileT);
+                    var path = Argos.Support.FileManager.SaveFile(file, personVm.Person.EntityId.ToString(), fileT);
                     personVm.Person.ImagePath = path;
 
                     db.Entry(personVm.Person).Property(c => c.ImagePath).IsModified = true;
@@ -227,9 +215,16 @@ namespace Argos.Web.Controllers
                 if (personVm.DroppedAddress.Count > Numbers.Zero)
                 {
                     var addresses = db.Addresses.
-                        Where(a => a.EntityId == personVm.Person.EntityId && personVm.DroppedAddress.Contains(a.AddressTypeId));
+                        Where(a => a.EntityId == personVm.Person.EntityId && personVm.DroppedAddress.Contains(a.AddressId));
 
-                    db.Addresses.RemoveRange(addresses);
+                    foreach (var addr in addresses)
+                    {
+                        addr.IsActive = false;
+                        addr.UpdDate = DateTime.Now.ToLocal();
+                        addr.UpdUser = HttpContext.User.Identity.Name;
+
+                        db.Entry(addr);
+                    }
                 }
 
                 //agrego las nuevas direcciones
@@ -242,8 +237,16 @@ namespace Argos.Web.Controllers
                 //elimino telefonos
                 if (personVm.DroppedPhones.Count > Numbers.Zero)
                 {
-                    var phones = db.PhoneNumbers.Where(p => p.EntityId == personVm.Person.EntityId && personVm.DroppedPhones.Contains(p.Phone));
-                    db.PhoneNumbers.RemoveRange(phones);
+                    var phones = db.PhoneNumbers.Where(p => p.EntityId == personVm.Person.EntityId && personVm.DroppedPhones.Contains(p.PhoneNumberId));
+
+                    foreach(var phone in phones)
+                    {
+                        phone.IsActive = false;
+                        phone.UpdDate = DateTime.Now.ToLocal();
+                        phone.UpdUser = HttpContext.User.Identity.Name;
+
+                        db.Entry(phone);
+                    }
                 }
 
                 //agrego los nuevos teléfonos
@@ -257,8 +260,16 @@ namespace Argos.Web.Controllers
                 //elimino direcciones de correo
                 if (personVm.DroppedMails.Count > Numbers.Zero)
                 {
-                    var emails = db.EmailAddresses.Where(e => e.EntityId == personVm.Person.EntityId && personVm.DroppedMails.Contains(e.Email));
-                    db.EmailAddresses.RemoveRange(emails);
+                    var emails = db.EmailAddresses.Where(e => e.EntityId == personVm.Person.EntityId && personVm.DroppedMails.Contains(e.EmailAddressId));
+
+                    foreach (var mail in emails)
+                    {
+                        mail.IsActive = false;
+                        mail.UpdDate = DateTime.Now.ToLocal();
+                        mail.UpdUser = HttpContext.User.Identity.Name;
+
+                        db.Entry(mail);
+                    }
                 }
 
                 //agrego las nuevas direcciones de correo
@@ -285,7 +296,7 @@ namespace Argos.Web.Controllers
 
                     var fileT = GetFileType(personVm.Person);
 
-                    var path = Support.FileManager.SaveFile(file, personVm.Person.EntityId.ToString(), fileT);
+                    var path = Argos.Support.FileManager.SaveFile(file, personVm.Person.EntityId.ToString(), fileT);
                     personVm.Person.ImagePath = path;
                     modifyImage = true;
                 }

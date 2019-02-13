@@ -1,4 +1,5 @@
 ﻿
+using Argos.Models.BaseTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Web;
 namespace Argos.Models.Sales
 {
     [Table("ShipMethod", Schema = "Sales")]
-    public class ShipMethod
+    public class ShipMethod :ActivableAudit
     {
         public int ShipMethodId { get; set; }
 

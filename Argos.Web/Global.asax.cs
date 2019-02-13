@@ -1,4 +1,5 @@
 ﻿using Argos.Support;
+using Argos.Web.Support;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Argos.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            AppCache.Instance.LoadCache();
+            TaskManager.Instance.StartMonitor();
         }
         
         protected void Application_End()

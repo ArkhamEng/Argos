@@ -3,6 +3,8 @@ using Argos.Models.Config;
 using Argos.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+using Argos.Models.Production;
 
 namespace Argos.Models.Sales
 {
@@ -11,7 +13,6 @@ namespace Argos.Models.Sales
     {
         [Display(Name = "Razón Social")]
         [MaxLength(200)]
-        [Index("Unq_BusinessName", IsUnique = true)]
         public string BusinessName { get; set; }
 
 
@@ -29,5 +30,7 @@ namespace Argos.Models.Sales
         public double CreditBalance { get; set; }
 
         public virtual CreditStatus CreditStatus { get; set; }
+
+        public ICollection<Account> Accounts { get; set; }
     }
 }

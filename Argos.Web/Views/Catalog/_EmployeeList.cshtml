@@ -3,7 +3,7 @@
 @using Argos.ViewModels.Generic
 @using Argos.Models.HumanResources
 
-<table id="TbEmployeeList" class="table table-hover jambo_table dataTable">
+<table id="TbEmployeeList" class="table table-responsive table-striped jambo_table small" style="width:100%">
     <thead>
         <tr class="heading">
             <th style="min-width:50px">
@@ -107,10 +107,10 @@
 
                 <td>
                     <div class="pull-right">
-                        <button class="@Argos.Common.Styles.Buttons.Primary" type="button" onclick="ShowDetail(@item.Person.EntityId)">
+                        <button class="btn btn-success btn-sm" type="button" onclick="ShowDetail(@item.Person.EntityId)">
                             @Html.Raw(Argos.Common.Styles.ButtonContent.Detail)
                         </button>
-                        <button class="@Argos.Common.Styles.Buttons.Danger" type="button" disabled="@item.DeleteDisabled"
+                        <button class="btn btn-danger btn-sm" type="button" disabled="@item.DeleteDisabled"
                                 onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')" >
                             @Html.Raw(Argos.Common.Styles.ButtonContent.Eliminate)
                         </button>

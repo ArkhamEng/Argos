@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Argos.Models.Sales.Client>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <button type="button" class="close" onclick="HideModal(null,true)" aria-label="Close">
+            <span aria-hidden="true" class="fa fa-times"></span>
+        </button>
+        <h4 id="SearchTitle" class="panel-title">
+            <span class="fa fa-users"></span> Buscar Cliente
+        </h4>
+    </div>
+
+    <div class="panel-body">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-6 top-search">
+                    @Html.TextBox("ClientFilter", "", htmlAttributes: new { @class = "form-control text-uppercase input-sm", placeholder = "Búsqueda por..", type = "text" })
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table id="tbAssingClient" class="table jambo_table table-bordered small">
+                    <thead>
+                        <tr class="heading">
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BusinessName)
+                            </th>
+                            <th>
+                                @Html.DisplayName("Crédito")
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreditLimit)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreditDays)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreditBalance)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-capitalize">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                    @Html.HiddenFor(modelItem => item.Name)
+                                    @Html.HiddenFor(modelItem => item.EntityId)
+                                </td>
+
+                                <td class="text-capitalize">
+                                    @Html.DisplayFor(modelItem => item.BusinessName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreditStatus.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreditLimit)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreditDays)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreditBalance)
+                                </td>
+                                <td>
+                                    <a class="btn btn-success btn-xs pull-right" role="button" id="btnSelect" title="seleccionar el cliente">
+                                        <span class="fa fa-check"></span>
+                                        Seleccionar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <button class="btn btn-danger btn-sm" type="button" onclick="HideModa(null,true)">
+            <span class="fa fa-times"></span>
+            Cerrar
+        </button>
+    </div>
+</div>
+
+
+

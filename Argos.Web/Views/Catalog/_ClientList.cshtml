@@ -4,10 +4,10 @@
 @using Argos.ViewModels.Generic
 
 
-<table id="TbClientList" class="table table-responsive jambo_table table-bordered">
+<table id="TbClientList" class="table table-responsive table-striped jambo_table small" style="width:100%">
     <thead>
         <tr class="heading">
-            <th style="min-width:50px">
+            <th>
                 
             </th>
             <th style="min-width:250px">
@@ -52,7 +52,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td style="max-width:50px">
                     <img src="@item.Image" class="img-responsive img-rounded" />
                 </td>
                 <td>
@@ -99,11 +99,11 @@
                     </a>
                 </td>
 
-                <td class="btn-group">
-                    <button class="@Argos.Common.Styles.Buttons.Primary" type="button" onclick="ShowDetail(@item.Person.EntityId)">
+                <td >
+                    <button class="btn btn-success btn-sm" type="button" onclick="ShowDetail(@item.Person.EntityId)">
                         @Html.Raw(Argos.Common.Styles.ButtonContent.Detail)
                     </button>
-                    <button class="@Argos.Common.Styles.Buttons.Danger" type="button" disabled="@item.DeleteDisabled"
+                    <button class="btn btn-danger btn-sm" type="button" disabled="@item.DeleteDisabled"
                             onclick="BeginDelete('@item.Person.EntityId','@item.Person.Name')">
                        @Html.Raw(Argos.Common.Styles.ButtonContent.Eliminate)
                     </button>
@@ -115,19 +115,23 @@
 <script>
     var idClient = 0;
 
-    $(document).ready(function () {
+    $(document).ready(function ()
+    {
         Paginate("#TbClientList", 8, true, "#txtName", false, "#tbButtons")
     });
 
-    function BeginDelete(id, name) {
+    function BeginDelete(id, name)
+    {
         idClient = id;
         var hdr = "Eliminar cliente!";
         var body = "Esta seguro que deseas eliminar el cliente " + name;
         ShowMessage(hdr, body, 'confirm', DeleteClient, OnDeleteCanceled, 'static')
     }
 
-    function DeleteClient() {
-        ExecuteAjax('@Url.Action("DeletePerson","Catalog")', { id: idClient }, function (response) {
+    function DeleteClient()
+    {
+        ExecuteAjax('@Url.Action("DeletePerson","Catalog")', { id: idClient }, function (response)
+        {
             HideLoading(function () {
                 ShowNotify(response.Header, response.Result, response.Body, 2500);
             });

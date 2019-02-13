@@ -292,19 +292,21 @@
             </div>
         </div>
 
-                @Html.HiddenFor(m => m.Slots)
+   @Html.HiddenFor(m => m.Slots)
     }
 
     <script>
         var ToDelete = [];
         var needActivate = false;
 
-        $(document).ready(function () {
+        $(document).ready(function ()
+        {
             var productId = parseInt($("#Product_ProductId").val());
             iCheckInit();
 
             //un producto guardado no puede cambiar sus propiedades de stock
-            if (productId > 0) {
+            if (productId > 0)
+            {
                 $("#Product_Code").prop("readonly", true);
 
                 //utilizo la función iCheck para cambiar los valores del checkbox

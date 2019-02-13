@@ -14,6 +14,7 @@ using Argos.Models.HumanResources;
 using Argos.Common.Constants;
 using Argos.Data.Context;
 using Argos.Web;
+using Argos.Models.Interfaces;
 
 namespace Argos.Support
 {
@@ -52,5 +53,6 @@ namespace Argos.Support
 
             return session;
         }
+
     }
 }

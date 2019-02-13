@@ -12,13 +12,11 @@ namespace Argos.Models.Business
         [Display(Name = "Nombre")]
         [Required]
         [MaxLength(150)]
-        [Index("IDX_Name", IsUnique = false)]
         public string Name { get; set; }
 
         //Federal Taxpayer register
         [Display(Name = "R.F.C.")]
         [MaxLength(13)]
-        [Index("Unq_FTR", IsUnique = true)]
         public string FTR { get; set; }
 
         public string ImagePath { get; set; }

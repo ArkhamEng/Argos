@@ -14,10 +14,20 @@ namespace Argos.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+             name: "Suppliers",
+             url: "Purchasing/Suppliers",
+             defaults: new { controller = "Catalog", action = "Suppliers", id = UrlParameter.Optional }
+         );
+
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+           
+         
         }
     }
 }

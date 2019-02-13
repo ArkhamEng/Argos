@@ -1,4 +1,5 @@
 ﻿
+using Argos.Models.BaseTypes;
 using Argos.Models.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Argos.Models.Inventory
 {
     [Table("SubCategory", Schema = "Inventory")]
-    public class SubCategory:ISelectable
+    public class SubCategory:ActivableAudit, ISelectable
     {
         public int SubCategoryId { get; set; }
 

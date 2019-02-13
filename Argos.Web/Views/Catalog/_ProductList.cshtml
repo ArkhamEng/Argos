@@ -2,7 +2,7 @@
 @using Argos.Support
 
 
-    <table id="tbProducts" class="table  dataTable no-footer jambo_table">
+    <table id="tbProducts" class="table table-responsive table-striped jambo_table small" style="width:100%">
         <thead>
             <tr class="heading" >
                 <th style="min-width:50px">
@@ -55,7 +55,7 @@
         {
                 <tr class='@items.RowState'>
                   
-                    <td>
+                    <td style="max-width:50px">
                         <img src='@items.ImagePath' class="img-responsive"/>
                     </td>
                     <td class="text-uppercase">
@@ -74,10 +74,14 @@
                         @Html.DisplayFor(model => items.Product.BuyPrice)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => items.Product.IsForPurchase)
+                        <div class="checkbox-inline">
+                            @Html.EditorFor(modelItem => items.Product.IsForPurchase, new { htmlAttributes = new { @class = "flat", disabled = true } })
+                        </div>
                     </td>
                     <td>
-                        @Html.DisplayFor(model => items.Product.IsForSale)
+                        <div class="checkbox-inline">
+                            @Html.EditorFor(modelItem => items.Product.IsForSale, new { htmlAttributes = new { @class = "flat", disabled = true } })
+                        </div>
                     </td>
                     <td>
                         @items.Product.ProductImages.Count
@@ -100,20 +104,16 @@
                     </td>
                   
                     <td>
-                        <button class="@Argos.Common.Styles.Buttons.Primary" title="Ver detalle de producto" 
+                        <button class="btn btn-primary btn-sm" title="Ver detalle de producto" 
                                onclick="ShowDetail(@items.Product.ProductId)">
                             @Html.Raw(Argos.Common.Styles.ButtonContent.Detail)
                         </button>
 
-                        <button class="@Argos.Common.Styles.Buttons.Danger" title="Eliminar producto" disabled="@items.DeleteDisabled"
+                        <button class="btn btn-danger btn-sm" title="Eliminar producto" disabled="@items.DeleteDisabled"
                                 onclick="BeginDelete('@items.Product.ProductId')" >
                             @Html.Raw(Argos.Common.Styles.ButtonContent.Eliminate)
                         </button>
 
-                        <button class="@Argos.Common.Styles.Buttons.Success" title="Reactivar producto" disabled="@items.ActivateDisabled"
-                                onclick="BeginActivate('@items.Product.ProductId')">
-                            @Html.Raw(Argos.Common.Styles.ButtonContent.Reactivate)
-                        </button>
                     </td>
                 </tr>
         }
@@ -130,7 +130,9 @@
     {
        //$.fn.dataTable.ext.classes.sPageButton = 'btn btn-success';
         
-        Paginate("#tbProducts", 8, true, "#Filter_Text")
+        Paginate("#tbProducts", 8, true, "#Filter_Text", null, null, function () { iCheckInit(); })
+
+        iCheckInit();
 
         //$("#tbProducts_previous").removeClass("btn btn-success");
         //$("#tbProducts_next").removeClass("btn btn-success");

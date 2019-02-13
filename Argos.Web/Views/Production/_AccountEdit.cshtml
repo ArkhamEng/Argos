@@ -1,0 +1,151 @@
+﻿@model Account
+
+@using Argos.Support
+@using Argos.Models.Production
+@using Argos.Models
+
+
+    <div class="small">
+
+       @Html.HiddenFor(model => model.AccountId)
+        
+
+        <div class="form-group col-md-3">
+            @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control input-sm", @readonly = true } })
+            </div>
+            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-3 col-md-offset-1">
+            @Html.LabelFor(model => model.AccountTypeId, htmlAttributes: new { @class = "control-label" })
+
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-list-alt"></i></span>
+                @Html.DropDownListFor(model => Model.AccountTypeId, AppCache.Instance.AccountTypes.ToSelectList(), "", htmlAttributes: new { @class = "form-control input-sm" })
+            </div>
+            @Html.ValidationMessageFor(model => model.AccountTypeId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-2 col-md-offset-1">
+            @Html.LabelFor(model => model.BeginDate, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                @Html.EditorFor(model => model.BeginDate, new { htmlAttributes = new { @class = "form-control input-sm" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.BeginDate, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-2">
+            @Html.LabelFor(model => model.PolicyCost, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                @Html.EditorFor(model => model.PolicyCost, new { htmlAttributes = new { @class = "form-control input-sm" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.PolicyCost, "", new { @class = "text-danger" })
+        </div>
+
+
+
+        <div class="form-group col-md-7">
+            @Html.LabelFor(model => model.ClientId, htmlAttributes: new { @class = "control-label" })
+
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-users"></i></span>
+                
+                <input type="text" id="ClientName" class="form-control text-capitalize input-sm" value="" autocomplete="off"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-default btn-sm" type="button" title="Buscar cliente" onclick="SearchClient()" id="btnSearchClient">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="btn btn-default btn-sm hidden" type="button" title="Borrar cliente" onclick="ClearClient()" id="btnClearClient" >
+                        <span class="fa fa-refresh"></span>
+                    </button>
+                </span>
+            </div>            
+            @Html.HiddenFor(model => model.ClientId)
+            @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "text-danger" })
+            
+        </div>
+
+
+        <div class="form-group col-md-2 col-md-offset-1">
+            @Html.LabelFor(model => model.MaintPeriodId, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-hourglass-2"></i></span>
+                @Html.DropDownListFor(model => Model.MaintPeriodId, AppCache.Instance.MaintPeriodes.ToSelectList(),  htmlAttributes: new { @class = "form-control input-sm" })
+            </div>
+            @Html.ValidationMessageFor(model => model.MaintPeriodId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-2">
+            @Html.LabelFor(model => model.LastMaintenanceDate, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                @Html.EditorFor(model => model.LastMaintenanceDate, new { htmlAttributes = new { @class = "form-control input-sm" } })
+            </div>
+        </div>
+
+        <div class="form-group col-md-7">
+            @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-comments"></i></span>
+                @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control input-sm" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+        </div>
+
+
+      
+        <div class="form-group col-md-2  col-md-offset-1">
+            @Html.LabelFor(model => model.PaymentPeriodId, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-hourglass-2"></i></span>
+                @Html.DropDownListFor(model => Model.PaymentPeriodId, AppCache.Instance.PaymentPeriodes.ToSelectList(),  htmlAttributes: new { @class = "form-control input-sm" })
+            </div>
+            @Html.ValidationMessageFor(model => model.PaymentPeriodId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group col-md-2">
+            @Html.LabelFor(model => model.LastPaymentDate, htmlAttributes: new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                @Html.EditorFor(model => model.LastPaymentDate, new { htmlAttributes = new { @class = "form-control input-sm" } })
+            </div>
+        </div>
+    </div>
+
+<script>
+   
+    function SearchClient()
+    {
+        var filter = $("#ClientName").val();
+        
+        SearchPerson(function (client)
+        {
+            $("#ClientName").val(client.Name);
+
+            $("#btnSearchClient").addClass("hidden");
+            $("#btnClearClient").removeClass("hidden");
+
+            $("#ClientName").attr("readonly",true);
+            $("#ClientId").val(client.EntityId);
+
+        }, 'Client', filter);
+    }
+
+    function ClearClient()
+    {
+        $("#btnSearchClient").removeClass("hidden");
+        $("#btnClearClient").addClass("hidden");
+
+        $("#ClientName").val("");
+
+        $("#ClientId").val("");
+
+        $("#ClientName").attr("readonly", false);
+
+    }
+</script>

@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Argos.Models.Sales.Client" Collapsed="true">
+    <Position X="8.5" Y="0.75" Width="1.5" />
+    <AssociationLine Name="Accounts" Type="Argos.Models.Production.Account" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.5" Y="0.986" />
+        <Point X="7.271" Y="0.986" />
+        <Point X="7.271" Y="3" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.995" Y="2.159" Height="0.182" Width="1.274" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABAAAAAAAAAEAABAAAACAAAAIAAAAAQA=</HashCode>
+      <FileName>Models\Sales\Client.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Accounts" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Production.AccountStatus" Collapsed="true">
+    <Position X="4.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAkAAAAAAAgAAQAAAAAAACAAAAgCAAAAAA=</HashCode>
+      <FileName>Models\Production\AccountStatus.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Argos.Models.Production.AccountType" Collapsed="true">
+    <Position X="10.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgACAAAAAgAAQAAAAAAACAAAAgCAAAAAA=</HashCode>
+      <FileName>Models\Production\AccountType.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Argos.Models.Production.Service" Collapsed="true">
+    <Position X="3.75" Y="8.5" Width="1.5" />
+    <InheritanceLine Type="Argos.Models.Production.Occurence" FixedFromPoint="true">
+      <Path>
+        <Point X="6.5" Y="8.875" />
+        <Point X="5.25" Y="8.875" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAABAAAIAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Models\Production\Service.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Production.Account">
+    <Position X="6.25" Y="3" Width="1.75" />
+    <AssociationLine Name="AccountType" Type="Argos.Models.Production.AccountType">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="1.37" Y="0.091" Height="0.182" Width="1.308" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="AccountStatus" Type="Argos.Models.Production.AccountStatus">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-3.099" Y="1.731" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Occurences" Type="Argos.Models.Production.Occurence">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.585" Y="0.384" Height="0.182" Width="1.419" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAgAIAOAAAEACIAgAggABAgEBAAIAAAAAAAAABAAgQ=</HashCode>
+      <FileName>Models\Production\Account.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AccountType" />
+      <Property Name="AccountStatus" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Occurences" />
+      <Property Name="AccountHistories" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Argos.Models.Production.Occurence">
+    <Position X="6.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAEAAAAACAAAgAAAAAAAAAAAAAAAAIAAAgAAEA=</HashCode>
+      <FileName>Models\Production\Occurence.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Production.Charge" Collapsed="true">
+    <Position X="10" Y="8.5" Width="1.5" />
+    <InheritanceLine Type="Argos.Models.Production.Occurence" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8" Y="8.938" />
+        <Point X="8.375" Y="8.938" />
+        <Point X="8.375" Y="8.894" />
+        <Point X="10" Y="8.894" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Production\Charge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Production.AccountHistory" Collapsed="true">
+    <Position X="11" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAGAAAAAAAAAgIAAQAAEBAAAAAAAAAAAABAAEA=</HashCode>
+      <FileName>Models\Production\AccountHistory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Production.Report">
+    <Position X="1.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAEBAAAAAAAAAAAAAAAAAAAAIAAAAAAAAIAACA=</HashCode>
+      <FileName>Models\Production\Report.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Argos.Models.Production.MonthPeriod" Collapsed="true">
+    <Position X="12" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAIAAAAgAAABgCAAAAAA=</HashCode>
+      <FileName>Models\Production\MonthPeriod.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

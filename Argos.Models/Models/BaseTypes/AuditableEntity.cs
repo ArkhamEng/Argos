@@ -12,17 +12,21 @@ namespace Argos.Models.BaseTypes
     public abstract class AuditableEntity
     {
         [Required]
+        [Display(Name ="Fecha Registro")]
         public DateTime InsDate { get; set; }
 
         [Required]
         [MaxLength(30)]
+        [Display(Name = "Registrado por")]
         public string InsUser { get; set; }
 
         [Required]
+        [Display(Name = "Fecha Edición")]
         public DateTime UpdDate { get; set; }
 
         [Required]
         [MaxLength(30)]
+        [Display(Name = "Editado por")]
         public string UpdUser { get; set; }
 
 
@@ -35,10 +39,23 @@ namespace Argos.Models.BaseTypes
                 this.InsUser = HttpContext.Current.User.Identity.Name;
                 this.UpdUser = HttpContext.Current.User.Identity.Name;
             }
-            catch (Exception ex)
-            {  }
-        
+            catch (Exception)
+            {
+                this.InsUser = "System";
+                this.UpdUser = "System";
+            }
         }
-
     }
+
+    public abstract class ActivableAudit: AuditableEntity
+    {
+        [Display(Name = "Activo")]
+        public bool IsActive { get; set; }
+
+        public ActivableAudit()
+        {
+            this.IsActive = true;
+        }
+    }
+
 }

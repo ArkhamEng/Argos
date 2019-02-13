@@ -31,6 +31,7 @@
         <tr id="NewAddressRow" class="hidden">
             <td class="text-capitalize">
                 <input type="hidden" id="item_EntityId" />
+                <input type="hidden" id="item_AddressId" />
                 <a id="lblStreet" class="text-capitalize"></a>
                 <input type="hidden"  id="item_Street"/>
             </td>
@@ -67,6 +68,7 @@
             <tr >
                 <td class="text-capitalize">
                     @Html.HiddenFor(m => item.EntityId)
+                    @Html.HiddenFor(m => item.AddressId)
                     @Html.DisplayFor(m => item.Street)
                     @Html.HiddenFor(m => item.Street)
                 </td>
@@ -113,12 +115,11 @@
     {
         var row = $(button).parent().parent();
 
-        var entityId = row.find("#item_EntityId").val();
+        var addressId = row.find("#item_AddressId").val();
         
-        if (parseInt(entityId) > 0)
+        if (parseInt(addressId) > 0)
         {
-            var typeId = row.find("#item_AddressTypeId").val();
-            DroppedAddress.push(typeId);
+            DroppedAddress.push(addressId);
         }
 
         row.remove();

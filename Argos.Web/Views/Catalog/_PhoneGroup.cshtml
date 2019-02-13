@@ -41,6 +41,7 @@
                     @Html.DisplayFor(m => item.Phone)
                     @Html.HiddenFor(m => item.Phone)
                     @Html.HiddenFor(m => item.EntityId)
+                    @Html.DisplayFor(m => item.PhoneNumberId)
                 </td>
                 <td>
                     @Html.DisplayFor(m => item.PhoneType.Name)
@@ -75,12 +76,11 @@
     {
         var row = $(button).parent().parent();
        
-        var id = row.find('[id="item_EntityId"]').val();
+        var id = row.find('[id="item_PhoneNumberId"]').val();
 
         if (parseInt(id) > 0)
         {
-            var phone = row.find('[id="item_Phone"]').val();
-            DroppedPhones.push(phone);
+            DroppedPhones.push(id);
         }
         row.remove();
     }

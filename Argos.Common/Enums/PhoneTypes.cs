@@ -11,6 +11,7 @@ namespace Argos.Common.Enums
         Mobile   = 2,
         Home     = 3,
         Work     = 4,
-        Fax      = 5
+        Fax      = 5,
+        Gps      = 6
     }
 }
