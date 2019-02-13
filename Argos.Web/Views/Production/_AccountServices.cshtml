@@ -3,16 +3,16 @@
 
 
 <table id="tbServices" class="table table-responsive table-striped small jambo_table" style="width:100%">
-    
+
     <thead>
         <tr>
             <th style="white-space:nowrap">
                 @Html.DisplayNameFor(model => model.ServiceTypeId)
             </th>
-            <th  style="white-space:nowrap">
+            <th style="white-space:nowrap">
                 @Html.DisplayNameFor(model => model.ScheduleDate)
             </th>
-            <th  style="white-space:nowrap">
+            <th style="white-space:nowrap">
                 @Html.DisplayNameFor(model => model.DueDate)
             </th>
             <th>
@@ -21,20 +21,20 @@
             <th>
                 @Html.DisplayNameFor(model => model.IsDone)
             </th>
-         
-            <th  style="white-space:nowrap">
+
+            <th style="white-space:nowrap">
                 @Html.DisplayNameFor(model => model.StartDate)
             </th>
-            <th  style="white-space:nowrap">
+            <th style="white-space:nowrap">
                 @Html.DisplayNameFor(model => model.CompletionDate)
             </th>
-            <th  style="white-space:nowrap">
+            <th style="white-space:nowrap">
                 @Html.DisplayNameFor(model => model.InsDate)
             </th>
-            <th  style="white-space:nowrap">
+            <th style="white-space:nowrap">
                 @Html.DisplayNameFor(model => model.InsUser)
             </th>
-            <th  style="white-space:nowrap">
+            <th style="white-space:nowrap">
                 @Html.DisplayNameFor(model => model.UpdDate)
             </th>
             <th>
@@ -61,10 +61,10 @@
                 </td>
                 <td>
                     <div class="checkbox-inline">
-                        @Html.EditorFor(modelItem => item.IsDone, new { htmlAttributes = new { @class = "BlockEdit flat", disabled=true } })
+                        @Html.EditorFor(modelItem => item.IsDone, new { htmlAttributes = new { @class = "BlockEdit flat", disabled = true } })
                     </div>
                 </td>
-               
+
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)
                 </td>

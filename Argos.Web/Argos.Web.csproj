@@ -756,13 +756,13 @@
     <Content Include="Views\Production\_AccountHistories.cshtml" />
     <Content Include="Views\Production\Services.cshtml" />
     <Content Include="Views\Production\Charges.cshtml" />
-    <None Include="Views\Production\_AccountServices.cshtml" />
     <Content Include="Views\Production\_AccountEdit.cshtml" />
     <Content Include="Views\Production\_AccountCharges.cshtml" />
     <Content Include="Views\Production\_ServiceList.cshtml" />
     <Content Include="Views\Production\_ChargeList.cshtml" />
     <Content Include="Views\Production\_ChargeEdit.cshtml" />
     <Content Include="Views\Production\_ServiceEdit.cshtml" />
+    <Content Include="Views\Production\_AccountServices.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
