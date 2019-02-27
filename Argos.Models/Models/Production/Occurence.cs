@@ -15,10 +15,12 @@ namespace Argos.Models.Production
 
         [Display(Name ="Fecha Programada")]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime ScheduleDate { get; set; }
 
         [Display(Name = "Fecha Límite")]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DueDate { get; set; }
 
 

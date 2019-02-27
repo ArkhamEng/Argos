@@ -189,7 +189,7 @@ function SubmitPerson(SuccessCallBack, form)
         });
 
         var allowSubmit = true;
-
+        /* comento esto para permitir guardar personas incluso sin dirección, email y telefonos
         if (addressCount == 0) {
             ShowNotify("Dirección requerida <spans class='fa fa-street-view'/>", "warning", "Debes proporcionar al menos una dirección", 3500);
             allowSubmit = false;
@@ -203,7 +203,7 @@ function SubmitPerson(SuccessCallBack, form)
         if (mailCount == 0) {
             ShowNotify(" Correo requerido <spans class='fa fa-envelope' />", "warning", "Debes proporcionar al menos un correo electrónico", 3500);
             allowSubmit = false;
-        }
+        }*/
 
         if (!allowSubmit)
             return;

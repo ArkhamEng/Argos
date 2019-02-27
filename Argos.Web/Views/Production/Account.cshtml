@@ -7,6 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 @Scripts.Render("~/bundles/jqueryval")
 
 @using (Html.BeginForm("SaveAccount", "Production", FormMethod.Post, new { id = "AccountForm" }))
@@ -80,8 +81,6 @@
             </div>
         </div>
     </div>
-
-
 }
 
 @if (Model.Client != null)
@@ -97,10 +96,38 @@
 
         SubmitAccount();
 
+        DateValid();
+
         $("#BeginDate").mask("99/99/9999");
         $("#LastPaymentDate").mask("99/99/9999");
         $("#LastMaintenanceDate").mask("99/99/9999");
 
+        $('#BeginDatePicker').datetimepicker({
+            ignoreReadonly: false,
+            allowInputToggle: false, 
+            useCurrent:false, 
+            format: 'DD/MM/YYYY',
+            locale:'es'
+        });
+
+        $('#LastPaymentDatePicker').datetimepicker({
+            ignoreReadonly: false,
+            allowInputToggle: false,
+            useCurrent: false,
+            format: 'DD/MM/YYYY',
+            locale: 'es'
+        });
+
+
+        $('#LastMaintenanceDatePicker').datetimepicker({
+            ignoreReadonly: false,
+            allowInputToggle: false,
+            useCurrent: false,
+            format: 'DD/MM/YYYY',
+            locale: 'es'
+        });
+
+ 
         SetControlAvailable();
 
         $('#AccountTabPanel').tabs({
@@ -109,6 +136,7 @@
         });
     });
 
+   
     function CreateNew()
     {
         ShowLoading('static');
@@ -163,7 +191,6 @@
                 return;
             }
 
-
             //agrego todos los campos del formulario
             $.each(params, function (i, val) {
                 formData.append(val.name, val.value);
@@ -175,15 +202,11 @@
             {
                 ShowNotify(response.Header, response.Result, response.Body, 3000);
 
-                HideLoading(function ()
+                if (response.Id != '0')
                 {
-                    if (response.Id != '0')
-                    {
-                        ShowLoading('static');
-                        window.location = '@Url.Action("Account","Production",new { id = string.Empty})' + '/' + response.Id;
-                    }
-                });
-
+                    window.location = '@Url.Action("Account","Production",new { id = string.Empty})' + '/' + response.Id;
+                }
+              
             });
         });
     }

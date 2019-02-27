@@ -12,7 +12,8 @@ namespace Argos.Models.Production
     public class Charge:Occurence
     {
         [Display(Name ="Fecha de pago")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? PaymentDate { get; set; }
 
         [Display(Name = "Importe")]

@@ -12,6 +12,8 @@ namespace Argos.Models.BaseTypes
     public abstract class AuditableEntity
     {
         [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy hh:mm:ss}")]
         [Display(Name ="Fecha Registro")]
         public DateTime InsDate { get; set; }
 
@@ -21,6 +23,8 @@ namespace Argos.Models.BaseTypes
         public string InsUser { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy  hh:mm:ss}")]
         [Display(Name = "Fecha Edición")]
         public DateTime UpdDate { get; set; }
 

@@ -12,10 +12,14 @@ namespace Argos.Models.Production
         public ServiceTypes ServiceTypeId { get; set; }
 
         [Display(Name = "Fecha Inicio")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? StartDate { get; set; }
 
 
         [Display(Name = "Fecha Termino")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? CompletionDate { get; set; }
 
         public virtual ServiceType ServiceType { get; set; }

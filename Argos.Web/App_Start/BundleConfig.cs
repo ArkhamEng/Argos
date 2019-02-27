@@ -8,14 +8,7 @@ namespace Argos.Web
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            /*estos son los viejitos
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/_jquery-ui-1.12.1.min.js",
-                        "~/Scripts/jquery-3.2.1.min.js",
-                        "~/Scripts/jquery.maskedinput.min.js",
-                        "~/Scripts/jquery.unobtrusive-ajax.min.js",
-                        "~/Scripts/DataTables/jquery.dataTables.min.js"));*/
-
+          
             bundles.Add(new ScriptBundle("~/bundles/Jquery").Include(
                  "~/Vendor/jquery/dist/jquery.min.js")); 
 
@@ -30,11 +23,17 @@ namespace Argos.Web
                        "~/Vendor/gauge.js/dist/gauge.min.js",
                        "~/Vendor/bootstrap-progressbar/bootstrap-progressbar.min.js",
                        "~/Vendor/iCheck/icheck.min.js",
-                      "~/Vendor/validator/validator.js",
-                      "~/Vendor/devbridge-autocomplete/dist/jquery.autocomplete.min.js",
+                       "~/Vendor/validator/validator.js",
+                       "~/Vendor/devbridge-autocomplete/dist/jquery.autocomplete.min.js",
                        "~/Vendor/pnotify/dist/pnotify.js",
-                        "~/Vendor/pnotify/dist/pnotify.buttons.js",
-                         "~/Vendor/pnotify/dist/pnotify.nonblock.js",
+                       "~/Vendor/pnotify/dist/pnotify.buttons.js",
+                       "~/Vendor/pnotify/dist/pnotify.nonblock.js",
+
+                       "~/Vendor/moment/min/moment.min.js",
+                       "~/Vendor/moment/min/locales.min.js",
+                       "~/Vendor/moment/locale/es.js",
+                       "~/Vendor/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
+                       
                        "~/Libs/Gentelella/js/custom.js"));
 
             //necesarios para el template
@@ -79,8 +78,8 @@ namespace Argos.Web
                       "~/Vendor/iCheck/skins/flat/green.css",
                       "~/Vendor/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css",
                       "~/Vendor/jqvmap/dist/jqvmap.min.css",
-                      "~/Vendor/bootstrap-daterangepicker/daterangepicker.css",
-
+                      
+                      "~/Vendor/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css",
                       "~/Vendor/pnotify/dist/pnotify.css",
                       "~/Vendor/pnotify/dist/pnotify.buttons.css",
                       "~/Vendor/pnotify/dist/pnotify.nonblock.css",

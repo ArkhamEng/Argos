@@ -42,13 +42,20 @@ namespace Argos.Models.Production
         public string Comment { get; set; }
 
         [Display(Name = "Inicio Contrato")]
+        [DataType(DataType.Date)]
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime BeginDate { get; set; }
 
         [Display(Name = "Fin Contrato")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? EndDate { get; set; }
 
         [Display(Name = "Ultimo Corte")]
         [Index("IDX_CutOffDate", IsUnique =false)]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? CutOffDate { get; set; }
 
         [Display(Name ="Periodo Mantto")]
@@ -61,9 +68,13 @@ namespace Argos.Models.Production
         public bool HasPolicy { get; set; }
 
         [Display(Name = "Ultimo Pago")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? LastPaymentDate { get; set; }
 
         [Display(Name = "Ultimo Mantenimiento")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? LastMaintenanceDate { get; set; }
 
         [Display(Name = "Con mantenimiento")]

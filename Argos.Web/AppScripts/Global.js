@@ -1,4 +1,22 @@
-﻿function SetPointer(element) {
+﻿
+function DateValid()
+{
+    //validación de formato de fecha
+    $.validator.addMethod("date", function (value, element)
+    {
+        if (typeof($(element).data('val-required')) == typeof(undefined) && (value == '' || value =='__/__/____'))
+        {
+            console.log("No se valida un carajo"); return true;
+        }
+            
+        var v = (this.optional(element) ||  moment(value,'DD/MM/YYYY',true).isValid());
+        return v;
+
+    }, "El formato debe ser dd/mm/yyyy");
+}
+
+
+function SetPointer(element) {
     $(element).css('cursor', 'pointer');
 }
 

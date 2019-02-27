@@ -241,6 +241,8 @@
     <Content Include="AppScripts\Catalog.js" />
     <Content Include="AppScripts\Global.js" />
     <Content Include="AppScripts\Operative.js" />
+    <Content Include="bundles\green%402x.png" />
+    <Content Include="bundles\green.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -603,8 +605,69 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Vendor\bootstrap-datetimepicker\build\css\bootstrap-datetimepicker-standalone.css" />
+    <Content Include="Vendor\bootstrap-datetimepicker\build\css\bootstrap-datetimepicker.css" />
+    <Content Include="Vendor\bootstrap-datetimepicker\build\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="Vendor\bootstrap-datetimepicker\build\js\bootstrap-datetimepicker.min.js" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\android-chrome-144x144.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\android-chrome-192x192.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\android-chrome-36x36.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\android-chrome-48x48.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\android-chrome-72x72.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\android-chrome-96x96.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon-114x114.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon-120x120.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon-144x144.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon-152x152.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon-180x180.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon-57x57.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon-60x60.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon-72x72.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon-76x76.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon-precomposed.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\apple-touch-icon.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\base.html" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\browserconfig.xml" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\content.html" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\css\base.css" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\css\prettify-1.0.css" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\favicon-16x16.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\favicon-32x32.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\favicon-96x96.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\favicon.ico" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\js\base.js" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\js\prettify-1.0.min.js" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\mstile-144x144.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\mstile-150x150.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\mstile-310x150.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\mstile-310x310.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\mstile-70x70.png" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\nav.html" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\toc.html" />
+    <Content Include="Vendor\bootstrap-datetimepicker\Gruntfile.js" />
+    <Content Include="Vendor\bootstrap-datetimepicker\src\js\bootstrap-datetimepicker.js" />
+    <Content Include="Vendor\bootstrap-datetimepicker\src\nuget\NuGet.exe" />
+    <Content Include="Vendor\bootstrap-datetimepicker\tasks\bump_version.js" />
+    <Content Include="Vendor\bootstrap-datetimepicker\test\publicApiSpec.js" />
+    <Content Include="Vendor\bootstrap-datetimepicker\test\screen-capture\base.html" />
+    <Content Include="Vendor\bootstrap-datetimepicker\test\screen-capture\compile.js" />
+    <Content Include="Vendor\bootstrap-datetimepicker\test\screen-capture\index.js" />
+    <Content Include="Vendor\bootstrap-datetimepicker\test\screen-capture\t1.html" />
+    <Content Include="Vendor\bootstrap-datetimepicker\test\screen-capture\t2.html" />
+    <Content Include="Vendor\bootstrap-datetimepicker\test\screen-capture\t3.html" />
+    <Content Include="Vendor\bootstrap-datetimepicker\test\screen-capture\t4.html" />
+    <Content Include="Vendor\bootstrap-datetimepicker\test\screen-capture\t5.html" />
+    <Content Include="Vendor\bootstrap-datetimepicker\test\timezoneDataHelper.js" />
     <Content Include="Vendor\bootstrap-progressbar\bootstrap-progressbar.min.js" />
     <Content Include="Vendor\bootstrap-progressbar\css\bootstrap-progressbar-3.3.4.min.css" />
+    <Content Include="Vendor\Chart.js\src\chart.js" />
+    <Content Include="Vendor\Chart.js\src\charts\Chart.Bar.js" />
+    <Content Include="Vendor\Chart.js\src\charts\Chart.Bubble.js" />
+    <Content Include="Vendor\Chart.js\src\charts\Chart.Doughnut.js" />
+    <Content Include="Vendor\Chart.js\src\charts\Chart.Line.js" />
+    <Content Include="Vendor\Chart.js\src\charts\Chart.PolarArea.js" />
+    <Content Include="Vendor\Chart.js\src\charts\Chart.Radar.js" />
+    <Content Include="Vendor\Chart.js\src\charts\Chart.Scatter.js" />
     <Content Include="Vendor\datatables.net-bs\css\dataTables.bootstrap.min.css" />
     <Content Include="Vendor\datatables.net-bs\js\dataTables.bootstrap.min.js" />
     <Content Include="Vendor\datatables.net-fixedcolumns\css\fixedColumns.dataTables.min.css" />
@@ -647,6 +710,8 @@
     <Content Include="Vendor\jqvmap\dist\jquery.vmap.min.js" />
     <Content Include="Vendor\jqvmap\dist\jqvmap.min.css" />
     <Content Include="Vendor\jszip\dist\jszip.min.js" />
+    <Content Include="Vendor\moment\locale\es.js" />
+    <Content Include="Vendor\moment\min\locales.min.js" />
     <Content Include="Vendor\moment\min\moment.min.js" />
     <Content Include="Vendor\nprogress\nprogress.css" />
     <Content Include="Vendor\nprogress\nprogress.js" />
@@ -733,6 +798,33 @@
     <Content Include="Views\Catalog\_AssingSupplier.cshtml" />
     <Content Include="Views\Catalog\_AssingProduct.cshtml" />
     <Content Include="Views\Catalog\_ClientQuickSearch.cshtml" />
+    <Content Include="Vendor\bootstrap-datetimepicker\bower.json" />
+    <Content Include="Vendor\bootstrap-datetimepicker\component.json" />
+    <Content Include="Vendor\bootstrap-datetimepicker\composer.json" />
+    <Content Include="Vendor\bootstrap-datetimepicker\CONTRIBUTING.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\ChangeLog.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\ContributorsGuide.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\Events.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\Extras.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\FAQ.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\Functions.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\index.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\Installing.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\Options.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\theme\manifest.json" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\Version 4 Changelog.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\docs\Version 4 Contributors guide.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\LICENSE" />
+    <Content Include="Vendor\bootstrap-datetimepicker\mkdocs.yml" />
+    <Content Include="Vendor\bootstrap-datetimepicker\package.json" />
+    <Content Include="Vendor\bootstrap-datetimepicker\README.md" />
+    <Content Include="Vendor\bootstrap-datetimepicker\src\less\bootstrap-datetimepicker-build.less" />
+    <Content Include="Vendor\bootstrap-datetimepicker\src\less\_bootstrap-datetimepicker.less" />
+    <Content Include="Vendor\bootstrap-datetimepicker\src\nuget\Bootstrap.v3.Datetimepicker.CSS.nuspec" />
+    <Content Include="Vendor\bootstrap-datetimepicker\src\nuget\Bootstrap.v3.Datetimepicker.nuspec" />
+    <Content Include="Vendor\bootstrap-datetimepicker\src\nuget\install.ps1" />
+    <Content Include="Vendor\bootstrap-datetimepicker\src\sass\bootstrap-datetimepicker-build.scss" />
+    <Content Include="Vendor\bootstrap-datetimepicker\src\sass\_bootstrap-datetimepicker.scss" />
     <None Include="Views\Operative\Accounts.cshtml" />
     <Content Include="Views\Operative\_AccountList.cshtml" />
     <Content Include="Views\Operative\_BeginAccount.cshtml" />
@@ -766,7 +858,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Files\ProfilePictures\" />
+    <Folder Include="bundles\Chart\" />
     <Folder Include="Vendor\datatables.net\js.1.12\" />
     <Folder Include="Views\Configuration\" />
     <Folder Include="Views\Entity\" />
@@ -811,7 +903,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1635</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1695</IISUrl>
+          <IISUrl>http://localhost:1695/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:1695/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

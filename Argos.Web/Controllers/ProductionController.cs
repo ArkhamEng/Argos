@@ -66,6 +66,7 @@ namespace Argos.Web.Controllers
             }
             else
             {
+                model.BeginDate = DateTime.Now.ToLocal();
                 model.Occurences = new List<Occurence>();
                 model.AccountHistories = new List<AccountHistory>();
             }
@@ -83,7 +84,8 @@ namespace Argos.Web.Controllers
                 {
                     var typeCode = (AccountType)AppCache.Instance.AccountTypes.FirstOrDefault(t => ((AccountType)t).AccountTypeId == account.AccountTypeId);
 
-                    var lastAccount = db.Accounts.FirstOrDefault(a => a.AccountTypeId == account.AccountTypeId);
+                    var lastAccount = db.Accounts.Where(a => a.AccountTypeId == account.AccountTypeId).
+                                      OrderByDescending(a=> a.Sequential).FirstOrDefault();
 
                     var sequential = lastAccount != null ? lastAccount.Sequential + Numbers.One : Numbers.One;
 
